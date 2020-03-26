@@ -51,7 +51,6 @@ class EmpresaController extends Controller
     }
 
     public function registroAction($empresa_id, Request $request){
-
         $session = new Session();
         $f = $this->get('funciones');
       
@@ -68,12 +67,22 @@ class EmpresaController extends Controller
         $f->setRequest($session->get('sesion_id'));
 
         $em = $this->getDoctrine()->getManager();
-
         $pais = $this->getDoctrine()->getRepository('LinkComunBundle:AdminPais')->findOneById2($session->get('code'));
+        $horarios = $this->prepareHours($pais->getId());
 
         if ($empresa_id) 
         {
             $empresa = $em->getRepository('LinkComunBundle:AdminEmpresa')->find($empresa_id);
+            $horarios =  $this->prepareHours($empresa->getPais()->getId());
+            if($empresa->getZonaHoraria()){
+                for ($i=0; $i <count($horarios) ; $i++) { 
+                    if($horarios[$i]->id == $empresa->getZonaHoraria()->getId()){
+                        $horarios[$i]->selected='selected';
+                    }
+                }
+
+            }
+
         }
         else {
             $empresa = new AdminEmpresa();
@@ -91,34 +100,33 @@ class EmpresaController extends Controller
 
         if ($request->getMethod() == 'POST')
         {
-
+            
             $nombre = $request->request->get('nombre');
             $pais_id = $request->request->get('pais_id');
+            $zona_id = $request->request->get('zona_id');
             $bienvenida = $request->request->get('bienvenida');
             $activo = $request->request->get('activo');
             $activo2 = $request->request->get('activo2');
             $activo3 = $request->request->get('activo3');
-
             $pais = $this->getDoctrine()->getRepository('LinkComunBundle:AdminPais')->find($pais_id);
-
+            $zona = ($zona_id)? $this->getDoctrine()->getRepository('LinkComunBundle:AdminZonaHoraria')->find($zona_id):NULL;
             $empresa->setNombre($nombre);
             $empresa->setActivo($activo ? true : false);
             $empresa->setChatActivo($activo2 ? true : false);
             $empresa->setWebinar($activo3 ? true : false);
             $empresa->setBienvenida($bienvenida);
             $empresa->setPais($pais);
+            $empresa->setZonaHoraria($zona);
             $em->persist($empresa);
             $em->flush();
-
-            // Se crea el directorio para los activos de la empresa
             $f->subDirEmpresa($empresa->getId(), $this->container->getParameter('folders'));
 
             return $this->redirectToRoute('_showEmpresa', array('empresa_id' => $empresa->getId()));
 
         }
-        
         return $this->render('LinkBackendBundle:Empresa:registro.html.twig', array('empresa' => $empresa,
-                                                                                   'paises' => $paises));
+                                                                                   'paises' => $paises,
+                                                                                   'zonas'=> $horarios));
 
     }
 
@@ -143,7 +151,46 @@ class EmpresaController extends Controller
         $empresa = $em->getRepository('LinkComunBundle:AdminEmpresa')->find($empresa_id);
 
         return $this->render('LinkBackendBundle:Empresa:mostrar.html.twig', array('empresa' => $empresa));
+    }
 
+    public function ajaxZonaHorariaAction(Request $request){
+        $ok = 0;
+        $em = $this->getDoctrine()->getManager();
+        $session = new Session();
+        $a = $this->get('funciones');
+        $pais_id = $request->request->get('pais_id');
+       
+        $zonaHoraria = $this->prepareHours($pais_id);
+        if($zonaHoraria){
+          $ok = 1;
+          $zonaHoraria = json_encode($zonaHoraria);
+        }
+
+        $return = array('zonaHoraria'=>$zonaHoraria,'ok'=>$ok);
+        $return = json_encode($return);
+        return new Response($return, 200, array('Content-Type' => 'application/json'));  
+    }
+
+    public function prepareHours($pais_id,$horarioDefault=false){
+        $horarios = array();
+        $em = $this->getDoctrine()->getManager();
+        $query = $em->createQuery("SELECT zh FROM LinkComunBundle:AdminZonaHoraria zh
+                                      WHERE zh.pais = :pais_id 
+                                      ORDER BY zh.nombre ASC")
+                    ->setParameters(array('pais_id' => $pais_id));
+        $horariosQuery = $query->getResult();
+
+        foreach ($horariosQuery as $horario) {
+            $names = explode("/", $horario->getNombre());
+            $len = count($names);
+            $nombre = str_replace("_"," ",$names[$len-1]);
+            array_push($horarios,(object)array('id'=>$horario->getId(),'zona'=>$nombre,'selected'=>''));
+       }
+       if ($horarioDefault) {
+            $horarios[0]->selected ='selected'; //seleccionar el primer huso horario por defecto
+       }
+
+       return $horarios;
     }
 
     public function registradosEmpresaAction( Request $request )

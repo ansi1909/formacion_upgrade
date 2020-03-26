@@ -17,11 +17,11 @@ begin
 
     SELECT prl.id AS prl_id, u.codigo AS codigo, u.login AS login, u.nombre AS nombre, u.apellido AS apellido, u.correo_personal AS correo_personal, 
         u.correo_corporativo AS correo_corporativo, e.nombre AS empresa, c.nombre AS pais, n.nombre AS nivel, 
-        TO_CHAR(u.fecha_registro, 'DD/MM/YYYY') AS fecha_registro, u.campo1 AS campo1, u.campo2 AS campo2, u.campo3 AS campo3, u.campo4 AS campo4, 
-        (SELECT TO_CHAR(pl.fecha_inicio, 'DD/MM/YYYY') FROM certi_pagina_log pl WHERE pl.usuario_id = u.id AND pl.pagina_id = ppagina_id) AS fecha_inicio_programa, 
-        (SELECT TO_CHAR(pl.fecha_inicio, 'HH:MI AM') FROM certi_pagina_log pl WHERE pl.usuario_id = u.id AND pl.pagina_id = ppagina_id) AS hora_inicio_programa, 
+        u.fecha_registro AS fecha_registro, u.campo1 AS campo1, u.campo2 AS campo2, u.campo3 AS campo3, u.campo4 AS campo4, 
+        (SELECT pl.fecha_inicio FROM certi_pagina_log pl WHERE pl.usuario_id = u.id AND pl.pagina_id = ppagina_id) AS fecha_inicio_programa, 
+        (SELECT pl.fecha_inicio FROM certi_pagina_log pl WHERE pl.usuario_id = u.id AND pl.pagina_id = ppagina_id) AS hora_inicio_programa, 
         pr.nombre AS evaluacion, prl.estado AS estado, prl.nota AS nota, 
-        TO_CHAR(prl.fecha_inicio, 'DD/MM/YYYY') AS fecha_inicio_prueba, TO_CHAR(prl.fecha_inicio, 'HH:MI AM') AS hora_inicio_prueba 
+        prl.fecha_inicio AS fecha_inicio_prueba,prl.fecha_inicio AS hora_inicio_prueba 
     FROM certi_prueba_log prl INNER JOIN admin_usuario u ON prl.usuario_id = u.id 
     INNER JOIN certi_prueba pr ON prl.prueba_id = pr.id 
     INNER JOIN admin_nivel n ON u.nivel_id = n.id 

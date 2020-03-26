@@ -1,16 +1,21 @@
 $(document).ready(function() {
-
+    applyDataTableProgramados();
 	afterPaginate();
 
 	$('.paginate_button').click(function(){
 		afterPaginate();
 	});
 
+	$( "#programados" ).on( "click",".delete" , function (){
+        var programada_id = $(this).attr('data');
+		sweetAlertDelete(programada_id,'AdminNotificacionProgramada');	
+	});
+
 });
 
 function observe()
 {
-
+	afterPaginate();
 	$('#tbody-programados tr').each(function(){
 		var tr = $(this).attr('id');
 		if (!(typeof tr === 'undefined' || tr === null)){
@@ -19,6 +24,33 @@ function observe()
 			treeGrupoProgramado(notificacion_programada_id);
 		}
 	});
+
+	$('.failedEmails').click(function(e){
+		e.preventDefault();
+		var npId = $(this).attr('data');
+        $('#excel'+npId).hide();
+        $('#excelLoader'+npId).show();
+		$.ajax({
+			type: "POST",
+			url: $('#url_correos_excel').val(),
+			async: true,
+			data: { notificacion_id: npId },
+			dataType: "json",
+			success: function(data) {
+				$('#downloadExcel'+npId).attr('data-href',data.archivo);
+				$('#excelLoader'+npId).hide();
+				$('#downloadExcel'+npId).show();
+			},
+			error: function(){
+				console.log('Error de comunicacion');
+			}
+		});
+	});
+
+	   $('.downloadExcel').click(function(event) {
+	   	window.location.href = $(this).attr('data-href');
+   });
+
 
 }
 
@@ -54,6 +86,7 @@ function afterPaginate()
 				$('#programados').html(data.html);
 				$('#notificacionTitle').html(data.notificacion);
 				$('#programados').show();
+				applyDataTableProgramados();
 				observe();
 			},
 			error: function(){

@@ -97,8 +97,8 @@ else {
 		$notas = $notas + $row1["nota"];
 		$contador++;
 	}
-
-	$promedio = $notas / $contador;
+    $promedio = $notas / $contador;
+	$promedio = round($promedio,2); 
 	
 	if(isset($resultado))
 	{

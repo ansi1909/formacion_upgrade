@@ -8,6 +8,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Yaml\Yaml;
 use Link\ComunBundle\Entity\AdminSesion;
+use Link\ComunBundle\Entity\AdminUsuario;
 use Link\ComunBundle\Entity\CertiMuro;
 
 class NotificacionController extends Controller
@@ -29,7 +30,7 @@ class NotificacionController extends Controller
                     ->setParameters(array('usuario_id' => $session->get('usuario')['id'],
                                           'hoy' => date('Y-m-d 23:59:59')));
         $notificaciones = $query->getResult();
-
+        $usuario = $em->getRepository('LinkComunBundle:AdminUsuario')->find($session->get('usuario')['id']);
         $sonar = 0;
         $html = '';
         
@@ -46,7 +47,7 @@ class NotificacionController extends Controller
                 if ($muro)
                 {
                     // Se verifica si el programa al que pertenece el muro está vencido
-                    $vencido = $f->programaVencido($muro->getPagina()->getId(), $session->get('empresa')['id']);
+                    $vencido = $f->programaVencido($muro->getPagina()->getId(), $session->get('empresa')['id'],$usuario);
                     
                     if (!$vencido)
                     {
@@ -66,7 +67,7 @@ class NotificacionController extends Controller
                 if ($foro)
                 {
                     // Se verifica si el programa al que pertenece el foro está vencido
-                    $vencido = $f->programaVencido($foro->getPagina()->getId(), $session->get('empresa')['id']);
+                    $vencido = $f->programaVencido($foro->getPagina()->getId(), $session->get('empresa')['id'],$usuario);
                     if (!$vencido)
                     {
                         $html .= '<a href="'.$this->generateUrl('_detalleColaborativo', array('foro_id' => $notificacion->getEntidadId())).'">';
@@ -77,8 +78,15 @@ class NotificacionController extends Controller
             }
             elseif ($notificacion->getTipoAlarma()->getId() == $yml['parameters']['tipo_alarma']['evento'])
             {
-                $html .= '<a href="'.$this->generateUrl('_calendarioDeEventos', array('view' => 'basicDay', 'date' => $notificacion->getFechaCreacion()->format('Y-m-d'))).'">';
-                $mostrar = 1;
+                
+                $evento = $em->getRepository('LinkComunBundle:AdminEvento')->find($notificacion->getEntidadId());
+                if($evento){
+                    $vencido = $f->eventoVencido($evento);
+                    if(!$vencido){
+                        $html .= '<a href="'.$this->generateUrl('_calendarioDeEventos', array('view' => 'basicDay', 'date' => $evento->getFechaInicio()->format('Y-m-d'))).'">';
+                        $mostrar = 1; 
+                    }
+                }
             }
             elseif ($notificacion->getTipoAlarma()->getId() == $yml['parameters']['tipo_alarma']['aporte_espacio_colaborativo']) 
             {
@@ -88,7 +96,7 @@ class NotificacionController extends Controller
                 if ($foro)
                 {
                     // Se verifica si el programa al que pertenece el foro está vencido
-                    $vencido = $f->programaVencido($foro->getPagina()->getId(), $session->get('empresa')['id']);
+                    $vencido = $f->programaVencido($foro->getPagina()->getId(), $session->get('empresa')['id'],$usuario);
                     if (!$vencido)
                     {
                         $html .= '<a href="'.$this->generateUrl('_detalleColaborativo', array('foro_id' => $notificacion->getEntidadId())).'">';
@@ -104,8 +112,12 @@ class NotificacionController extends Controller
 
                 if ($noticia)
                 {
-                    $html .= '<a href="'.$this->generateUrl('_noticiaDetalle', array('noticia_id' => $notificacion->getEntidadId())).'">';
-                    $mostrar = 1;
+                    $vencido = $f->noticiaVencida($noticia);
+                    if(!$vencido){
+                        $html .= '<a href="'.$this->generateUrl('_noticiaDetalle', array('noticia_id' => $notificacion->getEntidadId())).'">';
+                        $mostrar = 1;
+                    }
+
                 }
                 
             }
@@ -116,8 +128,12 @@ class NotificacionController extends Controller
 
                 if ($biblioteca)
                 {
-                    $html .= '<a href="'.$this->generateUrl('_bibliotecaDetalle', array('biblioteca_id' => $notificacion->getEntidadId())).'">';
-                    $mostrar = 1;
+                    $vencido = $f->noticiaVencida($biblioteca);
+                    if(!$vencido){
+                        $html .= '<a href="'.$this->generateUrl('_bibliotecaDetalle', array('biblioteca_id' => $notificacion->getEntidadId())).'">';
+                        $mostrar = 1;
+                    }
+
                 }
                 
             }
@@ -186,11 +202,11 @@ class NotificacionController extends Controller
         $em = $this->getDoctrine()->getManager();
         $f = $this->get('funciones');
         $yml = Yaml::parse(file_get_contents($this->get('kernel')->getRootDir().'/config/parametros.yml'));
+        $usuario = $em->getRepository('LinkComunBundle:AdminUsuario')->find($session->get('usuario')['id']);
 
         $todas = array();
         $no_leidas = array();
         $leidas = array();
-        $vencido = false;
 
         if (!$session->get('iniFront') || $f->sesionBloqueda($session->get('sesion_id')))
         {
@@ -208,7 +224,7 @@ class NotificacionController extends Controller
 
         foreach($alarmas as $alarma)
         {
-
+            $vencido = false;
             $mostrar = 0;
 
             // Se verifica si el programa al que pertenece la alarma está vencido
@@ -217,7 +233,7 @@ class NotificacionController extends Controller
                 $muro = $em->getRepository('LinkComunBundle:CertiMuro')->find($alarma->getEntidadId());
                 if ($muro)
                 {
-                    $vencido = $f->programaVencido($muro->getPagina()->getId(), $session->get('empresa')['id']);
+                    $vencido = $f->programaVencido($muro->getPagina()->getId(), $session->get('empresa')['id'],$usuario);
                     $mostrar = 1;
                 }
             }
@@ -226,7 +242,7 @@ class NotificacionController extends Controller
                 $foro = $em->getRepository('LinkComunBundle:CertiForo')->find($alarma->getEntidadId());
                 if ($foro)
                 {
-                    $vencido = $f->programaVencido($foro->getPagina()->getId(), $session->get('empresa')['id']);
+                    $vencido = $f->programaVencido($foro->getPagina()->getId(), $session->get('empresa')['id'],$usuario);
                     $mostrar = 1;
                 }
             }
@@ -235,8 +251,22 @@ class NotificacionController extends Controller
                 $noticia = $em->getRepository('LinkComunBundle:AdminNoticia')->find($alarma->getEntidadId());
                 if ($noticia)
                 {
-                    $mostrar = 1;
+                    $vencido = $f->noticiaVencida($noticia);
+                    if(!$vencido){
+                        $mostrar = 1;
+                    }
+
                 }
+            }elseif($alarma->getTipoAlarma()->getId() == $yml['parameters']['tipo_alarma']['evento']) {
+                $evento = $em->getRepository('LinkComunBundle:AdminEvento')->find($alarma->getEntidadId());
+                if($evento){
+                    $vencido = $f->eventoVencido($evento);
+                    if(!$vencido){
+                        $mostrar = 1;
+                    }
+                }
+
+
             }
             else {
                 $mostrar = 1;
@@ -252,7 +282,7 @@ class NotificacionController extends Controller
                                  'leido' => $alarma->getLeido(),
                                  'tipo' => $alarma->getTipoAlarma()->getid(),
                                  'entidad' => $alarma->getEntidadId(),
-                                 'fecha' => $alarma->getFechaCreacion()->format('Y-m-d'));
+                                 'fecha' => $yml['parameters']['tipo_alarma']['evento']? $evento->getFechaInicio()->format('Y-m-d'):$alarma->getFechaCreacion()->format('Y-m-d'));
 
                 if ($alarma->getLeido())
                 {
@@ -263,7 +293,7 @@ class NotificacionController extends Controller
                                       'leido' => $alarma->getLeido(),
                                       'tipo' => $alarma->getTipoAlarma()->getid(),
                                       'entidad' => $alarma->getEntidadId(),
-                                      'fecha' => $alarma->getFechaCreacion()->format('Y-m-d'));
+                                      'fecha' => $yml['parameters']['tipo_alarma']['evento']? $evento->getFechaInicio()->format('Y-m-d'):$alarma->getFechaCreacion()->format('Y-m-d'));
 
                 }
                 else {
@@ -274,7 +304,7 @@ class NotificacionController extends Controller
                                          'leido' => $alarma->getLeido(),
                                          'tipo' => $alarma->getTipoAlarma()->getid(),
                                          'entidad' => $alarma->getEntidadId(),
-                                         'fecha' => $alarma->getFechaCreacion()->format('Y-m-d'));
+                                         'fecha' => $yml['parameters']['tipo_alarma']['evento']? $evento->getFechaInicio()->format('Y-m-d'):$alarma->getFechaCreacion()->format('Y-m-d'));
                 }
 
             }
@@ -323,9 +353,6 @@ class NotificacionController extends Controller
                                     <div class="date text-xs color-grey">'.$fechap.'</div>
                                 </div>
                             </div>
-                            <a href="#" class="mr-0 text-sm color-light-grey">
-                                <span class="like_ft like" data="'.$padre->getId().'"><i id="like'.$padre->getId().'" class="material-icons ic-lke '.$like .'">thumb_up</i> <span id="cantidad_like-'.$padre->getId().'">'. $likes['cantidad'] .'</span></span>
-                            </a>
                         </div>
                         <div class="comm-body text-justify">
                             <p class="textMuroNoti">'. $padre->getMensaje() .'</p>
@@ -359,9 +386,6 @@ class NotificacionController extends Controller
                                     <div class="date text-xs color-grey">'.$fechah.'</div>
                                 </div>
                             </div>
-                            <a href="#" class="mr-0 text-sm color-light-grey">
-                                <span class="like_ft like" data="'.$hijo->getId().'"><i id="like'.$hijo->getId().'" class="material-icons ic-lke '.$like .'">thumb_up</i> <span id="cantidad_like-'.$hijo->getId().'">'. $cantidad.'</span></span>
-                            </a>
                         </div>
                         <div class="comm-body text-justify">
                             <p class="textMuroNoti">'. $hijo->getMensaje() .'</p>

@@ -18,6 +18,7 @@ class ReportesController extends Controller
     {
         $session = new Session();
         $f = $this->get('funciones');
+        $yml = Yaml::parse(file_get_contents($this->get('kernel')->getRootDir().'/config/parametros.yml'));
         
         if (!$session->get('ini') || $f->sesionBloqueda($session->get('sesion_id')))
         {
@@ -46,6 +47,8 @@ class ReportesController extends Controller
             $i = 1;
             $pagina = array();
             $empresa = $this->getDoctrine()->getRepository('LinkComunBundle:AdminEmpresa')->find($empresa_id);
+            $timeZoneEmpresa = ($empresa->getZonaHoraria())? $empresa->getZonaHoraria()->getNombre():$yml['parameters']['time_zone']['default'];
+            $timeZoneReport = $f->clearNameTimeZone($timeZoneEmpresa,$empresa->getPais()->getNombre(),$yml);
 
 
             if($reporte == 1)
@@ -94,7 +97,7 @@ class ReportesController extends Controller
             $columnNames = array('A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z');
 
             // Encabezado
-            $objWorksheet->setCellValue('A1', $this->get('translator')->trans('Listado de participantes').' '.$this->get('translator')->trans($encabezado).'.');
+            $objWorksheet->setCellValue('A1', $this->get('translator')->trans('Listado de participantes').' '.$this->get('translator')->trans($encabezado).', '.$this->get('translator')->trans('Huso horario').': '.$timeZoneReport);
             if ($pagina_id)
             {
                 $objWorksheet->setCellValue('A2', $this->get('translator')->trans('Empresa').': '.$empresa->getNombre().'. '.$pagina->getCategoria()->getNombre().': '.$pagina->getNombre().'.');
@@ -108,7 +111,6 @@ class ReportesController extends Controller
                 $objWorksheet->setCellValue('A5', $this->get('translator')->trans('No existen registros para esta consulta'));
             }
             else {
-
                 $row = 5;
                 $i = 0;
                 $styleThinBlackBorderOutline = array(
@@ -130,23 +132,20 @@ class ReportesController extends Controller
                     $correo = trim($re['correo']) ? trim($re['correo']) : trim($re['correo2']);
                     $acceso = $re['activo'] = "TRUE" ? 'Sí' : 'No';
                     $logueado = $re['logueado'] > 0 ? 'Sí' : 'No';
-                    $fecha = explode(" ", $re['fecha_registro']);
-                    
+                    $fecha = $f->converDate($re['fecha_registro'],$yml['parameters']['time_zone']['default'],$timeZoneEmpresa);
                     $objWorksheet->getStyle("A$row:O$row")->applyFromArray($styleThinBlackBorderOutline); //bordes
                     $objWorksheet->getStyle("A$row:O$row")->getFont()->setSize($font_size); // Tamaño de las letras
                     $objWorksheet->getStyle("A$row:O$row")->getFont()->setName($font); // Tipo de letra
                     $objWorksheet->getStyle("A$row:O$row")->getAlignment()->setHorizontal($horizontal_aligment); // Alineado horizontal
                     $objWorksheet->getStyle("A$row:O$row")->getAlignment()->setVertical($vertical_aligment); // Alineado vertical
                     $objWorksheet->getRowDimension($row)->setRowHeight(40); // Altura de la fila
-                
-
                     // Datos de las columnas comunes
                     $objWorksheet->setCellValue('A'.$row, $re['codigo']);
                     $objWorksheet->setCellValue('B'.$row, $re['login']);
                     $objWorksheet->setCellValue('C'.$row, $re['nombre']);
                     $objWorksheet->setCellValue('D'.$row, $re['apellido']);
-                    $objWorksheet->setCellValue('E'.$row, $fecha['0']);
-                    $objWorksheet->setCellValue('F'.$row, $fecha['1'].$fecha[2]);
+                    $objWorksheet->setCellValue('E'.$row, $fecha->fecha);
+                    $objWorksheet->setCellValue('F'.$row, $fecha->hora);
                     $objWorksheet->setCellValue('G'.$row, $correo);
                     $objWorksheet->setCellValue('H'.$row, $acceso);
                     $objWorksheet->setCellValue('I'.$row, $logueado);
@@ -161,7 +160,8 @@ class ReportesController extends Controller
                 }
 
             }
-           
+
+            
 
             // Crea el writer
             $writer = $this->get('phpexcel')->createWriter($objPHPExcel, 'Excel2007');
@@ -304,6 +304,7 @@ class ReportesController extends Controller
         $em = $this->getDoctrine()->getManager();
         $f = $this->get('funciones');
         $rs = $this->get('reportes');
+        $yml = Yaml::parse(file_get_contents($this->get('kernel')->getRootDir().'/config/parametros.yml'));
 
         $empresa_id = $request->request->get('empresa_id');
         $paginas_id = $request->request->get('programas');
@@ -316,7 +317,8 @@ class ReportesController extends Controller
         }
 
         $empresa = $this->getDoctrine()->getRepository('LinkComunBundle:AdminEmpresa')->find($empresa_id);
-
+        $timeZoneEmpresa = ($empresa->getZonaHoraria())? $empresa->getZonaHoraria()->getNombre():$yml['parameters']['time_zone']['default'];
+        $timeZoneReport = $f->clearNameTimeZone($timeZoneEmpresa,$empresa->getPais()->getNombre(),$yml);
         $listado = $rs->participantesAprobados($empresa_id, $paginas_id);
 
         $fileWithPath = $this->container->getParameter('folders')['dir_project'].'docs/formatos/ListadoParticipantesAprobados.xlsx';
@@ -342,6 +344,7 @@ class ReportesController extends Controller
         $lastColumn = $columnNames[$lastColumnIndex];
 
         // Encabezado
+        $objWorksheet->setCellValue('A1', $this->get('translator')->trans('Listado de participantes aprobados').', '.$this->get('translator')->trans('Huso horario').': '.$timeZoneReport);
         $objWorksheet->setCellValue('A2', $this->get('translator')->trans('Empresa').': '.$empresa->getNombre());
 
         $font_size = 11;
@@ -443,7 +446,7 @@ class ReportesController extends Controller
 
             foreach ($listado['participantes'] as $participante)
             {
-                $fecha = explode(" ", $participante['fecha_registro']);
+                $fecha = $f->converDate($participante['fecha_registro'],$yml['parameters']['time_zone']['default'],$timeZoneEmpresa);
                 $acceso = $re['activo'] = "TRUE" ? 'Sí' : 'No';
                 // Estilizar toda la fila, excepto el bgcolor de las celdas de los programas
                 $objWorksheet->getStyle("A".$row.":".$lastColumn.$row)->applyFromArray($styleThinBlackBorderOutline); //bordes
@@ -458,8 +461,8 @@ class ReportesController extends Controller
                 $objWorksheet->setCellValue('B'.$row, $participante['login']);
                 $objWorksheet->setCellValue('C'.$row, $participante['nombre']);
                 $objWorksheet->setCellValue('D'.$row, $participante['apellido']);
-                $objWorksheet->setCellValue('E'.$row, $fecha[0]);
-                $objWorksheet->setCellValue('F'.$row, $fecha[1].$fecha[2]);
+                $objWorksheet->setCellValue('E'.$row, $fecha->fecha);
+                $objWorksheet->setCellValue('F'.$row, $fecha->hora);
                 $objWorksheet->setCellValue('G'.$row, $participante['correo']);
                 $objWorksheet->setCellValue('H'.$row, $acceso);
                 $objWorksheet->setCellValue('I'.$row, $participante['logueado']);
@@ -478,12 +481,14 @@ class ReportesController extends Controller
                     $objWorksheet->getStyle($columnNames[$col].$row.":".$columnNames[$col+4].$row)->getFill()->setFillType(\PHPExcel_Style_Fill::FILL_SOLID)->getStartColor()->setRGB($pagina['bgcolor']);
                     if (array_key_exists($pagina_id, $participante['paginas']))
                     {
+                        $fecha_inicio = $f->converDate($participante['paginas'][$pagina_id]['fecha_inicio'],$yml['parameters']['time_zone']['default'],$timeZoneEmpresa);
+                        $fecha_fin = $f->converDate($participante['paginas'][$pagina_id]['fecha_fin'],$yml['parameters']['time_zone']['default'],$timeZoneEmpresa);
                         $aprobados++;
                         $objWorksheet->setCellValue($columnNames[$col].$row, $participante['paginas'][$pagina_id]['promedio']);
-                        $objWorksheet->setCellValue($columnNames[$col+1].$row, $participante['paginas'][$pagina_id]['fecha_inicio']);
-                        $objWorksheet->setCellValue($columnNames[$col+2].$row, $participante['paginas'][$pagina_id]['hora_inicio']);
-                        $objWorksheet->setCellValue($columnNames[$col+3].$row, $participante['paginas'][$pagina_id]['fecha_fin']);
-                        $objWorksheet->setCellValue($columnNames[$col+4].$row, $participante['paginas'][$pagina_id]['hora_fin']);
+                        $objWorksheet->setCellValue($columnNames[$col+1].$row, $fecha_inicio->fecha);
+                        $objWorksheet->setCellValue($columnNames[$col+2].$row, $fecha_inicio->hora);
+                        $objWorksheet->setCellValue($columnNames[$col+3].$row, $fecha_fin->fecha);
+                        $objWorksheet->setCellValue($columnNames[$col+4].$row, $fecha_fin->hora);
                     }
                     $col += 5;
                 }
@@ -661,23 +666,30 @@ class ReportesController extends Controller
         $em = $this->getDoctrine()->getManager();
         $rs = $this->get('reportes');
         $fn = $this->get('funciones');
+        $yml = Yaml::parse(file_get_contents($this->get('kernel')->getRootDir().'/config/parametros.yml'));
         
-        $empresa_id = $request->request->get('empresa_id');
-        $pagina_id = $request->request->get('pagina_id');
         $tema_id = $request->request->get('tema_id');
         $desdef = $request->request->get('desde');
         $hastaf = $request->request->get('hasta');
         $excel = $request->request->get('excel');
-
-        list($d, $m, $a) = explode("/", $desdef);
-        $desde = "$a-$m-$d 00:00:00";
-
-        list($d, $m, $a) = explode("/", $hastaf);
-        $hasta = "$a-$m-$d 23:59:59";
+        $empresa_id = $request->request->get('empresa_id');
+        $pagina_id = $request->request->get('pagina_id');
 
         $empresa = $this->getDoctrine()->getRepository('LinkComunBundle:AdminEmpresa')->find($empresa_id);
         $pagina = $this->getDoctrine()->getRepository('LinkComunBundle:CertiPagina')->find($pagina_id);
         $tema = $this->getDoctrine()->getRepository('LinkComunBundle:CertiForo')->find($tema_id);
+        $timeZoneEmpresa = ($empresa->getZonaHoraria())? $empresa->getZonaHoraria()->getNombre():$yml['parameters']['time_zone']['default'];
+        $timeZoneReport = $fn->clearNameTimeZone($timeZoneEmpresa,$empresa->getPais()->getNombre(),$yml);
+
+        list($d, $m, $a) = explode("/", $desdef);
+        $desde = "$a-$m-$d 00:00:00";
+        $desdeUtc = $fn->converDate($desde,$timeZoneEmpresa,$yml['parameters']['time_zone']['default'],false);
+        $desde = $desdeUtc->fecha.' '.$desdeUtc->hora;
+
+        list($d, $m, $a) = explode("/", $hastaf);
+        $hasta = "$a-$m-$d 23:59:59";
+        $hastaUtc = $fn->converDate($hasta,$timeZoneEmpresa,$yml['parameters']['time_zone']['default'],false);
+        $hasta = $hastaUtc->fecha.' '.$hastaUtc->hora;
 
         $listado = $rs->interaccionColaborativo($empresa_id, $pagina_id, $tema_id, $desde, $hasta);
 
@@ -688,7 +700,7 @@ class ReportesController extends Controller
         $columnNames = array('A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z');
 
         // Encabezado
-        $objWorksheet->setCellValue('A1', $this->get('translator')->trans('Interacciones de espacio colaborativo').'. '.$this->get('translator')->trans('Desde').': '.$desdef.'. '.$this->get('translator')->trans('Hasta').': '.$hastaf.'.');
+        $objWorksheet->setCellValue('A1', $this->get('translator')->trans('Interacciones de espacio colaborativo').'. '.$this->get('translator')->trans('Desde').': '.$desdef.'. '.$this->get('translator')->trans('Hasta').': '.$hastaf.'. '.$this->get('translator')->trans('Huso horario').': '.$timeZoneReport);
         $objWorksheet->setCellValue('A2', $this->get('translator')->trans('Empresa').': '.$empresa->getNombre().'. '.$this->get('translator')->trans('Programa').': '.$pagina->getNombre().'.');
         $objWorksheet->setCellValue('A3', $this->get('translator')->trans('Tema').': '.$tema->getTema() );
         if (!count($listado))
@@ -718,12 +730,13 @@ class ReportesController extends Controller
 
                 $correo = trim($participante['correo_personal']) ? trim($participante['correo_personal']) : trim($participante['correo_corporativo']);
                 $mensaje = strip_tags($participante['mensaje']);
-                $fecha = explode(" ",$participante['fecha_mensaje']);
-                $objWorksheet->getStyle("A$row:O$row")->applyFromArray($styleThinBlackBorderOutline); //bordes
-                $objWorksheet->getStyle("A$row:O$row")->getFont()->setSize($font_size); // Tamaño de las letras
-                $objWorksheet->getStyle("A$row:O$row")->getFont()->setName($font); // Tipo de letra
-                $objWorksheet->getStyle("A$row:O$row")->getAlignment()->setHorizontal($horizontal_aligment); // Alineado horizontal
-                $objWorksheet->getStyle("A$row:O$row")->getAlignment()->setVertical($vertical_aligment); // Alineado vertical
+                $fecha_registro = $fn->converDate($participante['fecha_registro'],$yml['parameters']['time_zone']['default'],$timeZoneEmpresa);
+                $fecha_mensaje = $fn->converDate($participante['fecha_mensaje'],$yml['parameters']['time_zone']['default'],$timeZoneEmpresa);
+                $objWorksheet->getStyle("A$row:P$row")->applyFromArray($styleThinBlackBorderOutline); //bordes
+                $objWorksheet->getStyle("A$row:P$row")->getFont()->setSize($font_size); // Tamaño de las letras
+                $objWorksheet->getStyle("A$row:P$row")->getFont()->setName($font); // Tipo de letra
+                $objWorksheet->getStyle("A$row:P$row")->getAlignment()->setHorizontal($horizontal_aligment); // Alineado horizontal
+                $objWorksheet->getStyle("A$row:P$row")->getAlignment()->setVertical($vertical_aligment); // Alineado vertical
                 $objWorksheet->getRowDimension($row)->setRowHeight(40); // Altura de la fila
             
 
@@ -732,17 +745,18 @@ class ReportesController extends Controller
                 $objWorksheet->setCellValue('B'.$row, $participante['login']);
                 $objWorksheet->setCellValue('C'.$row, $participante['nombre']);
                 $objWorksheet->setCellValue('D'.$row, $participante['apellido']);
-                $objWorksheet->setCellValue('E'.$row, $participante['fecha_registro']);
-                $objWorksheet->setCellValue('F'.$row, $correo);
-                $objWorksheet->setCellValue('G'.$row, $participante['pais']);
-                $objWorksheet->setCellValue('H'.$row, $participante['nivel']);
-                $objWorksheet->setCellValue('I'.$row, $participante['campo1']);
-                $objWorksheet->setCellValue('J'.$row, $participante['campo2']);
-                $objWorksheet->setCellValue('K'.$row, $participante['campo3']);
-                $objWorksheet->setCellValue('L'.$row, $participante['campo4']);
-                $objWorksheet->setCellValue('M'.$row, $fecha[0]);
-                $objWorksheet->setCellValue('N'.$row, $fecha[1]);
-                $objWorksheet->setCellValue('O'.$row, $mensaje);
+                $objWorksheet->setCellValue('E'.$row, $fecha_registro->fecha);
+                $objWorksheet->setCellValue('F'.$row, $fecha_registro->hora);
+                $objWorksheet->setCellValue('G'.$row, $correo);
+                $objWorksheet->setCellValue('H'.$row, $participante['pais']);
+                $objWorksheet->setCellValue('I'.$row, $participante['nivel']);
+                $objWorksheet->setCellValue('J'.$row, $participante['campo1']);
+                $objWorksheet->setCellValue('K'.$row, $participante['campo2']);
+                $objWorksheet->setCellValue('L'.$row, $participante['campo3']);
+                $objWorksheet->setCellValue('M'.$row, $participante['campo4']);
+                $objWorksheet->setCellValue('N'.$row, $fecha_mensaje->fecha);
+                $objWorksheet->setCellValue('O'.$row, $fecha_mensaje->hora);
+                $objWorksheet->setCellValue('P'.$row, $mensaje);
                 $row++;
 
             }
@@ -914,8 +928,12 @@ class ReportesController extends Controller
         $em = $this->getDoctrine()->getManager();
         $rs = $this->get('reportes');
         $fn = $this->get('funciones');
+        $yml = Yaml::parse(file_get_contents($this->get('kernel')->getRootDir().'/config/parametros.yml'));
         
         $empresa_id = $request->request->get('empresa_id');
+        $empresa = $this->getDoctrine()->getRepository('LinkComunBundle:AdminEmpresa')->find($empresa_id);
+        $timeZoneEmpresa = ($empresa->getZonaHoraria())? $empresa->getZonaHoraria()->getNombre():$yml['parameters']['time_zone']['default'];
+        $timeZoneReport = $fn->clearNameTimeZone($timeZoneEmpresa,$empresa->getPais()->getNombre(),$yml);
         $pagina_id = $request->request->get('pagina_id');
         $desdef = $request->request->get('desde');
         $hastaf = $request->request->get('hasta');
@@ -923,15 +941,20 @@ class ReportesController extends Controller
 
         list($d, $m, $a) = explode("/", $desdef);
         $desde = "$a-$m-$d 00:00:00";
+        $desdeUtc = $fn->converDate($desde,$timeZoneEmpresa,$yml['parameters']['time_zone']['default'],false);
+        $desde = $desdeUtc->fecha.' '.$desdeUtc->hora;
 
         list($d, $m, $a) = explode("/", $hastaf);
         $hasta = "$a-$m-$d 23:59:59";
+        $hastaUtc = $fn->converDate($hasta,$timeZoneEmpresa,$yml['parameters']['time_zone']['default'],false);
+        $hasta = $hastaUtc->fecha.' '.$hastaUtc->hora;
 
-        $empresa = $this->getDoctrine()->getRepository('LinkComunBundle:AdminEmpresa')->find($empresa_id);
+        
         $leccion = $this->getDoctrine()->getRepository('LinkComunBundle:CertiPagina')->find($pagina_id);
         $materia = $this->getDoctrine()->getRepository('LinkComunBundle:CertiPagina')->find($leccion->getPagina());
         $modulo = $this->getDoctrine()->getRepository('LinkComunBundle:CertiPagina')->find($materia->getPagina());
         $programa = $this->getDoctrine()->getRepository('LinkComunBundle:CertiPagina')->find($modulo->getPagina());
+    
         
         $listado = $rs->interaccionMuro($empresa_id, $pagina_id, $desde, $hasta);
 
@@ -942,7 +965,7 @@ class ReportesController extends Controller
         $columnNames = array('A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z');
 
         // Encabezado
-        $objWorksheet->setCellValue('A1', $this->get('translator')->trans('Interacciones de muro').'. '.$this->get('translator')->trans('Desde').': '.$desdef.'. '.$this->get('translator')->trans('Hasta').': '.$hastaf.'.');
+        $objWorksheet->setCellValue('A1', $this->get('translator')->trans('Interacciones de muro').'. '.$this->get('translator')->trans('Desde').': '.$desdef.'. '.$this->get('translator')->trans('Hasta').': '.$hastaf.'. '.$this->get('translator')->trans('Huso horario').': '.$timeZoneReport);
         $objWorksheet->setCellValue('A2', $this->get('translator')->trans('Empresa').': '.$empresa->getNombre().'. '.$this->get('translator')->trans('Programa').': '.$programa->getNombre() .'.');
         $objWorksheet->setCellValue('A3', $this->get('translator')->trans('Módulo').': '.$modulo->getNombre().'. '.$this->get('translator')->trans('Materia').': '.$materia->getNombre() .'.');
         $objWorksheet->setCellValue('A4', $this->get('translator')->trans('Lección').': '.$leccion->getNombre().'.');
@@ -971,14 +994,15 @@ class ReportesController extends Controller
             foreach ($listado as $participante)
             {
                $correo = trim($participante['correo_personal']) ? trim($participante['correo_personal']) : trim($participante['correo_corporativo']);
-               $fecha = explode(" ",$participante['fecha_mensaje']);
+               $fecha_registro = $fn->converDate($participante['fecha_registro'],$yml['parameters']['time_zone']['default'],$timeZoneEmpresa);
+               $fecha_mensaje = $fn->converDate($participante['fecha_mensaje'],$yml['parameters']['time_zone']['default'],$timeZoneEmpresa);
 
                 
-                $objWorksheet->getStyle("A$row:O$row")->applyFromArray($styleThinBlackBorderOutline); //bordes
-                $objWorksheet->getStyle("A$row:O$row")->getFont()->setSize($font_size); // Tamaño de las letras
-                $objWorksheet->getStyle("A$row:O$row")->getFont()->setName($font); // Tipo de letra
-                $objWorksheet->getStyle("A$row:O$row")->getAlignment()->setHorizontal($horizontal_aligment); // Alineado horizontal
-                $objWorksheet->getStyle("A$row:O$row")->getAlignment()->setVertical($vertical_aligment); // Alineado vertical
+                $objWorksheet->getStyle("A$row:P$row")->applyFromArray($styleThinBlackBorderOutline); //bordes
+                $objWorksheet->getStyle("A$row:P$row")->getFont()->setSize($font_size); // Tamaño de las letras
+                $objWorksheet->getStyle("A$row:P$row")->getFont()->setName($font); // Tipo de letra
+                $objWorksheet->getStyle("A$row:P$row")->getAlignment()->setHorizontal($horizontal_aligment); // Alineado horizontal
+                $objWorksheet->getStyle("A$row:P$row")->getAlignment()->setVertical($vertical_aligment); // Alineado vertical
                 $objWorksheet->getRowDimension($row)->setRowHeight(40); // Altura de la fila
             
 
@@ -987,17 +1011,18 @@ class ReportesController extends Controller
                 $objWorksheet->setCellValue('B'.$row, $participante['login']);
                 $objWorksheet->setCellValue('C'.$row, $participante['nombre']);
                 $objWorksheet->setCellValue('D'.$row, $participante['apellido']);
-                $objWorksheet->setCellValue('E'.$row, $participante['fecha_registro']);
-                $objWorksheet->setCellValue('F'.$row, $correo);
-                $objWorksheet->setCellValue('G'.$row, $participante['pais']);
-                $objWorksheet->setCellValue('H'.$row, $participante['nivel']);
-                $objWorksheet->setCellValue('I'.$row, $participante['campo1']);
-                $objWorksheet->setCellValue('J'.$row, $participante['campo2']);
-                $objWorksheet->setCellValue('K'.$row, $participante['campo3']);
-                $objWorksheet->setCellValue('L'.$row, $participante['campo4']);
-                $objWorksheet->setCellValue('M'.$row, $fecha[0]);
-                $objWorksheet->setCellValue('N'.$row, $fecha[1]);
-                $objWorksheet->setCellValue('o'.$row, $participante['mensaje']);
+                $objWorksheet->setCellValue('E'.$row, $fecha_registro->fecha);
+                $objWorksheet->setCellValue('F'.$row, $fecha_registro->hora);
+                $objWorksheet->setCellValue('G'.$row, $correo);
+                $objWorksheet->setCellValue('H'.$row, $participante['pais']);
+                $objWorksheet->setCellValue('I'.$row, $participante['nivel']);
+                $objWorksheet->setCellValue('J'.$row, $participante['campo1']);
+                $objWorksheet->setCellValue('K'.$row, $participante['campo2']);
+                $objWorksheet->setCellValue('L'.$row, $participante['campo3']);
+                $objWorksheet->setCellValue('M'.$row, $participante['campo4']);
+                $objWorksheet->setCellValue('N'.$row, $fecha_mensaje->fecha);
+                $objWorksheet->setCellValue('O'.$row, $fecha_mensaje->hora);
+                $objWorksheet->setCellValue('P'.$row, $participante['mensaje']);
                 $row++;
 
             }
@@ -1033,6 +1058,7 @@ class ReportesController extends Controller
         
         $session = new Session();
         $f = $this->get('funciones');
+        $yml = Yaml::parse(file_get_contents($this->get('kernel')->getRootDir().'/config/parametros.yml'));
         
         if (!$session->get('ini') || $f->sesionBloqueda($session->get('sesion_id')))
         {

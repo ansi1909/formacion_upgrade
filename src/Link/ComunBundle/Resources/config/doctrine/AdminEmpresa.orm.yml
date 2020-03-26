@@ -5,6 +5,9 @@ Link\ComunBundle\Entity\AdminEmpresa:
         IDX_7CEBD8D9C604D5C6:
             columns:
                 - pais_id
+        IDX_7CEBD8D98A61AE16:
+            columns:
+                - zona_horaria_id
     id:
         id:
             type: integer
@@ -76,6 +79,16 @@ Link\ComunBundle\Entity\AdminEmpresa:
             inversedBy: null
             joinColumns:
                 pais_id:
+                    referencedColumnName: id
+            orphanRemoval: false
+        zonaHoraria:
+            targetEntity: AdminZonaHoraria
+            cascade: {  }
+            fetch: LAZY
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                zona_horaria_id:
                     referencedColumnName: id
             orphanRemoval: false
     lifecycleCallbacks: {  }
