@@ -444,7 +444,7 @@ class ColaborativoController extends Controller
         $link_plataforma = $this->container->getParameter('link_plataforma').$foro_main->getUsuario()->getEmpresa()->getId();
         $descripcion = $usuario->getNombre().' '.$usuario->getApellido().' '.$this->get('translator')->trans('respondió a tu publicación en el espacio colaborativo de').': '.$foro_main->getPagina()->getCategoria()->getNombre().' '.$foro_main->getPagina()->getNombre().'.';
         
-        if( $foro_padre->getUsuario()->getId() != $session->get('usuaro')['id'] ){
+        if( $foro_padre->getUsuario()->getId() != $session->get('usuario')['id'] ){
                  $f->newAlarm($yml['parameters']['tipo_alarma']['espacio_colaborativo'], $descripcion, $foro_padre->getUsuario(), $foro_main->getId());
                 //alarmas tutores
                 $descripcion = $usuario->getNombre().' '.$usuario->getApellido().' '.$this->get('translator')->trans('respondió una publicación en el espacio colaborativo de').': '.$foro_main->getPagina()->getCategoria()->getNombre().' '.$foro_main->getPagina()->getNombre().'.';
