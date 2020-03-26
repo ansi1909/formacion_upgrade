@@ -31,6 +31,7 @@
             margin-bottom: 1rem;
         }
         .list-downloads {
+            margin-top:2rem;
             list-style: none;
             padding: 0;
             width: 50rem;
@@ -54,7 +55,7 @@
             font-family: "Open Sans";
             font-size: 0.87rem;
             white-space: pre-wrap;
-            max-width: 13rem;
+            max-width: 20rem;
             text-align: justify;
             line-height: 1rem;
         }
@@ -66,8 +67,8 @@
         }
         .list-downloads .element-downloads .nameUpload {
             position: relative;
-            top: -.6rem;
-            left: 2.5rem;
+            top: 0rem;
+            left: .2rem;
             color: #adb5bd;
             font-weight: 600;
             font-family: "Open Sans";
@@ -82,6 +83,38 @@
             margin: 0 1rem;
             cursor: default;
         }
+        .margin_contenido{
+            margin-left: -16.5px;
+        }
+        #container-buttons{
+            margin-left: 2%;
+         /*   border: solid 1px #000000;*/
+            width: 98%;
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+
+        }
+        #container-buttons-espacio{
+            padding-left: 6rem;
+           /* border: solid 1px #ed5e5e;*/
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+        }
+        #container-button-archivo{
+            display: flex;
+            justify-content: flex-start;
+            align-items: center;
+/*            border: solid 1px #7ae899;*/
+        }
+        .height-row{
+            height: 8rem;
+        }
+        .height-column{
+            height: 100%;
+        }
+
     </style>
 {% endblock %}
 
@@ -153,7 +186,7 @@
 
     <section class="esp_col" id="section-form" style="display:none;">
         <div class="container-fluid">
-            <div class="row">
+            <div class="row margin_contenido" >
                 <div class="col-10">
                     <div class="row mt-3 mb-2 align-items-center justify-content-center">
                         <div class="col-auto text-center">
@@ -165,22 +198,22 @@
                         <input type="hidden" id="pagina_id" name="pagina_id" value="{{ programa.id }}">
                         <input type="hidden" id="subpagina_id" name="subpagina_id" value="{{ subpagina_id }}">
                         <input type="hidden" id="mensaje_content" name="mensaje_content" value="">
-                        <div class="row pl-3 align-items-center justify-content-center">
-                            <div class="col-12">
+                        <div class="row pl-3 align-items-center justify-content-center height-row" >
+                            <div class="col-12 height-column" >
                                 <div class="form-group text-left">
                                     <label class="mb-2 titulo-form" for="tema"> {{ 'Título'|trans }}: </label>
                                     <input type="text" class="form-control mb-4" id="tema" name="tema" value="">
                                 </div>
                             </div>
                         </div>
-                        <div class="row pl-3 align-items-center justify-content-center">
-                            <div class="col-6">
+                        <div class="row pl-3 align-items-center justify-content-center height-row">
+                            <div class="col-6 height-column">
                                 <div class="form-group text-left">
                                     <label class="mb-2 titulo-form" for="fechaPublicacion"> {{ 'Fecha de Publicación'|trans }}: </label>
                                     <input type="text" class="form-control mb-4 datepicker" id="fechaPublicacion" name="fechaPublicacion" value="">
                                 </div>
                             </div>
-                            <div class="col-6">
+                            <div class="col-6 height-column">
                                 <div class="form-group text-left">
                                     <label class="mb-2 titulo-form" for="fechaVencimiento"> {{ 'Fecha de Vencimiento'|trans }}: </label>
                                     <input type="text" class="form-control mb-4 datepicker" id="fechaVencimiento" name="fechaVencimiento" value="">
@@ -196,26 +229,30 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="row pl-3 align-items-center justify-content-center">
-                            <div class="col-12">
-                                <div class="form-group text-right">
+                        <div class="row  " id="container-buttons">
+                            <div class="col-4" id="container-button-archivo" >
+                                <div class=" text-right">
                                     <button id="subir" type="button" class="btn btn-info" data-toggle="modal" data-target="#modalupload">{{ 'Subir archivo'|trans }}</button>
                                     {#<a href="#" data-toggle="modal" data-target="#modalupload"><span class="material-icons color-light-grey icUpload" title="{{ 'Subir archivo'|trans }}" data-toggle="tooltip" data-placement="bottom">file_upload</span></a>#}
                                 </div>
+                            </div>
+                            <div class="col-8" id="container-buttons-espacio" >
+                                 <button id="cancelar" type="button" class="btn btn-warning">{{ 'Cancelar'|trans }}</button>
+                                 <button id="publicar" type="button" class="btn btn-primary">{{ 'Publicar'|trans }}</button>
                             </div>
                         </div>
                         <div class="row pl-3 align-items-center attachments" id="attachments">
                             <ul class="list-downloads">
                             </ul>
                         </div>
-                        <div class="row mb-3 align-items-center justify-content-end">
+<!--                         <div class="row mb-3 align-items-center justify-content-end">
                             <div class="col-auto text-left">
                                 <button id="cancelar" type="button" class="btn btn-warning">{{ 'Cancelar'|trans }}</button>
                             </div>
                             <div class="col-auto text-right">
                                 <button id="publicar" type="button" class="btn btn-primary">{{ 'Publicar'|trans }}</button>
                             </div>
-                        </div>
+                        </div> -->
                     </form>
                 </div>
             </div>
@@ -286,7 +323,7 @@
         </div>
     </section>
     
-    <section class="esp_col" id="section-list">
+    <section class="esp_col" id="section-list" >
         <div class="row align-items-center justify-content-between">
             <div class="col-4 col-lg-4 col-xl-4 col-md-4 col-sm-4 col-xs-4 text-left">
                 {% if app.session.get('usuario').tutor %}
@@ -300,7 +337,7 @@
                 <button type="button" class="btn-search"><span class="material-icons ic-search">search</span></button>
             </div>
         </div>
-        <div class="row justify-content-center">
+        <div class="row justify-content-center" >
             <ul class="table-card" id="ul-foros">
                 {% for foro in foros %}
                     <li class="f-table" id="liForo-{{ foro.id }}">

@@ -211,6 +211,7 @@ function observeLike()
 function saveForo(foro_id, foro_main_id)
 {
 	$('.mensaje-error, .boton').hide();
+	$('#iconDownloads2').hide();
     $('#wait').show(1000);
     $('html, body').animate({
 	    scrollTop: ($('#wait').offset().top-100)
@@ -239,11 +240,13 @@ function saveForo(foro_id, foro_main_id)
         	observeResponse();
         	$('#mensaje_content').val('');
         	$('.boton').show();
+        	$('#iconDownloads2').show();
             $('#wait').hide(1000);
         },
         error: function(){
             console.log('Error guardando la respuesta al espacio colaborativo'); // Hay que implementar los mensajes de error para el frontend
             $('.boton').show();
+            $('#iconDownloads2').show();
             $('#wait').hide(1000);
         }
     });

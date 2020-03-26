@@ -77,3 +77,7 @@ tutorial:
 notificaciones:
     resource: "@LinkFrontendBundle/Resources/config/routing/notificaciones.yml"
     prefix: /notificaciones
+
+introduccion:
+    resource: "@LinkFrontendBundle/Resources/config/routing/introduccion.yml"
+    prefix: /introduccion

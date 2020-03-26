@@ -8,6 +8,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
 use Link\ComunBundle\Entity\CertiPruebaLog;
 use Link\ComunBundle\Entity\CertiRespuesta;
+use Link\ComunBundle\Entity\AdminIntroduccion;
 use Symfony\Component\Yaml\Yaml;
 
 class TestController extends Controller
@@ -204,6 +205,15 @@ class TestController extends Controller
             return $this->redirectToRoute('_authExceptionEmpresa', array('tipo' => 'pregunta'));
         }
 
+
+        $user_id = $session->get('usuario')['id'];
+        $intro_del_usuario = $em->getRepository('LinkComunBundle:AdminIntroduccion')->findByUsuario(
+            array('id' => $user_id)
+        );
+        $paso_actual_intro = $intro_del_usuario[0]->getPasoActual();
+        $cancelar_intro = $intro_del_usuario[0]->getCancelado();
+
+         
         return $this->render('LinkFrontendBundle:Test:index.html.twig', array('prueba_log' => $prueba_log,
                                                                               'preguntas' => $preguntas,
                                                                               'preguntas_str' => $preguntas_str,
@@ -211,7 +221,7 @@ class TestController extends Controller
                                                                               'pagina_id' => $pagina_id,
                                                                               'tipo_pregunta' => $yml['parameters']['tipo_pregunta'],
                                                                               'tipo_elemento' => $yml['parameters']['tipo_elemento'],
-                                                                              'duracion' => $duracion));
+                                                                              'duracion' => $duracion, 'paso_actual_intro' => $paso_actual_intro, 'cancelar_intro' => $cancelar_intro));
 
     }
 

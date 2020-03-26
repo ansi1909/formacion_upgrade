@@ -1,5 +1,10 @@
 {% extends '::admin.html.twig' %}
 
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('assets/vendor/bootstrap-datepicker-1.6.4-dist/css/bootstrap-datepicker.css') }}" type="text/css">
+{% endblock %}
+
 {% block body %}
 <input type="hidden" id="url_edit" name="url_edit" value="{{ path('_ajaxEditNivel') }}">
 <input type="hidden" id="url_list" name="url_list" value="{{ path('_niveles',{ 'empresa_id': empresa.id }) }}">
@@ -9,7 +14,7 @@
         <a href="{{ path('_empresasNiveles', { 'app_id': app.session.get('app_id') })}}" class="bttn__bck"><span class="fa fa-clipboard" style="margin-top: 8px;"></span><span class="text__bck">{{ 'Ir al listado'|trans }}</span></a>
     </div>
    <div class="col text-right">
-       <button type="button" class="bttn__nr new" data-toggle="modal" data-target="#formModal"><span class="fa fa-plus"></span><span class="text__nr">{{'Nuevo Registro' | trans}}</span></button>
+       <button type="button" class="bttn__nr new" data-toggle="modal" data-target="#formModal" id="nuevo-nivel"><span class="fa fa-plus"></span><span class="text__nr">{{'Nuevo Registro' | trans}}</span></button>
    </div>
 </div>
 <div class="row">
@@ -58,9 +63,22 @@
         <input type="hidden" id="nivel_id" name="nivel_id" value="">
         <input type="hidden" id="empresa_id" name="empresa_id" value="{{ empresa.id }}">
         <div class="form-group">
-            <label for="recipient-name" class="form-control-label">{{ 'Nivel'|trans }}:</label>
+            <label for="nombre" class="form-control-label">{{ 'Nivel'|trans }}:</label>
             <input type="text" class="form-control form_sty_modal" id="nombre" name="nombre" value="">
             <span class="fa fa-cube"></span>
+        </div>
+        <div class="form-group">
+            <label for="fechaInicio" class="form-control-label">{{ 'Fecha inicio'|trans }}:</label>
+            <input type="text" class="form-control form_sty_modal2 date_picker" id="fechaInicio" name="fechaInicio" value="" data-label="label-inicio" readonly>
+             <span class="fa fa-calendar"></span>
+             <label id="label-inicio" style="color:#e55252;display:none">{{'Fecha inicio requerida'|trans}}</label>
+        </div>
+        <div class="form-group" >
+            <label for="fechaFin" class="form-control-label">{{ 'Fecha fin'|trans }}:</label>
+            <input type="text" class="form-control form_sty_modal3 date_picker" id="fechaFin" name="fechaFin" value="" data-label="label-fin" readonly>
+            <span class="fa fa-calendar"></span>
+            <label id="label-fin" style="color:#e55252;display:none">{{'Fecha fin requerida'|trans}}</label>
+
         </div>
     </form>
     <div class="alert alert-success" role="alert" id="alert-success" style="display:none;"> 
@@ -98,20 +116,41 @@
 {% block javascripts %}
     {{ parent() }}
     <script type="text/javascript" src="{{ asset('jq/jquery-validation-1.15.0/dist/jquery.validate.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('assets/vendor/bootstrap-datepicker-1.6.4-dist/js/bootstrap-datepicker.min.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('assets/vendor/bootstrap-datepicker-1.6.4-dist/locales/bootstrap-datepicker.es.min.js') }}" charset="UTF-8"></script>
     <script type="text/javascript" src="{{ asset('js/admin/niveles.js') }}"></script>
     <script type="text/javascript">
+
+        $(".date_picker").datepicker({
+            startView: 1,
+            autoclose: true,
+            format: 'dd/mm/yyyy',
+            language: 'es'
+        });
 
         $("#form").validate({
             rules: {
                 'nombre': {
                     required: true,
                     minlength: 3
+                },
+                'fechaInicio': {
+                    required: false
+                },
+                'fechaFin': {
+                    required: false
                 }
             },
             messages: {
                 'nombre': {
                     required: "{{ 'Este campo es requerido.'|trans }}",
                     minlength: "{{ 'Debe ser mínimo de 3 caracteres.'|trans }}"
+                },
+                'fechaInicio': {
+                    required: "{{ 'Este campo es requerido.'|trans }}"
+                },
+                'fechaFin': {
+                    required: "{{ 'Este campo es requerido.'|trans }}"
                 }
             }
         });

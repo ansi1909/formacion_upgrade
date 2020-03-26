@@ -44,8 +44,10 @@ $(document).ready(function() {
 
 function mostrarReporte(data)
 {
+	console.log(data);
 	$('#label_desde').html($('#desde').val());
 	$('#label_hasta').html($('#hasta').val());
+	$('#label_horario').html(data.timeZone);
 	$('#label_filtro').show();
 	$('#resultado').show();
 	
