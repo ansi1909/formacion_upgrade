@@ -121,21 +121,24 @@ class UsuarioController extends Controller
 
         $session = new Session();
         $em = $this->getDoctrine()->getManager();
-               
         $correo_secundario = trim($request->request->get('correo_secundario'));
+        $f = $this->get('funciones');
         
         // Actualización del correo en la BD
         $usuario = $this->getDoctrine()->getRepository('LinkComunBundle:AdminUsuario')->find($session->get('usuario')['id']);
+        $html = '';
+        $validarCorreo = ($correo_secundario!='')? $f->searchMail($correo_secundario,$usuario->getEmpresa(),$usuario->getId()): false;
+
         if ($correo_secundario != '' && $usuario->getCorreoPersonal() == $correo_secundario) {
 
-            $existe = 1;
-            
+             $html .= $this->get('translator')->trans('Este correo no puede ser igual al corporativo');    
+        }
+        else if($correo_secundario != '' && $validarCorreo != 0 ){
+            $html .= $this->get('translator')->trans('Este correo se encuentra registrado');
         }
         else {
-
-            $existe = 0;
+            $html ='';            
             $usuario->setCorreoCorporativo($correo_secundario && $correo_secundario != '' ? $correo_secundario : null);
-    
             $em->persist($usuario);
             $em->flush();
 
@@ -149,7 +152,7 @@ class UsuarioController extends Controller
         $return = array('correo' => $usuario->getCorreoPersonal(),
                         'correo_corporativo' => $usuario->getCorreoCorporativo(),
                         'fechaNacimiento' => $usuario->getFechaNacimiento()->format('d/m/Y'),
-                        'existe' => $existe);
+                        'html' => $html);
 
         $return = json_encode($return);
         return new Response($return, 200, array('Content-Type' => 'application/json'));

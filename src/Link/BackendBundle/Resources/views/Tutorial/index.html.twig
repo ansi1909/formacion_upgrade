@@ -127,8 +127,8 @@
     <div class="col-12 col-sm-12 page-title">
         <h3>{{ 'Tutoriales'|trans }}</h3>
     </div>
-   <div class="col text-right">
-       <button type="button" class="bttn__nr new" data-toggle="modal" data-target="#formModal"><span class="fa fa-plus"></span><span class="text__nr">{{'Nuevo registro' | trans}}</span></button>
+   <div class="col text-right" id="div-button">
+       <button type="button" class="bttn__nr new button-tutorial" data-toggle="modal" data-target="#formModal"><span class="fa fa-plus"></span><span class="text__nr">{{'Nuevo registro' | trans}}</span></button>
    </div>
 </div>
 <div class="row">
@@ -333,7 +333,6 @@
                     minlength: 3
                 },
                 'pdf': {
-                  required: true,
                   extension: "pdf"
                 },
                 'video': {
@@ -358,7 +357,7 @@
                     extension: "- {{ 'Extensiones aceptadas para el campo PDF'|trans }}: pdf."
                 },
                 'video':{
-                    required: "- {{ 'Video requerido'|trans }}.",
+                    required: "- {{ 'Vídeo requerido'|trans }}.",
                     extension: "- {{ 'Extensiones aceptadas para vídeo'|trans }}: mov,mpeg,m4v,mp4,avi,mpg,wma,flv,webm."
                 },
                 'imagen':{
@@ -372,6 +371,22 @@
             swal(""," {{ 'El archivo seleccionado no se cargo correctamente.'| trans }} ","error");
             showButtons();
             return 0;
+        }
+        function getErrorUploadHandler(error,id){
+            erroresConocidos = {
+                'The uploaded file exceeds the upload_max_filesize directive in php.ini':"{{ 'El archivo excede el tamaño maximo permitido' }}"+": {{ upload_file.upload_max_filesize }}"
+            }
+
+            var mensaje = erroresConocidos[error]? erroresConocidos[error]:error;
+
+            $('#error-messages').html('- '+mensaje);
+            document.getElementById('error-messages').style.display='block';
+            $('#div-error').show();
+            setTimeout(function(){ 
+                    $('#div-error').hide();
+                    $('#error-messages').html('');
+                    $('#'+id).val('');
+                }, 3500);
         }
 
         function sweetAlertDeleteTutorial(id,ubicacion,preg_opt=0)

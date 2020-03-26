@@ -473,6 +473,46 @@ class UsuarioController extends Controller
         
     }
 
+    public function ajaxValidQueryAction(Request $request)
+    {
+        $em = $this->getDoctrine()->getManager();
+        $f = $this->get('funciones');
+        $html ='';
+        $login = strtolower(trim($request->request->get('login')));
+        $usuario_id = (int)$request->request->get('usuario_id');
+        $correo_corporativo =  strtolower(trim($request->request->get('correo_corporativo')));
+        $correo_personal =  strtolower(trim($request->request->get('correo_personal')));
+        $empresa_id = $request->request->get('empresa_id');
+        $uid = ($usuario_id != 0)? $usuario_id:0;
+        //validar si existe el login cuando se agrega un nuevo usuario
+        if ($usuario_id == 0 ) {
+             $query = $em->createQuery('SELECT COUNT(u.id) FROM LinkComunBundle:AdminUsuario u 
+                                    WHERE u.login = :login')
+                    ->setParameter('login', $login);
+             $lg = $query->getSingleScalarResult();
+             if ($lg!=0) {
+                $html .= '<li> -'.$this->get('translator')->trans('El login ya existe').'.</li>';
+             }
+        }
+        //validar si los correos ingresados existen
+        if($correo_corporativo!=''){
+            $cc = $f->searchMail($correo_corporativo,$empresa_id,$uid);
+            if($cc!=0){
+              $html .= '<li> -'.$this->get('translator')->trans('El correo corporativo ya existe para la empresa seleccionada').'.</li>';
+            }
+        }  
+        if($correo_personal!=''){
+            $cp = $f->searchMail($correo_personal,$empresa_id,$uid);
+            if($cp!=0){
+              $html .= '<li> -'.$this->get('translator')->trans('El correo personal ya existe para la empresa seleccionada').'.</li>';
+            }
+        }
+        $return = json_encode(array('html' => $html));
+        return new Response($return, 200, array('Content-Type' => 'application/json'));
+        
+    }
+
+
     public function participantesAction($app_id, Request $request)
     {
         

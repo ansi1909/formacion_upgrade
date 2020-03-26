@@ -1,107 +1,77 @@
 <?php
 
 namespace Link\ComunBundle\Entity;
-
 use Doctrine\ORM\Mapping as ORM;
 
 /**
  * AdminEmpresa
- *
- * @ORM\Table(name="admin_empresa", indexes={@ORM\Index(name="IDX_7CEBD8D9C604D5C6", columns={"pais_id"})})
- * @ORM\Entity
  */
 class AdminEmpresa
 {
     /**
      * @var integer
-     *
-     * @ORM\Column(name="id", type="integer")
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="SEQUENCE")
-     * @ORM\SequenceGenerator(sequenceName="admin_empresa_id_seq", allocationSize=1, initialValue=1)
      */
     private $id;
 
     /**
      * @var string
-     *
-     * @ORM\Column(name="nombre", type="string", length=100, nullable=true)
      */
     private $nombre;
 
     /**
      * @var string
-     *
-     * @ORM\Column(name="rif", type="string", length=20, nullable=true)
      */
     private $rif;
 
     /**
      * @var string
-     *
-     * @ORM\Column(name="correo_principal", type="string", length=100, nullable=true)
      */
     private $correoPrincipal;
 
     /**
      * @var boolean
-     *
-     * @ORM\Column(name="activo", type="boolean", nullable=true)
      */
     private $activo;
 
     /**
      * @var string
-     *
-     * @ORM\Column(name="telefono_principal", type="string", length=20, nullable=true)
      */
     private $telefonoPrincipal;
 
     /**
      * @var \DateTime
-     *
-     * @ORM\Column(name="fecha_creacion", type="datetime", nullable=true)
      */
     private $fechaCreacion;
 
     /**
      * @var string
-     *
-     * @ORM\Column(name="direccion", type="text", nullable=true)
      */
     private $direccion;
 
     /**
      * @var string
-     *
-     * @ORM\Column(name="bienvenida", type="text", nullable=true)
      */
     private $bienvenida;
 
     /**
      * @var boolean
-     *
-     * @ORM\Column(name="chat_activo", type="boolean", nullable=true)
      */
     private $chatActivo;
 
     /**
      * @var boolean
-     *
-     * @ORM\Column(name="webinar", type="boolean", nullable=true)
      */
     private $webinar;
 
     /**
      * @var \Link\ComunBundle\Entity\AdminPais
-     *
-     * @ORM\ManyToOne(targetEntity="Link\ComunBundle\Entity\AdminPais")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="pais_id", referencedColumnName="id")
-     * })
      */
     private $pais;
 
+    /**
+     * @var \Link\ComunBundle\Entity\AdminZonaHoraria
+     */
+    private $zonaHoraria;
 
 
     /**
@@ -377,4 +347,29 @@ class AdminEmpresa
     {
         return $this->pais;
     }
+
+    /**
+     * Set zonaHoraria
+     *
+     * @param \Link\ComunBundle\Entity\AdminZonaHoraria $zonaHoraria
+     *
+     * @return AdminEmpresa
+     */
+    public function setZonaHoraria(\Link\ComunBundle\Entity\AdminZonaHoraria $zonaHoraria = null)
+    {
+        $this->zonaHoraria = $zonaHoraria;
+    
+        return $this;
+    }
+
+    /**
+     * Get zonaHoraria
+     *
+     * @return \Link\ComunBundle\Entity\AdminZonaHoraria
+     */
+    public function getZonaHoraria()
+    {
+        return $this->zonaHoraria;
+    }
 }
+

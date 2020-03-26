@@ -94,8 +94,8 @@ $(document).ready(function() {
                 $(".markNotify").fadeOut(600);
             });
             y = 0;
-            getNotificaciones();
         }
+        getNotificaciones();
     });
 
     $("#apps").on('click',function(e){
@@ -136,6 +136,7 @@ $(document).ready(function() {
             $(".markApps").fadeOut(550);
             z = 0;
         }
+
     });   
     
     $("#equis").click(function(){
@@ -148,45 +149,24 @@ $(document).ready(function() {
 
     });
 
-    $("#iconComments").click(function(){
+    $(".iconComments").click(function(){
+        event.preventDefault();
         $("#comments").toggleClass("open-comments");
-        $("#main").toggleClass("ml-comments");
-        if (!$(".main-sidenav-close")[0]){
-             closeNav();
-        }
-
-        $(".dropDownNotify").slideUp(500, function(){
-            $(".markNotify").fadeOut(600);
-        });
-        y = 0;
-        getNotificaciones();
-
-        $(".dropDownMenu").slideUp(500, function(){
-            $(".mark").fadeOut(600).delay(50);
-        });
-        x = 0;
-            
+        $('html, body').animate({scrollTop: $('#comments').offset().top -100 }, 'slow');
+        $('#ocultarComent').toggle();
+        $('#verComent').toggle();
+         getNotificaciones();
     });
     
-    $("#iconDownloads, #iconDownloads2").click(function(){
+    $("#iconDownloads,#iconDownloads2").click(function(){
         $(".downloads").toggleClass("open-downloads");
         $("#main").toggleClass("ml-comments");
         if (!$(".main-sidenav-close")[0]){
             closeNav();
         }
-
-        $(".dropDownNotify").slideUp(500, function(){
-            $(".markNotify").fadeOut(600);
-        });
-        y = 0;
         getNotificaciones();
-
-        $(".dropDownMenu").slideUp(500, function(){
-            $(".mark").fadeOut(600).delay(50);
-        });
-        x = 0;
     });
-
+    
     $("#iconCloseDownloads").click(function(){
         $(".downloads").removeClass("open-downloads");
         $("#pills-tabContent").removeClass("hidden-nav-content");
@@ -208,7 +188,7 @@ $(document).ready(function() {
     $(".bttnDownl").mouseenter(function(){
         $(".tooltipN").slideToggle(300);
     });
-
+    
     $(".bttnDownl").mouseleave(function(){
         $(".tooltipN").slideToggle(300);
     });
@@ -222,5 +202,4 @@ $(document).ready(function() {
     $(function () {
         $('[data-toggle="tooltip"]').tooltip();
     });
-    
 });

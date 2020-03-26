@@ -70,6 +70,7 @@
             <div class="card-block">
                 <form id="form" name="form" action="{{ path('_nuevoParticipante', { 'usuario_id': usuario.id }) }}" class="container-fluid p-0" method="POST">
                     <input type="hidden" id="url_niveles" name="url_niveles" value="{{ path('_ajaxNiveles') }}">
+                    <input type="hidden" id="url_valid" name="url_valid" value="{{ path('_ajaxValidQuery') }}">
                     <input type="hidden" id="url_login" name="url_login" value="{{ path('_ajaxValidLogin') }}">
                     <input type="hidden" id="usuario_id" name="usuario_id" value="{{ usuario.id }}">
                     <input type="hidden" id="file_input" name="file_input" value="">
@@ -355,44 +356,61 @@
             else {
 
                 // Validaciones adicionales
+                var empresa_id = $('#empresa_id').val();
+                var nivel_id = $('#nivel_id').val();
                 var usuario_id = $('#usuario_id').val();
                 var login = $('#login').val();
-                
-                // Validar si el login no existe cuando es un usuario nuevo
-                if (!usuario_id)
+                var correo_personal = $('#correo_personal').val();
+                var correo_corporativo = $('#correo_corporativo').val();
+                var html = '';
+
+                // Validar que uno de los correos sea ingresado
+                if (correo_personal == '' && correo_corporativo == '')
                 {
-                    $('#finish').hide();
-                    $.ajax({
-                        type: "POST",
-                        url: $('#url_login').val(),
-                        async: true,
-                        data: { login: login },
-                        dataType: "json",
-                        success: function(data) {
-                            if (data.ok != 0)
-                            {
-                                $('#finish').show();
-                                $('#div-error ul').html("<li>- {{ 'El login ya existe'|trans }}.</li>");
-                                $('#div-error ul').show();
-                                notify($('#div-error').html());
-                            }
-                            else {
-                                $('#form').submit();
-                            }
-                        },
-                        error: function(){
-                            $('#div-error ul').html("<li>- {{ 'Ha ocurrido un error en la validación del usuario'|trans }}.</li>");
-                            $('#div-error ul').show();
-                            notify($('#div-error').html());
-                            $('#finish').show();
-                        }
-                    });
-                }
-                else {
-                    $('#finish').hide();
-                    $('#form').submit();
+                    valid = false;
+                    html += "<li>- {{ 'Debes ingresar el correo personal o el correo corporativo'|trans }}.</li>";
                 }
 
+                if (!valid){
+                    $('#div-error ul').html(html);
+                    $('#div-error ul').show();
+                    notify($('#div-error').html());
+                    $('#finish').show();
+                }
+                else { //validaciones de login y correo repetidos
+
+                    $.ajax({
+                            type: "POST",
+                            url: $('#url_valid').val(),
+                            async: true,
+                            data: { 
+                                    login: login,
+                                    usuario_id: usuario_id,
+                                    correo_corporativo: correo_corporativo,
+                                    correo_personal:correo_personal,
+                                    empresa_id: empresa_id 
+                                },
+                            dataType: "json",
+                            success: function(data) {
+                                if(data.html!=''){
+                                  $('#div-error ul').html(data.html);
+                                  $('#div-error ul').show();
+                                    notify($('#div-error').html());
+                                  $('#finish').show();
+                                }else{
+                                  $('#finish').hide();
+                                  $('#form').submit();
+                                }
+
+                            },
+                            error: function(){
+                                $('#div-error ul').html("<li>- {{ 'Ha ocurrido un error en la validación del usuario'|trans }}.</li>");
+                                $('#div-error ul').show();
+                                notify($('#div-error').html());
+                                $('#finish').show();
+                            }
+                        });
+                }
             }
         });
 

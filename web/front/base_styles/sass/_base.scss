@@ -50,7 +50,8 @@ body {
 }
 
 body.lesson-body, body.detalle-noticias{
-    background-color: $white;
+    background-color:white; 
+
 }
 
 a:hover {
@@ -67,6 +68,7 @@ a:hover {
     text-align: center;
 
 }
+
 
 .perfil {
     &:hover {
@@ -213,9 +215,9 @@ body.codigoQR{
         margin-top: 40px;
     }
     .cpyR{
-        color: $gray-600;	
-        font-family: $primary-font;	
-        font-size: $font-size-xs;	
+        color: $gray-600;   
+        font-family: $primary-font; 
+        font-size: $font-size-xs;   
         line-height: calc(1rem - 2px);
     }
 }

@@ -12,6 +12,8 @@ $(document).ready(function() {
 		$('#wait').hide();
 	});
 
+
+
 	$('#guardar').click(function(){
 		$('#form').submit();
 		return false;
@@ -87,12 +89,16 @@ $(document).ready(function() {
         dataType: 'json',
         done: function (e, data) {
         	var id = $('#fileUpload').val();
+        	if (data.result.response.files[0].error) {
+			     getErrorUploadHandler(data.result.response.files[0].error,id);
+			 }
+        	
         	$.each(data.result.response.files, function (index, file) 
         	{
         		$('#'+id).val(file.name);
             });
             showButtons();
-            $('#div-error').hide();
+           // $('#div-error').hide();
         },
         add: function (e,data ){
         	 hideButtons();
@@ -142,6 +148,11 @@ $(document).ready(function() {
 		var ubicacion = $(this).attr('data-ubicacion');
 		sweetAlertDeleteTutorial(tutorial_id,ubicacion);	
      });
+
+	$("#BodyTable,#div-button").on("click",".button-tutorial",function(event) {
+		$('#div-error').hide();
+		$('#nombre,#descripcion,#pdf,#imagen,#video').removeClass('error');
+	});
 
 });
 

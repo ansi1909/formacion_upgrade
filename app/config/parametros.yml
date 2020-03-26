@@ -100,3 +100,33 @@ parameters:
     search_locale: 0
     mailer_user: tutorvirtual@formacion2puntocero.com
     servidor_mantenimiento: 0
+    fallidos:
+        inbox: "{imap.formacionsmart.com:993/imap/ssl/novalidate-cert}INBOX"
+        from: Mail Delivery System
+        subject: Mail delivery failed
+        subject2: Warning
+        separador: 'Action: failed'
+        separador2: Status
+        separador3: ;
+        separador4: Reporting-MTA
+        separador5: 'The following address(es) failed:'
+        separador6: --
+        separadorMailMessage: '=>'
+        separadorMessages: '++'
+        separadorMails: '|'
+    time_zone:
+        default: 'UTC'
+        utc: 'UTC'
+        show_time_zone: 1
+        name_separator: '/'
+    upload_file:
+        upload_max_filesize: 80MB
+    muro:
+        alarma_tutor: 0
+        alarma_participantes: 1
+    espacio_colaborativo:
+        alarma_tutor: 0 
+        alarma_participantes: 0
+        
+
+

@@ -73,6 +73,7 @@ $config['backends'][] = array(
     'filesystemEncoding' => 'UTF-8',
 );
 
+
 /*================================ Resource Types =====================================*/
 // https://docs.ckeditor.com/ckfinder/ckfinder3-php/configuration.html#configuration_options_resourceTypes
 

@@ -80,6 +80,7 @@ Ayuda: Ayuda
 Biblioteca: Biblioteca
 Biblioteca virtual: Biblioteca virtual
 Bienvenida: Bienvenida
+Bienvenido: Bienvenido
 Bien hecho: Bien hecho
 Buen trabajo: Buen trabajo
 Buscar: Buscar
@@ -125,6 +126,7 @@ Código del empleado repetido: Código del empleado repetido
 Columna: Columna
 ¡Comencemos! Elige tu programa: ¡Comencemos! Elige tu programa
 Comentar: Comentar
+Comenzar: Comenzar
 Comentario: Comentario
 Comentario seleccionado: Comentario seleccionado
 comentarios: comentarios
@@ -155,6 +157,7 @@ Contacte al Administrador del Sistema para agregar thumbnails para esta plantill
 Contacte al Administrador del Sistema para mayor información: Contacte al Administrador del Sistema para mayor información
 Constancia de Notas: Constancia de Notas
 Consultar: Consultar
+Contestar: Contestar
 Contenido: Contenido
 Contenido del: Contenido del
 Contenido que debe ser aprobado previamente: Contenido que debe ser aprobado previamente
@@ -173,6 +176,7 @@ Correo electrónico: Correo electrónico
 Correo electrónico repetido: Correo electrónico repetido
 Correo electrónico requerido: Correo electrónico requerido
 Correo corporativo: Correo corporativo
+Correos no enviados: Correos no enviados
 Correo personal: Correo personal
 Correo secundario: Correo secundario
 Creado el: Creado el
@@ -259,6 +263,7 @@ Eliminar: Eliminar
 El apellido del usuario debe ser mínimo de 3 caracteres: El apellido del usuario debe ser mínimo de 3 caracteres
 El apellido del usuario es requerido: El apellido del usuario es requerido
 El archivo: El archivo
+El archivo excede el tamaño maximo permitido: El archivo excede tamaño maximo permitido
 El archivo debe tener al menos una fila con datos: El archivo debe tener al menos una fila con datos
 El archivo es requerido.: El archivo es requerido.
 El archivo presentó errores en alguna de sus líneas. Ver los detalles en el cuadro más abajo.: El archivo presentó errores en alguna de sus líneas. Ver los detalles en el cuadro más abajo.
@@ -271,9 +276,11 @@ El campo usuario debe ser mínimo de 3 caracteres: El campo usuario debe ser mí
 El campo usuario es requerido: El campo usuario es requerido
 El contenido es requerido.: El contenido es requerido.
 El correo es requerido: El correo es requerido
+El correo corporativo ya existe para la empresa seleccionada: El correo corporativo ya existe para la empresa seleccionada
+El correo personal ya existe para la empresa seleccionada: El correo personal ya existe para la empresa seleccionada
 El correo corporativo tiene un formato inválido: El correo corporativo tiene un formato inválido
 El correo secundario tiene un formato inválido: El correo secundario tiene un formato inválido
-El correo no existe en la base de datos, por favor inserte uno diferente o comuníquese a soporte@formacion2puntocero.com: El correo no existe en la base de datos, por favor inserte uno diferente o comuníquese a soporte@formacion2puntocero.com
+El correo no existe en la base de datos, por favor inserte uno diferente o comuníquese a soporte@formacionsmart.com: El correo no existe en la base de datos, por favor inserte uno diferente o comuníquese a soporte@formacionsmart.com
 El correo no pertenece a un Usuario de la empresa. Contacte al administrador del sistema.: El correo no pertenece a un Usuario de la empresa. Contacte al administrador del sistema.
 El correo personal tiene un formato inválido: El correo personal tiene un formato inválido
 El Encabezado es requerido.: El Encabezado es requerido.
@@ -405,6 +412,7 @@ Estatus de los participantes de la empresa: Estatus de los participantes de la e
 este archivo descargable: este archivo descargable
 Este campo es requerido.: Este campo es requerido.
 Este correo no puede ser igual al corporativo: Este correo no puede ser igual al corporativo
+Este correo se encuentra registrado: Este correo se encuentra registrado
 Este logo se mostrará en la página de login: Este logo se mostrará en la página de login
 Este rol aún no tiene permisos de acceso: Este rol aún no tiene permisos de acceso
 Este usuario tiene una sesión activa. Espera 5 minutos e intenta ingresar de nuevo.: Este usuario tiene una sesión activa. Espera 5 minutos e intenta ingresar de nuevo.
@@ -437,8 +445,12 @@ Fecha de creación: Fecha de creación
 Fecha de difusión: Fecha de difusión
 Fecha de nacimiento: Fecha de nacimiento
 Fecha de publicación: Fecha de publicación
+Fecha de Publicación: Fecha de Publicación
 Fecha de registro: Fecha de registro
 Fecha de vencimiento: Fecha de vencimiento
+Fecha de Vencimiento: Fecha de Vencimiento
+Fecha inicio requerida: Fecha inicio requerida
+Fecha fin requerida: Fecha fin requerida
 FELICITACIONES: FELICITACIONES
 Fila: Fila
 filtrado de un total de: filtrado de un total de
@@ -494,6 +506,7 @@ Horas de conexión de la empresa: Horas de conexión de la empresa
 Horas de conexión por empresa: Horas de conexión por empresa
 Hoy a las: Hoy a las
 Huso horario: Huso horario
+Huso horario requerido: Huso horario requerido
 Icono: Icono
 Icono de la empresa: Icono de la empresa
 Imagen: Imagen
@@ -600,6 +613,7 @@ Listado de grupos: Listado de grupos
 Listado de niveles: Listado de niveles
 Listado de notificaciones: Listado de notificaciones
 Listado de participantes: Listado de participantes
+Listado de participantes aprobados: Listado de participantes aprobados
 Listado de preguntas: Listado de preguntas
 Listado de preguntas de la evaluación: Listado de preguntas de la evaluación
 Listado de programas: Listado de programas
@@ -707,8 +721,11 @@ Nuevo espacio colaborativo: Nuevo espacio colaborativo
 Nuevo nivel: Nuevo nivel
 Nuevo nivel de la empresa: Nuevo nivel de la empresa
 Nuevo registro: Nuevo registro
+Nuevo Registro: Nuevo Registro
 Nuevo tipo de pregunta: Nuevo tipo de pregunta
 Nuevos registros almacenados: Nuevos registros almacenados
+Ocultar: Ocultar
+Omitir: Omitir
 Ofrecemos disculpas por las molestias ocasionadas: Ofrecemos disculpas por las molestias ocasionadas
 Opción: Opción
 Opción correcta (Lado B): Opción correcta (Lado B)
@@ -806,7 +823,9 @@ Puntaje con que se aprueba: Puntaje con que se aprueba
 Puntaje definitivo del programa: Puntaje definitivo del programa
 que aún no han ingresado a la plataforma: que aún no han ingresado a la plataforma
 QR: QR
+Quieres hacer un tour guiado: Quieres hacer un tour guiado
 realizó una publicación en el muro de: realizó una publicación en el muro de
+realizó una publicación en el en el espacio colaborativo de: realizó una publicación en el en el espacio colaborativo de
 formación smart, recomendamos utilizar la ultima versión del: formación smart, recomendamos utilizar la ultima versión del
 Recomendación: Recomendación
 Recordarme: Recordarme
@@ -826,7 +845,9 @@ Recuperar contraseña: Recuperar contraseña
 Repetir evaluación: Repetir evaluación
 Reportar problema: Reportar problema
 Reporte de participantes aprobados por programas: Reporte de participantes aprobados por programas
+Reporte de participantes aprobados en programas: Reporte de participantes aprobados en programas
 Reporte de participantes cursando por programas: Reporte de participantes cursando por programas
+Reporte de participantes cursando el programa: Reporte de participantes cursando el programa
 Reporte de participantes no iniciados en programa: Reporte de participantes no iniciados en programa
 Reporte de participantes registrados en programas: Reporte de participantes registrados en programas
 Reporte de participantes por empresa: Reporte de participantes por empresa
@@ -836,6 +857,8 @@ Responder comentario: Responder comentario
 Responder publicación: Responder publicación
 respondió en el muro al comentario de: Respondió en el muro al comentario de
 respondió a tu comentario en el muro de: respondió a tu comentario en el muro de
+respondió a tu publicación en el espacio colaborativo de: respondió a tu publicación en el espacio colaborativo de 
+respondió una publicación en el espacio colaborativo de: respondió una publicación en el espacio colaborativo de
 respondió a uno de tus comentarios en el muro de: respondió a uno de tus comentarios en el muro de
 Respuesta: Respuesta
 Respuesta creada con éxito: Respuesta creada con éxito
@@ -943,6 +966,7 @@ Todos los niveles: Todos los niveles
 TODOS LOS TEMAS: TODOS LOS TEMAS
 Tomar evaluación: Tomar evaluación
 Total aprobados: Total aprobados
+Total de registros: Total de registros
 Tu calificación: Tu calificación
 Tu comentario: Tu comentario
 Tu respuesta: Tu respuesta
@@ -986,6 +1010,8 @@ Ver respuesta: Ver respuesta
 Ver Sub-Aplicaciones: Ver Sub-Aplicaciones
 Ver thumbnails: Ver thumbnails
 Viernes: Viernes
+Vídeo requerido: Video required
+Ver Comentarios: Ver Comentarios
 Vista previa: Vista previa
 Vista previa del dashboard: Vista previa del dashboard
 Volver: Volver
@@ -995,7 +1021,9 @@ Volver al contenido: Volver al contenido
 Volver al inicio del contenido: Volver al inicio del contenido
 Volver al programa: Volver al programa
 Volver al inicio: Volver al inicio
+Volver al listado: Volver al listado
 y el: y el
 y finaliza el: y finaliza el
 Yo: Yo
+Zona horaria: Zona horaria 
 ¿Olvidaste tu contraseña?: ¿Olvidaste tu contraseña?

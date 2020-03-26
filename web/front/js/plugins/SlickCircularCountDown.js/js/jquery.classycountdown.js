@@ -15,6 +15,7 @@
         var secondsLeft;
         var isFired = false;
         var settings = {
+            startTimer: true,
             end: undefined,
             now: $.now(),
             labels: true,
@@ -76,8 +77,10 @@
         }
         settings = $.extend(true, settings, options);
         prepare();
-        doTick();
-        setInterval(doTick, 1000);
+        if (settings.startTimer) {
+            doTick();
+            setInterval(doTick, 1000);
+        }
         doResponsive();
         
         function prepare() {

@@ -8,6 +8,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Yaml\Yaml;
 use Link\ComunBundle\Entity\AdminSesion;
+use Link\ComunBundle\Entity\AdminIntroduccion;
 use Symfony\Component\HttpFoundation\Cookie;
 use Link\ComunBundle\Entity\CertiPaginaLog;
 
@@ -297,10 +298,19 @@ class ProgramaController extends Controller
 
         }
 
+        $user_id = $session->get('usuario')['id'];
+        $intro_del_usuario = $em->getRepository('LinkComunBundle:AdminIntroduccion')->findByUsuario(
+            array('id' => $user_id)
+        );
+        $paso_actual_intro = $intro_del_usuario[0]->getPasoActual();
+        $cancelar_intro = $intro_del_usuario[0]->getCancelado();
+        
         return $this->render('LinkFrontendBundle:Programa:index.html.twig', array('pagina' => $pagina,
                                                                                   'modulos' =>$modulos,
                                                                                   'porcentaje_avance' =>$porcentaje_avance,
-                                                                                  'lis_mods' =>$lis_mods));
+                                                                                  'lis_mods' =>$lis_mods,
+                                                                                  'paso_actual_intro' =>$paso_actual_intro,
+                                                                                  'cancelar_intro' =>$cancelar_intro));
 
         $response->headers->setCookie(new Cookie('Peter', 'Griffina', time() + 36, '/'));
 

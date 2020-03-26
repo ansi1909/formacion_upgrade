@@ -33,6 +33,25 @@
                 color: #ffffff !important;
                 pointer-events: none;
             }
+            .exito_clave{
+                color: #5CAEE6;
+            }
+            .error_clave{
+                color: #e60f0f;
+            }
+            #error_clave{
+                font-size: 1.1rem;
+            }
+            #radar-img{
+                position:absolute;
+                z-index:100;
+                top: 3.5rem;
+            }
+            #pic-img{
+                display: flex;
+                justify-content: center;
+
+            }
         </style>
 {% endblock %}
 
@@ -51,7 +70,12 @@
 <section class="card-datos">
     <div class="row align-items-center justify-content-center">
         <div class="col-sm-3 col-md-3 col-3 col-lg-3 col-xl-3 text-right">
-            <div class="pic-img">
+            <div class="pic-img" id="pic-img">
+            <div class="float-right mt-4"  id="radar-img" style="display: none;">
+               <div class="contenedor">
+                  <div class="radar"></div>
+               </div>
+            </div>
                 <form id="form-upload" method="POST">
                     <input type="hidden" id="url_upload" name="url_upload" value="{{ path('_ajaxUploadFotoUsuario') }}">
                     <input type="hidden" id="uploads" name="uploads" value="{{ uploads }}">
@@ -100,6 +124,7 @@
                 </div>
             </div>
         </div>
+        <!-- Modal cambiar contraseña-->
         <!--<div class="col-xs-4 col-sm-4 col-md-4 col-4 col-lg-4 col-xl-4 text-center" >
             <div class="imgExp-coin">
                 <img class="imgExp" src="{{asset('img/medal.svg')}}" alt="">
@@ -133,7 +158,7 @@
 </section>
 
 <!-- Modal Editar perfil-->
-<div class="modal modalEditP" id="modaledit" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal modalEditP" id="modaledit" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" style="height: 92%;">
     <div class="container-fluid">
         <div class="row justify-content-end">
             <div class="col-auto">
@@ -161,7 +186,7 @@
                     <div class="form-group text-left">
                         <label for="correo_corporativo">{{ 'Correo secundario'|trans }}</label>
                         <input type="mail" class="form-control " id="correo_secundario" name="correo_secundario" value="{{ correo_corporativo }}">
-                        <p id="correo_usado" style="display:none; font-size: 1rem;" class="error__style">{{ 'Este correo no puede ser igual al corporativo'|trans }}</p>
+                        <p id="correo_usado" style="display:none; font-size: 1.04rem;text-align: center;" class="error__style" ></p>
                     </div>
                     <div class="form-group text-left">
                         <label for="fecha_nacimiento">{{ 'Fecha de nacimiento'|trans }}</label>
@@ -350,6 +375,7 @@
                 if (!valid) 
                 {
                     $("#modificar").addClass( "blocked" );
+                    $('#correo_usado').html('');
                 }
                 else {
                     $("#modificar").removeClass( "blocked" );

@@ -80,6 +80,7 @@ Ayuda: Help
 Biblioteca: Library
 Biblioteca virtual: Virtual library
 Bienvenida: Welcome
+Bienvenido: Welcome
 Bien hecho: Well done
 Buen trabajo: Good job
 Buscar: Search
@@ -125,6 +126,7 @@ Código del empleado repetido: Employee code repeated
 Columna: Column
 ¡Comencemos! Elige tu programa: Let's start! Choose your program
 Comentar: Comment
+Comenzar: Start
 Comentario: Comment
 Comentario seleccionado: Selected comment
 comentarios: comments
@@ -155,6 +157,7 @@ Contacte al Administrador del Sistema para agregar thumbnails para esta plantill
 Contacte al Administrador del Sistema para mayor información: Contact to System Administrator for further information
 Constancia de Notas: Proof of Notes
 Consultar: Search
+Contestar: Answer
 Contenido: Content
 Contenido del: Content of
 Contenido que debe ser aprobado previamente: Content that must be approved before
@@ -173,6 +176,7 @@ Correo electrónico: Email
 Correo electrónico repetido: Email repeated
 Correo electrónico requerido: Email required
 Correo corporativo: Company email
+Correos no enviados: Emails not sent
 Correo personal: Personal email
 Correo secundario: Secondary email
 Creado el: Created at
@@ -259,6 +263,7 @@ Eliminar: Remove
 El apellido del usuario debe ser mínimo de 3 caracteres: User last name must have at least 3 characters
 El apellido del usuario es requerido: User last name is required
 El archivo: The file
+El archivo excede el tamaño maximo permitido: File exceeds maximum size allowed
 El archivo debe tener al menos una fila con datos: File must have at least one row with data
 El archivo es requerido.: File is required.
 El archivo presentó errores en alguna de sus líneas. Ver los detalles en el cuadro más abajo.: File have errors into some of its lines. See details in table below.
@@ -271,9 +276,11 @@ El campo usuario debe ser mínimo de 3 caracteres: User field must have at least
 El campo usuario es requerido: User field is required
 El contenido es requerido.: Content is required.
 El correo es requerido: Mail is required
+El correo corporativo ya existe para la empresa seleccionada: Corporate mail already exists for the selected company
+El correo personal ya existe para la empresa seleccionada: Personal email already exists for the selected company
 El correo corporativo tiene un formato inválido: Company email has invalid format
 El correo secundario tiene un formato inválido: Secondary mail has an invalid format
-El correo no existe en la base de datos, por favor inserte uno diferente o comuníquese a soporte@formacion2puntocero.com: The mail does not exist in the database, please insert a different one or contact support@formacion2puntocero.com
+El correo no existe en la base de datos, por favor inserte uno diferente o comuníquese a soporte@formacionsmart.com: The mail does not exist in the database, please insert a different one or contact soporte@formacionsmart.com
 El correo no pertenece a un Usuario de la empresa. Contacte al administrador del sistema.: The mail does not belong to a User of the company. Contact the system administrator.
 El correo personal tiene un formato inválido: Personal email has invalid format
 El Encabezado es requerido.: The Header is required
@@ -405,6 +412,7 @@ Estatus de los participantes de la empresa: Participants status of the company
 este archivo descargable: this downloadable file
 Este campo es requerido.: This field is required.
 Este correo no puede ser igual al corporativo: This email can't be the same as corporate
+Este correo se encuentra registrado: This email is registered
 Este logo se mostrará en la página de login: This logo will be shown in login page
 Este rol aún no tiene permisos de acceso: This role does not have access permissions yet
 Este usuario tiene una sesión activa. Espera 5 minutos e intenta ingresar de nuevo.: This user has an active session. Wait 5 minutes and try again.
@@ -437,8 +445,12 @@ Fecha de creación: Creation date
 Fecha de difusión: Broadcasting date
 Fecha de nacimiento: Birthday
 Fecha de publicación: Publication date
+Fecha de Publicación: Publication date
 Fecha de registro: Registration date
 Fecha de vencimiento: Due date
+Fecha de Vencimiento: Due date
+Fecha inicio requerida: Start date required
+Fecha fin requerida: End date required
 FELICITACIONES: CONGRATULATIONS
 Fila: Row
 filtrado de un total de: filtered of a total of
@@ -494,6 +506,7 @@ Horas de conexión de la empresa: Connection hours of the company
 Horas de conexión por empresa: Connection hours per company
 Hoy a las: Today at
 Huso horario: Time zone
+Huso horario requerido: Required time zone
 Icono: Icon
 Icono de la empresa: Company icon
 Imagen: Image
@@ -600,6 +613,7 @@ Listado de grupos: List of groups
 Listado de niveles: List of levels
 Listado de notificaciones: List of notifications
 Listado de participantes: List of participants
+Listado de participantes aprobados: List of approved participants
 Listado de preguntas: List of questions
 Listado de preguntas de la evaluación: Questions list of test
 Listado de programas: List of programs
@@ -707,8 +721,11 @@ Nuevo espacio colaborativo: New collaborative space
 Nuevo nivel: New level
 Nuevo nivel de la empresa: New level of company
 Nuevo registro: New item
+Nuevo Registro: New item
 Nuevo tipo de pregunta: New type of question
 Nuevos registros almacenados: New records added
+Ocultar: answer
+Omitir: Skip
 Ofrecemos disculpas por las molestias ocasionadas: We apologize for the inconvenience caused
 Opción: Option
 Opción correcta (Lado B): Correct option (Side B)
@@ -806,7 +823,9 @@ Puntaje con que se aprueba: Score with which it is approved
 Puntaje definitivo del programa: Definitive score of the program
 que aún no han ingresado a la plataforma: that have not yet entered the platform
 QR: QR
+Quieres hacer un tour guiado: You want to take a guided tour
 realizó una publicación en el muro de: make a publication on the wall of 
+realizó una publicación en el en el espacio colaborativo de: made a publication in the in the collaborative space of
 formación smart, recomendamos utilizar la ultima versión del: formación smart, we recommend using the latest version of the
 Recomendación: Recommendation
 Recordarme: Remember me
@@ -826,7 +845,9 @@ Recuperar contraseña: Recover password
 Repetir evaluación: Repeat evaluation
 Reportar problema: Report issue
 Reporte de participantes aprobados por programas: Report of participants approved by programs
+Reporte de participantes aprobados en programas: Report of approved participants in programs
 Reporte de participantes cursando por programas: Report of participants studying through programs
+Reporte de participantes cursando el programa: Report of participants attending the program
 Reporte de participantes no iniciados en programa: Report of participants not initiated in program
 Reporte de participantes registrados en programas: Report of registered participants
 Reporte de participantes por empresa: Participant report by company
@@ -836,6 +857,8 @@ Responder comentario: Answer comment
 Responder publicación: Answering post
 respondió en el muro al comentario de: answered the comment on the wall
 respondió a tu comentario en el muro de: answered to your comment on wall
+respondió a tu publicación en el espacio colaborativo de: responded to your post in the collaborative space of
+respondió una publicación en el espacio colaborativo de: replied a post in the collaborative space of
 respondió a uno de tus comentarios en el muro de: answered to one of your comments on wall of
 Respuesta: Answer
 Respuesta creada con éxito: Response created successfully
@@ -943,6 +966,7 @@ Todos los niveles: All levels
 TODOS LOS TEMAS: ALL SUBJECTS
 Tomar evaluación: Take test
 Total aprobados: Total approved
+Total de registros: Total records
 Tu calificación: Your score
 Tu comentario: Your comment
 Tu respuesta: Your answer
@@ -985,6 +1009,8 @@ Ver ranking: See ranking
 Ver respuesta: See answer
 Ver Sub-Aplicaciones: See Sub-Applications
 Ver thumbnails: See thumbnails
+Ver Comentarios: See comments
+Vídeo requerido: Vídeo requerido
 Viernes: Friday
 Vista previa: Preview
 Vista previa del dashboard: Dashboard preview
@@ -995,7 +1021,9 @@ Volver al contenido: Back to the content
 Volver al inicio del contenido: Back to the begining of the content
 Volver al programa: Back to program page
 Volver al inicio: Back to home
+Volver al listado: Back to list
 y el: and
 y finaliza el: and ends at
 Yo: Me
+Zona horaria: Time zone
 ¿Olvidaste tu contraseña?: Did you forget your password?

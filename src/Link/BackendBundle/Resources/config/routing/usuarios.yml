@@ -16,6 +16,12 @@ _ajaxValidLogin:
     requirements:
         _method: POST
 
+_ajaxValidQuery:
+    path:     /ajaxValidQuery
+    defaults: { _controller: LinkBackendBundle:Usuario:ajaxValidQuery }
+    requirements:
+        _method: POST
+
 _participantes:
     path:     /participantes/{app_id}
     defaults: { _controller: LinkBackendBundle:Usuario:participantes }

@@ -1,5 +1,4 @@
 $(document).ready(function() {
-
     $('#modificar').click(function(){
     	var valid = $("#form").valid();
     	if (valid)
@@ -14,7 +13,7 @@ $(document).ready(function() {
 		        data: $("#form").serialize(),
 		        dataType: "json",
 		        success: function(data) {
-		        	if (data.existe == 0) 
+		        	if (data.html =='') 
 		        	{
 			        	$('#label-correo').html(data.correo);
 			        	$('#label-correo_corporativo').html(data.correo_corporativo);
@@ -25,7 +24,9 @@ $(document).ready(function() {
 
 			        }else
 			        {
+			        	$('#correo_usado').html(data.html);
 			        	$('#correo_usado').show();
+			        	$('#correo_secundario').focus();
 			        	$('.boton').show();
 			            $('#wait_profile').hide(1000);
 			        }
@@ -60,6 +61,8 @@ $(document).ready(function() {
 						$('#wait_password').hide(1000);
 						//$( ".close" ).trigger( "click" );
 						console.log('Cambio de contraseña realizado'); // Hay que implementar los mensajes de error para el frontend
+						$('#error_clave').removeClass('error_clave');
+						$('#error_clave').addClass('exito_clave');
 						$('#error_clave').html(data.mensaje);
 						$('#error_clave').show();
 						$("#cambio").addClass( "blocked" );
@@ -70,6 +73,8 @@ $(document).ready(function() {
 						$('#wait_password').hide(1000);
 						//$( ".close" ).trigger( "click" );
 						console.log('la contrasena debe ser distinta a la actual'); // Hay que implementar los mensajes de error para el frontend
+						$('#error_clave').removeClass('exito_clave');
+						$('#error_clave').addClass('error_clave');
 						$('#error_clave').html(data.mensaje);
 						$('#error_clave').show();
 						$("#cambio").addClass( "blocked" );
@@ -77,6 +82,8 @@ $(document).ready(function() {
 		        },
 		        error: function(){
 		            console.log('Error cambiando la contraseña'); // Hay que implementar los mensajes de error para el frontend
+		            $('#error_clave').removeClass('exito_clave');
+				    $('#error_clave').addClass('error_clave');
 		            $('.boton').show();
 		            $('#wait_password').hide(1000);
 		        }
@@ -93,19 +100,27 @@ $(document).ready(function() {
         dataType: 'json',
         acceptFileTypes: /(\.|\/)(gif|jpe?g|png)$/i,
         add: function (e, data) {
+        	$('#radar-img').show();
 	        var goUpload = true;
 	        var uploadFile = data.files[0];
 	        if (!(/\.(gif|jpg|jpeg|tiff|png)$/i).test(uploadFile.name)) {
+	        	$('#radar-img').hide();
 	            $('#error').html('Sólo archivo de imagen');
 	            goUpload = false;
 	        }
 	        if (goUpload == true) {
+	        	setTimeout(function(){ 
+	        		$('#radar-img').hide();
+	        	}, 1000);
 	            data.submit();
 	        }
 	    },
         done: function (e, data) {
         	$.each(data.result.response.files, function (index, file) {
-
+            setTimeout(function(){ 
+            	$('#radar-img').hide();
+             }, 1000);
+                
         		// Actualizar img
         		var uploads = $('#uploads').val();
         		var base_upload = $('#base_upload').val();

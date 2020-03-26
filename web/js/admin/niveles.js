@@ -1,5 +1,41 @@
 $(document).ready(function() {
 
+    $('#fechaInicio').datepicker({
+      startView: 1,
+      autoclose: true,
+      format: 'dd/mm/yyyy',
+      language: 'es',
+      startDate: '0d',
+      clearBtn: true
+  })
+  .on( "changeDate", function(selected) {
+    var startDate = new Date(selected.date.valueOf());
+      $('#fechaFin').datepicker('setStartDate', startDate);
+    });
+    
+     $('#fechaFin').datepicker({
+      startView: 1,
+      autoclose: true,
+      format: 'dd/mm/yyyy',
+      language: 'es',
+      startDate: '0d',
+      clearBtn: true
+  })
+  .on( "changeDate", function(selected) {
+    var endDate = new Date(selected.date.valueOf());
+      $('#fechaInicio').datepicker('setEndDate', endDate);
+    });
+    $('#nuevo-nivel').click(function(event) {
+       $('#nombre').val('');
+       $('#fechaInicio').val('');
+       $('#fechaFin').val('');
+       $('#nombre').removeClass('error');
+       $('#fechaInicio').removeClass('error');
+       $('#fechaFin').removeClass('error');
+    });
+
+    
+
 	$('.new').click(function(){
         initModalEdit();
         enableSubmit();
@@ -7,9 +43,20 @@ $(document).ready(function() {
 		$('#nivel_id').val("");
 	});
 
-    $('#guardar').click(function(){
+ $('#guardar').click(function(e){
+      var valid = ($('#fechaFin').val()=='' && $('#fechaInicio').val()=='') || ($('#fechaFin').val()!='' && $('#fechaInicio').val()!='') ? true:false;
+      if (valid) {
         $('#form').submit();
         return false;
+      }else{
+        var label = $('#fechaInicio').val()==''? $('#fechaInicio').data('label'):$('#fechaFin').data('label');
+        $('#'+label).show();
+        setTimeout(function(){ 
+            $('#'+label).hide();
+        }, 3000);
+        $('#form').safeform('complete');
+        return false; // revent real submit
+      }
     });
 
     $('#form').submit(function(e) {
@@ -39,6 +86,8 @@ $(document).ready(function() {
            success: function(data){
                 enableSubmit();
                $('#nombre').val(data.nombre);
+               $('#fechaInicio').val(data.fechaInicio);
+               $('#fechaFin').val(data.fechaFin);
            },
            error: function(){
                $('#alert-error').html($('#error_msg-edit').val());
@@ -105,6 +154,11 @@ $(document).ready(function() {
             }
             
         }
+    });
+    $("#fechaInicio,#fechaFin").click(function(e) {
+      e.preventDefault();
+      $(this).val('');
+      $(this).datepicker("show");
     });
 
     disableSubmit();

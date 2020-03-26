@@ -192,7 +192,8 @@ class CertificadoController extends Controller
 
         if (count($session->get('paginas')[$programa_id]['subpaginas']))
         {
-	        $subpaginas_ids = $f->hijas($session->get('paginas')[$programa_id]['subpaginas']);
+			$subpaginas_ids = $f->hijas($session->get('paginas')[$programa_id]['subpaginas']);
+			
 			
 			$programa_aprobado = $f->notasPrograma($subpaginas_ids, $session->get('usuario')['id'], $values['parameters']['estado_prueba']['aprobado']);
         }

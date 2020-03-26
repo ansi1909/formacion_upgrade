@@ -1,21 +1,28 @@
 {% extends '::'~app.session.get('empresa').plantilla %}
 
 {% block stylesheets %}
+    <link rel="stylesheet" href="{{ asset('front/js/plugins/introjs/introjs.css') }}">
     {{ parent() }}
-    
+    <style type="text/css">
+        
+    </style>
 {% endblock %}
 
 {% block body %}
 {% set uri = app.request.getbasepath %}
 <input type="hidden" id="porcentaje_avance" name="porcentaje_avance" value="{{ porcentaje_avance }}">
+<input type="hidden" id="paso_actual_intro" name="paso_actual_intro" value="{{ paso_actual_intro }}" data-pasoCorrecto="2">
+<input type="hidden" id="cancelar_intro" name="cancelar_intro" value="{{ cancelar_intro }}">
+<input type="hidden" id="url_cambiar_estado" name="url_cambiar_estado" value="{{ path('_ajaxCambiarEstado') }}">
 <div id="message" class="for-message well-message-prog text-center container py-6 px-6 mb-1">
     <i id="arrowDown" class="material-icons mr-2" >keyboard_arrow_down</i>
-    
-    <h4>Bienvenido al {{ pagina.categoria.nombre|lower }} de </h4>
-    <h1 class="mb-5">{{ pagina.nombre}}</h1>
+    <div id="tuto-step1">
+        <h4>Bienvenido al {{ pagina.categoria.nombre|lower }} de </h4>
+        <h1 class="mb-5">{{ pagina.nombre}}</h1>
+    </div>
     {{ pagina.contenido|raw }}
     <!-- MAPA DE PROGRESO -->
-    <div>
+    <div id="tuto-step2">
         <h4 class="color-light-black my-3 mt-5">Tu progreso en el {{ pagina.categoria.nombre|lower }}</h4>
         <!--?xml version="1.0" encoding="UTF-8"?-->
         <svg width="100%" height="300px" viewBox="0 0 1051 250" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" style="">
@@ -66,7 +73,7 @@
         <h4 class="mt-6 pt-4 mb-0 pb-1 title-grey sub-line container ">Módulos</h4>
 
         <!--CONTENDOR DE LAS CARDS  -->
-        <div class="container d-flex flex-column justify-content-center align-items-center ">
+        <div class="container d-flex flex-column justify-content-center align-items-center" id="tuto-step3">
 
                 <!-- CARDS MODULOS HZR -->
                 {{ lis_mods|raw }}
@@ -76,9 +83,28 @@
 {% endblock %}
 {% block javascripts %}
     {{ parent() }}
+    <script type="text/javascript" src="{{ asset('front/js/plugins/introjs/intro.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('js/front/tuto.js') }}"></script>
     <script>
         $(document).ready(function(){
             $('#proG').addClass("active");
+            const introSteps = [
+                {
+                    element: document.getElementById('tuto-step1'),
+                    intro: 'Esta es la pantalla de bienvenida del programa/curso.'
+                },
+                {
+                    element: document.getElementById('tuto-step2'),
+                    intro: 'Aquí podrás ver tu progreso en el curso.'
+                },
+                {
+                    element: document.getElementById('tuto-step3'),
+                    intro: 'Para ingresar al programa haz clic en el botón iniciar.'
+                }
+            ]
+
+            startIntro(introSteps);
+
         });
     </script>
     <script type="text/javascript" src="{{ asset('js/front/programa_inicio.js') }}"></script> 

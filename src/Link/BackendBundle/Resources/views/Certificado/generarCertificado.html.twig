@@ -1,0 +1,118 @@
+{% extends '::admin.html.twig' %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    
+{% endblock %}
+
+{% block body %}
+{% set encabezado = 'Generar certificados'|trans %}
+
+<input type="hidden" id="url_programas" name="url_programas" value="{{ path('_ajaxProgramasE') }}">
+<input type="hidden" id="empresa_select" name="empresa_select" value="{{ empresa_select }}">
+<input type="hidden" id="pagina_select" name="pagina_select" value="{{ pagina_select }}">
+<input type="hidden" id="url_descarga" name="url_descarga" value="{{ path('_DescargarZip', {'ruta':pagina }) }} ">
+<form id="form" name="form" action="{{ path( '_GenerarCertificadosZip', { 'app_id': app.session.get('app_id') })}}"  method="POST">
+    
+    <br><br>
+   
+    <div class="row">
+        <div class="col-sm-16 col-md-16 col-lg-16 col-xl-16">
+            <div class="card">
+                <div class="card-header"  style=" background: linear-gradient(to right, #d5ff00 0%, #A3C300 100%); ">
+                    <h5 class="card-title">{{ encabezado }}</h5>
+                </div>
+                <div class="card-block">
+                    {# if not usuario_empresa #}
+                        <label for="texto" class="col-sm-7 col-md-7 col-lg-7 offset-sm-4 offset-md-4 offset-lg-4">{{'Empresa' | trans }}</label>
+                        <div class="row">
+                            <div class="col-sm-7 col-md-7 col-lg-7 offset-sm-4 offset-md-4 offset-lg-4">
+                                <select class="form_sty_sel form-control" style="border-radius: 5px" id="empresa_id" name="empresa_id">
+                                    <option value="0"></option>
+                                    {% for empresa in empresas %}
+                                        {% if empresa.id == empresa_select %}
+                                            <option value="{{ empresa.id }}" selected >{{ empresa.nombre }}</option>
+                                        {% else%}
+                                        <option value="{{ empresa.id }}"  >{{ empresa.nombre }}</option>
+                                        {%endif%}
+                                    {% endfor %}
+                                </select>
+                                <span class="fa fa-industry"></span>
+                                <span class="bttn_d"><img src="{{asset ('img/down-arrowbck.png')}}"></span>
+                            </div>
+                        </div>
+                        <br>
+                    
+                    <label for="texto" class="col-sm-7 col-md-7 col-lg-7 offset-sm-4 offset-md-4 offset-lg-4">{{'Programas' |trans}}</label>
+                    <div class="row">
+                        <div class="col-sm-7 col-md-7 col-lg-7 offset-sm-4 offset-md-4 offset-lg-4">
+                            <select class="form_sty_sel form-control" style="border-radius: 5px" id="programa_id" name="programa_id">
+                            </select>
+                            <span class="fa fa-industry"></span>
+                            <span class="bttn_d"><img src="{{asset ('img/down-arrowbck.png')}}"></span>
+                            <img id="pagina-loader" class="img-loader descargable" src="{{ asset('img/ui-anim_basic_16x16.gif') }}" style="display:none;">
+                        </div>
+                    </div>
+                    <br>
+                </div>
+                <div class="card-footer" style="display: none;">
+                    <div class="col-sm-16 col-md-16 text-right">
+                        <button type="submit" id="search" class="bttn__saved" data-toggle="tooltip" data-placement="bottom" title="{{ 'Consultar'|trans }}"><span class="fa fa-search"></span></button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% if resultado %}
+        <div class="row" >
+            <div class="col-sm-16">
+                <div class="card">
+                    <div class="card-block">  
+                        <div id="resultado" style=" cursor:pointer">
+                            <div class="list-unstyled member-list row">
+                                <div class="col-lg-4 col-sm-8 col-xs-16 offset-sm-4 offset-md-4 offset-lg-6">
+                                    <div class="media flex-column"> <span class="message_userpic text-success"><i class="fa fa-file-zip-o"></i></span>
+                                    <div class="media-body">
+                                        <h6 class="mt-0 mb-1" id="document_name">{{pagina}}.zip</h6>
+                                        <button type="button" class="btn btn-link btn-sm"><i class="fa fa-download m-0"></i> {{ 'Descargar'|trans }}</button>
+                                    </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% elseif resultado == false and pagina_select %}
+        <div class="row" >
+            <div class="col-sm-16">
+                <div class="card">
+                    <div class="card-block">  
+                        <div id="resultado1" >
+                            <div class="list-unstyled member-list row">
+                                <div class="col-lg-4 col-sm-8 col-xs-16 offset-sm-4 offset-md-4 offset-lg-6">
+                                    <div class="media flex-column"> <span class="message_userpic text-success"><i class="fa fa-file-zip-o"></i></span>
+                                    <div class="media-body">
+                                        <h6 class="mt-0 mb-1" id="document_name">No hay participantes aprobados</h6>
+                                    </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endif %}
+</form>
+
+
+{% endblock %}
+
+
+{% block javascripts %}
+    {{ parent() }}
+    <script type="text/javascript" src="{{ asset('js/admin/reportes/generarCertificados.js') }}"></script>
+
+{% endblock %}

@@ -57,11 +57,35 @@ $(document).ready(function() {
         }
     });
 
-    $( "#search" ).autocomplete({
-    	source: $('#url_search').val(),
+    // $( "#search" ).autocomplete({
+    // 	source: $('#url_search').val(),
+    //   	minLength: 3,
+    //   	select: function( event, ui ) {
+    //     	console.log( "Selected: " + ui.item.value + " AKAA " + ui.item.id );
+    //     	window.location.replace($('#url_detalle').val()+'/'+ui.item.id+'/'+subpagina_id);
+    //   	}
+    // });
+
+      $( "#search" ).autocomplete({
+    	source: function(request,response){
+    	 $.ajax({
+          		url: $('#url_search').val(),
+          		dataType: "json",
+          		data: { term:request.term, pagina_id: $('#programa_id').val() },
+          		type:'GET',
+          		beforeSend:function (){
+          			$('#user-loader').show();
+          		},
+          		success:function(data){
+          			$('#user-loader').hide();
+          			console.log(data);
+          			response(data);
+          		}
+          	});
+    	},
       	minLength: 3,
       	select: function( event, ui ) {
-        	//console.log( "Selected: " + ui.item.value + " AKAA " + ui.item.id );
+        	console.log( "Selected: " + ui.item.value + " AKAA " + ui.item.id );
         	window.location.replace($('#url_detalle').val()+'/'+ui.item.id+'/'+subpagina_id);
       	}
     });
@@ -110,7 +134,6 @@ $(document).ready(function() {
 		submit: function (e, data) {
         	$.each(data.files, function (index, file) {
 				var hola = $('#archivo_input').val(file.name);
-				conlose.log(hola);
 				$('#archivo').val($('#base_upload').val()+file.name);
             });
         },
@@ -226,6 +249,7 @@ function observeTopic(newTopic)
 function saveForo()
 {
 	$('label.mensaje-error').hide();
+	$('#subir').hide();
     $('#publicar').hide();
     $('#cancelar').hide();
     $('#wait').show(1000);
@@ -242,6 +266,7 @@ function saveForo()
             console.log('Error guardando el registro de espacio colaborativo'); // Hay que implementar los mensajes de error para el frontend
             $('#publicar').show();
             $('#cancelar').show();
+            $('#subir').show();
             $('#wait').hide(1000);
         }
     });
