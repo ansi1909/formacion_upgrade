@@ -195,6 +195,8 @@ class NotificacionController extends Controller
 
     }
 
+
+
     public function notificacionesAction(Request $request)
     {
 
