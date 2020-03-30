@@ -450,7 +450,7 @@ class ColaborativoController extends Controller
                 $descripcion = $usuario->getNombre().' '.$usuario->getApellido().' '.$this->get('translator')->trans('respondió una publicación en el espacio colaborativo de').': '.$foro_main->getPagina()->getCategoria()->getNombre().' '.$foro_main->getPagina()->getNombre().'.';
                 $tutores = $f->getTutoresEmpresa($session->get('empresa')['id'],$yml);
                 foreach ($tutores as $tutor) {
-                    if((integer)$tutor->getId() != (integer)$foro_padre->getUsuario()->getId()){
+                    if(((integer)$tutor->getId() != (integer)$foro_padre->getUsuario()->getId()) AND (integer) $tutor->getId() != $session->get('usuario')['id']){
                         $f->newAlarm($yml['parameters']['tipo_alarma']['espacio_colaborativo'],$descripcion,$tutor,$foro_main->getId());
                     }
                     

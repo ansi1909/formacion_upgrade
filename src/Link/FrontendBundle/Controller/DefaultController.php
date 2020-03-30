@@ -99,7 +99,7 @@ class DefaultController extends Controller
                         $tiene_subpaginas = 0;
                     }
 
-                    $link_enabled = $pagina_empresa->getFechaVencimiento()->format('Y-m-d') < date('Y-m-d') ? 0 : 1;
+                    $link_enabled = $pagina_empresa->getFechaVencimiento()->format('Y-m-d') <= date('Y-m-d') ? 0 : 1;
 
                     $pagina_log = $this->getDoctrine()->getRepository('LinkComunBundle:CertiPaginaLog')->findOneBy(array('usuario' => $session->get('usuario')['id'],
                                                                                                                          'pagina' => $grupo->getPagina()->getId()));
@@ -131,67 +131,43 @@ class DefaultController extends Controller
                         $continuar = $link_enabled ? 0 : 4;
                     }
 
-                    $porcentaje_finalizacion = $f->timeAgo($pagina_empresa->getFechaVencimiento()->format("Y/m/d"));
+                    $dias = $f->timeAgo($pagina_empresa->getFechaVencimiento()->format("Y/m/d"));
+                    //porcentaje_finalizacion($fechaInicio,$fechaFin,$diasVencimiento)
+                    $porcentaje = $f->porcentaje_finalizacion($pagina_empresa->getFechaInicio()->format("Y/m/d"),$pagina_empresa->getFechaVencimiento()->format("Y/m/d"),$dias);
+                    $porcentaje_finalizacion = $dias;
+                    
                     if ($link_enabled)
                     {
-                        if ($porcentaje_finalizacion >= 70)
-                        {
-                           $class_finaliza = 'alertTimeGood';
-                        }
-                        elseif ($porcentaje_finalizacion >= 31 && $porcentaje_finalizacion <= 69)
-                        {
-                            $class_finaliza = 'alertTimeWarning';
-                        }
-                        elseif ($porcentaje_finalizacion <= 30) 
-                        {
-                            $class_finaliza = 'alertTimeDanger';
-                        }
-                        else {
-                            $class_finaliza = '';
-                        }
+                      $class_finaliza = $f->classFinaliza($porcentaje);
                     }
                     else {
                         $class_finaliza = '';
                     }
-                    
-                    // $dias_vencimiento = $link_enabled ? $this->get('translator')->trans('Finaliza en').' '.$f->timeAgo($pagina_empresa->getFechaVencimiento()->format("Y/m/d")).' '.$this->get('translator')->trans('días') : $this->get('translator')->trans('Vencido');
-
                     $usuario = $this->getDoctrine()->getRepository('LinkComunBundle:AdminUsuario')->find($session->get('usuario')['id']);
+                    if($usuario->getNivel()){
+                        $nivel_usuario = $usuario->getNivel();
+                        if ($nivel_usuario->getFechaInicio() && $nivel_usuario->getFechaFin()) {
+                           $nivel_vigente = date('Y-m-d') <= $nivel_usuario->getFechaFin()->format('Y-m-d')? true:false;
+                           $link_enabled = $nivel_vigente;
+                           if ($nivel_vigente) {
+                             $dias = $f->timeAgo($nivel_usuario->getFechaFin()->format("Y-m-d"));
+                             $porcentaje_finalizacion = $dias;
+                             if ($dias == 0) {
+                               $dias_vencimiento = $this->get('translator')->trans('Vence hoy');
+                             }else{
+                              $dias_vencimiento = $link_enabled ? $this->get('translator')->trans('Finaliza en').' '.$dias.' '.$this->get('translator')->trans('días') : $this->get('translator')->trans('Programa Vencido');
+                             }
+                             $porcentaje_dias = $f->porcentaje_finalizacion($nivel_usuario->getFechaInicio()->format("Y-m-d"),$nivel_usuario->getFechaFin()->format("Y-m-d"),$dias);
+                             $class_finaliza = $f->classFinaliza($porcentaje_dias);
 
-                    
-
-                    $query = $em->createQuery('SELECT nivel FROM LinkComunBundle:AdminNivel nivel 
-                                              WHERE nivel.empresa= :empresa_id
-                                              ORDER BY nivel.id ASC')
-                    ->setParameters(array('empresa_id' => $session->get('empresa')['id']));
-                    $niveles = $query->getResult();
-                    foreach ($niveles as $n)
-                    {
-                        if( $n->getId() == $usuario->getNivel()->getId())
-                        {
-                            $fecha_nivel = $n->getFechaFin() && $n->getFechaInicio() ? true: false;
-                            if ($fecha_nivel) {
-                              $nivel_vigente =  date('Y-m-d') < $n->getFechaFin()->format('Y-m-d') ?  true : false;
-                              if ($nivel_vigente) {
-                                $porcentaje_finalizacion = $f->timeAgo($n->getFechaFin()->format("Y/m/d"));
-                                $dias_vencimiento = $link_enabled ? $this->get('translator')->trans('Finaliza en').' '.$porcentaje_finalizacion.' '.$this->get('translator')->trans('días') : $this->get('translator')->trans('Programa Vencido');
-                                $class_finaliza = $f->classFinaliza($porcentaje_finalizacion);
-                                # code...
-                              }else{
-                                 $dias_vencimiento = $this->get('translator')->trans('Programa Vencido');
-                              }
-                              
-                            }else{
-                              $nivel_vigente =  true;
-                              //$porcentaje_finalizacion = $f->timeAgo($pagina_empresa->getFechaVencimiento()->format("Y/m/d"));
-                              //$class_finaliza = $f->classFinaliza($porcentaje_finalizacion);
-                              $dias_vencimiento = $link_enabled ? $this->get('translator')->trans('Finaliza en').' '.$porcentaje_finalizacion.' '.$this->get('translator')->trans('días') : $this->get('translator')->trans('Programa Vencido');
-
-                            }
-                            
+                           }else{
+                              $dias_vencimiento = $this->get('translator')->trans('Programa Vencido');
+                           }
+                        }else{
+                            $nivel_vigente =  true;
+                            $dias_vencimiento = $link_enabled ? $this->get('translator')->trans('Finaliza en').' '.$porcentaje_finalizacion.' '.$this->get('translator')->trans('días') : $this->get('translator')->trans('Programa Vencido');
                         }
-                        
-                    }
+                      }
                     //return new response(var_dump($usuario->getFechaNacimiento()));
                     //return new response(var_dump ($ni));
 

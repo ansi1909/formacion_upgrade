@@ -2534,6 +2534,21 @@ p.up {
     @media (max-width: 559.98px) {
       .card .count {
         top: 9rem; } }
+  .card .info-icon {
+    position: absolute;
+    top: -29px;
+    right: 10px;
+    background-color: white;
+    border-top-left-radius: 8px;
+    border-top-right-radius: 8px;
+    padding: 5px; }
+    .card .info-icon span {
+      margin: 0px 3px;
+      color: #5CAEE6;
+      transition: .5s; }
+      .card .info-icon span:hover {
+        cursor: pointer;
+        color: #3D93CC; }
 
 .card-img-overlay {
   height: 50%; }

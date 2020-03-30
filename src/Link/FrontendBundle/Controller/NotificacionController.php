@@ -282,7 +282,7 @@ class NotificacionController extends Controller
                                  'leido' => $alarma->getLeido(),
                                  'tipo' => $alarma->getTipoAlarma()->getid(),
                                  'entidad' => $alarma->getEntidadId(),
-                                 'fecha' => $yml['parameters']['tipo_alarma']['evento']? $evento->getFechaInicio()->format('Y-m-d'):$alarma->getFechaCreacion()->format('Y-m-d'));
+                                 'fecha' => $alarma->getTipoAlarma()->getId() == $yml['parameters']['tipo_alarma']['evento']? $evento->getFechaInicio()->format('Y-m-d'):$alarma->getFechaCreacion()->format('Y-m-d'));
 
                 if ($alarma->getLeido())
                 {
@@ -293,7 +293,7 @@ class NotificacionController extends Controller
                                       'leido' => $alarma->getLeido(),
                                       'tipo' => $alarma->getTipoAlarma()->getid(),
                                       'entidad' => $alarma->getEntidadId(),
-                                      'fecha' => $yml['parameters']['tipo_alarma']['evento']? $evento->getFechaInicio()->format('Y-m-d'):$alarma->getFechaCreacion()->format('Y-m-d'));
+                                      'fecha' => $alarma->getTipoAlarma()->getId() == $yml['parameters']['tipo_alarma']['evento']? $evento->getFechaInicio()->format('Y-m-d'):$alarma->getFechaCreacion()->format('Y-m-d'));
 
                 }
                 else {
@@ -304,7 +304,7 @@ class NotificacionController extends Controller
                                          'leido' => $alarma->getLeido(),
                                          'tipo' => $alarma->getTipoAlarma()->getid(),
                                          'entidad' => $alarma->getEntidadId(),
-                                         'fecha' => $yml['parameters']['tipo_alarma']['evento']? $evento->getFechaInicio()->format('Y-m-d'):$alarma->getFechaCreacion()->format('Y-m-d'));
+                                         'fecha' => $alarma->getTipoAlarma()->getId() == $yml['parameters']['tipo_alarma']['evento']? $evento->getFechaInicio()->format('Y-m-d'):$alarma->getFechaCreacion()->format('Y-m-d'));
                 }
 
             }
