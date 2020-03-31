@@ -140,7 +140,7 @@ else {
 	        <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 	        <link rel="stylesheet" href="<?php echo $url_web ?>front/base_styles/css/bootstrap/bootstrap.css">
 	        <link rel="stylesheet" href="<?php echo $url_web ?>front/client_styles/formacion/css/main.css">
-	        <title>Verificaci贸n del codigo QR</title>
+	        <title>Verificación del codigo QR</title>
 	    </head>
 	    <body class="codigoQR">
 	        <section class="cQR">
@@ -162,7 +162,7 @@ else {
 	                </div>
 	                <div class="row">
 	                    <div class="col-xs-auto col-sm-auto col-md-auto col-auto col-lg-auto col-xl-auto">
-	                        <h3 class="text-cQR">Complet贸 exitosamente el programa:</h3>
+	                        <h3 class="text-cQR">Completó exitosamente el programa:</h3>
 	                    </div> 
 	                </div>
 	                <div class="row">
