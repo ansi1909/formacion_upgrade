@@ -197,7 +197,7 @@
                                                 <i class="material-icons d-block">aspect_ratio</i>
                                                 <small class="d-block">{{ 'Certificado'|trans }}</small>
                                             </a>
-                                            {% if pagina.prueba != null %}
+                                            {% if pagina.notas == 1%}
                                             <a href="{{ path('_generarNotas', { 'programa_id': pagina.id }) }}" target="_blank" class="flex-column align-items-center col-4 btn-edge btn-notas">
                                                 <i class="material-icons d-block">content_copy</i>
                                                 <small class=" d-block">{{ 'Notas'|trans }}</small>

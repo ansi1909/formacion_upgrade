@@ -61,7 +61,7 @@ else {
 	$url_web = substr($url, 0, $url_pos);
 	$ruta = explode("/", $url);
 
-	$sql = "select u.nombre, u.apellido, p.nombre as programa, p.id as id, pl.fecha_inicio as fecha_inicio, pl.fecha_fin as fecha_fin, p.horas_academicas as horas_academicas 
+	$sql = "select u.nombre, u.apellido,u.id as usuario_id, p.nombre as programa, p.id as id, pl.fecha_inicio as fecha_inicio, pl.fecha_fin as fecha_fin, p.horas_academicas as horas_academicas 
 			from certi_pagina_log pl 
 			inner join admin_usuario u on (u.id=pl.usuario_id)
 			inner join certi_pagina p on (p.id=pl.pagina_id)
@@ -77,28 +77,56 @@ else {
 		$fecha_fin = $row["fecha_fin"];
 		$horas_academicas = $row["horas_academicas"];
 		$pagina_id = $row["id"];
+		$usuario_id = $row["usuario_id"];
 	}
+	//obtener estructura del programa/curso
+    $buscar = array($pagina_id);
+    $estructura = array($pagina_id);
+    $cn_pruebas = 0;
+    $cn_aprobadas = 0;
+    $estatus = 2;
+    while ($buscar != NULL) {
+    	$pag_id = array_pop($buscar);
+    	$paginas = "select p.id from certi_pagina p 
+    				where p.pagina_id =".$pag_id." 
+    				and estatus_contenido=".$estatus." ";
+    	$resul = pg_query($connect,$paginas);
+    	$resul = pg_fetch_all($resul);
+    	foreach ($resul as $pagina) {
+    		array_push($buscar,$pagina['id']);
+    		array_push($estructura,$pagina['id']);	
+    	}
 
-	$sql1 = "select prl.nota 
-			 from certi_prueba_log prl 
-			 inner join ( certi_prueba pr
-						 inner join certi_pagina p on pr.pagina_id = p.id)
-			 on prl.prueba_id = pr.id
-			 where p.pagina_id =".$pagina_id."
-			 and prl.estado = 'APROBADO'";
-	
-	$resultado1 = pg_query($connect, $sql1);
+    }
+    //obtener pruebas
+    $notas = 0;
+    $promedio = 0;
+    foreach ($estrutura as $pag_id) {
+    	$prueba = "select cp.id from certi_prueba cp
+    			   where pagina_id=".$pag_id."
+    			   and estatus_contenido_id=".$estatus."";
+        $resul = pg_query($connect,$prueba);
+        $resul = pg_fetch_array($resul,NULL,PGSQL_ASSOC);
+        if(count($resul)>0){
+        	$cn_pruebas++;
+        	$prueba_log ="select pl.id as id, pl.estado as estado,pl.nota as nota
+        				  where pl.prueba_id=".$resul['id']."
+        				  and pl.usuario_id=".$usuario_id."
+        				  and pl.estado='APROBADO'";
+            $resul = pg_query($connect,$prueba_log);
+            $resul = pg_fetch_array($resul,NULL,PGSQL_ASSOC);
+            if(count($resul)>0){
+              $cn_aprobadas++;
+              $notas = $notas+$resul['nota'];
+            }
+        }
+    }
 
-	$promedio = 0;
-	$notas = 0;
-	$contador = 0;
-	while($row1 = pg_fetch_array($resultado1))
-	{
-		$notas = $notas + $row1["nota"];
-		$contador++;
-	}
-    $promedio = $notas / $contador;
-	$promedio = round($promedio,2); 
+    if ($cn_pruebas >0 &&($cn_pruebas == $cn_aprobadas) ) {
+    	$promedio = $notas / $cn_pruebas;
+    	$promedio = round($promedio,2);
+    }
+
 	
 	if(isset($resultado))
 	{
@@ -158,7 +186,7 @@ else {
 					</div>
 					<div class="row align-items-center justify-content-between mt-12v">
 	                    <div class="col-sm-12 col-md-12 col-12 col-lg-12 col-xl-12">
-	                    	<?php if ($notas != 0 AND $contador!=0) { ?>
+	                    	<?php if ($promedio != 0) { ?>
 	                        <span class="text-cQR">Promedio de nota: <?php echo $promedio ?></span>
 	                       <?php } ?>
 	                    </div> 

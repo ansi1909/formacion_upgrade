@@ -106,7 +106,8 @@ class DefaultController extends Controller
 
                     $modulo = $this->getDoctrine()->getRepository('LinkComunBundle:CertiPagina')->findOneBy(array('pagina' => $grupo->getPagina()->getId()));                                                                                                
                     $prueba = $this->getDoctrine()->getRepository('LinkComunBundle:CertiPrueba')->findOneBy(array('pagina' => $modulo->getId()));
-
+                    $notas = $f->notasDisponibles($grupo->getPagina()->getId(),$session->get('usuario')['id'],$yml);
+                    //print_r($notas);exit();
                     if ($pagina_log)
                     {
                         if ($pagina_log->getEstatusPagina()->getId() == $yml['parameters']['estatus_pagina']['completada'])
@@ -181,7 +182,8 @@ class DefaultController extends Controller
                                        'continuar' => $continuar,
                                        'link_enabled' => $link_enabled,
                                        'nivel_vigente' => $nivel_vigente,
-                                       'prueba' => $prueba);
+                                       'prueba' => $prueba,
+                                       'notas' => $notas);
                     
 
                 }
@@ -216,7 +218,7 @@ class DefaultController extends Controller
          
          $paso_actual_intro = $introduccion[0]->getPasoActual();
          $cancelar_intro = $introduccion[0]->getCancelado();
-
+         //return new response(var_dump($grupos[1]['paginas'][0]['notas']));
          return $this->render('LinkFrontendBundle:Default:index.html.twig', array('bienvenida' => $empresa->getBienvenida(),
                                                                                  'reciente' => $reciente,
                                                                                  'grupos' => $grupos,

@@ -317,7 +317,7 @@ class CertificadoController extends Controller
 									$guion = '';
 									//return new response($nota);
 									$puntaje = $puntaje + $nota;
-									$nota = $cantidad_intentos != '' ? number_format((double)$nota, 2, ',', '.') : '';
+									$nota = $cantidad_intentos != '' ? round($nota, 2) : '';
 		                    		$html .= "<table class='table-notas'>
 			                            <thead>
 			                                <tr>
@@ -361,14 +361,14 @@ class CertificadoController extends Controller
 										}
 	        							$html .= "<tr ".$style.">
 							               			<td style='padding-left:".$valor."px;'>".$guion.$programa['nombre']."</td>
-									               	<td class='center'>".number_format($nota, 2, ',', '.')."</td>
+									               	<td class='center'>".round($nota,2)."</td>
 									            </tr>";
 									}
 									if ($indice > 0)
 									{
 										$html .= "<tr style='font-size:16px; font-weight:300; font-color:#000000;'>
 								               		<td style='color:#000000;'>".$this->get('translator')->trans('Puntaje definitivo del programa').":</td>
-								               		<td style='color:#000000;' class='center'>".number_format($puntaje/$indice, 2, ',', '.')."</td>
+								               		<td style='color:#000000;' class='center'>".round($puntaje/$indice,2)."</td>
 								            	</tr>";
 									}
 									$margin = '50';
@@ -395,7 +395,7 @@ class CertificadoController extends Controller
 				                            	<tbody>
 													<tr style='font-size: 14px; font-weight: 300;'>
 									               		<td style='padding-left:10px;'>".$session->get('paginas')[$programa_id]['nombre']."</td>
-									               		<td class='center'>".number_format($nota, 2, ',', '.')."</td>
+									               		<td class='center'>".round($nota,2)."</td>
 									            	</tr>
 												</tbody>
 						                	</table>";

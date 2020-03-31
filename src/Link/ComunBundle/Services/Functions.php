@@ -17,6 +17,7 @@ use Link\ComunBundle\Entity\CertiPregunta;
 use Link\ComunBundle\Entity\CertiOpcion;
 use Link\ComunBundle\Entity\CertiEmpresa;
 use Link\ComunBundle\Entity\CertiPreguntaOpcion;
+use Link\ComunBundle\Entity\CertiPruebaLog;
 use Link\ComunBundle\Entity\CertiPreguntaAsociacion;
 use Link\ComunBundle\Entity\AdminCorreo;
 use Link\ComunBundle\Entity\AdminUsuario;
@@ -232,6 +233,39 @@ class Functions
         $text = preg_replace(array_keys($patron),array_values($patron),$text);
         return $text;
     }
+
+  //verifica si existen pruebas cargadas para un programa/curso y que el usuario las aprobaras todas
+  public function notasDisponibles($pagina_id,$usuario_id,$yml){
+    $em = $this->em;
+    $buscar = array($pagina_id);
+    $estructura = array($pagina_id);
+    $cn_pruebas = 0;
+    $cn_aprobadas = 0;
+    //obtener estructura del programa
+    while ($buscar!=NULL) {
+      $pag_id = array_pop($buscar);
+      $paginas = $em->getRepository('LinkComunBundle:CertiPagina')->findBy(array('pagina'=>$pag_id,'estatusContenido'=>$yml['parameters']['estatus_contenido']['activo']));
+      foreach ($paginas as $pagina) {
+        array_push($buscar,$pagina->getId());
+        array_push($estructura,$pagina->getId());
+      }
+
+    }
+    //obtener pruebas
+    foreach ($estructura as $pag_id) {
+      $prueba = $em->getRepository('LinkComunBundle:CertiPrueba')->findOneBy(array('pagina'=>$pag_id,'estatusContenido'=>$yml['parameters']['estatus_contenido']['activo']));
+      if ($prueba != NULL) {
+         $cn_pruebas++;
+         $prueba_log = $em->getRepository('LinkComunBundle:CertiPruebaLog')->findOneBy(array('prueba'=>$prueba->getId(),'usuario'=>$usuario_id,'estado'=>$yml['parameters']['estado_prueba']['aprobado']));
+         if($prueba_log != NULL){
+          $cn_aprobadas++; 
+         }
+      }
+    }
+    return ($cn_pruebas > 0 && ($cn_pruebas == $cn_aprobadas ) )? 1:0;
+  }
+
+
 
   public function tipoDescripcion($tipoMensaje, $muro, $author)
     {
