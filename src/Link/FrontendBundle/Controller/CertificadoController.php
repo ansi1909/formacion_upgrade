@@ -200,7 +200,10 @@ class CertificadoController extends Controller
 
 		if ($programa_aprobado)
 		{
-
+            
+	        				
+		    $pagina_log = $em->getRepository('LinkComunBundle:CertiPaginaLog')->findOneBy(array('usuario' => $session->get('usuario')['id'],'pagina'=>$programa_id));
+		    
 	        if($session->get('empresa')['logo']!='')
 	        {
             	$file = $uploads['parameters']['folders']['dir_uploads'].$session->get('empresa')['logo'];
@@ -297,10 +300,10 @@ class CertificadoController extends Controller
 	                                    <span class='tituloPart'>".$this->get('translator')->trans('Programa').": <span>".$session->get('paginas')[$programa_id]['nombre']."</span></span>
 		                            </div>
 		                            <div class='row'>
-	                                    <span class='tituloPart'>".$this->get('translator')->trans('Inicio del programa').": <span>".$session->get('paginas')[$programa_id]['inicio']."</span></span>
+	                                    <span class='tituloPart'>".$this->get('translator')->trans('Inicio del programa').": <span>".$pagina_log->getFechaInicio()->format('d/m/Y')."</span></span>
 		                            </div>
 		                            <div class='row'>
-	                                    <span class='tituloPart'>".$this->get('translator')->trans('Fin del programa').": <span>".$session->get('paginas')[$programa_id]['vencimiento']."</span></span>
+	                                    <span class='tituloPart'>".$this->get('translator')->trans('Fin del programa').": <span>".$pagina_log->getFechaFin()->format('d/m/Y')."</span></span>
 		                            </div>
 		                        </div>
 			                </div>
