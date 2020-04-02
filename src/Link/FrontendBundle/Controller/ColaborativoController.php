@@ -140,6 +140,12 @@ class ColaborativoController extends Controller
         
         $session = new Session();
         $f = $this->get('funciones');
+        if (!$session->get('iniFront') || $f->sesionBloqueda($session->get('sesion_id')))
+        {
+            return $this->redirectToRoute('_authExceptionEmpresa', array('tipo' => 'sesion'));
+        }
+        $f->setRequest($session->get('sesion_id'));
+
         $yml = Yaml::parse(file_get_contents($this->get('kernel')->getRootDir().'/config/parametros.yml'));
         $em = $this->getDoctrine()->getManager();
 
@@ -215,6 +221,12 @@ class ColaborativoController extends Controller
         $session = new Session();
         $em = $this->getDoctrine()->getManager();
         $f = $this->get('funciones');
+        if (!$session->get('iniFront') || $f->sesionBloqueda($session->get('sesion_id')))
+        {
+            return $this->redirectToRoute('_authExceptionEmpresa', array('tipo' => 'sesion'));
+        }
+        $f->setRequest($session->get('sesion_id'));
+
         
         $foro_id = $request->query->get('foro_id');
 
@@ -269,6 +281,13 @@ class ColaborativoController extends Controller
         
         $session = new Session();
         $em = $this->getDoctrine()->getManager();
+        $f = $this->get('funciones');
+        if (!$session->get('iniFront') || $f->sesionBloqueda($session->get('sesion_id')))
+        {
+            return $this->redirectToRoute('_authExceptionEmpresa', array('tipo' => 'sesion'));
+        }
+        $f->setRequest($session->get('sesion_id'));
+
         $empresa_id = (integer) $session->get('empresa')['id'];
         $term = strtolower($request->query->get('term'));
         $pagina_id = (integer)$request->query->get('pagina_id');
@@ -300,7 +319,6 @@ class ColaborativoController extends Controller
         $session = new Session();
         $f = $this->get('funciones');
         $yml = Yaml::parse(file_get_contents($this->get('kernel')->getRootDir().'/config/parametros.yml'));
-        
         if (!$session->get('iniFront') || $f->sesionBloqueda($session->get('sesion_id')))
         {
             return $this->redirectToRoute('_authExceptionEmpresa', array('tipo' => 'sesion'));
@@ -350,6 +368,12 @@ class ColaborativoController extends Controller
         $em = $this->getDoctrine()->getManager();
         $f = $this->get('funciones');
         $yml = Yaml::parse(file_get_contents($this->get('kernel')->getRootDir().'/config/parametros.yml'));
+        if (!$session->get('iniFront') || $f->sesionBloqueda($session->get('sesion_id')))
+        {
+            return $this->redirectToRoute('_authExceptionEmpresa', array('tipo' => 'sesion'));
+        }
+        $f->setRequest($session->get('sesion_id'));
+
 
         $foro_id = $request->request->get('foro_id');
 
@@ -414,6 +438,12 @@ class ColaborativoController extends Controller
         $yml = Yaml::parse(file_get_contents($this->get('kernel')->getRootDir().'/config/parametros.yml'));
         $em = $this->getDoctrine()->getManager();
         $html = '';
+        if (!$session->get('iniFront') || $f->sesionBloqueda($session->get('sesion_id')))
+        {
+            return $this->redirectToRoute('_authExceptionEmpresa', array('tipo' => 'sesion'));
+        }
+        $f->setRequest($session->get('sesion_id'));
+
         // Recepción de parámetros del request
         $foro_id = $request->request->get('foro_id');//id del foro que se desea responder
         $mensaje = $request->request->get('mensaje');
@@ -437,17 +467,19 @@ class ColaborativoController extends Controller
         $em->persist($foro);
         $em->flush();
 
+
+
         // Generación de alarmas
         $background = $this->container->getParameter('folders')['uploads'].'recursos/decorate_certificado.png';
         $logo = $this->container->getParameter('folders')['uploads'].'recursos/logo_formacion_smart.png';
         $footer = $this->container->getParameter('folders')['uploads'].'recursos/footer.bg.form.png';
         $link_plataforma = $this->container->getParameter('link_plataforma').$foro_main->getUsuario()->getEmpresa()->getId();
-        $descripcion = $usuario->getNombre().' '.$usuario->getApellido().' '.$this->get('translator')->trans('respondió a tu publicación en el espacio colaborativo de').': '.$foro_main->getPagina()->getCategoria()->getNombre().' '.$foro_main->getPagina()->getNombre().'.';
+        $descripcion = $usuario->getNombre().' '.$usuario->getApellido().' '.$this->get('translator')->trans('comento tu publicación en el espacio colaborativo de').': '.$foro_main->getPagina()->getCategoria()->getNombre().' '.$foro_main->getPagina()->getNombre().'.';
         
         if( $foro_padre->getUsuario()->getId() != $session->get('usuario')['id'] ){
                  $f->newAlarm($yml['parameters']['tipo_alarma']['espacio_colaborativo'], $descripcion, $foro_padre->getUsuario(), $foro_main->getId());
                 //alarmas tutores
-                $descripcion = $usuario->getNombre().' '.$usuario->getApellido().' '.$this->get('translator')->trans('respondió una publicación en el espacio colaborativo de').': '.$foro_main->getPagina()->getCategoria()->getNombre().' '.$foro_main->getPagina()->getNombre().'.';
+                $descripcion = $usuario->getNombre().' '.$usuario->getApellido().' '.$this->get('translator')->trans('comento una publicación en el espacio colaborativo de').': '.$foro_main->getPagina()->getCategoria()->getNombre().' '.$foro_main->getPagina()->getNombre().'.';
                 $tutores = $f->getTutoresEmpresa($session->get('empresa')['id'],$yml);
                 foreach ($tutores as $tutor) {
                     if(((integer)$tutor->getId() != (integer)$foro_padre->getUsuario()->getId()) AND (integer) $tutor->getId() != $session->get('usuario')['id']){
@@ -457,15 +489,21 @@ class ColaborativoController extends Controller
                 }
 
             }
-
+            
+            $encabezadoUsuario = $this->get('translator')->trans('El usuario').' '.$usuario->getNombre().' '.$usuario->getApellido().' '.$this->get('translator')->trans('comento lo siguiente').': ';
             $correo_tutor = (!$foro_main->getUsuario()->getCorreoPersonal() || $foro_main->getUsuario()->getCorreoPersonal() == '') ? (!$foro_main->getUsuario()->getCorreoCorporativo() || $foro_main->getUsuario()->getCorreoCorporativo() == '') ? 0 : $foro_main->getUsuario()->getCorreoCorporativo() : $foro_main->getUsuario()->getCorreoPersonal();
             if ($correo_tutor && !$session->get('usuario')['tutor']) //se envia correo al tutor si quien responde no es el tutor
             {
                 $parametros_correo = array('twig' => 'LinkFrontendBundle:Colaborativo:emailColaborativo.html.twig',
                                            'datos' => array('mensaje' => $mensaje,
+                                                            'nombre' =>$foro_main->getUsuario()->getNombre().' '.$foro_main->getUsuario()->getApellido(),
                                                             'background' => $background,
+                                                            'empresa'=>$session->get('empresa')['nombre'],
+                                                            'nombrePrograma'=>$foro_main->getPagina()->getNombre(),
+                                                            'categoria'=>$foro_main->getPagina()->getCategoria()->getNombre(),
                                                             'logo' => $logo,
                                                             'footer' => $footer,
+                                                            'encabezadoUsuario'=>$encabezadoUsuario,
                                                             'link_plataforma' => $link_plataforma),
                                            'asunto' => 'Formación Smart: '.$descripcion,
                                            'remitente' => $this->container->getParameter('mailer_user'),
@@ -556,9 +594,16 @@ class ColaborativoController extends Controller
     {
         
         $session = new Session();
+        $f = $this->get('funciones');
         $em = $this->getDoctrine()->getManager();
         $yml = Yaml::parse(file_get_contents($this->get('kernel')->getRootDir().'/config/parametros.yml'));
-        $f = $this->get('funciones');
+        if (!$session->get('iniFront') || $f->sesionBloqueda($session->get('sesion_id')))
+        {
+            return $this->redirectToRoute('_authExceptionEmpresa', array('tipo' => 'sesion'));
+        }
+        $f->setRequest($session->get('sesion_id'));
+
+        
         
         $foro_id = $request->query->get('foro_id');
         $offset = $request->query->get('offset');
@@ -670,6 +715,13 @@ class ColaborativoController extends Controller
         
         $session = new Session();
         $em = $this->getDoctrine()->getManager();
+        $f = $this->get('funciones');
+        if (!$session->get('iniFront') || $f->sesionBloqueda($session->get('sesion_id')))
+        {
+            return $this->redirectToRoute('_authExceptionEmpresa', array('tipo' => 'sesion'));
+        }
+        $f->setRequest($session->get('sesion_id'));
+
         
         $foro_id = $request->request->get('upload_foro_id');
         $pagina_id = $request->request->get('upload_pagina_id');
@@ -724,6 +776,12 @@ class ColaborativoController extends Controller
         $em = $this->getDoctrine()->getManager();
         $html = '';
         $generar_alarma = 1;
+        if (!$session->get('iniFront') || $f->sesionBloqueda($session->get('sesion_id')))
+        {
+            return $this->redirectToRoute('_authExceptionEmpresa', array('tipo' => 'sesion'));
+        }
+        $f->setRequest($session->get('sesion_id'));
+
 
         // Recepción de parámetros del request
         $foro_id = $request->request->get('foro_id');
@@ -758,7 +816,8 @@ class ColaborativoController extends Controller
         $logo = $this->container->getParameter('folders')['uploads'].'recursos/logo_formacion_smart.png';
         $footer = $this->container->getParameter('folders')['uploads'].'recursos/footer.bg.form.png';
         $link_plataforma = $this->container->getParameter('link_plataforma').$foro->getUsuario()->getEmpresa()->getId();
-        $descripcion_alarma = $usuario->getNombre().' '.$usuario->getApellido().' '.$this->get('translator')->trans('ha subido un archivo en el espacio colaborativo de').': '.$foro->getPagina()->getCategoria()->getNombre().' '.$foro->getPagina()->getNombre().'.';
+        $descripcion_alarma =$this->get('translator')->trans('Nuevo archivo en el espacio colaborativo de').' '.$foro->getPagina()->getCategoria()->getNombre().' '.$foro->getPagina()->getNombre().'.';
+        $mensaje = "<BR>".$this->get('translator')->trans('Para disponer del archivo accede a').':  '.$link_plataforma;
         $tipo_alarma = $yml['parameters']['tipo_alarma']['aporte_espacio_colaborativo'];
         // Generación de alarmas
         if ($foro->getUsuario()->getId() != $usuario->getId() && $generar_alarma) //cuando un participante monta un archivo
@@ -766,16 +825,21 @@ class ColaborativoController extends Controller
             //alarma al tutor
 
             $f->newAlarm($tipo_alarma,$descripcion_alarma, $foro->getUsuario(), $foro->getId());
-
+            
             $correo_tutor = (!$foro->getUsuario()->getCorreoPersonal() || $foro->getUsuario()->getCorreoPersonal() == '') ? (!$foro->getUsuario()->getCorreoCorporativo() || $foro->getUsuario()->getCorreoCorporativo() == '') ? 0 : $foro->getUsuario()->getCorreoCorporativo() : $foro->getUsuario()->getCorreoPersonal();
             if ($correo_tutor)
-            {
+            {   
+                $encabezadoUsuario = 'El usuario '.$usuario->getNombre().' '.$usuario->getApellido().', compartió el archivo: '.$archivo_arr['descripcion'];
                 $parametros_correo = array('twig' => 'LinkFrontendBundle:Colaborativo:emailArchivo.html.twig',
-                                           'datos' => array('descripcion' => $descripcion,
-                                                            'descarga' => $href,
+                                           'datos' => array( 'mensaje' => $mensaje,
+                                                            'nombre' =>$foro->getUsuario()->getNombre().' '.$foro->getUsuario()->getApellido(),
                                                             'background' => $background,
+                                                            'empresa'=>$session->get('empresa')['nombre'],
+                                                            'nombrePrograma'=>$foro->getPagina()->getNombre(),
+                                                            'categoria'=>$foro->getPagina()->getCategoria()->getNombre(),
                                                             'logo' => $logo,
                                                             'footer' => $footer,
+                                                            'encabezadoUsuario'=>$encabezadoUsuario,
                                                             'link_plataforma' => $link_plataforma),
                                            'asunto' => 'Formación Smart: '.$descripcion_alarma,
                                            'remitente' => $this->container->getParameter('mailer_user'),
@@ -857,8 +921,15 @@ class ColaborativoController extends Controller
     public function ajaxDeleteFileAction(Request $request)
     {
 
+        $session = new Session();
         $em = $this->getDoctrine()->getManager();
         $f = $this->get('funciones');
+        if (!$session->get('iniFront') || $f->sesionBloqueda($session->get('sesion_id')))
+        {
+            return $this->redirectToRoute('_authExceptionEmpresa', array('tipo' => 'sesion'));
+        }
+        $f->setRequest($session->get('sesion_id'));
+
         $yml = Yaml::parse(file_get_contents($this->get('kernel')->getRootDir().'/config/parametros.yml'));
 
         $archivo_id = $request->request->get('archivo_id');
