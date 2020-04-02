@@ -15,6 +15,7 @@ Activar para ordenar la columna de manera ascendente: Activar para ordenar la co
 Activar para ordenar la columna de manera descendente: Activar para ordenar la columna de manera descendente
 Activar webinar: Activar webinar
 Actividad en el muro: Actividad en el muro
+Actividad en el espacio colaborativo: Actividad en el espacio colaborativo
 Actividades en curso: Actividades en curso
 Actividades Recientes: Actividades Recientes
 Activo: Activo
@@ -127,6 +128,9 @@ Columna: Columna
 ¡Comencemos! Elige tu programa: ¡Comencemos! Elige tu programa
 Comentar: Comentar
 Comenzar: Comenzar
+comento lo siguiente: comento lo siguiente
+comento una publicación en el espacio colaborativo de: comento una publicación en el espacio colaborativo de
+comento tu publicación en el espacio colaborativo de: comento tu publicación en el espacio colaborativo de
 Comentario: Comentario
 Comentario seleccionado: Comentario seleccionado
 comentarios: comentarios
@@ -337,6 +341,7 @@ El título debe ser mínimo de 3 caracteres.: El título debe ser mínimo de 3 c
 El tutor virtual aún no ha creado un tema de discusión: El tutor virtual aún no ha creado un tema de discusión
 El tutorial ha sido almacenado con éxito: El tutorial ha sido almacenado con éxito
 El Url proporcionado no es correcto: El Url proporcionado no es correcto
+El usuario: El usuario
 El usuario es requerido: El usuario es requerido
 El Usuario no pertenece a la empresa. Contacte al administrador del sistema.: El Usuario no pertenece a la empresa. Contacte al administrador del sistema.
 El valor de la pregunta debe ser un valor numérico.: El valor de la pregunta debe ser un valor numérico.
@@ -431,6 +436,7 @@ Evaluaciones por módulo: Evaluaciones por módulo
 Evento guardado: Evento guardado
 Evento no guardado: Evento no guardado
 Excelente: Excelente
+Existe actividad en el espacio colaborativo, a continuación te presento los detalles: Existe actividad en el espacio colaborativo, a continuación te presento los detalles
 Existe actividad en uno de los muros monitoreados por ti, a continuación te presento los detalles: Existe actividad en uno de los muros monitoreados por ti, a continuación te presento los detalles
 Experimenta la potencialidad de la capacitación online: Experimenta la potencialidad de la capacitación online
 Extensiones aceptadas: Extensiones aceptadas
@@ -748,6 +754,7 @@ Páginas por niveles: Páginas por niveles
 Panel de acceso: Panel de acceso
 Paso: Paso
 País: País
+Para disponer del archivo accede a: Para disponer del archivo accede a
 Para una correcta visualización de los recursos disponbles en: Para una correcta visualización de los recursos disponbles en
 Para enviar la notificación inmediatamente seleccione la fecha de hoy: Para enviar la notificación inmediatamente seleccione la fecha de hoy
 Para ver el detalle del evento puede entrar al siguiente enlace: Para ver el detalle del evento puede entrar al siguiente enlace

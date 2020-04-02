@@ -15,6 +15,7 @@ Activar para ordenar la columna de manera ascendente: Enable to order column asc
 Activar para ordenar la columna de manera descendente: Enable to order column descending
 Activar webinar: Activate webinar
 Actividad en el muro: Wall activity
+Actividad en el espacio colaborativo: Activity in the collaborative space
 Actividades en curso: Activities in progress
 Actividades Recientes: Recents Activities
 Activo: Active
@@ -127,6 +128,9 @@ Columna: Column
 ¡Comencemos! Elige tu programa: Let's start! Choose your program
 Comentar: Comment
 Comenzar: Start
+comento lo siguiente: comment the following
+comento una publicación en el espacio colaborativo de: comment on a publication in the collaborative space of
+comento tu publicación en el espacio colaborativo de: comment your publication in the collaborative space of
 Comentario: Comment
 Comentario seleccionado: Selected comment
 comentarios: comments
@@ -337,6 +341,7 @@ El título debe ser mínimo de 3 caracteres.: The title must be at least 3 chara
 El tutor virtual aún no ha creado un tema de discusión: Virtual tutor has not yet created a topic of discussion
 El tutorial ha sido almacenado con éxito: The tutorial has been stored successfully
 El Url proporcionado no es correcto: Url given is incorrect
+El usuario: The user
 El usuario es requerido: Username is required
 El Usuario no pertenece a la empresa. Contacte al administrador del sistema.: The User does not belong to the company. Contact the system administrator.
 El valor de la pregunta debe ser un valor numérico.: Question weighing must be a numeric value.
@@ -431,6 +436,7 @@ Evaluaciones por módulo: Evaluations per module
 Evento guardado: Saved event
 Evento no guardado: Unsaved event
 Excelente: Excelent
+Existe actividad en el espacio colaborativo, a continuación te presento los detalles: There is activity in the collaborative space, below I present the details
 Existe actividad en uno de los muros monitoreados por ti, a continuación te presento los detalles: There is an activity in one of the walls monitored by you, these are the details
 Experimenta la potencialidad de la capacitación online: Experience the potential of online training
 Extensiones aceptadas: Allowed extensions
@@ -748,6 +754,7 @@ Páginas por niveles: Pages by levels
 Panel de acceso: Login
 Paso: Step
 País: Country
+Para disponer del archivo accede a: To have the file go to
 Para una correcta visualización de los recursos disponbles en : For a correct visualization of the resources available in 
 Para enviar la notificación inmediatamente seleccione la fecha de hoy: To send the notification immediately select today
 Para ver el detalle del evento puede entrar al siguiente enlace: To see the detail of the event you can enter the following link
