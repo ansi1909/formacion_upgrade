@@ -11,9 +11,9 @@ $fp = fopen($file, 'r');
 $host="127.0.0.1";
 $port="5432";
 
-$user="quality_quality";
-$pass="noPS2c$k%O!0";
-$dbname="quality_formacion";
+$user="smrtfrmc_smart";
+$pass="oIAk4%@o)MdD%O!0";
+$dbname="smrtfrmc_formacion";
 
 
 while (!feof($fp))
@@ -132,10 +132,10 @@ else {
 ?>
 	<!DOCTYPE html>
 	<html lang="es">
-	    <head>
-	        <meta charset="UTF-8">
+	    <head><meta charset="gb18030">
+	        
 	        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-	        <meta http-equiv="Content-type"  content="text/html">
+	        
 	        <link href="https://fonts.googleapis.com/css?family=Merriweather:400,700|Open+Sans:300,400,400i,600,600i,700|Roboto:300,400,500,700" rel="stylesheet">
 	        <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 	        <link rel="stylesheet" href="<?php echo $url_web ?>front/base_styles/css/bootstrap/bootstrap.css">
