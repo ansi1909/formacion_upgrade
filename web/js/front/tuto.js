@@ -20,6 +20,8 @@ function startIntro(introSteps, hasInitialModal = false, isAReview = false) {
     showStepNumbers : false,
     steps: introSteps,
     scrollToElement: true,
+    tooltipPosition: 'auto',
+    positionPrecedence: ['left', 'right', 'top', 'bottom'],
     disableInteraction: isAReview ? true : false
   });
 
