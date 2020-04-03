@@ -13,6 +13,7 @@ $(document).ready(function() {
 		        data: $("#form").serialize(),
 		        dataType: "json",
 		        success: function(data) {
+		        	console.log(data);
 		        	if (data.html =='') 
 		        	{
 			        	$('#label-correo').html(data.correo);
@@ -20,7 +21,9 @@ $(document).ready(function() {
 			        	$('#label-fn').html(data.fechaNacimiento);
 			        	$('.boton').show();
 			            $('#wait_profile').hide(1000);
-			            $( ".close" ).trigger( "click" );
+			            $('#correo_exito').show();
+			            setTimeout(function(){ $('#correo_exito').hide(); }, 3000);
+			            //$( ".close" ).trigger( "click" );
 
 			        }else
 			        {

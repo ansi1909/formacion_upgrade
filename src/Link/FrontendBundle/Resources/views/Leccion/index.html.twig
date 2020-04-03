@@ -191,7 +191,7 @@ bg-white
          <form class="mt-4 mb-6" id="form-comment" method="POST" action="{{ path('_ajaxEnviarComentario') }}">
             <div class="form-group">
                <div class="d-flex align-items-start">
-                 {% set img_usuario =  asset('front/assets/img/user-default.png') %}
+                  {% set img_usuario = app.session.get('usuario').foto is defined ? app.session.get('usuario').foto is not null and app.session.get('usuario').foto != '' ? uploads~app.session.get('usuario').foto : asset('front/assets/img/user-default.png') : asset('front/assets/img/user-default.png') %}
                   <img class="img-fluid avatar-img mr-3" src="{{ img_usuario }}" alt="">
                   <textarea class="form-control" id="comentario" name="comentario" rows="3" maxlength="1000" placeholder="{{ 'Escriba su comentario'|trans }}..."></textarea>
                </div>
