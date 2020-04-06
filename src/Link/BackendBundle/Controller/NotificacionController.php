@@ -81,9 +81,20 @@ class NotificacionController extends Controller
     public function ajaxNotificacionesAction(Request $request)
     {
 
-        $session = new Session();
         $em = $this->getDoctrine()->getManager();
         $f = $this->get('funciones');
+        $session = new Session();
+        if (!$session->get('ini') || $f->sesionBloqueda($session->get('sesion_id')))
+        {
+            return $this->redirectToRoute('_loginAdmin');
+        }
+        else {
+            if (!$f->accesoRoles($session->get('usuario')['roles'], $session->get('app_id')))
+            {
+                return $this->redirectToRoute('_authException');
+            }
+        }
+        $f->setRequest($session->get('sesion_id'));
 
         $empresa_id = $request->query->get('empresa_id');
 
@@ -295,6 +306,19 @@ class NotificacionController extends Controller
 
     public function failedEmails($notificaciones){
         $em = $this->getDoctrine()->getManager();
+        $session = new Session();
+        $f = $this->get('funciones');
+        if (!$session->get('ini') || $f->sesionBloqueda($session->get('sesion_id')))
+        {
+            return $this->redirectToRoute('_loginAdmin');
+        }
+        else {
+            if (!$f->accesoRoles($session->get('usuario')['roles'], $session->get('app_id')))
+            {
+                return $this->redirectToRoute('_authException');
+            }
+        }
+        $f->setRequest($session->get('sesion_id'));
         $notificacionesId = array ();
         foreach ($notificaciones as $notificacion) {
             $chijos = 0;
@@ -330,6 +354,18 @@ class NotificacionController extends Controller
             $yml = Yaml::parse(file_get_contents($this->get('kernel')->getRootDir().'/config/parameters.yml'));
             $em = $this->getDoctrine()->getManager();
             $f = $this->get('funciones');
+            $session = new Session();
+            if (!$session->get('ini') || $f->sesionBloqueda($session->get('sesion_id')))
+            {
+                return $this->redirectToRoute('_loginAdmin');
+            }
+            else {
+                if (!$f->accesoRoles($session->get('usuario')['roles'], $session->get('app_id')))
+                {
+                    return $this->redirectToRoute('_authException');
+                }
+            }
+            $f->setRequest($session->get('sesion_id'));
             $npId = (int)$request->request->get('notificacion_id');
             $ids = array($npId);
             $np = $this->getDoctrine()->getRepository('LinkComunBundle:AdminNotificacionProgramada')->find($npId);
@@ -363,6 +399,18 @@ class NotificacionController extends Controller
         
         $em = $this->getDoctrine()->getManager();
         $f = $this->get('funciones');
+        $session = new Session();
+        if (!$session->get('ini') || $f->sesionBloqueda($session->get('sesion_id')))
+        {
+            return $this->redirectToRoute('_loginAdmin');
+        }
+        else {
+            if (!$f->accesoRoles($session->get('usuario')['roles'], $session->get('app_id')))
+            {
+                return $this->redirectToRoute('_authException');
+            }
+        }
+        $f->setRequest($session->get('sesion_id'));
         $notificacion_id = $request->query->get('notificacion_id');
 
         $notificacion = $this->getDoctrine()->getRepository('LinkComunBundle:AdminNotificacion')->find($notificacion_id);
@@ -391,6 +439,18 @@ class NotificacionController extends Controller
         
         $em = $this->getDoctrine()->getManager();
         $f = $this->get('funciones');
+        $session = new Session();
+        if (!$session->get('ini') || $f->sesionBloqueda($session->get('sesion_id')))
+        {
+            return $this->redirectToRoute('_loginAdmin');
+        }
+        else {
+            if (!$f->accesoRoles($session->get('usuario')['roles'], $session->get('app_id')))
+            {
+                return $this->redirectToRoute('_authException');
+            }
+        }
+        $f->setRequest($session->get('sesion_id'));
         $yml = Yaml::parse(file_get_contents($this->get('kernel')->getRootDir().'/config/parametros.yml'));
 
         $notificacion_programada = $this->getDoctrine()->getRepository('LinkComunBundle:AdminNotificacionProgramada')->find($notificacion_programada_id);
@@ -962,7 +1022,19 @@ class NotificacionController extends Controller
         
         $em = $this->getDoctrine()->getManager();
         $f = $this->get('funciones');
-        $yml = Yaml::parse(file_get_contents($this->get('kernel')->getRootDir().'/config/parametros.yml'));
+        $yml = Yaml::parse(file_get_contents($this->get('kernel')->getRootDir().'/config/parametros.yml'));        
+        $session = new Session();
+        if (!$session->get('ini') || $f->sesionBloqueda($session->get('sesion_id')))
+        {
+            return $this->redirectToRoute('_loginAdmin');
+        }
+        else {
+            if (!$f->accesoRoles($session->get('usuario')['roles'], $session->get('app_id')))
+            {
+                return $this->redirectToRoute('_authException');
+            }
+        }
+        $f->setRequest($session->get('sesion_id'));
 
         $tipo_destino_id = $request->query->get('tipo_destino_id');
         $notificacion_id = $request->query->get('notificacion_id');
@@ -1148,11 +1220,11 @@ class NotificacionController extends Controller
     public function showNotificacionProgramadaAction(Request $request, $notificacion_programada_id)
     {
                 
-        $session = new Session();
+        
         $f = $this->get('funciones');
         $em = $this->getDoctrine()->getManager();
         $yml = Yaml::parse(file_get_contents($this->get('kernel')->getRootDir().'/config/parametros.yml'));
-        
+        $session = new Session();
         if (!$session->get('ini') || $f->sesionBloqueda($session->get('sesion_id')))
         {
             return $this->redirectToRoute('_loginAdmin');
