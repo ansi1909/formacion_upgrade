@@ -15,6 +15,7 @@ use Doctrine\ORM\EntityManager;
 use Symfony\Component\Yaml\Yaml;
 use Link\ComunBundle\Entity\AdminCorreo;
 
+
 class UsersScheduledCommand extends ContainerAwareCommand
 {
     protected function configure()
@@ -37,6 +38,7 @@ class UsersScheduledCommand extends ContainerAwareCommand
         $query->bindValue(':pfecha', $hoy, \PDO::PARAM_STR);
         $query->execute();
         $r = $query->fetchAll();
+        $notificaciones_id = array();
 
         //error_log('-------------------CRON JOB DEL DIA '.date('d/m/Y H:i').'---------------------------------------------------');
         $output->writeln('CANTIDAD: '.count($r));
@@ -95,6 +97,7 @@ class UsersScheduledCommand extends ContainerAwareCommand
                                                'destinatario' => $correo,
                                                'mailer' => 'tutor_mailer');
                     $ok = $f->sendEmail($parametros_correo);
+                    //$ok = 1;
                     if ($ok)
                     {
 
@@ -102,12 +105,17 @@ class UsersScheduledCommand extends ContainerAwareCommand
 
                         // Si es una notificación para un grupo de participantes, se marca como enviado
                         $notificacion_programada = $em->getRepository('LinkComunBundle:AdminNotificacionProgramada')->find($np_id);
-
-                        if ($notificacion_programada->getTipoDestino()->getId() == $yml2['parameters']['tipo_destino']['grupo'])
+                        $tipo_destino_id = $notificacion_programada->getTipoDestino()->getId();
+                         if ($notificacion_programada->getTipoDestino()->getId() == $yml2['parameters']['tipo_destino']['grupo'] || $notificacion_programada->getTipoDestino()->getId() == $yml2['parameters']['tipo_destino']['programa'] || $notificacion_programada->getTipoDestino()->getId() == $yml2['parameters']['tipo_destino']['aprobados']|| $notificacion_programada->getTipoDestino()->getId() == $yml2['parameters']['tipo_destino']['en_curso'])
                         {
                             $notificacion_programada->setEnviado(true);
                             $em->persist($notificacion_programada);
                             $em->flush();
+                            array_push($notificaciones_id,$np_id);
+                        }else{
+                            if(count($notificaciones_id) == 0){
+                                array_push($notificaciones_id, $np_id);
+                            }
                         }
 
                         $output->writeln($j.' .----------------------------------------------------------------------------------------------');
@@ -149,22 +157,41 @@ class UsersScheduledCommand extends ContainerAwareCommand
         // Si se enviaron todos los correos, se coloca la notificación como enviada
         if ($np_id)
         {
-
-            $notificacion_programada = $em->getRepository('LinkComunBundle:AdminNotificacionProgramada')->find($np_id);
-
-            $query = $em->createQuery('SELECT COUNT(c.id) FROM LinkComunBundle:AdminCorreo c 
-                                        WHERE c.tipoCorreo = :notificacion_programada 
-                                        AND c.entidadId = :np_id')
-                        ->setParameters(array('notificacion_programada' => $yml2['parameters']['tipo_correo']['notificacion_programada'],
-                                              'np_id' => $np_id));
-            $emails = $query->getSingleScalarResult();
-
-            if ($notificacion_programada->getTipoDestino()->getId() != $yml2['parameters']['tipo_destino']['grupo'] && $emails >= count($r))
-            {
-                $notificacion_programada->setEnviado(true);
-                $em->persist($notificacion_programada);
-                $em->flush();
+            if($tipo_destino_id == $yml2['parameters']['tipo_destino']['todos'] || $tipo_destino_id == $yml2['parameters']['tipo_destino']['nivel'] ||
+                       $tipo_destino_id == $yml2['parameters']['tipo_destino']['no_ingresado'] || $tipo_destino_id == $yml2['parameters']['tipo_destino']['no_ingresado_programa']){
+                           $np_main = $em->getRepository('LinkComunBundle:AdminNotificacionProgramada')->find($np_id);
+            }else{
+                     $np_hija = $em->getRepository('LinkComunBundle:AdminNotificacionProgramada')->find($np_id);
+                     $np_main = $em->getRepository('LinkComunBundle:AdminNotificacionProgramada')->find($np_hija->getGrupo());
+                           
             }
+             $query = $em->createQuery('SELECT COUNT(c.id) FROM LinkComunBundle:AdminCorreo c 
+                                                WHERE c.tipoCorreo = :notificacion_programada 
+                                                AND c.entidadId IN (:np_id)' )
+                                ->setParameters(array('notificacion_programada' => $yml2['parameters']['tipo_correo']['notificacion_programada'],
+                                                      'np_id' => $notificaciones_id));
+             $emails = $query->getSingleScalarResult();
+             if($emails == count($r)){
+                $np_main->setEnviado(true);
+                $em->persist($np_main);
+                $em->flush();
+             }
+                         
+            // $notificacion_programada = $em->getRepository('LinkComunBundle:AdminNotificacionProgramada')->find($np_id);
+
+            // $query = $em->createQuery('SELECT COUNT(c.id) FROM LinkComunBundle:AdminCorreo c 
+            //                             WHERE c.tipoCorreo = :notificacion_programada 
+            //                             AND c.entidadId = :np_id')
+            //             ->setParameters(array('notificacion_programada' => $yml2['parameters']['tipo_correo']['notificacion_programada'],
+            //                                   'np_id' => $np_id));
+            // $emails = $query->getSingleScalarResult();
+
+            // if ($notificacion_programada->getTipoDestino()->getId() != $yml2['parameters']['tipo_destino']['grupo'] && $emails >= count($r))
+            // {
+            //     $notificacion_programada->setEnviado(true);
+            //     $em->persist($notificacion_programada);
+            //     $em->flush();
+            // }
             
         }
 
