@@ -938,8 +938,8 @@ class NotificacionController extends Controller
                                                        'remitente_name' => $this->container->getParameter('mailer_user_tutor_name'),
                                                        'destinatario' => $correo,
                                                        'mailer' => 'tutor_mailer');
-                            //$ok = $f->sendEmail($parametros_correo);
-                            $ok = 1;
+                            $ok = $f->sendEmail($parametros_correo);
+                            //$ok = 1;
                             if ($ok)
                             {
 
