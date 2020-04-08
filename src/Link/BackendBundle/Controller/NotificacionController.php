@@ -81,9 +81,20 @@ class NotificacionController extends Controller
     public function ajaxNotificacionesAction(Request $request)
     {
 
-        $session = new Session();
         $em = $this->getDoctrine()->getManager();
         $f = $this->get('funciones');
+        $session = new Session();
+        if (!$session->get('ini') || $f->sesionBloqueda($session->get('sesion_id')))
+        {
+            return $this->redirectToRoute('_loginAdmin');
+        }
+        else {
+            if (!$f->accesoRoles($session->get('usuario')['roles'], $session->get('app_id')))
+            {
+                return $this->redirectToRoute('_authException');
+            }
+        }
+        $f->setRequest($session->get('sesion_id'));
 
         $empresa_id = $request->query->get('empresa_id');
 
@@ -295,6 +306,19 @@ class NotificacionController extends Controller
 
     public function failedEmails($notificaciones){
         $em = $this->getDoctrine()->getManager();
+        $session = new Session();
+        $f = $this->get('funciones');
+        if (!$session->get('ini') || $f->sesionBloqueda($session->get('sesion_id')))
+        {
+            return $this->redirectToRoute('_loginAdmin');
+        }
+        else {
+            if (!$f->accesoRoles($session->get('usuario')['roles'], $session->get('app_id')))
+            {
+                return $this->redirectToRoute('_authException');
+            }
+        }
+        $f->setRequest($session->get('sesion_id'));
         $notificacionesId = array ();
         foreach ($notificaciones as $notificacion) {
             $chijos = 0;
@@ -330,6 +354,18 @@ class NotificacionController extends Controller
             $yml = Yaml::parse(file_get_contents($this->get('kernel')->getRootDir().'/config/parameters.yml'));
             $em = $this->getDoctrine()->getManager();
             $f = $this->get('funciones');
+            $session = new Session();
+            if (!$session->get('ini') || $f->sesionBloqueda($session->get('sesion_id')))
+            {
+                return $this->redirectToRoute('_loginAdmin');
+            }
+            else {
+                if (!$f->accesoRoles($session->get('usuario')['roles'], $session->get('app_id')))
+                {
+                    return $this->redirectToRoute('_authException');
+                }
+            }
+            $f->setRequest($session->get('sesion_id'));
             $npId = (int)$request->request->get('notificacion_id');
             $ids = array($npId);
             $np = $this->getDoctrine()->getRepository('LinkComunBundle:AdminNotificacionProgramada')->find($npId);
@@ -363,6 +399,18 @@ class NotificacionController extends Controller
         
         $em = $this->getDoctrine()->getManager();
         $f = $this->get('funciones');
+        $session = new Session();
+        if (!$session->get('ini') || $f->sesionBloqueda($session->get('sesion_id')))
+        {
+            return $this->redirectToRoute('_loginAdmin');
+        }
+        else {
+            if (!$f->accesoRoles($session->get('usuario')['roles'], $session->get('app_id')))
+            {
+                return $this->redirectToRoute('_authException');
+            }
+        }
+        $f->setRequest($session->get('sesion_id'));
         $notificacion_id = $request->query->get('notificacion_id');
 
         $notificacion = $this->getDoctrine()->getRepository('LinkComunBundle:AdminNotificacion')->find($notificacion_id);
@@ -391,6 +439,18 @@ class NotificacionController extends Controller
         
         $em = $this->getDoctrine()->getManager();
         $f = $this->get('funciones');
+        $session = new Session();
+        if (!$session->get('ini') || $f->sesionBloqueda($session->get('sesion_id')))
+        {
+            return $this->redirectToRoute('_loginAdmin');
+        }
+        else {
+            if (!$f->accesoRoles($session->get('usuario')['roles'], $session->get('app_id')))
+            {
+                return $this->redirectToRoute('_authException');
+            }
+        }
+        $f->setRequest($session->get('sesion_id'));
         $yml = Yaml::parse(file_get_contents($this->get('kernel')->getRootDir().'/config/parametros.yml'));
 
         $notificacion_programada = $this->getDoctrine()->getRepository('LinkComunBundle:AdminNotificacionProgramada')->find($notificacion_programada_id);
@@ -821,6 +881,7 @@ class NotificacionController extends Controller
                 $query->bindValue(':pnotificacion_programada_id', $notificacion_programada->getId(), \PDO::PARAM_INT);
                 $query->execute();
                 $r = $query->fetchAll();
+                $notificaciones_id = array();
 
                 $background = $this->container->getParameter('folders')['uploads'].'recursos/decorate_certificado.png';
                 $logo = $this->container->getParameter('folders')['uploads'].'recursos/logo_formacion.png';
@@ -829,7 +890,8 @@ class NotificacionController extends Controller
                 $link_plataforma = $this->container->getParameter('link_plataforma').$notificacion_programada->getNotificacion()->getEmpresa()->getId();
                 $j = 0; // Contador de correos exitosos
                 $np_id = 0; // notificacion_programada_id
-
+                $ids = array();
+                $crr = array();
                 for ($i = 0; $i < count($r); $i++) 
                 {
 
@@ -845,7 +907,7 @@ class NotificacionController extends Controller
 
                     // Se descomponen los elementos del resultado
                     list($np_id, $usuario_id, $login, $clave, $nombre, $apellido, $correo, $asunto, $mensaje) = explode("__", $reg);
-
+                    array_push($ids,$i);
                     if ($correo != '')
                     {
 
@@ -857,7 +919,7 @@ class NotificacionController extends Controller
 
                         if (!$correo_bd)
                         {
-
+                            
                             // Sustitución de variables en el texto
                             $comodines = array('%%usuario%%', '%%clave%%', '%%nombre%%', '%%apellido%%');
                             $reemplazos = array($login, $clave, $nombre, $apellido);
@@ -877,7 +939,7 @@ class NotificacionController extends Controller
                                                        'destinatario' => $correo,
                                                        'mailer' => 'tutor_mailer');
                             $ok = $f->sendEmail($parametros_correo);
-
+                            //$ok = 1;
                             if ($ok)
                             {
 
@@ -885,12 +947,16 @@ class NotificacionController extends Controller
 
                                 // Si es una notificación para un grupo de participantes, se marca como enviado
                                 $r_np = $em->getRepository('LinkComunBundle:AdminNotificacionProgramada')->find($np_id);
-
-                                if ($r_np->getTipoDestino()->getId() == $yml['parameters']['tipo_destino']['grupo'])
+                                if ($r_np->getTipoDestino()->getId() == $yml['parameters']['tipo_destino']['grupo'] || $r_np->getTipoDestino()->getId() == $yml['parameters']['tipo_destino']['programa'] || $r_np->getTipoDestino()->getId() == $yml['parameters']['tipo_destino']['aprobados']|| $r_np->getTipoDestino()->getId() == $yml['parameters']['tipo_destino']['en_curso'])
                                 {
                                     $r_np->setEnviado(true);
                                     $em->persist($r_np);
                                     $em->flush();
+                                    array_push($notificaciones_id,$np_id);
+                                }else{
+                                    if(count($notificaciones_id) == 0){
+                                        array_push($notificaciones_id,$np_id);
+                                    }
                                 }
 
                                 // Registro del correo recien enviado
@@ -922,23 +988,30 @@ class NotificacionController extends Controller
 
                 // Si se enviaron todos los correos, se coloca la notificación como enviada
                 if ($np_id)
-                {
-
-                    $np_main = $em->getRepository('LinkComunBundle:AdminNotificacionProgramada')->find($np_id);
+                {    
+                    if($tipo_destino_id == $yml['parameters']['tipo_destino']['todos'] || $tipo_destino_id == $yml['parameters']['tipo_destino']['nivel'] ||
+                       $tipo_destino_id == $yml['parameters']['tipo_destino']['no_ingresado'] || $tipo_destino_id == $yml['parameters']['tipo_destino']['no_ingresado_programa']){
+                           $np_main = $em->getRepository('LinkComunBundle:AdminNotificacionProgramada')->find($np_id);
+                       }else{
+                           $np_hija = $em->getRepository('LinkComunBundle:AdminNotificacionProgramada')->find($np_id);
+                           $np_main = $em->getRepository('LinkComunBundle:AdminNotificacionProgramada')->find($np_hija->getGrupo());
+                           
+                       }
+                           
 
                     $query = $em->createQuery('SELECT COUNT(c.id) FROM LinkComunBundle:AdminCorreo c 
                                                 WHERE c.tipoCorreo = :notificacion_programada 
-                                                AND c.entidadId = :np_id')
+                                                AND c.entidadId IN (:np_id)' )
                                 ->setParameters(array('notificacion_programada' => $yml['parameters']['tipo_correo']['notificacion_programada'],
-                                                      'np_id' => $np_id));
+                                                      'np_id' => $notificaciones_id));
                     $emails = $query->getSingleScalarResult();
 
-                    if (!($np_main->getTipoDestino()->getId() == $yml['parameters']['tipo_destino']['todos'] || $np_main->getTipoDestino()->getId() == $yml['parameters']['tipo_destino']['nivel'] || $np_main->getTipoDestino()->getId() == $yml['parameters']['tipo_destino']['no_ingresado'] || $np_main->getTipoDestino()->getId() == $yml['parameters']['tipo_destino']['no_ingresado_programa']) && $emails >= count($r))
-                    {
+                    if($emails == count($r)){
                         $np_main->setEnviado(true);
                         $em->persist($np_main);
                         $em->flush();
                     }
+                    
                     
                 }
                 
@@ -962,7 +1035,19 @@ class NotificacionController extends Controller
         
         $em = $this->getDoctrine()->getManager();
         $f = $this->get('funciones');
-        $yml = Yaml::parse(file_get_contents($this->get('kernel')->getRootDir().'/config/parametros.yml'));
+        $yml = Yaml::parse(file_get_contents($this->get('kernel')->getRootDir().'/config/parametros.yml'));        
+        $session = new Session();
+        if (!$session->get('ini') || $f->sesionBloqueda($session->get('sesion_id')))
+        {
+            return $this->redirectToRoute('_loginAdmin');
+        }
+        else {
+            if (!$f->accesoRoles($session->get('usuario')['roles'], $session->get('app_id')))
+            {
+                return $this->redirectToRoute('_authException');
+            }
+        }
+        $f->setRequest($session->get('sesion_id'));
 
         $tipo_destino_id = $request->query->get('tipo_destino_id');
         $notificacion_id = $request->query->get('notificacion_id');
@@ -1040,9 +1125,11 @@ class NotificacionController extends Controller
                    ->leftJoin('ru.usuario', 'u')
                    ->andWhere('u.empresa = :empresa_id')
                    ->andWhere('ru.rol = :participante')
+                   ->andWhere('u.activo = :status')
                    ->orderBy('u.nombre', 'ASC')
                    ->setParameters(array('empresa_id' => $notificacion->getEmpresa()->getId(),
-                                         'participante' => $yml['parameters']['rol']['participante']));
+                                         'participante' => $yml['parameters']['rol']['participante'],
+                                         'status'=>TRUE));
                 $query = $qb->getQuery();
                 $rus = $query->getResult();
                 $valores = array();
@@ -1148,11 +1235,11 @@ class NotificacionController extends Controller
     public function showNotificacionProgramadaAction(Request $request, $notificacion_programada_id)
     {
                 
-        $session = new Session();
+        
         $f = $this->get('funciones');
         $em = $this->getDoctrine()->getManager();
         $yml = Yaml::parse(file_get_contents($this->get('kernel')->getRootDir().'/config/parametros.yml'));
-        
+        $session = new Session();
         if (!$session->get('ini') || $f->sesionBloqueda($session->get('sesion_id')))
         {
             return $this->redirectToRoute('_loginAdmin');

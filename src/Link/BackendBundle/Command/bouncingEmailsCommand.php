@@ -101,7 +101,6 @@ class bouncingEmailsCommand extends ContainerAwareCommand
       				$query->bindValue(':pcorreos', $parameters, \PDO::PARAM_STR);
       				$query->execute();
       				$r = $query->fetchAll();
-              $output->writeln($r);
               $cronJob->setMensaje('Successful execution, failed emails: '.$mailTypes['failed'].', Warnings: '.$mailTypes['warning']);
               }else{
                 $cronJob->setMensaje('Successful execution: NO EXISTEN CORREOS DEL TIPO: '.$yml['parameters']['fallidos']['from'].' EN EL BUZON');
