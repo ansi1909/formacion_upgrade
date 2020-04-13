@@ -180,6 +180,8 @@ class UsuarioController extends Controller
 
     }
 
+
+
     public function usuarioAction($usuario_id, Request $request){
 
         $session = new Session();
@@ -224,7 +226,6 @@ class UsuarioController extends Controller
             $usuario->setFechaRegistro(new \DateTime('now'));
             $empresa_asignada = $f->rolEmpresa($session->get('usuario')['id'], $session->get('usuario')['roles'], $yml);
         }
-
         // Lista de paises
         $qb = $em->createQueryBuilder();
         $qb->select('p')
@@ -342,6 +343,19 @@ class UsuarioController extends Controller
             }
             else {
                 $usuario->setFechaNacimiento(null);
+            }
+            
+            $query = $em->getConnection()->prepare("SELECT MAX(CAST(codigo AS INTEGER)) FROM admin_usuario where empresa_id = ".$empresa_id." AND codigo ~ '^\d+$'");
+            $query->execute();
+            $r = $query->fetchAll();
+            $max_codigo = $r[0]['max'] != '' ? $r[0]['max'] : 0;
+            $max_codigo++;
+            if ($usuario_id) {
+                if ($usuario->getCodigo()=='') {
+                    $usuario->setCodigo($max_codigo);
+                }
+            }else{
+                $usuario->setCodigo($max_codigo);
             }
             $usuario->setPais($pais);
             $usuario->setCampo1($campo1);
@@ -727,6 +741,19 @@ class UsuarioController extends Controller
             else {
                 $usuario->setFechaNacimiento(null);
             }
+
+            $query = $em->getConnection()->prepare("SELECT MAX(CAST(codigo AS INTEGER)) FROM admin_usuario where empresa_id = ".$empresa_id." AND codigo ~ '^\d+$'");
+            $query->execute();
+            $r = $query->fetchAll();
+            $max_codigo = $r[0]['max'] != '' ? $r[0]['max'] : 0;
+            $max_codigo++;
+            if ($usuario_id) {
+                if ($usuario->getCodigo()=='') {
+                    $usuario->setCodigo($max_codigo);
+                }
+            }else{
+                $usuario->setCodigo($max_codigo);
+            }
             $usuario->setPais($pais);
             $usuario->setCampo1($campo1);
             $usuario->setCampo2($campo2);
@@ -872,6 +899,7 @@ class UsuarioController extends Controller
                     $errores['general'] = $this->get('translator')->trans('El archivo debe tener al menos una fila con datos').'.';
                 }
                 else {
+					
 
                     //Se recorre toda la hoja excel desde la fila 2
                     $hay_data = 0;
@@ -882,7 +910,8 @@ class UsuarioController extends Controller
                     for ($row=2; $row<=$highestRow; ++$row) 
                     {
 
-                        $filas_analizadas++;
+                    
+					   $filas_analizadas++;
 
                         // Código del empleado
                         $col = 0;
@@ -999,22 +1028,40 @@ class UsuarioController extends Controller
                         $col_name = 'G';
                         $cell = $objWorksheet->getCellByColumnAndRow($col, $row);
                         $correo = trim($cell->getValue());
+						//print_r($correo);exit();   
                         if ($correo)
                         {
                             $hay_data++;
-                            if (!filter_var($correo, FILTER_VALIDATE_EMAIL))
-                            {
-                                $particulares[$this->get('translator')->trans('Línea').' '.$row][$this->get('translator')->trans('Columna').' '.$col_name] = $this->get('translator')->trans('Formato de correo inválido').'.';
-                            }
-                            else {
-                                if (in_array($correo, $correos))
+							//print_r(filter_var($correo,FILTER_VALIDATE_EMAIL));exit();   
+							if ( filter_var($correo,FILTER_VALIDATE_EMAIL))
+							{
+								 if (in_array($correo, $correos))
                                 {
                                     $particulares[$this->get('translator')->trans('Línea').' '.$row][$this->get('translator')->trans('Columna').' '.$col_name] = $this->get('translator')->trans('Correo electrónico repetido').'.';
                                 }
                                 else {
                                     $correos[] = $correo;
                                 }
-                            }
+							}else
+							{
+								$particulares[$this->get('translator')->trans('Línea').' '.$row][$this->get('translator')->trans('Columna').' '.$col_name] = $this->get('translator')->trans('Formato de correo inválido').'.';
+							}
+							
+							
+                            // if (!filter_var($correo,FILTER_VALIDATE_EMAIL))
+                            // {
+                                // $particulares[$this->get('translator')->trans('Línea').' '.$row][$this->get('translator')->trans('Columna').' '.$col_name] = $this->get('translator')->trans('Formato de correo inválido').'.';
+                            // }
+                            // else {
+								
+                                // if (in_array($correo, $correos))
+                                // {
+                                    // $particulares[$this->get('translator')->trans('Línea').' '.$row][$this->get('translator')->trans('Columna').' '.$col_name] = $this->get('translator')->trans('Correo electrónico repetido').'.';
+                                // }
+                                // else {
+                                    // $correos[] = $correo;
+                                // }
+                            // }
                         }
                         else {
                             $particulares[$this->get('translator')->trans('Línea').' '.$row][$this->get('translator')->trans('Columna').' '.$col_name] = $this->get('translator')->trans('Correo electrónico requerido').'.';
@@ -1175,7 +1222,7 @@ class UsuarioController extends Controller
         $empresa = $em->getRepository('LinkComunBundle:AdminEmpresa')->find($empresa_id);
 
         // Ultimó código entero para la empresa
-        $query = $em->getConnection()->prepare("SELECT MAX(codigo) FROM admin_usuario where empresa_id = ".$empresa_id." AND codigo ~ '^\d+$'");
+        $query = $em->getConnection()->prepare("SELECT MAX(CAST(codigo AS INTEGER)) FROM admin_usuario where empresa_id = ".$empresa_id." AND codigo ~ '^\d+$'");
         $query->execute();
         $r = $query->fetchAll();
         $max = $r[0]['max'] != '' ? $r[0]['max'] : 0;

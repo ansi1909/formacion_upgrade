@@ -117,7 +117,7 @@
     {% endif %}
     {% if e == 0 %}
         {% if errores.particulares is defined %}
-            {% if errores.particulares|length > 1 %}
+            {% if errores.particulares|length > 0 %}
                 {% set e = 1 %}
                 {% set e_particulares = 1 %}
                 {% set error_msg = 'El archivo presentó errores en alguna de sus líneas. Ver los detalles en el cuadro más abajo.'|trans %}

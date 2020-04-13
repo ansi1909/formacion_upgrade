@@ -168,6 +168,8 @@ class ReportesJTController extends Controller
                         $objWorksheet->getStyle("A$f:V$f")->getAlignment()->setWrapText(true);//ajustar texto a la columna
                         $objWorksheet->getRowDimension($f)->setRowHeight(35); // Altura de la fila
                 }
+
+                //return new response(var_dump($listado[2]));
                 
                 foreach ($listado as $participante)
                 {
@@ -213,10 +215,10 @@ class ReportesJTController extends Controller
                     $objWorksheet->setCellValue('P'.$row, $participante['materias']);
                     $objWorksheet->setCellValue('Q'.$row, $promedio);
                     $objWorksheet->setCellValue('R'.$row, $estatusProragama[$status]);
-                    $objWorksheet->setCellValue('S'.$row, $fecha_inicio->fecha);
-                    $objWorksheet->setCellValue('T'.$row, $fecha_inicio->hora);
-                    $objWorksheet->setCellValue('U'.$row, $fecha_fin->fecha);
-                    $objWorksheet->setCellValue('V'.$row, $fecha_fin->hora);
+                    $objWorksheet->setCellValue('S'.$row, ($status != 0)? $fecha_inicio->fecha:'');
+                    $objWorksheet->setCellValue('T'.$row, ($status!= 0)? $fecha_inicio->hora:'');
+                    $objWorksheet->setCellValue('U'.$row, ($status == 3)? $fecha_fin->fecha:'');
+                    $objWorksheet->setCellValue('V'.$row, ($status == 3)? $fecha_fin->hora:'');
 
                     $row++;
 
