@@ -94,14 +94,16 @@ class ReportesJTController extends Controller
     }
     public function ajaxUrlpaginaEmpresaAction(Request $request){
         $em = $this->getDoctrine()->getManager();
+        $yml = Yaml::parse(file_get_contents($this->get('kernel')->getRootDir().'/config/parametros.yml'));
         $fun = $this->get('funciones');
         $empresa_id = $request->request->get('empresa_id');
         $pagina_id = $request->request->get('pagina_id');
         $empresa = $this->getDoctrine()->getRepository('LinkComunBundle:AdminEmpresa')->find($empresa_id);
         $pagina_empresa = $this->getDoctrine()->getRepository('LinkComunBundle:CertiPaginaEmpresa')->findOneBy(array('empresa'=>$empresa_id,'pagina'=>$pagina_id));
 
+        $timeZone = $yml['parameters']['time_zone']['local'];
         $fecha_actual = new \DateTime('now');
-        $fecha_actual->setTimeZone(new \DateTimeZone($empresa->getZonaHoraria()->getNombre()));
+        $fecha_actual->setTimeZone(new \DateTimeZone($timeZone));
         $return = array('fecha_inicio'=>$pagina_empresa->getFechaInicio()->format('d/m/Y'),'fecha_fin'=> $fecha_actual->format('d/m/Y'));
 
         $return =  json_encode($return);

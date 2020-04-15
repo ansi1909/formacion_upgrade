@@ -108,7 +108,7 @@
                         </div>
                     {% else %}
 
-                        {% if check_filtro %}
+                        {% if check_filtro is defined and check_filtro== 1 %}
                             <div class="row">
                             <div class="col-sm-6 col-md-6 col-lg-6" >
                                 <label for="desde" class="col-sm-10 col-md-10 col-lg-10 col-form-label">{{ 'Desde'|trans }}</label>
