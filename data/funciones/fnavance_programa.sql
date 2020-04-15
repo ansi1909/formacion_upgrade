@@ -68,16 +68,19 @@ begin
     INNER JOIN admin_nivel n ON u.nivel_id = n.id 
     INNER JOIN certi_pagina_log cpl ON u.id = cpl.usuario_id
     WHERE u.empresa_id = pempresa_id 
-    AND cpl.fecha_inicio BETWEEN pdesde AND phasta
-    AND cpl.pagina_id = ppagina_id
     AND u.login NOT LIKE 'temp%'
+    AND (u.id IN (SELECT cpl.usuario_id FROM certi_pagina_log cpl WHERE cpl.fecha_inicio BETWEEN pdesde AND phasta AND cpl.pagina_id = ppagina_id) 
+            OR u.id NOT IN (SELECT cpl.usuario_id FROM certi_pagina_log cpl WHERE cpl.pagina_id = ppagina_id) )
     AND u.id IN (SELECT ru.usuario_id FROM admin_rol_usuario ru WHERE ru.rol_id = 2) 
     AND u.id IN (SELECT DISTINCT(s.usuario_id) FROM admin_sesion s) 
     AND u.nivel_id IN 
         (SELECT np.nivel_id FROM certi_nivel_pagina np WHERE np.pagina_empresa_id IN 
             (SELECT pe.id FROM certi_pagina_empresa pe WHERE pe.empresa_id = u.empresa_id AND pe.pagina_id = ppagina_id)
         )
+    GROUP BY u.id,u.codigo,u.login,u.nombre,u.apellido,u.activo,u.correo_personal,u.correo_corporativo,e.nombre,c.nombre,n.nombre,u.fecha_registro,u.campo1,u.campo2,u.campo3,u.campo4
+
     ORDER BY u.codigo ASC, u.login ASC;
+
     
     RETURN resultado;
 
