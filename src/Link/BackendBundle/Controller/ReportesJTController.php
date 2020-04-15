@@ -301,7 +301,11 @@ class ReportesJTController extends Controller
                 }
                 //$status = $registro['status'] ? $registro['status'] : 0;
                 //$status = $registro['status'] ? $registro['status'] : $registro['fecha_inicio_programa'] ? 1 : 0;
+                $fecha_inicio = $fun->converDate($registro['fecha_inicio_programa'],$yml['parameters']['time_zone']['default'],$timeZoneEmpresa);
+                $fecha_fin = $fun->converDate($registro['fecha_fin_programa'],$yml['parameters']['time_zone']['default'],$timeZoneEmpresa);
                 $promedio=($registro['promedio'])? $registro['promedio']:0;
+                $fecha_in = ($status!=0)? $fecha_inicio->fecha.' '.$fecha_inicio->hora:'';
+                $fecha_fin = ($status==3)? $fecha_fin->fecha.' '.$fecha_fin->hora:'';
                 $html .= '<tr>
                             <td><a class="detail" data-toggle="modal" data-target="#detailModal" data="'.$registro['login'].'" empresa_id="'.$empresa_id.'" href="#">'.$registro['nombre'].' '.$registro['apellido'].'</a></td>
                             <td>'.$registro['login'].'</td>
@@ -311,8 +315,8 @@ class ReportesJTController extends Controller
                             <td>'.$registro['materias'].'</td>
                             <td>'.$promedio.'</td>
                             <td>'.$this->get('translator')->trans($estatusProragama[$status]).'</td>
-                            <td>'.$registro['fecha_inicio_programa'].'</td>
-                            <td>'.$registro['fecha_fin_programa'].'</td>
+                            <td>'.$fecha_in.'</td>
+                            <td>'.$fecha_fin.'</td>
                         </tr>';
             }
 
