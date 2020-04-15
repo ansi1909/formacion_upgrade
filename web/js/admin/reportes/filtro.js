@@ -3,6 +3,43 @@ $(document).ready(function() {
 	var filtro_programas = $('#filtro_programas').val();
 	var filtro_tema = $('#filtro_tema').val();
 	var empresa_id = $('#empresa_id').val();
+	$("#check_filtro").prop('disabled', true);
+
+	$('#pagina_id').change(function(event) {
+		if($('#pagina_id').val()!=''){
+			$("#check_filtro").prop('disabled', false);
+
+		}else{
+			$("#check_filtro").prop('disabled', true);
+		}
+
+	});
+
+	$('#check_filtro').change(function(event) {
+		if($(this).is(":checked")){
+			$("#desde").attr('readonly', true);
+			$("#hasta").attr('readonly', true);
+			$.ajax({
+				type: "POST",
+				url: $("#url_pagina_empresa").val(),
+				async: true,
+				data: { empresa_id: $("#empresa_id").val(),pagina_id: $("#pagina_id").val() },
+				dataType: "json",
+				success: function(data) {
+					$('#desde').datepicker("setDate",data.fecha_inicio);
+					$('#hasta').datepicker("setDate",data.fecha_fin);
+				},
+				error: function(){
+					$('#div-error-server').html($('#error-msg').val());
+					notify($('#div-error-server').html());
+				}
+			});
+		}else{
+			$("#desde").attr('readonly', false);
+			$("#hasta").attr('readonly', false);
+
+		}
+    });
 	
 	if (filtro_programas == '1')
 	{
@@ -33,10 +70,9 @@ $(document).ready(function() {
 			selectProgramas();
 			observePagina();
 		}
-
 	}
 
-    $('.datePicker').datepicker({
+	$('.datePicker').datepicker({
 	    startView: 1,
 	    autoclose: true,
 	    format: 'dd/mm/yyyy',
@@ -106,6 +142,7 @@ function selectProgramas()
 			$('#pagina_id').html(data.options);
 			$('#pagina_id').show();
 			$('#pagina-loader').hide();
+
 		},
 		error: function(){
 			$('#div-error-server').html($('#error-msg-paginas').val());

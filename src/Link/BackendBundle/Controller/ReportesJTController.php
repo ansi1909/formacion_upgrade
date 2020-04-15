@@ -11,6 +11,7 @@ use Link\ComunBundle\Entity\AdminSesion;
 use Symfony\Component\HttpFoundation\Cookie;
 use Symfony\Component\Yaml\Yaml;
 use Link\ComunBundle\Entity\CertiPagina;
+use Link\ComunBundle\Entity\CertiPaginaEmpresa;
 
 class ReportesJTController extends Controller
 {
@@ -89,6 +90,22 @@ class ReportesJTController extends Controller
                                                                                             'empresas' => $empresas));
 
     }
+    public function ajaxUrlpaginaEmpresaAction(Request $request){
+        $em = $this->getDoctrine()->getManager();
+        $fun = $this->get('funciones');
+        $empresa_id = $request->request->get('empresa_id');
+        $pagina_id = $request->request->get('pagina_id');
+        $empresa = $this->getDoctrine()->getRepository('LinkComunBundle:AdminEmpresa')->find($empresa_id);
+        $pagina_empresa = $this->getDoctrine()->getRepository('LinkComunBundle:CertiPaginaEmpresa')->findOneBy(array('empresa'=>$empresa_id,'pagina'=>$pagina_id));
+
+        $fecha_actual = new \DateTime('now');
+        $fecha_actual->setTimeZone(new \DateTimeZone($empresa->getZonaHoraria()->getNombre()));
+        $return = array('fecha_inicio'=>$pagina_empresa->getFechaInicio()->format('d/m/Y'),'fecha_fin'=> $fecha_actual->format('d/m/Y'));
+
+        $return =  json_encode($return);
+        return new Response($return, 200, array('Content-Type' => 'application/json'));
+
+    }
 
     public function ajaxAvanceProgramasAction(Request $request)
     {
@@ -107,6 +124,7 @@ class ReportesJTController extends Controller
         $desdef = $request->request->get('desde');
         $hastaf = $request->request->get('hasta');
         $excel = $request->request->get('excel');
+        $filtro = $request->request->get('check_filtro');
 
         list($d, $m, $a) = explode("/", $desdef);
         $desde = "$a-$m-$d 00:00:00";
@@ -117,6 +135,8 @@ class ReportesJTController extends Controller
         $hasta = "$a-$m-$d 23:59:59";
         $hastaUtc = $fun->converDate($hasta,$timeZoneEmpresa,$yml['parameters']['time_zone']['default'],false);
         $hasta = $hastaUtc->fecha.' '.$hastaUtc->hora;
+
+
 
         $pagina = $this->getDoctrine()->getRepository('LinkComunBundle:CertiPagina')->find($pagina_id);
 
