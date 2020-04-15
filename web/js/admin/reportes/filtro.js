@@ -17,6 +17,8 @@ $(document).ready(function() {
 
 	$('#check_filtro').change(function(event) {
 		if($(this).is(":checked")){
+			$('#search').hide();
+			$('#search-loader').show();
 			$("#desde").attr('readonly', true);
 			$("#hasta").attr('readonly', true);
 			$.ajax({
@@ -26,10 +28,16 @@ $(document).ready(function() {
 				data: { empresa_id: $("#empresa_id").val(),pagina_id: $("#pagina_id").val() },
 				dataType: "json",
 				success: function(data) {
-					$('#desde').datepicker("setDate",data.fecha_inicio);
-					$('#hasta').datepicker("setDate",data.fecha_fin);
+					setTimeout(function(){
+						$('#desde').datepicker("setDate",data.fecha_inicio);
+						$('#hasta').datepicker("setDate",data.fecha_fin);
+						$('#search').show();
+						$('#search-loader').hide();}, 1000);
+					
 				},
 				error: function(){
+					$('#search').show();
+					$('#search-loader').hide();
 					$('#div-error-server').html($('#error-msg').val());
 					notify($('#div-error-server').html());
 				}

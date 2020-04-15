@@ -12,6 +12,8 @@ use Symfony\Component\HttpFoundation\Cookie;
 use Symfony\Component\Yaml\Yaml;
 use Link\ComunBundle\Entity\CertiPagina;
 use Link\ComunBundle\Entity\CertiPaginaEmpresa;
+use Link\ComunBundle\Entity\AdminZonaHoraria;
+use Link\ComunBundle\Entity\AdminPais;
 
 class ReportesJTController extends Controller
 {

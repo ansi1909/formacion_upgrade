@@ -44,6 +44,6 @@ _ajaxUrlpaginaEmpresa:
     path: /ajaxUrlpaginaEmpresa
     defaults: { _controller: LinkBackendBundle:ReportesJT:ajaxUrlpaginaEmpresa }
     requirements:
-        _method: GET 
+        _method: POST 
 
 
