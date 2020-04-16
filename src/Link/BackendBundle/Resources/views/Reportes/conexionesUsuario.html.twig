@@ -7,9 +7,12 @@
 
 {% block body %}
 {% set encabezado = 'Conexiones por participante'|trans %}
+<input type="hidden" id="error-fecha" name="error-fecha" value="{{ 'No se encontro la fecha de inicio'|trans }}">
+<input type="hidden" id="url_fecha_inicial" name="url_fecha_inicial" value="{{ path('_ajaxUrlpaginaEmpresa') }}">
+<input type="hidden" id="entidad_fecha" name="entidad_fecha" value="AdminSesion">
 
 <form id="form" name="form" action="{{ path ('_ajaxConexionesUsuario') }}" method="POST">
-    {{ include('LinkBackendBundle:Reportes:filtro.html.twig', { 'encabezado': encabezado, 'usuario': usuario, 'empresas': empresas, 'filtro_programas': 0 ,'filtro_tema': 0, 'filtro_username': 0 ,'resumen_registro':0, 'filtro_fecha': 1 }) }}
+    {{ include('LinkBackendBundle:Reportes:filtro.html.twig', { 'encabezado': encabezado, 'usuario': usuario, 'empresas': empresas, 'filtro_programas': 0 ,'filtro_tema': 0, 'filtro_username': 0 ,'resumen_registro':0, 'filtro_fecha': 1, check_filtro: 1}) }}
 </form>
 
 {# Sección de resultados del reporte #}

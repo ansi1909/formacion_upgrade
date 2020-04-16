@@ -669,8 +669,8 @@ class ReportesController extends Controller
         $yml = Yaml::parse(file_get_contents($this->get('kernel')->getRootDir().'/config/parametros.yml'));
         
         $tema_id = $request->request->get('tema_id');
-        $desdef = $request->request->get('desde');
-        $hastaf = $request->request->get('hasta');
+        //$desdef = $request->request->get('desde');
+        //$hastaf = $request->request->get('hasta');
         $excel = $request->request->get('excel');
         $empresa_id = $request->request->get('empresa_id');
         $pagina_id = $request->request->get('pagina_id');
@@ -681,17 +681,17 @@ class ReportesController extends Controller
         $timeZoneEmpresa = ($empresa->getZonaHoraria())? $empresa->getZonaHoraria()->getNombre():$yml['parameters']['time_zone']['default'];
         $timeZoneReport = $fn->clearNameTimeZone($timeZoneEmpresa,$empresa->getPais()->getNombre(),$yml);
 
-        list($d, $m, $a) = explode("/", $desdef);
-        $desde = "$a-$m-$d 00:00:00";
-        $desdeUtc = $fn->converDate($desde,$timeZoneEmpresa,$yml['parameters']['time_zone']['default'],false);
-        $desde = $desdeUtc->fecha.' '.$desdeUtc->hora;
+        // list($d, $m, $a) = explode("/", $desdef);
+        // $desde = "$a-$m-$d 00:00:00";
+        // $desdeUtc = $fn->converDate($desde,$timeZoneEmpresa,$yml['parameters']['time_zone']['default'],false);
+        // $desde = $desdeUtc->fecha.' '.$desdeUtc->hora;
 
-        list($d, $m, $a) = explode("/", $hastaf);
-        $hasta = "$a-$m-$d 23:59:59";
-        $hastaUtc = $fn->converDate($hasta,$timeZoneEmpresa,$yml['parameters']['time_zone']['default'],false);
-        $hasta = $hastaUtc->fecha.' '.$hastaUtc->hora;
+        // list($d, $m, $a) = explode("/", $hastaf);
+        // $hasta = "$a-$m-$d 23:59:59";
+        // $hastaUtc = $fn->converDate($hasta,$timeZoneEmpresa,$yml['parameters']['time_zone']['default'],false);
+        // $hasta = $hastaUtc->fecha.' '.$hastaUtc->hora;
 
-        $listado = $rs->interaccionColaborativo($empresa_id, $pagina_id, $tema_id, $desde, $hasta);
+        $listado = $rs->interaccionColaborativo($empresa_id, $pagina_id, $tema_id);
 
 
         $fileWithPath = $this->container->getParameter('folders')['dir_project'].'docs/formatos/interaccionColaborativo.xlsx';
@@ -700,7 +700,7 @@ class ReportesController extends Controller
         $columnNames = array('A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z');
 
         // Encabezado
-        $objWorksheet->setCellValue('A1', $this->get('translator')->trans('Interacciones de espacio colaborativo').'. '.$this->get('translator')->trans('Desde').': '.$desdef.'. '.$this->get('translator')->trans('Hasta').': '.$hastaf.'. '.$this->get('translator')->trans('Huso horario').': '.$timeZoneReport);
+        $objWorksheet->setCellValue('A1', $this->get('translator')->trans('Interacciones de espacio colaborativo').'. '.$this->get('translator')->trans('Huso horario').': '.$timeZoneReport);
         $objWorksheet->setCellValue('A2', $this->get('translator')->trans('Empresa').': '.$empresa->getNombre().'. '.$this->get('translator')->trans('Programa').': '.$pagina->getNombre().'.');
         $objWorksheet->setCellValue('A3', $this->get('translator')->trans('Tema').': '.$tema->getTema() );
         if (!count($listado))
@@ -787,7 +787,7 @@ class ReportesController extends Controller
         return new Response($return, 200, array('Content-Type' => 'application/json'));  
     }
 
-    public function interaccionMuroAction($app_id, $empresa_id, $desde, $hasta, Request $request)
+    public function interaccionMuroAction($app_id, $empresa_id, Request $request)
     {
         
         $session = new Session();
@@ -857,15 +857,13 @@ class ReportesController extends Controller
 
         }
 
-        $desde = $desde ? str_replace('-', '/', $desde) : '';
-        $hasta = $hasta ? str_replace('-', '/', $hasta) : '';
+        //$desde = $desde ? str_replace('-', '/', $desde) : '';
+        //$hasta = $hasta ? str_replace('-', '/', $hasta) : '';
 
         return $this->render('LinkBackendBundle:Reportes:interaccionMuro.html.twig', array('empresas' => $empresas,
                                                                                            'usuario' => $usuario,
                                                                                            'paginas' => $paginas,
-                                                                                           'empresa_id' => $empresa_id,
-                                                                                           'desde' => $desde,
-                                                                                           'hasta' => $hasta));
+                                                                                           'empresa_id' => $empresa_id));
 
     }
 
@@ -896,7 +894,7 @@ class ReportesController extends Controller
                     $desde = $subpage->getPagina()->getFechaCreacion();
                     $desde = $desde->format('Y-m-d h:i:s');
                     
-                    $listado = $rs->interaccionMuro($subpage->getEmpresa()->getId(), $subpage->getPagina()->getId(),$desde , $hoy);
+                    $listado = $rs->interaccionMuro($subpage->getEmpresa()->getId(), $subpage->getPagina()->getId());
                     
                     $cantidad = count($listado);
                     $return .= '<li data-jstree=\'{ "icon": "fa fa-angle-double-right" }\' p_id="'.$subpage->getPagina()->getId().'" p_str="'.$subpage->getPagina()->getCategoria()->getNombre().': '.$subpage->getPagina()->getNombre().'" tipo_recurso_id="'. $subpage->getPagina()->getCategoria()->getId() .'" >'.$subpage->getPagina()->getCategoria()->getNombre().': '.$subpage->getPagina()->getNombre().' ('.$cantidad.')';
@@ -935,19 +933,19 @@ class ReportesController extends Controller
         $timeZoneEmpresa = ($empresa->getZonaHoraria())? $empresa->getZonaHoraria()->getNombre():$yml['parameters']['time_zone']['default'];
         $timeZoneReport = $fn->clearNameTimeZone($timeZoneEmpresa,$empresa->getPais()->getNombre(),$yml);
         $pagina_id = $request->request->get('pagina_id');
-        $desdef = $request->request->get('desde');
-        $hastaf = $request->request->get('hasta');
+        //$desdef = $request->request->get('desde');
+        //$hastaf = $request->request->get('hasta');
         $excel = $request->request->get('excel');
 
-        list($d, $m, $a) = explode("/", $desdef);
-        $desde = "$a-$m-$d 00:00:00";
-        $desdeUtc = $fn->converDate($desde,$timeZoneEmpresa,$yml['parameters']['time_zone']['default'],false);
-        $desde = $desdeUtc->fecha.' '.$desdeUtc->hora;
+        // list($d, $m, $a) = explode("/", $desdef);
+        // $desde = "$a-$m-$d 00:00:00";
+        // $desdeUtc = $fn->converDate($desde,$timeZoneEmpresa,$yml['parameters']['time_zone']['default'],false);
+        // $desde = $desdeUtc->fecha.' '.$desdeUtc->hora;
 
-        list($d, $m, $a) = explode("/", $hastaf);
-        $hasta = "$a-$m-$d 23:59:59";
-        $hastaUtc = $fn->converDate($hasta,$timeZoneEmpresa,$yml['parameters']['time_zone']['default'],false);
-        $hasta = $hastaUtc->fecha.' '.$hastaUtc->hora;
+        // list($d, $m, $a) = explode("/", $hastaf);
+        // $hasta = "$a-$m-$d 23:59:59";
+        // $hastaUtc = $fn->converDate($hasta,$timeZoneEmpresa,$yml['parameters']['time_zone']['default'],false);
+        // $hasta = $hastaUtc->fecha.' '.$hastaUtc->hora;
 
         
         $leccion = $this->getDoctrine()->getRepository('LinkComunBundle:CertiPagina')->find($pagina_id);
@@ -956,7 +954,7 @@ class ReportesController extends Controller
         $programa = $this->getDoctrine()->getRepository('LinkComunBundle:CertiPagina')->find($modulo->getPagina());
     
         
-        $listado = $rs->interaccionMuro($empresa_id, $pagina_id, $desde, $hasta);
+        $listado = $rs->interaccionMuro($empresa_id, $pagina_id);
 
 
         $fileWithPath = $this->container->getParameter('folders')['dir_project'].'docs/formatos/interaccionMuro.xlsx';
@@ -965,7 +963,7 @@ class ReportesController extends Controller
         $columnNames = array('A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z');
 
         // Encabezado
-        $objWorksheet->setCellValue('A1', $this->get('translator')->trans('Interacciones de muro').'. '.$this->get('translator')->trans('Desde').': '.$desdef.'. '.$this->get('translator')->trans('Hasta').': '.$hastaf.'. '.$this->get('translator')->trans('Huso horario').': '.$timeZoneReport);
+        $objWorksheet->setCellValue('A1', $this->get('translator')->trans('Interacciones de muro').'. '.$this->get('translator')->trans('Huso horario').': '.$timeZoneReport);
         $objWorksheet->setCellValue('A2', $this->get('translator')->trans('Empresa').': '.$empresa->getNombre().'. '.$this->get('translator')->trans('Programa').': '.$programa->getNombre() .'.');
         $objWorksheet->setCellValue('A3', $this->get('translator')->trans('Módulo').': '.$modulo->getNombre().'. '.$this->get('translator')->trans('Materia').': '.$materia->getNombre() .'.');
         $objWorksheet->setCellValue('A4', $this->get('translator')->trans('Lección').': '.$leccion->getNombre().'.');

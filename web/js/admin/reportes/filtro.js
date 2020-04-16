@@ -4,16 +4,29 @@ $(document).ready(function() {
 	var filtro_tema = $('#filtro_tema').val();
 	var empresa_id = $('#empresa_id').val();
 	$("#check_filtro").prop('disabled', true);
+    
 
-	$('#pagina_id').change(function(event) {
-		if($('#pagina_id').val()!=''){
-			$("#check_filtro").prop('disabled', false);
+    if(filtro_programas == 1){
+		$('#pagina_id').change(function(event) {
+			if($('#pagina_id').val()!=''){
+				$("#check_filtro").prop('disabled', false);
 
-		}else{
-			$("#check_filtro").prop('disabled', true);
-		}
+			}else{
+				$("#check_filtro").prop('disabled', true);
+			}
 
-	});
+		});
+	}else{
+		$('#empresa_id').change(function(event) {
+			if($('#empresa_id').val()!=''){
+				$("#check_filtro").prop('disabled', false);
+
+			}else{
+				$("#check_filtro").prop('disabled', true);
+			}
+
+		});
+	}
 
 	$('#check_filtro').change(function(event) {
 		if($(this).is(":checked")){
@@ -23,16 +36,28 @@ $(document).ready(function() {
 			$("#hasta").attr('readonly', true);
 			$.ajax({
 				type: "POST",
-				url: $("#url_pagina_empresa").val(),
+				url: $("#url_fecha_inicial").val(),
 				async: true,
-				data: { empresa_id: $("#empresa_id").val(),pagina_id: $("#pagina_id").val() },
+				data: { empresa_id: $("#empresa_id").val(),pagina_id: $("#pagina_id").val(),entidad: $('#entidad_fecha').val() },
 				dataType: "json",
 				success: function(data) {
+					if(data.fecha_inicio){
 					setTimeout(function(){
 						$('#desde').datepicker("setDate",data.fecha_inicio);
 						$('#hasta').datepicker("setDate",data.fecha_fin);
 						$('#search').show();
 						$('#search-loader').hide();}, 1000);
+				}else{
+					setTimeout(function(){
+				    $('#div-error-server').html($('#error-fecha').val());
+					notify($('#div-error-server').html());
+					$('#search').show();
+					$('#search-loader').hide();
+					$("#desde").attr('readonly', false);
+					$("#hasta").attr('readonly', false);
+				    $("#check_filtro").prop('checked', false)}, 1000);
+
+				}
 					
 				},
 				error: function(){

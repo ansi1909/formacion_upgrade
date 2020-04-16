@@ -95,16 +95,41 @@ class ReportesJTController extends Controller
     public function ajaxUrlpaginaEmpresaAction(Request $request){
         $em = $this->getDoctrine()->getManager();
         $yml = Yaml::parse(file_get_contents($this->get('kernel')->getRootDir().'/config/parametros.yml'));
+        $timeZone = $yml['parameters']['time_zone']['local'];
         $fun = $this->get('funciones');
         $empresa_id = $request->request->get('empresa_id');
         $pagina_id = $request->request->get('pagina_id');
+        $entidad = 'LinkComunBundle:'.(string)$request->request->get('entidad');
         $empresa = $this->getDoctrine()->getRepository('LinkComunBundle:AdminEmpresa')->find($empresa_id);
-        $pagina_empresa = $this->getDoctrine()->getRepository('LinkComunBundle:CertiPaginaEmpresa')->findOneBy(array('empresa'=>$empresa_id,'pagina'=>$pagina_id));
+        if ($entidad == 'LinkComunBundle:CertiPaginaEmpresa') {
+            $entidad_fecha = $this->getDoctrine()->getRepository($entidad)->findOneBy(array('empresa'=>$empresa_id,'pagina'=>$pagina_id));
+            $entidad_fecha = $entidad_fecha->getFechaInicio();
+            //print_r($entidad_fecha);exit();
+            //$entidad_fecha ->setTimeZone(new \DateTimeZone($timeZone));
 
+            $entidad_fecha = $entidad_fecha->format('d/m/Y');
+
+        }else if($entidad =='LinkComunBundle:AdminSesion'){
+            $query = $em->createQuery("SELECT MIN(ase.fechaIngreso) as ingreso FROM LinkComunBundle:AdminUsuario au
+                                        INNER JOIN LinkComunBundle:AdminEmpresa ae WITH ae.id = au.empresa
+                                        INNER JOIN LinkComunBundle:AdminSesion ase WITH ase.usuario = au.id
+                                        WHERE ae.id = :empresa_id ")
+                    ->setParameter('empresa_id', $empresa_id);
+
+        $entidad_fecha = $query->getResult();
+        $entidad_fecha = $entidad_fecha[0]['ingreso'];
+        if ($entidad_fecha) {
+            $entidad_fecha = new \DateTime($entidad_fecha);
+            $entidad_fecha ->setTimeZone(new \DateTimeZone($timeZone));
+            $entidad_fecha = $entidad_fecha->format('d/m/Y');
+        }
+
+        }
+        
         $timeZone = $yml['parameters']['time_zone']['local'];
         $fecha_actual = new \DateTime('now');
         $fecha_actual->setTimeZone(new \DateTimeZone($timeZone));
-        $return = array('fecha_inicio'=>$pagina_empresa->getFechaInicio()->format('d/m/Y'),'fecha_fin'=> $fecha_actual->format('d/m/Y'));
+        $return = array('fecha_inicio'=>$entidad_fecha,'fecha_fin'=> $fecha_actual->format('d/m/Y'));
 
         $return =  json_encode($return);
         return new Response($return, 200, array('Content-Type' => 'application/json'));

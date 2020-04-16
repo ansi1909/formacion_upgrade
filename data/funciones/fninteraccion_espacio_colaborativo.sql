@@ -1,14 +1,12 @@
--- Function: fninteraccion_espacio_colaborativo(refcursor, integer, integer, integer, timestamp, timestamp)
+-- Function: fninteraccion_espacio_colaborativo(refcursor, integer, integer, integer)
 
--- DROP FUNCTION fninteraccion_espacio_colaborativo(refcursor, integer, integer, integer, timestamp, timestamp);
+-- DROP FUNCTION fninteraccion_espacio_colaborativo(refcursor, integer, integer, integer);
 
 CREATE OR REPLACE FUNCTION fninteraccion_espacio_colaborativo(
     resultado refcursor,
     pempresa_id integer,
     ppagina_id integer,
-    pforo_id integer,
-    pdesde timestamp,
-    phasta timestamp)
+    pforo_id integer)
   RETURNS refcursor AS
 $BODY$
    
@@ -26,7 +24,7 @@ begin
     (admin_empresa e INNER JOIN admin_pais p ON e.pais_id = p.id) 
        ON u.empresa_id = e.id ) 
       ON f.usuario_id = u.id
-      WHERE f.empresa_id = pempresa_id AND f.pagina_id = ppagina_id AND f.fecha_registro BETWEEN pdesde AND phasta
+      WHERE f.empresa_id = pempresa_id AND f.pagina_id = ppagina_id 
       AND f.foro_id = pforo_id
       AND u.login NOT LIKE 'temp%'
       ORDER BY u.login ASC, f.fecha_registro ASC;

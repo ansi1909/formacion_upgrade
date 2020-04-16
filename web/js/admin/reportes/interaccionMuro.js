@@ -1,9 +1,9 @@
 $(document).ready(function() {
 
 	$('#empresa_id').change(function(){
-		var desde = $('#desde').val() ? $('#desde').val().replace(/\//g, '-') : 0;
-		var hasta = $('#hasta').val() ? $('#hasta').val().replace(/\//g, '-') : 0;
-		window.location.replace($('#url_auto').val()+'/'+$('#empresa_id').val()+'/'+desde+'/'+hasta);
+		//var desde = $('#desde').val() ? $('#desde').val().replace(/\//g, '-') : 0;
+		//var hasta = $('#hasta').val() ? $('#hasta').val().replace(/\//g, '-') : 0;
+		window.location.replace($('#url_auto').val()+'/'+$('#empresa_id').val());
 		$('#paginas').hide();
 		$('#pagina-loader').show();
 	});
@@ -81,8 +81,8 @@ $(document).ready(function() {
 
 function mostrarReporte(data)
 {
-	$('#label_desde').html($('#desde').val());
-	$('#label_hasta').html($('#hasta').val());
+	// $('#label_desde').html($('#desde').val());
+	// $('#label_hasta').html($('#hasta').val());
 	$('#label_filtro').show();
 	$('#archivo').val(data.archivo);
 	$('#document_name').html(data.document_name);
