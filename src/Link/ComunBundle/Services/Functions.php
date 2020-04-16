@@ -3685,7 +3685,7 @@ public function porcentaje_finalizacion($fechaInicio,$fechaFin,$diasVencimiento)
 
          $row = 5;
          foreach ($mails as $mail){
-            $objWorksheet->getStyle("A$row:D$row")->applyFromArray($styleThinBlackBorderOutline); //bordes
+            $objWorksheet->getStyle("A$row:F$row")->applyFromArray($styleThinBlackBorderOutline); //bordes
             // Datos de las columnas comunes
             $objWorksheet->setCellValue('A'.$row, $mail->getUsuario()->getLogin());
             $objWorksheet->setCellValue('B'.$row, $mail->getUsuario()->getNombre());
