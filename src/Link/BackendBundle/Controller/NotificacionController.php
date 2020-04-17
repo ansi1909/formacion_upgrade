@@ -418,10 +418,9 @@ class NotificacionController extends Controller
         $query = $em->createQuery("SELECT np FROM LinkComunBundle:AdminNotificacionProgramada np 
                                     WHERE np.notificacion = :notificacion_id 
                                     AND np.grupo IS NULL 
-                                    ORDER BY np.fechaDifusion ASC")
+                                    ORDER BY np.fechaDifusion DESC")
                     ->setParameters(array('notificacion_id' => $notificacion_id));
         $nps = $query->getResult();
-        
         $failed = $this->failedEmails($nps);
 
         $html = $this->renderView('LinkBackendBundle:Notificacion:notificacionesProgramadas.html.twig', array('nps' => $nps,'failed'=>$failed));
