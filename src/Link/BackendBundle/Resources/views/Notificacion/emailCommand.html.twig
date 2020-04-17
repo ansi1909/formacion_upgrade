@@ -28,7 +28,7 @@
                                         {#<p style="font-size: 14px; padding-top: 25px; padding-bottom: 25px; width: 90%; color: #383838; line-height: 22px; font-weight: 100;">
                                             {{ 'Estimado'|trans~'(a) '~nombre~' '~apellido }}.
                                         </p>#}
-                                        <p style="padding-top: 0px; padding-bottom: 25px; width: 90%;">
+                                        <p style="padding-top: 0px; padding-bottom: 10px; width: 90%;">
                                             {% set text = mensaje|raw %}
                                             {% set text = text|replace({'\\"': '"'}) %}
                                             {{ text|raw }}
