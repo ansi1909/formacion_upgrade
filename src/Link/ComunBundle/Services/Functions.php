@@ -3679,18 +3679,20 @@ public function porcentaje_finalizacion($fechaInicio,$fechaFin,$diasVencimiento)
         );
 
         // Encabezado
-         $objWorksheet->setCellValue('A1', $encabezado['titulo']);
-         $objWorksheet->setCellValue('A2', $encabezado['empresa']);
-         $objWorksheet->setCellValue('A3', $encabezado['fecha']);
+         $objWorksheet->setCellValue('B1', $encabezado['titulo']);
+         $objWorksheet->setCellValue('B2', $encabezado['empresa']);
+         $objWorksheet->setCellValue('B3', $encabezado['fecha']);
 
          $row = 5;
          foreach ($mails as $mail){
-            $objWorksheet->getStyle("A$row:D$row")->applyFromArray($styleThinBlackBorderOutline); //bordes
+            $objWorksheet->getStyle("A$row:F$row")->applyFromArray($styleThinBlackBorderOutline); //bordes
             // Datos de las columnas comunes
-            $objWorksheet->setCellValue('A'.$row, $mail->getUsuario()->getNombre());
-            $objWorksheet->setCellValue('B'.$row, $mail->getUsuario()->getApellido());
-            $objWorksheet->setCellValue('C'.$row, $mail->getCorreo());
-            $objWorksheet->setCellValue('D'.$row, $mail->getMensaje());
+            $objWorksheet->setCellValue('A'.$row, $mail->getUsuario()->getLogin());
+            $objWorksheet->setCellValue('B'.$row, $mail->getUsuario()->getNombre());
+            $objWorksheet->setCellValue('C'.$row, $mail->getUsuario()->getApellido());
+            $objWorksheet->setCellValue('D'.$row, $mail->getCorreo());
+            $objWorksheet->setCellValue('E'.$row, $mail->getUsuario()->getNivel()->getNombre());
+            $objWorksheet->setCellValue('F'.$row, $mail->getMensaje());
             $row++;
 
         }

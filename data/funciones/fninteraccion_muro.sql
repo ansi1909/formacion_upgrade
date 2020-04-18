@@ -1,13 +1,11 @@
--- Function: fninteraccion_muro(refcursor, integer, integer, timestamp, timestamp)
+-- Function: fninteraccion_muro(refcursor, integer, integer)
 
--- DROP FUNCTION fninteraccion_muro(refcursor, integer, integer, timestamp, timestamp);
+-- DROP FUNCTION fninteraccion_muro(refcursor, integer, integer);
 
 CREATE OR REPLACE FUNCTION fninteraccion_muro(
     resultado refcursor,
     pempresa_id integer,
-    ppagina_id integer,
-    pdesde timestamp,
-    phasta timestamp)
+    ppagina_id integer)
   RETURNS refcursor AS
 $BODY$
    
@@ -28,7 +26,6 @@ begin
     WHERE m.empresa_id = pempresa_id 
     AND u.login NOT LIKE 'temp%'
     AND m.pagina_id = ppagina_id 
-    AND m.fecha_registro BETWEEN pdesde AND phasta
     ORDER BY u.login ASC, m.fecha_registro ASC;
     
     RETURN resultado;

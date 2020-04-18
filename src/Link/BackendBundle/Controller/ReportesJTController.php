@@ -11,6 +11,9 @@ use Link\ComunBundle\Entity\AdminSesion;
 use Symfony\Component\HttpFoundation\Cookie;
 use Symfony\Component\Yaml\Yaml;
 use Link\ComunBundle\Entity\CertiPagina;
+use Link\ComunBundle\Entity\CertiPaginaEmpresa;
+use Link\ComunBundle\Entity\AdminZonaHoraria;
+use Link\ComunBundle\Entity\AdminPais;
 
 class ReportesJTController extends Controller
 {
@@ -89,6 +92,49 @@ class ReportesJTController extends Controller
                                                                                             'empresas' => $empresas));
 
     }
+    public function ajaxUrlpaginaEmpresaAction(Request $request){
+        $em = $this->getDoctrine()->getManager();
+        $yml = Yaml::parse(file_get_contents($this->get('kernel')->getRootDir().'/config/parametros.yml'));
+        $timeZone = $yml['parameters']['time_zone']['local'];
+        $fun = $this->get('funciones');
+        $empresa_id = $request->request->get('empresa_id');
+        $pagina_id = $request->request->get('pagina_id');
+        $entidad = 'LinkComunBundle:'.(string)$request->request->get('entidad');
+        $empresa = $this->getDoctrine()->getRepository('LinkComunBundle:AdminEmpresa')->find($empresa_id);
+        if ($entidad == 'LinkComunBundle:CertiPaginaEmpresa') {
+            $entidad_fecha = $this->getDoctrine()->getRepository($entidad)->findOneBy(array('empresa'=>$empresa_id,'pagina'=>$pagina_id));
+            $entidad_fecha = $entidad_fecha->getFechaInicio();
+            //print_r($entidad_fecha);exit();
+            //$entidad_fecha ->setTimeZone(new \DateTimeZone($timeZone));
+
+            $entidad_fecha = $entidad_fecha->format('d/m/Y');
+
+        }else if($entidad =='LinkComunBundle:AdminSesion'){
+            $query = $em->createQuery("SELECT MIN(ase.fechaIngreso) as ingreso FROM LinkComunBundle:AdminUsuario au
+                                        INNER JOIN LinkComunBundle:AdminEmpresa ae WITH ae.id = au.empresa
+                                        INNER JOIN LinkComunBundle:AdminSesion ase WITH ase.usuario = au.id
+                                        WHERE ae.id = :empresa_id ")
+                    ->setParameter('empresa_id', $empresa_id);
+
+        $entidad_fecha = $query->getResult();
+        $entidad_fecha = $entidad_fecha[0]['ingreso'];
+        if ($entidad_fecha) {
+            $entidad_fecha = new \DateTime($entidad_fecha);
+            $entidad_fecha ->setTimeZone(new \DateTimeZone($timeZone));
+            $entidad_fecha = $entidad_fecha->format('d/m/Y');
+        }
+
+        }
+        
+        $timeZone = $yml['parameters']['time_zone']['local'];
+        $fecha_actual = new \DateTime('now');
+        $fecha_actual->setTimeZone(new \DateTimeZone($timeZone));
+        $return = array('fecha_inicio'=>$entidad_fecha,'fecha_fin'=> $fecha_actual->format('d/m/Y'));
+
+        $return =  json_encode($return);
+        return new Response($return, 200, array('Content-Type' => 'application/json'));
+
+    }
 
     public function ajaxAvanceProgramasAction(Request $request)
     {
@@ -107,6 +153,7 @@ class ReportesJTController extends Controller
         $desdef = $request->request->get('desde');
         $hastaf = $request->request->get('hasta');
         $excel = $request->request->get('excel');
+        $filtro = $request->request->get('check_filtro');
 
         list($d, $m, $a) = explode("/", $desdef);
         $desde = "$a-$m-$d 00:00:00";
@@ -117,6 +164,8 @@ class ReportesJTController extends Controller
         $hasta = "$a-$m-$d 23:59:59";
         $hastaUtc = $fun->converDate($hasta,$timeZoneEmpresa,$yml['parameters']['time_zone']['default'],false);
         $hasta = $hastaUtc->fecha.' '.$hastaUtc->hora;
+
+
 
         $pagina = $this->getDoctrine()->getRepository('LinkComunBundle:CertiPagina')->find($pagina_id);
 
@@ -168,6 +217,8 @@ class ReportesJTController extends Controller
                         $objWorksheet->getStyle("A$f:V$f")->getAlignment()->setWrapText(true);//ajustar texto a la columna
                         $objWorksheet->getRowDimension($f)->setRowHeight(35); // Altura de la fila
                 }
+
+                //return new response(var_dump($listado[2]));
                 
                 foreach ($listado as $participante)
                 {
@@ -213,10 +264,10 @@ class ReportesJTController extends Controller
                     $objWorksheet->setCellValue('P'.$row, $participante['materias']);
                     $objWorksheet->setCellValue('Q'.$row, $promedio);
                     $objWorksheet->setCellValue('R'.$row, $estatusProragama[$status]);
-                    $objWorksheet->setCellValue('S'.$row, $fecha_inicio->fecha);
-                    $objWorksheet->setCellValue('T'.$row, $fecha_inicio->hora);
-                    $objWorksheet->setCellValue('U'.$row, $fecha_fin->fecha);
-                    $objWorksheet->setCellValue('V'.$row, $fecha_fin->hora);
+                    $objWorksheet->setCellValue('S'.$row, ($status != 0)? $fecha_inicio->fecha:'');
+                    $objWorksheet->setCellValue('T'.$row, ($status!= 0)? $fecha_inicio->hora:'');
+                    $objWorksheet->setCellValue('U'.$row, ($status == 3)? $fecha_fin->fecha:'');
+                    $objWorksheet->setCellValue('V'.$row, ($status == 3)? $fecha_fin->hora:'');
 
                     $row++;
 
@@ -277,7 +328,11 @@ class ReportesJTController extends Controller
                 }
                 //$status = $registro['status'] ? $registro['status'] : 0;
                 //$status = $registro['status'] ? $registro['status'] : $registro['fecha_inicio_programa'] ? 1 : 0;
+                $fecha_inicio = $fun->converDate($registro['fecha_inicio_programa'],$yml['parameters']['time_zone']['default'],$timeZoneEmpresa);
+                $fecha_fin = $fun->converDate($registro['fecha_fin_programa'],$yml['parameters']['time_zone']['default'],$timeZoneEmpresa);
                 $promedio=($registro['promedio'])? $registro['promedio']:0;
+                $fecha_in = ($status!=0)? $fecha_inicio->fecha.' '.$fecha_inicio->hora:'';
+                $fecha_fin = ($status==3)? $fecha_fin->fecha.' '.$fecha_fin->hora:'';
                 $html .= '<tr>
                             <td><a class="detail" data-toggle="modal" data-target="#detailModal" data="'.$registro['login'].'" empresa_id="'.$empresa_id.'" href="#">'.$registro['nombre'].' '.$registro['apellido'].'</a></td>
                             <td>'.$registro['login'].'</td>
@@ -287,8 +342,8 @@ class ReportesJTController extends Controller
                             <td>'.$registro['materias'].'</td>
                             <td>'.$promedio.'</td>
                             <td>'.$this->get('translator')->trans($estatusProragama[$status]).'</td>
-                            <td>'.$registro['fecha_inicio_programa'].'</td>
-                            <td>'.$registro['fecha_fin_programa'].'</td>
+                            <td>'.$fecha_in.'</td>
+                            <td>'.$fecha_fin.'</td>
                         </tr>';
             }
 

@@ -11,8 +11,8 @@ $(document).ready(function() {
 
 function mostrarReporte(data)
 {
-	$('#label_desde').html($('#desde').val());
-	$('#label_hasta').html($('#hasta').val());
+	// $('#label_desde').html($('#desde').val());
+	// $('#label_hasta').html($('#hasta').val());
 	$('#label_filtro').show();
 	$('#archivo').val(data.archivo);
 	$('#document_name').html(data.document_name);

@@ -350,7 +350,9 @@ class ReportesJEController extends Controller
             foreach ($listado as $participante)
             {
 
-                $limit_iterations = count($participante['evaluaciones'])-1;
+                
+                $c_evaluaciones = count($participante['evaluaciones']);
+                $limit_iterations = $c_evaluaciones-1;
                 $limit_row = $row+$limit_iterations;
 
                 // Estilizar las celdas antes de un posible merge
@@ -390,6 +392,7 @@ class ReportesJEController extends Controller
                 $objWorksheet->setCellValue('L'.$row, $participante['campo3']);
                 $objWorksheet->setCellValue('M'.$row, $participante['campo4']);
                 $objWorksheet->setCellValue('N'.$row, $fecha_inicio->fecha);
+                $objWorksheet->mergeCells("O".$row.":O".$limit_row);
                 $objWorksheet->setCellValue('O'.$row, $fecha_inicio->hora);
 
                 // Datos de las evaluaciones

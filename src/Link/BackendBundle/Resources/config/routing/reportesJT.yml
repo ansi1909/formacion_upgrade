@@ -40,3 +40,10 @@ _ajaxDetalleParticipante:
     requirements:
         _method: POST
 
+_ajaxUrlpaginaEmpresa:
+    path: /ajaxUrlpaginaEmpresa
+    defaults: { _controller: LinkBackendBundle:ReportesJT:ajaxUrlpaginaEmpresa }
+    requirements:
+        _method: POST 
+
+

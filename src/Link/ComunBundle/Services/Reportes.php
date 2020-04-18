@@ -384,21 +384,19 @@ class Reportes
 	}
 
     // Mensajes de muro por participantes en una pagina
-    public function interaccionMuro($empresa_id, $pagina_id, $desde, $hasta){
+    public function interaccionMuro($empresa_id, $pagina_id){
 
 
         $em = $this->em;
         
         // Cálculos desde la función de BD
         $query = $em->getConnection()->prepare('SELECT
-                                                fninteraccion_muro(:re, :pempresa_id, :ppagina_id, :pdesde, :phasta) as
+                                                fninteraccion_muro(:re, :pempresa_id, :ppagina_id) as
                                                 resultado; fetch all from re;');
         $re = 're';
         $query->bindValue(':re', $re, \PDO::PARAM_STR);
         $query->bindValue(':pempresa_id', $empresa_id, \PDO::PARAM_INT);
         $query->bindValue(':ppagina_id', $pagina_id, \PDO::PARAM_INT);
-        $query->bindValue(':pdesde', $desde, \PDO::PARAM_STR);
-        $query->bindValue(':phasta', $hasta, \PDO::PARAM_STR);
         $query->execute();
         $rs = $query->fetchAll();
 
@@ -407,22 +405,20 @@ class Reportes
     }
 
     // Mensajes de espacio colaborativo por participantes en una pagina
-    public function interaccionColaborativo($empresa_id, $pagina_id, $tema_id, $desde, $hasta){
+    public function interaccionColaborativo($empresa_id, $pagina_id, $tema_id){
 
 
         $em = $this->em;
         
         // Cálculos desde la función de BD
         $query = $em->getConnection()->prepare('SELECT
-                                                fninteraccion_espacio_colaborativo(:re, :pempresa_id, :ppagina_id, :pforo_id, :pdesde, :phasta) as
+                                                fninteraccion_espacio_colaborativo(:re, :pempresa_id, :ppagina_id, :pforo_id) as
                                                 resultado; fetch all from re;');
         $re = 're';
         $query->bindValue(':re', $re, \PDO::PARAM_STR);
         $query->bindValue(':pempresa_id', $empresa_id, \PDO::PARAM_INT);
         $query->bindValue(':ppagina_id', $pagina_id, \PDO::PARAM_INT);
         $query->bindValue(':pforo_id', $tema_id, \PDO::PARAM_INT);
-        $query->bindValue(':pdesde', $desde, \PDO::PARAM_STR);
-        $query->bindValue(':phasta', $hasta, \PDO::PARAM_STR);
         $query->execute();
         $rs = $query->fetchAll();
 
