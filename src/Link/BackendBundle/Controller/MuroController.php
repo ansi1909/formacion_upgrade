@@ -289,9 +289,9 @@ class MuroController extends Controller
                             if($coment->getUsuario()->getId() == $usuario_id){
                                 $html .= '<a href="#" title="'.$this->get('translator')->trans("Editar").'" class="btn btn-link btn-sm edit" data-toggle="modal" data-target="#formModal" data="'.$coment->getId().'"><span class="fa fa-pencil"></span></a>';
                             }
-                            if ($answer_delete == 1)
+                            if ($coment->getUsuario()->getId() !== $usuario_id )
                             {
-                                $html .= '<a href="#" title="'.$this->get('translator')->trans("Responder").'" class="btn btn-link btn-sm add" data-toggle="modal" data-target="#formModal" data="'.$coment->getId().'"><span class="fa fa-plus"></span></a>';
+                                $html .= '<a href="#" title="'.$this->get('translator')->trans("Responder").'" class="btn btn-link btn-sm add" data-toggle="modal" data-target="#formModal" data="'.$coment->getId().'"><span class="fa fa-reply"></span></a>';
                             }
                             $html .= '<a href="#history_programation" title="'.$this->get('translator')->trans("Ver").'" class="btn btn-link btn-sm see" data="'.$coment->getId().'"><span class="fa fa-eye"></span></a>
                                       <a href="#" title="'.$this->get('translator')->trans("Eliminar").'" class="btn btn-link btn-sm '.$delete.' '.$delete_disabled.'" data="'.$coment->getId().'"><span class="fa fa-trash"></span></a>
@@ -442,7 +442,8 @@ class MuroController extends Controller
 
         $usuario = $this->getDoctrine()->getRepository('LinkComunBundle:AdminUsuario')->find($session->get('usuario')['id']);
 
-        $fecha_actual = date('Y/m/d H:m:s');
+         //$fecha_actual = date('Y/m/d H:m:s');
+         $fecha_actual =  new \DateTime('now');
 
         if($comentario_id != ''){
             $new_respuesta = $this->getDoctrine()->getRepository('LinkComunBundle:CertiMuro')->find($comentario_id);
@@ -456,7 +457,7 @@ class MuroController extends Controller
         }
         
         $new_respuesta->setMensaje($respuesta);
-        $new_respuesta->setFechaRegistro(new \DateTime($fecha_actual));
+        $new_respuesta->setFechaRegistro($fecha_actual);
         $new_respuesta->setUsuario($usuario);
         $new_respuesta->setMuro($muro_padre);
         $em->persist($new_respuesta);
