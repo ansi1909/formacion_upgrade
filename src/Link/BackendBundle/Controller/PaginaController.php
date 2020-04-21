@@ -1062,7 +1062,7 @@ class PaginaController extends Controller
                 $query = $em->createQuery("SELECT p FROM LinkComunBundle:CertiPagina p 
                                             WHERE p.pagina IS NULL 
                                             AND p.id != :id
-                                            ORDER BY p.grado ASC, p.orden ASC")
+                                            ORDER BY  p.orden ASC")
                             ->setParameter('id', $pagina_id);
             }
             $paginas = $query->getResult();
