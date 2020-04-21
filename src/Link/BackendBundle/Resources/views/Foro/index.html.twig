@@ -134,9 +134,6 @@
                                                <a href="#" title="{{'Responder'| trans}}" class="btn btn-link btn-sm add" data-toggle="modal" data-target="#formModal" data="{{ comentario.id }}"><span class="fa fa-plus"></span></a>
                                         {% endif %}
                                         <a href="#" title="{{ 'Ver'|trans }}" class="btn btn-link btn-sm see" data="{{ comentario.id }}"><span class="fa fa-eye"></span></a>
-                                        {% if comentario.archivos %}
-                                            <a href="#" title="{{ 'Archivos'|trans }}" class="btn btn-link btn-sm fileList" data="{{ comentario.id }}"><span class="fa fa-archive"></span></a>
-                                        {% endif %}
                                         {% if comentario.answer_delete!=0 %}
                                              <a href="#" title="{{ 'Eliminar'|trans }}" class="btn btn-link btn-sm {% if comentario.delete_disabled == '' %}delete{% endif %} {{ comentario.delete_disabled }}" data="{{ comentario.id }}"><span class="fa fa-trash"></span></a>
                                         {% endif %}
@@ -263,31 +260,31 @@
                 sweetAlertDelete(comentario_id, 'CertiForo');
             });
 
-            $( ".fileList").unbind( "click" );
-            $('.fileList').click(function(){
-                $('#loadingFiles').show();
-                var foro_id = $(this).attr('data');
-                $.ajax({
-                    type: "POST",
-                    url: $('#url_files_foroList').val(),
-                    async: true,
-                    data: { foro_id: foro_id },
-                    dataType: "json",
-                    success: function(data) {
-                        title(data.tema);
-                        $('#listOfFiles').html(data.html);
-                        $('#loadingFiles').hide();
-                        $('#filesModal').modal('show');
-                    },
-                    error: function(){
-                        $('#loadingFiles').hide();
-                        $('#div-error-files').html($('#error-msg-files').val());
-                        notify($('#div-error-files').html());
+            // $( ".fileList").unbind( "click" );
+            // $('.fileList').click(function(){
+            //     $('#loadingFiles').show();
+            //     var foro_id = $(this).attr('data');
+            //     $.ajax({
+            //         type: "POST",
+            //         url: $('#url_files_foroList').val(),
+            //         async: true,
+            //         data: { foro_id: foro_id },
+            //         dataType: "json",
+            //         success: function(data) {
+            //             title(data.tema);
+            //             $('#listOfFiles').html(data.html);
+            //             $('#loadingFiles').hide();
+            //             $('#filesModal').modal('show');
+            //         },
+            //         error: function(){
+            //             $('#loadingFiles').hide();
+            //             $('#div-error-files').html($('#error-msg-files').val());
+            //             notify($('#div-error-files').html());
                         
-                    }
-                });
+            //         }
+            //     });
                 
-            });
+            // });
 
         }
 
