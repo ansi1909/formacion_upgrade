@@ -3058,7 +3058,7 @@ public function porcentaje_finalizacion($fechaInicio,$fechaFin,$diasVencimiento)
   }
 
   // Duplicación de una página
-  public function duplicarPagina($pagina_id, $nombre, $usuario_id)
+  public function duplicarPagina($pagina_id, $nombre, $usuario_id , $evaluacion)
   {
 
     $em = $this->em;
@@ -3101,10 +3101,11 @@ public function porcentaje_finalizacion($fechaInicio,$fechaFin,$diasVencimiento)
         $c++;
 
         // Duplicación de la prueba
-        $c += $this->duplicarPrueba($pagina_id, $new_pagina->getId(), $usuario_id);
-
+        if($evaluacion == 1){
+           $c += $this->duplicarPrueba($pagina_id, $new_pagina->getId(), $usuario_id);
+        }
         // Duplicar sub-páginas
-        $c += $this->duplicarSubPaginas($pagina_id, $new_pagina->getId(), $usuario_id);
+        $c += $this->duplicarSubPaginas($pagina_id, $new_pagina->getId(), $usuario_id, $evaluacion);
 
         return array('inserts' => $c,
                'id' => $new_pagina->getId());
@@ -3112,7 +3113,7 @@ public function porcentaje_finalizacion($fechaInicio,$fechaFin,$diasVencimiento)
   }
 
   // Duplicación de sub-páginas dada la página
-  public function duplicarSubPaginas($pagina_id, $pagina_padre_id, $usuario_id)
+  public function duplicarSubPaginas($pagina_id, $pagina_padre_id, $usuario_id, $evaluacion )
   {
 
     $em = $this->em;
@@ -3154,10 +3155,13 @@ public function porcentaje_finalizacion($fechaInicio,$fechaFin,$diasVencimiento)
           $c++;
 
           // Duplicación de la prueba
-          $c += $this->duplicarPrueba($pagina->getId(), $new_pagina->getId(), $usuario_id);
+          if($evaluacion == 1){
+              $c += $this->duplicarPrueba($pagina->getId(), $new_pagina->getId(), $usuario_id);
+          }
+          
 
           // Duplicar sub-páginas
-          $c += $this->duplicarSubPaginas($pagina->getId(), $new_pagina->getId(), $usuario_id);
+          $c += $this->duplicarSubPaginas($pagina->getId(), $new_pagina->getId(), $usuario_id, $evaluacion);
 
     }
 
@@ -3181,7 +3185,7 @@ public function porcentaje_finalizacion($fechaInicio,$fechaFin,$diasVencimiento)
       $usuario = $em->getRepository('LinkComunBundle:AdminUsuario')->find($usuario_id);
 
       $new_prueba = new CertiPrueba();
-      $new_prueba->setNombre($prueba->getNombre());
+      $new_prueba->setNombre($prueba->getNombre().'(Copia)');
       $new_prueba->setPagina($new_pagina);
       $new_prueba->setCantidadPreguntas($prueba->getCantidadPreguntas());
       $new_prueba->setCantidadMostrar($prueba->getCantidadMostrar());

@@ -393,8 +393,11 @@ class PaginaController extends Controller
 
         $pagina_id = $request->request->get('pagina_id');
         $nombre = $request->request->get('nombre');
+        $evaluacion = $request->request->get('duplica_evaluacion');
+        $evaluacion = $evaluacion ? 1: 0;
 
-        $return = $f->duplicarPagina($pagina_id, $nombre, $session->get('usuario')['id']);
+
+        $return = $f->duplicarPagina($pagina_id, $nombre, $session->get('usuario')['id'],$evaluacion);
         
         /*$return = array('id' => $r_arr[1],
                         'inserts' => $r_arr[0]);*/
