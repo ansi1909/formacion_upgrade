@@ -975,22 +975,25 @@ public function porcentaje_finalizacion($fechaInicio,$fechaFin,$diasVencimiento)
 
 
   // Crea o actualiza asignaciones de sub-páginas con los mismos valores de la página padre
-  public function asignacionSubPaginas($pagina_empresa, $yml, $onlyDates = 0, $onlyMuro = 0)
+  public function asignacionSubPaginas($pagina_empresa, $yml, $onlyDates = 0, $onlyMuro = 0, $onlyColaborativo = 0)
   {
         $em = $this->em;
-        $only_muro = ($onlyMuro!=0)? 'TRUE':'FALSE';
-        $only_dates = ($onlyDates!=0)? 'TRUE':'FALSE';
+        //$only_muro = ($onlyMuro!=0)? 'TRUE':'FALSE';
+        //$only_dates = ($onlyDates!=0)? 'TRUE':'FALSE';
+        //$only_colaborativo = ($onlyColaborativo!=0)? 'TRUE':'FALSE';
         $query = $em->getConnection()->prepare('SELECT
                                                     fnasignar_subpaginas
                                                     (:pempresa_id,
                                                      :pestatus_contenido,
                                                      :only_dates,
-                                                     :only_muro) as
+                                                     :only_muro,
+                                                     :only_colaborativo) as
                                                     resultado;');
         $query->bindValue(':pempresa_id', $pagina_empresa->getId(), \PDO::PARAM_INT);
         $query->bindValue(':pestatus_contenido', $yml['parameters']['estatus_contenido']['activo'], \PDO::PARAM_INT);
-        $query->bindValue(':only_dates', $only_dates, \PDO::PARAM_STR);
-        $query->bindValue(':only_muro', $only_muro, \PDO::PARAM_STR);
+        $query->bindValue(':only_dates', $onlyDates, \PDO::PARAM_INT);
+        $query->bindValue(':only_muro', $onlyMuro, \PDO::PARAM_INT);
+        $query->bindValue(':only_colaborativo', $onlyColaborativo, \PDO::PARAM_INT);
         $query->execute();
         $gc = $query->fetchAll();
         $indices = $gc[0]['resultado'];

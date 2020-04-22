@@ -800,6 +800,7 @@ class PaginaController extends Controller
             $puntajeAprueba = $request->request->get('puntajeAprueba');
             $maxIntentos = $request->request->get('maxIntentos');
             $prelacion = $request->request->get('prelacion');
+            $colaborativoSubp = $request->request->get('colaborativo_subpaginas');
 
             // Reformateo de fecha de inicio
             $fi = explode("/", $fechaInicio);
@@ -836,7 +837,10 @@ class PaginaController extends Controller
             // Si applyMuro es true se activa el muro para las sub-páginas
             $onlyMuro = $applyMuro ? 1 : 0;
 
-            $f->asignacionSubPaginas($pagina_empresa, $yml, $onlyDates, $onlyMuro);
+            // colaborativoSubp es true activa el colaborativo para las sub paginas
+            $onlyColaborativo = $colaborativoSubp ? 1 : 0;
+
+            $f->asignacionSubPaginas($pagina_empresa, $yml, $onlyDates, $onlyMuro, $onlyColaborativo);
 
             return $this->redirectToRoute('_showAsignacion', array('empresa_id' => $pagina_empresa->getEmpresa()->getId(),
                                                                    'pagina_id' => $pagina_empresa->getPagina() ? $pagina_empresa->getPagina()->getId() : 0));
