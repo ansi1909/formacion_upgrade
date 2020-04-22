@@ -30,6 +30,7 @@ begin
        (SELECT COUNT(u.id) AS culminado FROM admin_usuario u 
         INNER JOIN certi_pagina_log pl ON u.id = pl.usuario_id
         WHERE pl.pagina_id = pe.pagina_id  AND pl.estatus_pagina_id = 3
+        AND u.empresa_id = pe.empresa_id
         ) as culminado,
        (SELECT COUNT(u.id) AS no_iniciados FROM admin_usuario u INNER JOIN 
            (admin_nivel n INNER JOIN certi_nivel_pagina np ON n.id = np.nivel_id) 

@@ -132,20 +132,39 @@
                                     <small id="muroHelp" class="form-text text-muted">{{ 'Si marca SI, la página tendrá una sección en el que los participantes podrán escribir en el muro.'|trans }}</small>
                                 </div>
                                 {% if not pagina_empresa.pagina.pagina %}
-                                    <div class="col-sm-8 col-md-8 col-lg-8">
-                                        <div class="form-group">
-                                            <label for="colaborativo" class="col-6 col-form-label">{{ 'Activar espacio colaborativo'|trans }}</label>
-                                            <div class="col-4">
-                                                <div class="can-toggle demo-rebrand-2 small">
-                                                    <input id="f_colaborativo" name="colaborativo" type="checkbox" {% if pagina_empresa.colaborativo %}checked{% endif %}>
-                                                    <label for="f_colaborativo">
-                                                        <div class="can-toggle__switch" data-checked="{{ 'Si'|trans }}" data-unchecked="No"></div>
-                                                    </label>
+                                <div class="col-sm-8 col-md-8 col-lg-8" >
+                                        <div class="row">
+                                            <div class="col-sm-8 col-md-8 col-lg-8" >
+                                                <div class="form-group">
+                                                    <label for="colaborativo" class="col-16 col-form-label">{{ 'Activar espacio colaborativo'|trans }}</label>
+                                                    <div class="col-4">
+                                                        <div class="can-toggle demo-rebrand-2 small">
+                                                            <input id="f_colaborativo" name="colaborativo" type="checkbox" {% if pagina_empresa.colaborativo %}checked{% endif %}>
+                                                            <label for="f_colaborativo">
+                                                                <div class="can-toggle__switch" data-checked="{{ 'Si'|trans }}" data-unchecked="No"></div>
+                                                            </label>
+                                                        </div>
+                                                    </div>
+                                                    
                                                 </div>
                                             </div>
-                                            <small id="muroHelp" class="form-text text-muted">{{ 'Si marca SI, el programa tendrá una sección en el que el tutor virtual podrá anexar contenido adicional.'|trans }}.</small>
+                                            <div class="col-sm-8 col-md-8 col-lg-8" >
+                                                <div class="form-group">
+                                                    <label for="colaborativo" class="col-16 col-form-label">{{ 'Espacio colaborativo a las subpaginas'|trans }}</label>
+                                                    <div class="col-4">
+                                                        <div class="can-toggle demo-rebrand-2 small">
+                                                            <input id="f_colaborativo_subpaginas" name="colaborativo_subpaginas" type="checkbox" >
+                                                            <label for="f_colaborativo_subpaginas">
+                                                                <div class="can-toggle__switch" data-checked="{{ 'Si'|trans }}" data-unchecked="No"></div>
+                                                            </label>
+                                                        </div>
+                                                    </div>
+                                                    
+                                                </div>
+                                            </div>
                                         </div>
-                                    </div>
+                                            <small id="muroHelp" class="form-text text-muted">{{ 'Si marca SI, el programa tendrá una sección en el que el tutor virtual podrá anexar contenido adicional.'|trans }}.</small>
+                                   </div>
                                 {% endif %}
                             </div>
                             <div class="wizard-footer">
