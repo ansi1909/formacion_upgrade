@@ -134,7 +134,7 @@
                                             <a href="#" title="{{'Editar' | trans}}" class="btn btn-link btn-sm edit" data-toggle="modal" data-target="#formModal" data="{{ comentario.id }}"><span class="fa fa-pencil"></span></a>
                                         {% endif %}
                                         {% if comentario.usuarioId != usuario.id %}
-                                              <a href="#" title="{{'Responder' | trans}}" class="btn btn-link btn-sm add " data-toggle="modal" data-target="#formModal" data="{{ comentario.id }}"><span class="fa fa-reply" ></span></a>
+                                              <a href="#" title="{{'Responder' | trans}}" class="btn btn-link btn-sm add " data-toggle="modal" data-target="#formModal" data="{{ comentario.id }}"><span class="fa fa-plus" ></span></a>
                                         {% endif %}
 
                                         <a href="#history_programation" title="{{ 'Ver'|trans }}" class="btn btn-link btn-sm see" data="{{ comentario.id }}"><span class="fa fa-eye"></span></a>
