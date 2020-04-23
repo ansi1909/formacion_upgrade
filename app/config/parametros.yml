@@ -128,4 +128,9 @@ parameters:
     espacio_colaborativo:
         alarma_tutor: 0 
         alarma_participantes: 0
+    limite_correos_notificaciones:
+        cron: 350
+        controlador: 100
+
+
         

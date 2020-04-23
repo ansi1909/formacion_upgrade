@@ -53,7 +53,7 @@ class UsersScheduledCommand extends ContainerAwareCommand
         for ($i = 0; $i < count($r); $i++) 
         {
 
-            if ($j == 100)
+            if ($j == $yml2['parameters']['limite_correos_notificaciones']['cron'])
             {
                 // Cantidad tope de correos en una corrida
                 break;
