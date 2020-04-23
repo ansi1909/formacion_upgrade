@@ -894,7 +894,7 @@ class NotificacionController extends Controller
                 for ($i = 0; $i < count($r); $i++) 
                 {
 
-                    if ($j == 100)
+                    if ($j == $yml['parameters']['limite_correos_notificaciones']['controlador'])
                     {
                         // Cantidad tope de correos en una corrida
                         break;
