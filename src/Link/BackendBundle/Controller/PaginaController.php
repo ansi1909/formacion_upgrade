@@ -882,11 +882,17 @@ class PaginaController extends Controller
             $prelaciones[] = array('id' => $pe->getPagina()->getId(),
                                    'nombre' => $pe->getPagina()->getNombre());
         }
+        // return new response(var_dump($pagina_empresa->getPagina()->getId()));
+        $estructura = $f->obtenerEstructura($pagina_empresa->getPagina()->getId(),$yml);
+        //return new response(var_dump($estructura));
+        $status = $f->statusChecksHerencia($pagina_empresa,$estructura);
+        //return new response(var_dump($status));
 
         return $this->render('LinkBackendBundle:Pagina:editAsignacion.html.twig', array('pagina_empresa' => $pagina_empresa,
                                                                                         'prueba' => $prueba,
                                                                                         'days_ago' => $f->timeAgo($pagina_empresa->getEmpresa()->getFechaCreacion()->format('Y-m-d H:i:s')),
-                                                                                        'prelaciones' => $prelaciones));
+                                                                                        'prelaciones' => $prelaciones,
+                                                                                        'status'=>$status));
 
     }
 

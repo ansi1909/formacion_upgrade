@@ -26,6 +26,7 @@ use Link\ComunBundle\Entity\AdminNoticia;
 
 
 
+
 class Functions
 { 
   
@@ -3799,6 +3800,68 @@ public function porcentaje_finalizacion($fechaInicio,$fechaFin,$diasVencimiento)
 
 
       return $resultado;           
+    }
+
+
+
+  public function obtenerEstructura($pagina_id,$yml){
+    $padres = array($pagina_id);
+    $retorno = array();
+    $em = $this->em;
+   
+    
+    while (count($padres)>0) {
+        $padresTemp = array();
+        foreach ($padres as $padre) {
+          $hijos = $em->getRepository('LinkComunBundle:CertiPagina')->findBy(array('pagina'=>$padre,'estatusContenido'=>$yml['parameters']['estatus_contenido']['activo']));
+          if(count($hijos)>0){
+            foreach ($hijos as $hijo) {
+             array_push($retorno,$hijo->getId());
+             $nietos =  $em->getRepository('LinkComunBundle:CertiPagina')->findBy(array('pagina'=>$hijo->getId(),'estatusContenido'=>$yml['parameters']['estatus_contenido']['activo']));
+             if(count($nietos)>0){
+              array_push($padresTemp,$hijo->getId());
+             }
+            }
+          }
+        }
+
+        $padres = $padresTemp;
+
+      }
+
+      return $retorno;
+    }
+
+    public function statusChecksHerencia($paginaEmpresa,$estructuraPagina){
+        $em = $this->em;
+        $muro_c = 0;
+        $espacio_c = 0;
+        $periodo_c = 0;
+        $total = count($estructuraPagina);
+
+        foreach ($estructuraPagina as $subpagina) {
+          $subpaginaEmpresa = $em->getRepository('LinkComunBundle:CertiPaginaEmpresa')->findOneBy(array('pagina'=>$subpagina,'empresa'=>$paginaEmpresa->getEmpresa()->getId()));
+
+          if ($subpaginaEmpresa->getMuroActivo() == $paginaEmpresa->getMuroActivo()) {
+            $muro_c++;
+          }
+          if ($subpaginaEmpresa->getColaborativo() == $paginaEmpresa->getColaborativo()){
+            $espacio_c++;
+          }
+          if($subpaginaEmpresa->getFechaInicio() == $paginaEmpresa->getFechaInicio() && $subpaginaEmpresa->getFechaVencimiento() == $paginaEmpresa->getFechaVencimiento()){
+            $periodo_c++;
+
+          }
+        }
+
+        $retorno = array(
+          'muro'=> $muro_c == $total ? 1:0,
+          'espacio'=> $espacio_c == $total ? 1:0,
+          'periodo'=> $periodo_c == $total ? 1:0
+         );
+
+
+        return $retorno;
     }
 
 
