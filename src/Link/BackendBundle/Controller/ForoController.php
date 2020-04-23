@@ -396,18 +396,18 @@ class ForoController extends Controller
                 $extension = explode('.',$archivo->getArchivo());
                 $iconoExtension = $f->getWebDirectory().'/front/assets/img/'.$extension[1].'.svg';
 
-                $html .= ($e%2==0)? ($e==0)? '<div class="row" style="margin-top: 15px;  border-bottom: 2px solid #EEE8E7;">':'</div><div class="row" style="margin-top: 15px; border-bottom: 2px solid #EEE8E7;">':'';
+                //$html .= '<div class="row" style="margin-top: 15px;  border-bottom: 2px solid #EEE8E7;">';
 
-                $html .= '
+                $html .= '<div class="row" style="margin-top: 15px;  border-bottom: 2px solid #EEE8E7;">
                           <div class ="col-md-1" style="margin-bottom:5px"> <img src="'.$iconoExtension.'" width=35  height=35 > </div>
                           <div class ="col-md-7" style="margin-bottom:5px"><a href ="'.$ruta.'"  class="btn btn-link btn-sm " download>'.$archivo->getDescripcion().' - '.$archivo->getUsuario()->getNombre().' '.$archivo->getUsuario()->getApellido().'</a></div>
-                          ';
+                          </div>';
 
                 $e++;
 
             }
          
-            $html .= '</div>';
+            //$html .= '</div>';
 
        }
        
