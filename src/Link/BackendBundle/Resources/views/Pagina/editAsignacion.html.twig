@@ -120,7 +120,8 @@
                                                 <label for="applyMuro" class="col-16 col-form-label">{{ 'Aplicar activación de muro a las sub-páginas'|trans }}</label>
                                                 <div class="col-4">
                                                     <div class="can-toggle demo-rebrand-2 small">
-                                                        <input id="f_applyMuro" name="applyMuro" type="checkbox">
+                                                        <input id="f_applyMuro" name="applyMuro" type="checkbox"
+                                                        {% if status.muro %}checked{% endif %}>
                                                         <label for="f_applyMuro">
                                                             <div class="can-toggle__switch" data-checked="{{ 'Si'|trans }}" data-unchecked="No"></div>
                                                         </label>
@@ -153,7 +154,7 @@
                                                     <label for="colaborativo" class="col-16 col-form-label">{{ 'Espacio colaborativo a las subpaginas'|trans }}</label>
                                                     <div class="col-4">
                                                         <div class="can-toggle demo-rebrand-2 small">
-                                                            <input id="f_colaborativo_subpaginas" name="colaborativo_subpaginas" type="checkbox" >
+                                                            <input id="f_colaborativo_subpaginas" name="colaborativo_subpaginas" type="checkbox" {% if status.espacio %}checked{% endif %}>
                                                             <label for="f_colaborativo_subpaginas">
                                                                 <div class="can-toggle__switch" data-checked="{{ 'Si'|trans }}" data-unchecked="No"></div>
                                                             </label>
@@ -210,7 +211,7 @@
                                         <label for="apply" class="col-10 col-form-label">{{ 'Aplicar periodo a las sub-páginas'|trans }}</label>
                                         <div class="col-4">
                                             <div class="can-toggle demo-rebrand-2 small">
-                                                <input id="f_apply" name="apply" type="checkbox">
+                                                <input id="f_apply" name="apply" type="checkbox"{% if status.periodo %}checked{% endif %}>
                                                 <label for="f_apply">
                                                     <div class="can-toggle__switch" data-checked="{{ 'Si'|trans }}" data-unchecked="No"></div>
                                                 </label>
