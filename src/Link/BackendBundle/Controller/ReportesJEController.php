@@ -358,11 +358,11 @@ class ReportesJEController extends Controller
                 // Estilizar las celdas antes de un posible merge
                 for ($f=$row; $f<=$limit_row; $f++)
                 {
-                    $objWorksheet->getStyle("A$f:T$f")->applyFromArray($styleThinBlackBorderOutline); //bordes
-                    $objWorksheet->getStyle("A$f:T$f")->getFont()->setSize($font_size); // Tamaño de las letras
-                    $objWorksheet->getStyle("A$f:T$f")->getFont()->setName($font); // Tipo de letra
-                    $objWorksheet->getStyle("A$f:T$f")->getAlignment()->setHorizontal($horizontal_aligment); // Alineado horizontal
-                    $objWorksheet->getStyle("A$f:T$f")->getAlignment()->setVertical($vertical_aligment); // Alineado vertical
+                    $objWorksheet->getStyle("A$f:U$f")->applyFromArray($styleThinBlackBorderOutline); //bordes
+                    $objWorksheet->getStyle("A$f:U$f")->getFont()->setSize($font_size); // Tamaño de las letras
+                    $objWorksheet->getStyle("A$f:U$f")->getFont()->setName($font); // Tipo de letra
+                    $objWorksheet->getStyle("A$f:U$f")->getAlignment()->setHorizontal($horizontal_aligment); // Alineado horizontal
+                    $objWorksheet->getStyle("A$f:U$f")->getAlignment()->setVertical($vertical_aligment); // Alineado vertical
                     $objWorksheet->getRowDimension($f)->setRowHeight(35); // Altura de la fila
                 }
 
@@ -385,25 +385,27 @@ class ReportesJEController extends Controller
                 $objWorksheet->setCellValue('E'.$row, $fecha_registro->fecha);
                 $objWorksheet->setCellValue('F'.$row, $fecha_registro->hora);
                 $objWorksheet->setCellValue('G'.$row, $participante['correo']);
-                $objWorksheet->setCellValue('H'.$row, $participante['pais']);
-                $objWorksheet->setCellValue('I'.$row, $participante['nivel']);
-                $objWorksheet->setCellValue('J'.$row, $participante['campo1']);
-                $objWorksheet->setCellValue('K'.$row, $participante['campo2']);
-                $objWorksheet->setCellValue('L'.$row, $participante['campo3']);
-                $objWorksheet->setCellValue('M'.$row, $participante['campo4']);
-                $objWorksheet->setCellValue('N'.$row, $fecha_inicio->fecha);
+                $objWorksheet->setCellValue('H'.$row, $participante['activo']);
+                $objWorksheet->setCellValue('I'.$row, $participante['pais']);
+                $objWorksheet->setCellValue('J'.$row, $participante['nivel']);
+                $objWorksheet->setCellValue('K'.$row, $participante['campo1']);
+                $objWorksheet->setCellValue('L'.$row, $participante['campo2']);
+                $objWorksheet->setCellValue('M'.$row, $participante['campo3']);
+                $objWorksheet->setCellValue('N'.$row, $participante['campo4']);
                 $objWorksheet->mergeCells("O".$row.":O".$limit_row);
-                $objWorksheet->setCellValue('O'.$row, $fecha_inicio->hora);
+                $objWorksheet->setCellValue('O'.$row, $fecha_inicio->fecha);
+                $objWorksheet->mergeCells("P".$row.":P".$limit_row);
+                $objWorksheet->setCellValue('P'.$row, $fecha_inicio->hora);
 
                 // Datos de las evaluaciones
                 foreach ($participante['evaluaciones'] as $evaluacion)
                 {
                     $fecha_evaluacion = $fn->converDate($evaluacion['fecha_inicio_prueba'],$yml['parameters']['time_zone']['default'],$timeZoneEmpresa);
-                    $objWorksheet->setCellValue('P'.$row, $evaluacion['evaluacion']);
-                    $objWorksheet->setCellValue('Q'.$row, $evaluacion['estado']);
-                    $objWorksheet->setCellValue('R'.$row, $evaluacion['nota']);
-                    $objWorksheet->setCellValue('S'.$row, $fecha_evaluacion->fecha);
-                    $objWorksheet->setCellValue('T'.$row, $fecha_evaluacion->hora);
+                    $objWorksheet->setCellValue('Q'.$row, $evaluacion['evaluacion']);
+                    $objWorksheet->setCellValue('R'.$row, $evaluacion['estado']);
+                    $objWorksheet->setCellValue('S'.$row, $evaluacion['nota']);
+                    $objWorksheet->setCellValue('T'.$row, $fecha_evaluacion->fecha);
+                    $objWorksheet->setCellValue('U'.$row, $fecha_evaluacion->hora);
                     $row++;
                 }
 

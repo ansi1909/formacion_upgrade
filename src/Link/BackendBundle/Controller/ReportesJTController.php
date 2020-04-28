@@ -238,7 +238,7 @@ class ReportesJTController extends Controller
                     }
 
                     $promedio = $participante['promedio'] ? $participante['promedio'] : 0;
-                    $acceso = $re['activo'] = "TRUE" ? 'Sí' : 'No';
+                    $acceso = $participante['activo']? 'Sí' : 'No';
                    // $fecha = explode(" ", $participante['fecha_registro']);
                     $fecha_registro = $fun->converDate($participante['fecha_registro'],$yml['parameters']['time_zone']['default'],$timeZoneEmpresa);
                     $fecha_inicio = $fun->converDate($participante['fecha_inicio_programa'],$yml['parameters']['time_zone']['default'],$timeZoneEmpresa);
@@ -448,7 +448,7 @@ class ReportesJTController extends Controller
                 {
                     $fecha = $fun->converDate($participante['fecha_registro'],$yml['parameters']['time_zone']['default'],$timeZoneEmpresa);
 
-                    $acceso = $re['activo'] = "TRUE" ? 'Sí' : 'No';
+                    $acceso = $participante['activo']? 'Sí' : 'No';
                     // Datos de las columnas del reporte
                     $objWorksheet->setCellValue('A'.$row, $participante['codigo']);
                     $objWorksheet->setCellValue('B'.$row, $participante['login']);

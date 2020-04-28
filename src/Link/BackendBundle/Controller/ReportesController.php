@@ -125,12 +125,13 @@ class ReportesController extends Controller
                 $font = 'Arial';
                 $horizontal_aligment = \PHPExcel_Style_Alignment::HORIZONTAL_CENTER;
                 $vertical_aligment = \PHPExcel_Style_Alignment::VERTICAL_CENTER;
+                //return new response(var_dump($res));
 
                 foreach ($res as $re)
                 {
 
                     $correo = trim($re['correo']) ? trim($re['correo']) : trim($re['correo2']);
-                    $acceso = $re['activo'] = "TRUE" ? 'Sí' : 'No';
+                    $acceso = $re['activo'] ? 'Sí' : 'No';
                     $logueado = $re['logueado'] > 0 ? 'Sí' : 'No';
                     $fecha = $f->converDate($re['fecha_registro'],$yml['parameters']['time_zone']['default'],$timeZoneEmpresa);
                     $objWorksheet->getStyle("A$row:O$row")->applyFromArray($styleThinBlackBorderOutline); //bordes
@@ -446,8 +447,8 @@ class ReportesController extends Controller
 
             foreach ($listado['participantes'] as $participante)
             {
+                
                 $fecha = $f->converDate($participante['fecha_registro'],$yml['parameters']['time_zone']['default'],$timeZoneEmpresa);
-                $acceso = $re['activo'] = "TRUE" ? 'Sí' : 'No';
                 // Estilizar toda la fila, excepto el bgcolor de las celdas de los programas
                 $objWorksheet->getStyle("A".$row.":".$lastColumn.$row)->applyFromArray($styleThinBlackBorderOutline); //bordes
                 $objWorksheet->getStyle("A".$row.":".$lastColumn.$row)->getFont()->setSize($font_size); // Tamaño de las letras
@@ -464,7 +465,7 @@ class ReportesController extends Controller
                 $objWorksheet->setCellValue('E'.$row, $fecha->fecha);
                 $objWorksheet->setCellValue('F'.$row, $fecha->hora);
                 $objWorksheet->setCellValue('G'.$row, $participante['correo']);
-                $objWorksheet->setCellValue('H'.$row, $acceso);
+                $objWorksheet->setCellValue('H'.$row, $participante['activo']);
                 $objWorksheet->setCellValue('I'.$row, $participante['logueado']);
                 $objWorksheet->setCellValue('J'.$row, $participante['pais']);
                 $objWorksheet->setCellValue('K'.$row, $participante['nivel']);
@@ -681,16 +682,6 @@ class ReportesController extends Controller
         $timeZoneEmpresa = ($empresa->getZonaHoraria())? $empresa->getZonaHoraria()->getNombre():$yml['parameters']['time_zone']['default'];
         $timeZoneReport = $fn->clearNameTimeZone($timeZoneEmpresa,$empresa->getPais()->getNombre(),$yml);
 
-        // list($d, $m, $a) = explode("/", $desdef);
-        // $desde = "$a-$m-$d 00:00:00";
-        // $desdeUtc = $fn->converDate($desde,$timeZoneEmpresa,$yml['parameters']['time_zone']['default'],false);
-        // $desde = $desdeUtc->fecha.' '.$desdeUtc->hora;
-
-        // list($d, $m, $a) = explode("/", $hastaf);
-        // $hasta = "$a-$m-$d 23:59:59";
-        // $hastaUtc = $fn->converDate($hasta,$timeZoneEmpresa,$yml['parameters']['time_zone']['default'],false);
-        // $hasta = $hastaUtc->fecha.' '.$hastaUtc->hora;
-
         $listado = $rs->interaccionColaborativo($empresa_id, $pagina_id, $tema_id);
 
 
@@ -728,15 +719,16 @@ class ReportesController extends Controller
             foreach ($listado as $participante)
             {
 
+                $acceso = $participante['activo']? 'Sí':'No';
                 $correo = trim($participante['correo_personal']) ? trim($participante['correo_personal']) : trim($participante['correo_corporativo']);
                 $mensaje = strip_tags($participante['mensaje']);
                 $fecha_registro = $fn->converDate($participante['fecha_registro'],$yml['parameters']['time_zone']['default'],$timeZoneEmpresa);
                 $fecha_mensaje = $fn->converDate($participante['fecha_mensaje'],$yml['parameters']['time_zone']['default'],$timeZoneEmpresa);
-                $objWorksheet->getStyle("A$row:P$row")->applyFromArray($styleThinBlackBorderOutline); //bordes
-                $objWorksheet->getStyle("A$row:P$row")->getFont()->setSize($font_size); // Tamaño de las letras
-                $objWorksheet->getStyle("A$row:P$row")->getFont()->setName($font); // Tipo de letra
-                $objWorksheet->getStyle("A$row:P$row")->getAlignment()->setHorizontal($horizontal_aligment); // Alineado horizontal
-                $objWorksheet->getStyle("A$row:P$row")->getAlignment()->setVertical($vertical_aligment); // Alineado vertical
+                $objWorksheet->getStyle("A$row:Q$row")->applyFromArray($styleThinBlackBorderOutline); //bordes
+                $objWorksheet->getStyle("A$row:Q$row")->getFont()->setSize($font_size); // Tamaño de las letras
+                $objWorksheet->getStyle("A$row:Q$row")->getFont()->setName($font); // Tipo de letra
+                $objWorksheet->getStyle("A$row:Q$row")->getAlignment()->setHorizontal($horizontal_aligment); // Alineado horizontal
+                $objWorksheet->getStyle("A$row:Q$row")->getAlignment()->setVertical($vertical_aligment); // Alineado vertical
                 $objWorksheet->getRowDimension($row)->setRowHeight(40); // Altura de la fila
             
 
@@ -748,15 +740,16 @@ class ReportesController extends Controller
                 $objWorksheet->setCellValue('E'.$row, $fecha_registro->fecha);
                 $objWorksheet->setCellValue('F'.$row, $fecha_registro->hora);
                 $objWorksheet->setCellValue('G'.$row, $correo);
-                $objWorksheet->setCellValue('H'.$row, $participante['pais']);
-                $objWorksheet->setCellValue('I'.$row, $participante['nivel']);
-                $objWorksheet->setCellValue('J'.$row, $participante['campo1']);
-                $objWorksheet->setCellValue('K'.$row, $participante['campo2']);
-                $objWorksheet->setCellValue('L'.$row, $participante['campo3']);
-                $objWorksheet->setCellValue('M'.$row, $participante['campo4']);
-                $objWorksheet->setCellValue('N'.$row, $fecha_mensaje->fecha);
-                $objWorksheet->setCellValue('O'.$row, $fecha_mensaje->hora);
-                $objWorksheet->setCellValue('P'.$row, $mensaje);
+                $objWorksheet->setCellValue('H'.$row, $acceso);
+                $objWorksheet->setCellValue('I'.$row, $participante['pais']);
+                $objWorksheet->setCellValue('J'.$row, $participante['nivel']);
+                $objWorksheet->setCellValue('K'.$row, $participante['campo1']);
+                $objWorksheet->setCellValue('L'.$row, $participante['campo2']);
+                $objWorksheet->setCellValue('M'.$row, $participante['campo3']);
+                $objWorksheet->setCellValue('N'.$row, $participante['campo4']);
+                $objWorksheet->setCellValue('O'.$row, $fecha_mensaje->fecha);
+                $objWorksheet->setCellValue('P'.$row, $fecha_mensaje->hora);
+                $objWorksheet->setCellValue('Q'.$row, $mensaje);
                 $row++;
 
             }
@@ -933,19 +926,7 @@ class ReportesController extends Controller
         $timeZoneEmpresa = ($empresa->getZonaHoraria())? $empresa->getZonaHoraria()->getNombre():$yml['parameters']['time_zone']['default'];
         $timeZoneReport = $fn->clearNameTimeZone($timeZoneEmpresa,$empresa->getPais()->getNombre(),$yml);
         $pagina_id = $request->request->get('pagina_id');
-        //$desdef = $request->request->get('desde');
-        //$hastaf = $request->request->get('hasta');
         $excel = $request->request->get('excel');
-
-        // list($d, $m, $a) = explode("/", $desdef);
-        // $desde = "$a-$m-$d 00:00:00";
-        // $desdeUtc = $fn->converDate($desde,$timeZoneEmpresa,$yml['parameters']['time_zone']['default'],false);
-        // $desde = $desdeUtc->fecha.' '.$desdeUtc->hora;
-
-        // list($d, $m, $a) = explode("/", $hastaf);
-        // $hasta = "$a-$m-$d 23:59:59";
-        // $hastaUtc = $fn->converDate($hasta,$timeZoneEmpresa,$yml['parameters']['time_zone']['default'],false);
-        // $hasta = $hastaUtc->fecha.' '.$hastaUtc->hora;
 
         
         $leccion = $this->getDoctrine()->getRepository('LinkComunBundle:CertiPagina')->find($pagina_id);
@@ -995,12 +976,12 @@ class ReportesController extends Controller
                $fecha_registro = $fn->converDate($participante['fecha_registro'],$yml['parameters']['time_zone']['default'],$timeZoneEmpresa);
                $fecha_mensaje = $fn->converDate($participante['fecha_mensaje'],$yml['parameters']['time_zone']['default'],$timeZoneEmpresa);
 
-                
-                $objWorksheet->getStyle("A$row:P$row")->applyFromArray($styleThinBlackBorderOutline); //bordes
-                $objWorksheet->getStyle("A$row:P$row")->getFont()->setSize($font_size); // Tamaño de las letras
-                $objWorksheet->getStyle("A$row:P$row")->getFont()->setName($font); // Tipo de letra
-                $objWorksheet->getStyle("A$row:P$row")->getAlignment()->setHorizontal($horizontal_aligment); // Alineado horizontal
-                $objWorksheet->getStyle("A$row:P$row")->getAlignment()->setVertical($vertical_aligment); // Alineado vertical
+                $acceso = $participante['activo']? 'Sí':'No';
+                $objWorksheet->getStyle("A$row:Q$row")->applyFromArray($styleThinBlackBorderOutline); //bordes
+                $objWorksheet->getStyle("A$row:Q$row")->getFont()->setSize($font_size); // Tamaño de las letras
+                $objWorksheet->getStyle("A$row:Q$row")->getFont()->setName($font); // Tipo de letra
+                $objWorksheet->getStyle("A$row:Q$row")->getAlignment()->setHorizontal($horizontal_aligment); // Alineado horizontal
+                $objWorksheet->getStyle("A$row:Q$row")->getAlignment()->setVertical($vertical_aligment); // Alineado vertical
                 $objWorksheet->getRowDimension($row)->setRowHeight(40); // Altura de la fila
             
 
@@ -1012,15 +993,16 @@ class ReportesController extends Controller
                 $objWorksheet->setCellValue('E'.$row, $fecha_registro->fecha);
                 $objWorksheet->setCellValue('F'.$row, $fecha_registro->hora);
                 $objWorksheet->setCellValue('G'.$row, $correo);
-                $objWorksheet->setCellValue('H'.$row, $participante['pais']);
-                $objWorksheet->setCellValue('I'.$row, $participante['nivel']);
-                $objWorksheet->setCellValue('J'.$row, $participante['campo1']);
-                $objWorksheet->setCellValue('K'.$row, $participante['campo2']);
-                $objWorksheet->setCellValue('L'.$row, $participante['campo3']);
-                $objWorksheet->setCellValue('M'.$row, $participante['campo4']);
-                $objWorksheet->setCellValue('N'.$row, $fecha_mensaje->fecha);
-                $objWorksheet->setCellValue('O'.$row, $fecha_mensaje->hora);
-                $objWorksheet->setCellValue('P'.$row, $participante['mensaje']);
+                $objWorksheet->setCellValue('H'.$row, $acceso);
+                $objWorksheet->setCellValue('I'.$row, $participante['pais']);
+                $objWorksheet->setCellValue('J'.$row, $participante['nivel']);
+                $objWorksheet->setCellValue('K'.$row, $participante['campo1']);
+                $objWorksheet->setCellValue('L'.$row, $participante['campo2']);
+                $objWorksheet->setCellValue('M'.$row, $participante['campo3']);
+                $objWorksheet->setCellValue('N'.$row, $participante['campo4']);
+                $objWorksheet->setCellValue('O'.$row, $fecha_mensaje->fecha);
+                $objWorksheet->setCellValue('P'.$row, $fecha_mensaje->hora);
+                $objWorksheet->setCellValue('Q'.$row, $participante['mensaje']);
                 $row++;
 
             }

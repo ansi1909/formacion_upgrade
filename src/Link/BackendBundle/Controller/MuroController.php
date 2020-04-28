@@ -68,7 +68,7 @@ class MuroController extends Controller
             {
                 $tiene++;
                 $cantidad_comentarios = $this->cantidadComentarios($page->getPagina()->getId(), $usuario->getEmpresa()->getId());
-                $str .= '<li data-jstree=\'{ "icon": "fa fa-angle-double-right" }\' p_id="'.$page->getPagina()->getId().'" p_str="'.$page->getPagina()->getCategoria()->getNombre().': '.$page->getPagina()->getNombre().'">'.$page->getPagina()->getCategoria()->getNombre().': '.$page->getPagina()->getNombre().' ('.$cantidad_comentarios.' '.$this->get('translator')->trans('comentarios').')';
+                $str .= '<li data-jstree=\'{ "icon": "fa fa-angle-double-right" }\' p_id="'.$page->getPagina()->getId().'" p_str="'.$page->getPagina()->getCategoria()->getNombre().': '.$page->getPagina()->getNombre().'">'.$page->getPagina()->getCategoria()->getNombre().': '.$page->getPagina()->getNombre().' ('.$cantidad_comentarios.' Aqui 1'.$this->get('translator')->trans('comentarios').')';
                 $subPaginas = $this->subPaginasEmpresa($page->getPagina()->getId(), $usuario->getEmpresa()->getId());
                 if ($subPaginas['tiene'] > 0)
                 {
@@ -161,7 +161,7 @@ class MuroController extends Controller
             {
                 $tiene++;
                 $cantidad_comentarios = $this->cantidadComentarios($page->getPagina()->getId(), $empresa_id);
-                $str .= '<li data-jstree=\'{ "icon": "fa fa-angle-double-right" }\' p_id="'.$page->getPagina()->getId().'" p_str="'.$page->getPagina()->getCategoria()->getNombre().': '.$page->getPagina()->getNombre().'">'.$page->getPagina()->getCategoria()->getNombre().': '.$page->getPagina()->getNombre().' ('.$cantidad_comentarios.' '.$this->get('translator')->trans('comentarios').')';
+                $str .= '<li data-jstree=\'{ "icon": "fa fa-angle-double-right" }\' p_id="'.$page->getPagina()->getId().'" p_str="'.$page->getPagina()->getCategoria()->getNombre().': '.$page->getPagina()->getNombre().'">'.$page->getPagina()->getCategoria()->getNombre().': '.$page->getPagina()->getNombre().' ('.$cantidad_comentarios.' Aqui 2 '.$this->get('translator')->trans('comentarios').')';
                 $subPaginas = $this->subPaginasEmpresa($page->getPagina()->getId(), $empresa_id);
                 if ($subPaginas['tiene'] > 0)
                 {
