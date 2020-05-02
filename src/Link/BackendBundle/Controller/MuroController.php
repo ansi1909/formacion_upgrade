@@ -20,6 +20,7 @@ class MuroController extends Controller
     {
         $session = new Session();
         $f = $this->get('funciones');
+        $rs = $this->get('reportes');
         
         if (!$session->get('ini') || $f->sesionBloqueda($session->get('sesion_id')))
         {
@@ -59,16 +60,27 @@ class MuroController extends Controller
                         ->setParameter('empresa_id', $usuario->getEmpresa()->getId());
             $pages = $query->getResult();
 
-            if (count($pages))
-            {
-                $str .= '<li data-jstree=\'{ "icon": "fa fa-angle-double-right" }\' p_id="0" p_str="'.$this->get('translator')->trans('MOSTRAR TODOS LOS COMENTARIOS').'">'.$this->get('translator')->trans('MOSTRAR TODOS LOS COMENTARIOS').'</li>';
-            }
+            // if (count($pages))
+            // {
+            //     $str .= '<li data-jstree=\'{ "icon": "fa fa-angle-double-right" }\' p_id="0" p_str="'.$this->get('translator')->trans('MOSTRAR TODOS LOS COMENTARIOS').'">'.$this->get('translator')->trans('MOSTRAR TODOS LOS COMENTARIOS').'</li>';
+            // }
+
+
 
             foreach ($pages as $page)
             {
+                $total = 0;
                 $tiene++;
-                $cantidad_comentarios = $this->cantidadComentarios($page->getPagina()->getId(), $usuario->getEmpresa()->getId());
-                $str .= '<li data-jstree=\'{ "icon": "fa fa-angle-double-right" }\' p_id="'.$page->getPagina()->getId().'" p_str="'.$page->getPagina()->getCategoria()->getNombre().': '.$page->getPagina()->getNombre().'">'.$page->getPagina()->getCategoria()->getNombre().': '.$page->getPagina()->getNombre().' ('.$cantidad_comentarios.' Aqui 1'.$this->get('translator')->trans('comentarios').')';
+                $estructura = $f->obtenerEstructura($page->getPagina()->getId(),$yml);
+                sort($estructura);
+                foreach ($estructura as $id) {
+                     $listado = $rs->interaccionMuro($page->getEmpresa()->getId(), $id);    
+                     $total = $total + count($listado);
+                }
+               
+
+               // $cantidad_comentarios = $this->cantidadComentarios($page->getPagina()->getId(), $usuario->getEmpresa()->getId());
+                $str .= '<li data-jstree=\'{ "icon": "fa fa-angle-double-right" }\' p_id="'.$page->getPagina()->getId().'" p_str="'.$page->getPagina()->getCategoria()->getNombre().': '.$page->getPagina()->getNombre().'">'.$page->getPagina()->getCategoria()->getNombre().': '.$page->getPagina()->getNombre().' ('.$total.' '.$this->get('translator')->trans('comentarios').')';
                 $subPaginas = $this->subPaginasEmpresa($page->getPagina()->getId(), $usuario->getEmpresa()->getId());
                 if ($subPaginas['tiene'] > 0)
                 {
@@ -152,16 +164,23 @@ class MuroController extends Controller
                         ->setParameter('empresa_id', $empresa_id);
             $pages = $query->getResult();
 
-            if (count($pages))
-            {
-                $str .= '<li data-jstree=\'{ "icon": "fa fa-angle-double-right" }\' p_id="0" p_str="'.$this->get('translator')->trans('MOSTRAR TODOS LOS COMENTARIOS').'">'.$this->get('translator')->trans('MOSTRAR TODOS LOS COMENTARIOS').'</li>';
-            }
+            // if (count($pages))
+            // {
+            //     $str .= '<li data-jstree=\'{ "icon": "fa fa-angle-double-right" }\' p_id="0" p_str="'.$this->get('translator')->trans('MOSTRAR TODOS LOS COMENTARIOS').'">'.$this->get('translator')->trans('MOSTRAR TODOS LOS COMENTARIOS').'</li>';
+            // }
 
             foreach ($pages as $page)
             {
+                $total = 0;
                 $tiene++;
-                $cantidad_comentarios = $this->cantidadComentarios($page->getPagina()->getId(), $empresa_id);
-                $str .= '<li data-jstree=\'{ "icon": "fa fa-angle-double-right" }\' p_id="'.$page->getPagina()->getId().'" p_str="'.$page->getPagina()->getCategoria()->getNombre().': '.$page->getPagina()->getNombre().'">'.$page->getPagina()->getCategoria()->getNombre().': '.$page->getPagina()->getNombre().' ('.$cantidad_comentarios.' Aqui 2 '.$this->get('translator')->trans('comentarios').')';
+                $estructura = $f->obtenerEstructura($page->getPagina()->getId(),$yml);
+                sort($estructura);
+                foreach ($estructura as $id) {
+                     $listado = $rs->interaccionMuro($page->getEmpresa()->getId(), $id);    
+                     $total = $total + count($listado);
+                }
+                //$cantidad_comentarios = $this->cantidadComentarios($page->getPagina()->getId(), $empresa_id);
+                $str .= '<li data-jstree=\'{ "icon": "fa fa-angle-double-right" }\' p_id="'.$page->getPagina()->getId().'" p_str="'.$page->getPagina()->getCategoria()->getNombre().': '.$page->getPagina()->getNombre().'">'.$page->getPagina()->getCategoria()->getNombre().': '.$page->getPagina()->getNombre().' ('.$total.' '.$this->get('translator')->trans('comentarios').')';
                 $subPaginas = $this->subPaginasEmpresa($page->getPagina()->getId(), $empresa_id);
                 if ($subPaginas['tiene'] > 0)
                 {
@@ -503,6 +522,8 @@ class MuroController extends Controller
         $subpaginas = array();
         $tiene = 0;
         $return = '';
+        $f = $this->get('funciones');
+        $rs = $this->get('reportes');
 
         $query = $em->createQuery("SELECT pe, p FROM LinkComunBundle:CertiPaginaEmpresa pe 
                                     JOIN pe.pagina p 
@@ -515,8 +536,10 @@ class MuroController extends Controller
         foreach ($subpages as $subpage)
         {
             $tiene++;
-            $cantidad_comentarios = $this->cantidadComentarios($subpage->getPagina()->getId(), $empresa_id);
-            $return .= '<li data-jstree=\'{ "icon": "fa fa-angle-double-right" }\' p_id="'.$subpage->getPagina()->getId().'" p_str="'.$subpage->getPagina()->getCategoria()->getNombre().': '.$subpage->getPagina()->getNombre().'">'.$subpage->getPagina()->getCategoria()->getNombre().': '.$subpage->getPagina()->getNombre().' ('.$cantidad_comentarios.' '.$this->get('translator')->trans('comentarios').')';
+            $listado = $rs->interaccionMuro($subpage->getEmpresa()->getId(), $subpage->getPagina()->getId());    
+            $cantidad = count($listado);
+            //$cantidad_comentarios = $this->cantidadComentarios($subpage->getPagina()->getId(), $empresa_id);
+            $return .= '<li data-jstree=\'{ "icon": "fa fa-angle-double-right" }\' p_id="'.$subpage->getPagina()->getId().'" p_str="'.$subpage->getPagina()->getCategoria()->getNombre().': '.$subpage->getPagina()->getNombre().'">'.$subpage->getPagina()->getCategoria()->getNombre().': '.$subpage->getPagina()->getNombre().' ('.$cantidad.' '.$this->get('translator')->trans('comentarios').')';
             $subPaginas = $this->subPaginasEmpresa($subpage->getPagina()->getId(), $subpage->getEmpresa()->getId());
             if ($subPaginas['tiene'] > 0)
             {

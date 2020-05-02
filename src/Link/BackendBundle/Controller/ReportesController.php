@@ -785,8 +785,10 @@ class ReportesController extends Controller
         
         $session = new Session();
         $f = $this->get('funciones');
+        $rs = $this->get('reportes');
         $em = $this->getDoctrine()->getManager();
         $hoy = date('Y-m-d h:i:s');
+        $yml = Yaml::parse(file_get_contents($this->get('kernel')->getRootDir().'/config/parametros.yml'));
         //return new response($hoy);
         
         if (!$session->get('ini') || $f->sesionBloqueda($session->get('sesion_id')))
@@ -830,11 +832,20 @@ class ReportesController extends Controller
                                         ORDER BY p.nombre ASC")
                         ->setParameter('empresa_id', $empresa_id);
             $pages = $query->getResult();
-
+            
             foreach ($pages as $page)
             {
+                $total = 0;
+                $estructura = $f->obtenerEstructura($page->getPagina()->getId(),$yml);
+                sort($estructura);
+                //print_r($estructura);exit();
+                foreach ($estructura as $id) {
+                     $listado = $rs->interaccionMuro($page->getEmpresa()->getId(), $id);    
+                     $total = $total + count($listado);
+                }
+               
                 $tiene++;
-                $str .= '<li data-jstree=\'{ "icon": "fa fa-angle-double-right" }\' p_id="'.$page->getPagina()->getId().'" p_str="'.$page->getPagina()->getCategoria()->getNombre().': '.$page->getPagina()->getNombre().'">'.$page->getPagina()->getCategoria()->getNombre().': '.$page->getPagina()->getNombre();
+                $str .= '<li data-jstree=\'{ "icon": "fa fa-angle-double-right" }\' p_id="'.$page->getPagina()->getId().'" p_str="'.$page->getPagina()->getCategoria()->getNombre().': '.$page->getPagina()->getNombre().'">'.$page->getPagina()->getCategoria()->getNombre().': '.$page->getPagina()->getNombre().' ('.$total.')';
                 $subPaginas = $this->subPaginasEmpresa($page->getPagina()->getId(), $empresa_id);
                 if ($subPaginas['tiene'] > 0)
                 {
@@ -881,7 +892,9 @@ class ReportesController extends Controller
 		
 		foreach ($subpages as $subpage)
 		{
-			$tiene++;
+			    $tiene++;
+                $listado = $rs->interaccionMuro($subpage->getEmpresa()->getId(), $subpage->getPagina()->getId());    
+                $cantidad = count($listado);
                 if($subpage->getPagina()->getCategoria()->getId() == $yml['parameters']['categoria']['leccion'])
                 {   
                     $desde = $subpage->getPagina()->getFechaCreacion();
@@ -892,7 +905,7 @@ class ReportesController extends Controller
                     $cantidad = count($listado);
                     $return .= '<li data-jstree=\'{ "icon": "fa fa-angle-double-right" }\' p_id="'.$subpage->getPagina()->getId().'" p_str="'.$subpage->getPagina()->getCategoria()->getNombre().': '.$subpage->getPagina()->getNombre().'" tipo_recurso_id="'. $subpage->getPagina()->getCategoria()->getId() .'" >'.$subpage->getPagina()->getCategoria()->getNombre().': '.$subpage->getPagina()->getNombre().' ('.$cantidad.')';
                 }else{
-                    $return .= '<li data-jstree=\'{ "icon": "fa fa-angle-double-right" }\' p_id="'.$subpage->getPagina()->getId().'" p_str="'.$subpage->getPagina()->getCategoria()->getNombre().': '.$subpage->getPagina()->getNombre().'" tipo_recurso_id="'. $subpage->getPagina()->getCategoria()->getId() .' " >'.$subpage->getPagina()->getCategoria()->getNombre().': '.$subpage->getPagina()->getNombre();
+                    $return .= '<li data-jstree=\'{ "icon": "fa fa-angle-double-right" }\' p_id="'.$subpage->getPagina()->getId().'" p_str="'.$subpage->getPagina()->getCategoria()->getNombre().': '.$subpage->getPagina()->getNombre().'" tipo_recurso_id="'. $subpage->getPagina()->getCategoria()->getId() .' " >'.$subpage->getPagina()->getCategoria()->getNombre().': '.$subpage->getPagina()->getNombre().' ('.$cantidad.')';
                 }
 				$subPaginas = $this->subPaginasEmpresa($subpage->getPagina()->getId(), $subpage->getEmpresa()->getId());
 				if ($subPaginas['tiene'] > 0)
@@ -915,28 +928,50 @@ class ReportesController extends Controller
     public function ajaxInteraccionMuroAction(Request $request)
     {
         
+        $modulo = $this->get('translator')->trans('Todos');
+        $materia = $this->get('translator')->trans('Todas');
+        $leccion = $this->get('translator')->trans('Todas');
+
         $session = new Session();
         $em = $this->getDoctrine()->getManager();
         $rs = $this->get('reportes');
         $fn = $this->get('funciones');
         $yml = Yaml::parse(file_get_contents($this->get('kernel')->getRootDir().'/config/parametros.yml'));
-        
         $empresa_id = $request->request->get('empresa_id');
         $empresa = $this->getDoctrine()->getRepository('LinkComunBundle:AdminEmpresa')->find($empresa_id);
+
         $timeZoneEmpresa = ($empresa->getZonaHoraria())? $empresa->getZonaHoraria()->getNombre():$yml['parameters']['time_zone']['default'];
         $timeZoneReport = $fn->clearNameTimeZone($timeZoneEmpresa,$empresa->getPais()->getNombre(),$yml);
         $pagina_id = $request->request->get('pagina_id');
         $excel = $request->request->get('excel');
-
+        $pagina = $this->getDoctrine()->getRepository('LinkComunBundle:CertiPagina')->find($pagina_id);
+        if($pagina->getCategoria()->getId() == $yml['parameters']['categoria']['programa'] || $pagina->getCategoria()->getId() == $yml['parameters']['categoria']['curso']){
+             $estructura = $fn->obtenerEstructura($pagina_id,$yml);
+             sort($estructura);
+             $pestructura = implode(',', $estructura);
+             $programa = $this->getDoctrine()->getRepository('LinkComunBundle:CertiPagina')->find($pagina_id);
+        }else{
+            $pestructura = $pagina_id;
+            if ($pagina->getCategoria()->getId() == $yml['parameters']['categoria']['modulo']) {
+                $modulo = $this->getDoctrine()->getRepository('LinkComunBundle:CertiPagina')->find($pagina_id);
+                $programa = $this->getDoctrine()->getRepository('LinkComunBundle:CertiPagina')->find($modulo->getPagina());
+            }else if($pagina->getCategoria()->getId() == $yml['parameters']['categoria']['materia']){
+                $materia = $this->getDoctrine()->getRepository('LinkComunBundle:CertiPagina')->find($pagina_id);
+                $modulo = $this->getDoctrine()->getRepository('LinkComunBundle:CertiPagina')->find($materia->getPagina());
+                $programa = $this->getDoctrine()->getRepository('LinkComunBundle:CertiPagina')->find($modulo->getPagina());
+            }else if($pagina->getCategoria()->getId() == $yml['parameters']['categoria']['leccion']){
+                $leccion = $this->getDoctrine()->getRepository('LinkComunBundle:CertiPagina')->find($pagina_id);
+                $materia = $this->getDoctrine()->getRepository('LinkComunBundle:CertiPagina')->find($leccion->getPagina());
+                $modulo = $this->getDoctrine()->getRepository('LinkComunBundle:CertiPagina')->find($materia->getPagina());
+                $programa = $this->getDoctrine()->getRepository('LinkComunBundle:CertiPagina')->find($modulo->getPagina());
+            }
+        }
+       
+        $modulo = ($modulo!='Todos')? $modulo->getNombre():$modulo;
+        $materia = ($materia!='Todas')? $materia->getNombre():$materia;
+        $leccion = ($leccion!='Todas')? $leccion->getNombre():$leccion;
         
-        $leccion = $this->getDoctrine()->getRepository('LinkComunBundle:CertiPagina')->find($pagina_id);
-        $materia = $this->getDoctrine()->getRepository('LinkComunBundle:CertiPagina')->find($leccion->getPagina());
-        $modulo = $this->getDoctrine()->getRepository('LinkComunBundle:CertiPagina')->find($materia->getPagina());
-        $programa = $this->getDoctrine()->getRepository('LinkComunBundle:CertiPagina')->find($modulo->getPagina());
-    
-        
-        $listado = $rs->interaccionMuro($empresa_id, $pagina_id);
-
+        $listado = $rs->interaccionMuro($empresa_id, $pestructura);
 
         $fileWithPath = $this->container->getParameter('folders')['dir_project'].'docs/formatos/interaccionMuro.xlsx';
         $objPHPExcel = \PHPExcel_IOFactory::load($fileWithPath);
@@ -946,8 +981,8 @@ class ReportesController extends Controller
         // Encabezado
         $objWorksheet->setCellValue('A1', $this->get('translator')->trans('Interacciones de muro').'. '.$this->get('translator')->trans('Huso horario').': '.$timeZoneReport);
         $objWorksheet->setCellValue('A2', $this->get('translator')->trans('Empresa').': '.$empresa->getNombre().'. '.$this->get('translator')->trans('Programa').': '.$programa->getNombre() .'.');
-        $objWorksheet->setCellValue('A3', $this->get('translator')->trans('Módulo').': '.$modulo->getNombre().'. '.$this->get('translator')->trans('Materia').': '.$materia->getNombre() .'.');
-        $objWorksheet->setCellValue('A4', $this->get('translator')->trans('Lección').': '.$leccion->getNombre().'.');
+        $objWorksheet->setCellValue('A3', $this->get('translator')->trans('Módulo').': '.$modulo.'. '.$this->get('translator')->trans('Materia').': '.$materia .'.');
+        $objWorksheet->setCellValue('A4', $this->get('translator')->trans('Lección').': '.$leccion.'.');
         if (!count($listado))
         {
             $objWorksheet->mergeCells('A8:O8');

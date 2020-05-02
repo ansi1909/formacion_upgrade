@@ -5,12 +5,14 @@
 CREATE OR REPLACE FUNCTION fninteraccion_muro(
     resultado refcursor,
     pempresa_id integer,
-    ppagina_id integer)
+    ppagina_id TEXT)
   RETURNS refcursor AS
 $BODY$
+  DECLARE
+    paginas INTEGER[];
    
 begin
-
+    paginas := string_to_array(ppagina_id,',');
     OPEN resultado FOR 
 
     SELECT u.codigo AS codigo, u.login AS login, u.nombre AS nombre, u.apellido AS apellido, u.correo_personal AS correo_personal, 
@@ -25,7 +27,7 @@ begin
     ON m.usuario_id = u.id
     WHERE m.empresa_id = pempresa_id 
     AND u.login NOT LIKE 'temp%'
-    AND m.pagina_id = ppagina_id 
+    AND m.pagina_id = ANY (paginas)
     ORDER BY u.login ASC, m.fecha_registro ASC;
     
     RETURN resultado;

@@ -18,15 +18,17 @@ $(document).ready(function() {
 	$('.tree').jstree();
 
 	$('.tree').on("select_node.jstree", function (e, data) {
+		console.log('seleccionado');
 		var id = data.node.id;
 		var pagina_id = $('#'+id).attr('p_id');
 		var pagina_str = $('#'+id).attr('p_str');
 		var tipo_recurso_id = $('#'+id).attr('tipo_recurso_id');
-		if(tipo_recurso_id == 4)
-		{
-			$('#pagina_str').val(pagina_str);
-			$('#pagina_id').val(pagina_id);
-		}
+		//console.log(tipo_recurso_id);
+		//if(tipo_recurso_id == 4)
+		//{
+		$('#pagina_str').val(pagina_str);
+		$('#pagina_id').val(pagina_id);
+		//}
 		
 	});
 
