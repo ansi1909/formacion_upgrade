@@ -3545,7 +3545,7 @@ public function porcentaje_finalizacion($fechaInicio,$fechaFin,$diasVencimiento)
                   }
                 }
 
-                if ($pagina_empresa->getEmpresa()->getZonaHoraria()->getNombre()) {
+                if ($pagina_empresa->getEmpresa()->getZonaHoraria()) {
                     $timeZone = 1;
                     $zonaHoraria = $pagina_empresa->getEmpresa()->getZonaHoraria()->getNombre();  
                 }

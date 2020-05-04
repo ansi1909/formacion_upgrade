@@ -100,7 +100,7 @@ class DefaultController extends Controller
                         }
                     }
 
-                    if ($pagina_empresa->getEmpresa()->getZonaHoraria()->getNombre()) {
+                    if ($pagina_empresa->getEmpresa()->getZonaHoraria()) {
                         $timeZone = 1;
                         $zonaHoraria = $pagina_empresa->getEmpresa()->getZonaHoraria()->getNombre();  
                     }
@@ -221,7 +221,6 @@ class DefaultController extends Controller
          
          $paso_actual_intro = $introduccion[0]->getPasoActual();
          $cancelar_intro = $introduccion[0]->getCancelado();
-         //return new response(var_dump($grupos[1]['paginas'][0]['notas']));
          return $this->render('LinkFrontendBundle:Default:index.html.twig', array('bienvenida' => $empresa->getBienvenida(),
                                                                                  'reciente' => $reciente,
                                                                                  'grupos' => $grupos,
