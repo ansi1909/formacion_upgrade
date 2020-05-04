@@ -141,12 +141,12 @@
                                             </div>
                                             <div class="info-icon" >
                                               {% if pagina.descripcion %}
-                                                <a href="#modal" data-toggle="modal" {# data-target="#modalInfo" #} class="modalButton" data-pagina="{{ pagina.id }}">
+                                                <a href="#modal" data-toggle="tooltip"   data-title="{{ 'Descripción'|trans }}"  class="modalButton" data-pagina="{{ pagina.id }}">
                                                     <span class="material-icons">info</span>
                                                 </a>
                                               {% endif %}
                                               {% if pagina.pdf %}
-                                               <a href="{{ pagina.pdf }}" target="_blank">
+                                               <a href="{{ pagina.pdf }}" target="_blank" data-toggle="tooltip"   data-title="{{ 'Material complemetario'|trans}} ">
                                                     <span class="material-icons">description</span>
                                                 </a> 
                                               {% endif %}
