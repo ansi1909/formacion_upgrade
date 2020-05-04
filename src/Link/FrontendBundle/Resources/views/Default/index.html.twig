@@ -30,6 +30,13 @@
         .toolTip .introjs-tooltiptext {
             font-size: 1.3rem;
         }
+
+        .radar-img{
+            position:absolute;
+            z-index:100;
+            top: 4rem;
+            left: 9rem;
+       }
     </style>
 {% endblock %}
 
@@ -39,6 +46,7 @@
 <input type="hidden" id="url_cambiar_estado" name="url_cambiar_estado" value="{{ path('_ajaxCambiarEstado') }}">        
 <input type="hidden" id="paso_actual_intro" name="paso_actual_intro" value="{{ paso_actual_intro }}" data-pasoCorrecto="1">     
 <input type="hidden" id="cancelar_intro" name="cancelar_intro" value="{{ cancelar_intro }}">
+<input type="hidden" id="descripcion_pagina" name="descripcion_pagina" value="{{ path('_descripcion') }}">
 <div id="message" class="for-message well-message container py-6 px-6 mb-4 bckgd">
     <i id="equis" class="material-icons mr-2" >close</i>
     {{ bienvenida|raw }}    
@@ -126,15 +134,19 @@
                                         <span class="count text-xs {{ pagina.class_finaliza }}">{{ pagina.dias_vencimiento }}</span>
                                     </div>
                                     <div class="card-body">
-
+                                            <div class="float-right mt-4 radar-img"  id="radar-img-{{pagina.id}}" style="display: none;" >
+                                               <div class="contenedor">
+                                                  <div class="radar"></div>
+                                               </div>
+                                            </div>
                                             <div class="info-icon" >
                                               {% if pagina.descripcion %}
-                                                <a href="#modal" data-toggle="modal" {# data-target="#modalInfo" #} id="modalButton" data-pagina="{{ pagina.id }}">
+                                                <a href="#modal" data-toggle="modal" {# data-target="#modalInfo" #} class="modalButton" data-pagina="{{ pagina.id }}">
                                                     <span class="material-icons">info</span>
                                                 </a>
                                               {% endif %}
                                               {% if pagina.pdf %}
-                                               <a href="#">
+                                               <a href="{{ pagina.pdf }}" target="_blank">
                                                     <span class="material-icons">description</span>
                                                 </a> 
                                               {% endif %}
@@ -243,8 +255,8 @@
             <span aria-hidden="true">&times;</span>
           </button>
         </div>
-        <div class="modal-body">
-            <p class="px-4 text-sm" id="pdescripcion"></p>
+        <div class="modal-body" id="pdescripcion">
+          
         </div>
         <div class="modal-footer">
          
@@ -259,7 +271,7 @@
     <script type="text/javascript" src="{{ asset('front/js/plugins/introjs/intro.js') }}"></script>
     <script type="text/javascript" src="{{ asset('js/front/tabs.js') }}"></script>
     <script type="text/javascript" src="{{ asset('js/front/tuto.js') }}"></script>
-    <script type="text/javascript" src="{{ asset('js/front/modal.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('js/front/dashboard.js') }}"></script>
     <script>
         $(document).ready(function(){
             $('#dashBoard').addClass("active");

@@ -30,6 +30,7 @@ class DefaultController extends Controller
         $f->setRequest($session->get('sesion_id'));
 
         $yml = Yaml::parse(file_get_contents($this->get('kernel')->getRootDir().'/config/parametros.yml'));
+        $yml2 = Yaml::parse(file_get_contents($this->get('kernel')->getRootDir().'/config/parameters.yml'));
 
         $empresa = $this->getDoctrine()->getRepository('LinkComunBundle:AdminEmpresa')->find($session->get('empresa')['id']);
 
@@ -179,7 +180,7 @@ class DefaultController extends Controller
                                        'nombre' => $grupo->getPagina()->getNombre(),
                                        'imagen' => $grupo->getPagina()->getFoto(),
                                        'descripcion' => $grupo->getPagina()->getDescripcion(),
-                                       'pdf' => $grupo->getPagina()->getPdf(),
+                                       'pdf' => ($grupo->getPagina()->getPdf())?$yml2['parameters']['folders']['uploads'].$grupo->getPagina()->getPdf():null,
                                        'dias_vencimiento' => $dias_vencimiento,
                                        'class_finaliza' => $class_finaliza,
                                        'tiene_subpaginas' => $tiene_subpaginas,
@@ -230,6 +231,20 @@ class DefaultController extends Controller
                                                                                  'cancelar_intro' => $cancelar_intro));
 
     }
+
+    public function ajaxDescripcionAction(Request $request){
+        $em = $this->getDoctrine()->getManager();
+        $f = $this->get('funciones');
+
+        $pagina_id = $request->request->get('pagina_id');
+        $pagina = $this->getDoctrine()->getRepository('LinkComunBundle:CertiPagina')->find($pagina_id);
+        
+        $return = array('nombre'=>$pagina->getNombre(),'descripcion'=>$pagina->getDescripcion());
+        $return = json_encode($return);
+        return new Response($return, 200, array('Content-Type' => 'application/json'));
+
+    }
+
 
     public function authExceptionEmpresaAction($tipo)
     {
