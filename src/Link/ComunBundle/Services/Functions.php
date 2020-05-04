@@ -611,7 +611,7 @@ class Functions
       $days_ago = $interval->format('%a');
     }
 
-        return $days_ago;
+        return(integer) $days_ago;
 
   }
 
@@ -3494,6 +3494,7 @@ public function porcentaje_finalizacion($fechaInicio,$fechaFin,$diasVencimiento)
     {
 
         $em = $this->em;
+        $timeZone = 0;
 
         // buscando las últimas 3 interacciones del usuario donde la página no esté completada
         $query = $em->createQuery('SELECT pl FROM LinkComunBundle:CertiPaginaLog pl
@@ -3531,35 +3532,56 @@ public function porcentaje_finalizacion($fechaInicio,$fechaFin,$diasVencimiento)
                 $pagina_empresa = $em->getRepository('LinkComunBundle:CertiPaginaEmpresa')->findOneBy(array('empresa' => $empresa_id,
                                                                                                             'pagina' => $arp->getPagina()->getId()));
                 $usuario = $em->getRepository('LinkComunBundle:AdminUsuario')->find($usuario_id);
+                $fechaFin = $pagina_empresa->getFechaVencimiento();
+                $fechaInicio = $pagina_empresa->getFechaInicio();
                 $padre_id = $arp->getPagina()->getId();
                 $imagen = $arp->getPagina()->getFoto();
-                $porcentaje = round($arp->getPorcentajeAvance());
-                $link_enabled = $pagina_empresa->getFechaVencimiento()->format('Y-m-d') <= date('Y-m-d') ? 0 : 1;
-                $dias_vencimiento = $link_enabled ? $this->translator->trans('Finaliza en').' '.$this->timeAgo($pagina_empresa->getFechaVencimiento()->format("Y/m/d")).' '.$this->translator->trans('días') : $this->translator->trans('Programa Vencido');
-                $titulo_padre = $arp->getPagina()->getNombre();
-                $fecha_nivel = false;
-                if($usuario->getNivel()){
-                  $nivel_usuario = $usuario->getNivel();
-                  if ($nivel_usuario->getFechaInicio() && $nivel_usuario->getFechaFin()) {
-                    $nivel_vigente =  date('Y-m-d') <= $nivel_usuario->getFechaFin()->format('Y-m-d')? true : false;
-                    $link_enabled = $nivel_vigente;
-                    if($nivel_vigente){
-                      $fecha_nivel = true;
-                      $dias = $this->timeAgo($nivel_usuario->getFechaFin()->format("Y-m-d"));
-                      $porcentaje_finalizacion = $dias;
-                      if ($dias == 0) {
-                          $dias_vencimiento = $this->translator->trans('Vence hoy');
-                      }else{
-                        $dias_vencimiento = $link_enabled ? $this->translator->trans('Finaliza en').' '.$dias.' '.$this->translator->trans('días') : $this->translator->trans('Programa Vencido');
-                      }
-                      $porcentaje_dias = $this->porcentaje_finalizacion($nivel_usuario->getFechaInicio()->format("Y-m-d"),$nivel_usuario->getFechaFin()->format("Y-m-d"),$dias);
-                      $class_finaliza = $this->classFinaliza($porcentaje_dias);
-                    }else{
-                      $dias_vencimiento = $this->translator->trans('Programa Vencido');
-                    }
+                $porcentajeAvance = round($arp->getPorcentajeAvance());
 
+                if($usuario->getNivel()){
+                  if ($usuario->getNivel()->getFechaInicio() && $usuario->getNivel()->getFechaFin()) {
+                      $fechaInicio = $usuario->getNivel()->getFechaInicio();
+                      $fechaFin = $usuario->getNivel()->getFechaFin();
                   }
                 }
+
+                if ($pagina_empresa->getEmpresa()->getZonaHoraria()) {
+                    $timeZone = 1;
+                    $zonaHoraria = $pagina_empresa->getEmpresa()->getZonaHoraria()->getNombre();  
+                }
+
+                if($timeZone){
+                    date_default_timezone_set($zonaHoraria);
+                }
+
+
+                $fechaActual = date('d-m-Y H:i:s');
+                $fechaInicio = $fechaInicio->format('d-m-Y 00:00:00');
+                $fechaFin = new \DateTime($fechaFin->format('d-m-Y 23:59:00'));
+                $fechaFin = $fechaFin->format('d-m-Y H:i:s');
+                $link_enabled = (strtotime($fechaActual)<strtotime($fechaFin))? 1:0;
+
+                 $dias = $this->timeAgo($fechaFin);
+                 $porcentaje = $this->porcentaje_finalizacion($fechaInicio,$fechaFin,$dias);
+                 $porcentaje_finalizacion = $dias;
+                 $class_finaliza = $this->classFinaliza($porcentaje);
+                  if ($link_enabled)
+                    {
+                      $nivel_vigente = true;
+                      if($dias == 0){
+                         $dias_vencimiento = $this->translator->trans('Vence hoy');
+                      }else{
+                         $dias_vencimiento = $this->translator->trans('Finaliza en').' '.$dias.' '.$this->translator->trans('días');
+                      }
+                    }
+                    else {
+                        $nivel_vigente = false;
+                        $dias_vencimiento = $this->translator->trans('Programa Vencido');
+                    }
+
+
+                $titulo_padre = $arp->getPagina()->getNombre();
+               
      
                 if (count($subpaginas_ids))
                 {
@@ -3619,18 +3641,6 @@ public function porcentaje_finalizacion($fechaInicio,$fechaFin,$diasVencimiento)
                     }
 
                 }
-                if (!$fecha_nivel) {
-                  $dias = $this->timeAgo($pagina_empresa->getFechaVencimiento()->format("Y-m-d"));
-                  $porcentaje_finalizacion = $dias;
-                  $porcentaje_dias = $this->porcentaje_finalizacion($pagina_empresa->getFechaInicio()->format("Y-m-d"),$pagina_empresa->getFechaVencimiento()->format("Y-m-d"),$dias);
-                  if ($link_enabled)
-                  {
-                    $class_finaliza = $this->classFinaliza($porcentaje_dias);
-                  }
-                  else {
-                      $class_finaliza = '';
-                  }
-                }
 
 
 
@@ -3642,12 +3652,11 @@ public function porcentaje_finalizacion($fechaInicio,$fechaFin,$diasVencimiento)
                                                                         'categoria' => $categoria,
                                                                         'dias_vencimiento' => $dias_vencimiento,
                                                                         'class_finaliza' => $class_finaliza,
-                                                                        'porcentaje' => $porcentaje,
+                                                                        'porcentaje' => $porcentajeAvance,
                                                                         'avanzar' => $avanzar,
                                                                         'evaluacion_pagina' => $evaluacion_pagina,
                                                                         'evaluacion_programa' => $evaluacion_programa,
-                                                                        'link_enabled' => $link_enabled,
-                                                                        'porcentaje_finalizacion' => $porcentaje_finalizacion);
+                                                                        'link_enabled' => $link_enabled);
 
             }
 
@@ -3750,10 +3759,10 @@ public function porcentaje_finalizacion($fechaInicio,$fechaFin,$diasVencimiento)
       elseif ($porcentaje >= 31 && $porcentaje <= 69){
         $class_finaliza = 'alertTimeWarning';
       }
-      elseif ($porcentaje <= 30) {
+      elseif ($porcentaje >= 0 && $porcentaje <= 30) {
         $class_finaliza = 'alertTimeDanger';
       }else {
-        $class_finaliza = '';
+        $class_finaliza = 'alertTimeDanger';
       }
       return $class_finaliza;
     }

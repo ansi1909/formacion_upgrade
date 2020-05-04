@@ -126,8 +126,18 @@
                                         <span class="count text-xs {{ pagina.class_finaliza }}">{{ pagina.dias_vencimiento }}</span>
                                     </div>
                                     <div class="card-body">
+                                        {% if pagina.descripcion %}
+                                            <div class="info-icon" >
+                                                <a href="#modal" data-toggle="modal" {# data-target="#modalInfo" #} id="modalButton" data-pagina="{{ pagina.id }}">
+                                                    <span class="material-icons">info</span>
+                                                </a>
+                                                {# <a href="#">
+                                                    <span class="material-icons">description</span>
+                                                </a> #}
+                                            </div>
+                                        {% endif %}
                                         <h5 class="card-title mb-3"> {{ pagina.nombre }} </h5>
-                                        <p class="card-text">{{ pagina.descripcion|raw }}</p>
+                                        {#<p class="card-text">{{ pagina.descripcion|raw }}</p>#}
                                         {% if pagina.continuar == 0 %}
                                             {% if pagina.tiene_subpaginas == 1 %}
                                                 {% if pagina.nivel_vigente %}
@@ -220,6 +230,24 @@
         </ul>
     </div>
 </div>
+<div class="modal fade" id="modalInfo" tabindex="-1" role="dialog" aria-labelledby="modalInfo" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h4 class="modal-title text-center w-100 mt-4" id="label_modal"></h4>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+            <p class="px-4 text-sm" id="pdescripcion"></p>
+        </div>
+        <div class="modal-footer">
+         
+        </div>
+      </div>
+    </div>
+  </div>
 {% endblock %}
 
 {% block javascripts %}
@@ -227,6 +255,7 @@
     <script type="text/javascript" src="{{ asset('front/js/plugins/introjs/intro.js') }}"></script>
     <script type="text/javascript" src="{{ asset('js/front/tabs.js') }}"></script>
     <script type="text/javascript" src="{{ asset('js/front/tuto.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('js/front/modal.js') }}"></script>
     <script>
         $(document).ready(function(){
             $('#dashBoard').addClass("active");

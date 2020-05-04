@@ -312,6 +312,7 @@ class Reportes
         							  'nombre' => $r['nombre'],
         							  'apellido' => $r['apellido'],
         							  'correo' => trim($r['correo_personal']) ? trim($r['correo_personal']) : trim($r['correo_corporativo']),
+                                      'activo' => $r['activo']? 'Sí':'No',
         							  'empresa' => $r['empresa'],
         							  'pais' => $r['pais'],
         							  'nivel' => $r['nivel'],
@@ -344,7 +345,8 @@ class Reportes
 	        							  'nombre' => $r['nombre'],
 	        							  'apellido' => $r['apellido'],
 	        							  'correo' => trim($r['correo_personal']) ? trim($r['correo_personal']) : trim($r['correo_corporativo']),
-	        							  'empresa' => $r['empresa'],
+	        							  'activo' => $r['activo']? 'Sí':'No',
+                                          'empresa' => $r['empresa'],
         							  	  'pais' => $r['pais'],
         							  	  'nivel' => $r['nivel'],
         							  	  'fecha_registro' => $r['fecha_registro'],
@@ -396,7 +398,7 @@ class Reportes
         $re = 're';
         $query->bindValue(':re', $re, \PDO::PARAM_STR);
         $query->bindValue(':pempresa_id', $empresa_id, \PDO::PARAM_INT);
-        $query->bindValue(':ppagina_id', $pagina_id, \PDO::PARAM_INT);
+        $query->bindValue(':ppagina_id', $pagina_id, \PDO::PARAM_STR);
         $query->execute();
         $rs = $query->fetchAll();
 

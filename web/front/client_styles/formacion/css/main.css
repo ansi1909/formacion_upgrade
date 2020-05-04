@@ -2536,7 +2536,7 @@ p.up {
         top: 9rem; } }
   .card .info-icon {
     position: absolute;
-    top: -29px;
+    top: 140px;
     right: 10px;
     background-color: white;
     border-top-left-radius: 8px;
