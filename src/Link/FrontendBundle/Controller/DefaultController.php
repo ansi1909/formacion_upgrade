@@ -179,6 +179,7 @@ class DefaultController extends Controller
                                        'nombre' => $grupo->getPagina()->getNombre(),
                                        'imagen' => $grupo->getPagina()->getFoto(),
                                        'descripcion' => $grupo->getPagina()->getDescripcion(),
+                                       'pdf' => $grupo->getPagina()->getPdf(),
                                        'dias_vencimiento' => $dias_vencimiento,
                                        'class_finaliza' => $class_finaliza,
                                        'tiene_subpaginas' => $tiene_subpaginas,
