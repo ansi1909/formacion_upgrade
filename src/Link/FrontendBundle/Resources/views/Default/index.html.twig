@@ -126,16 +126,20 @@
                                         <span class="count text-xs {{ pagina.class_finaliza }}">{{ pagina.dias_vencimiento }}</span>
                                     </div>
                                     <div class="card-body">
-                                        {% if pagina.descripcion %}
+
                                             <div class="info-icon" >
+                                              {% if pagina.descripcion %}
                                                 <a href="#modal" data-toggle="modal" {# data-target="#modalInfo" #} id="modalButton" data-pagina="{{ pagina.id }}">
                                                     <span class="material-icons">info</span>
                                                 </a>
-                                                {# <a href="#">
+                                              {% endif %}
+                                              {% if pagina.pdf %}
+                                               <a href="#">
                                                     <span class="material-icons">description</span>
-                                                </a> #}
+                                                </a> 
+                                              {% endif %}
                                             </div>
-                                        {% endif %}
+                                            
                                         <h5 class="card-title mb-3"> {{ pagina.nombre }} </h5>
                                         {#<p class="card-text">{{ pagina.descripcion|raw }}</p>#}
                                         {% if pagina.continuar == 0 %}
