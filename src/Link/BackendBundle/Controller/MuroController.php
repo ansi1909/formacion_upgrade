@@ -60,12 +60,6 @@ class MuroController extends Controller
                         ->setParameter('empresa_id', $usuario->getEmpresa()->getId());
             $pages = $query->getResult();
 
-            // if (count($pages))
-            // {
-            //     $str .= '<li data-jstree=\'{ "icon": "fa fa-angle-double-right" }\' p_id="0" p_str="'.$this->get('translator')->trans('MOSTRAR TODOS LOS COMENTARIOS').'">'.$this->get('translator')->trans('MOSTRAR TODOS LOS COMENTARIOS').'</li>';
-            // }
-
-
 
             foreach ($pages as $page)
             {
@@ -115,10 +109,7 @@ class MuroController extends Controller
             if ($empresa_id)
             {
                 $query2 = $em->createQuery("SELECT m FROM LinkComunBundle:CertiMuro m
-                                            JOIN LinkComunBundle:CertiPaginaEmpresa pe
-                                            WHERE pe.pagina = m.pagina
-                                            AND pe.empresa = m.empresa
-                                            AND m.muro IS NULL
+                                            WHERE m.muro IS NULL
                                             AND m.empresa = :empresa_id")
                               ->setParameter('empresa_id', $empresa_id);;
             }
@@ -164,10 +155,6 @@ class MuroController extends Controller
                         ->setParameter('empresa_id', $empresa_id);
             $pages = $query->getResult();
 
-            // if (count($pages))
-            // {
-            //     $str .= '<li data-jstree=\'{ "icon": "fa fa-angle-double-right" }\' p_id="0" p_str="'.$this->get('translator')->trans('MOSTRAR TODOS LOS COMENTARIOS').'">'.$this->get('translator')->trans('MOSTRAR TODOS LOS COMENTARIOS').'</li>';
-            // }
 
             foreach ($pages as $page)
             {
@@ -245,29 +232,30 @@ class MuroController extends Controller
 
         $roles = $session->get('usuario')['roles'];
         $answer_delete= (in_array($yml['parameters']['rol']['tutor'],$roles) || in_array($yml['parameters']['rol']['empresa'],$roles)) ? 1:0; //verifica si el usuario posee el rol tutor virtual(3) o empresa(5)
+       
 
         if($pagina_id == 0){
             $query2 = $em->createQuery("SELECT m FROM LinkComunBundle:CertiMuro m
-                                       JOIN LinkComunBundle:CertiPaginaEmpresa pe
-                                       WHERE pe.pagina = m.pagina
-                                       AND pe.empresa = m.empresa
+                                       WHERE m.empresa=:empresa_id
                                        AND m.muro IS NULL
-                                       AND m.empresa = :empresa_id
                                        ORDER BY m.id ASC")
                          ->setParameter('empresa_id', $empresa_id);
             $comentarios = $query2->getResult();
         }
         else {
 
-            // Si la página es una lección, se busca directamente sus comentarios, sino se buscan todos los comentarios de las lecciones hijas.
-            $paginas_id = $this->leccionesId($pagina_id);
 
+            $pagina = $em->getRepository('LinkComunBundle:CertiPagina')->find($pagina_id);
+            if ($pagina->getCategoria()->getId() == $yml['parameters']['categoria']['programa'] || $pagina->getCategoria()->getId() == $yml['parameters']['categoria']['curso']) {
+              $paginas_id = $f->obtenerEstructura($pagina_id,$yml);
+              sort($paginas_id);
+            }
+            else{
+              $paginas_id = array($pagina_id);
+            }
             $query2 = $em->createQuery("SELECT m FROM LinkComunBundle:CertiMuro m
-                                       JOIN LinkComunBundle:CertiPaginaEmpresa pe
-                                       WHERE pe.pagina = m.pagina
-                                       AND pe.empresa = m.empresa
+                                       WHERE m.empresa=:empresa_id
                                        AND m.muro IS NULL
-                                       AND m.empresa = :empresa_id
                                        AND m.pagina IN (:paginas_id)
                                        ORDER BY m.id ASC")
                          ->setParameters(array('empresa_id' => $empresa_id,
@@ -275,7 +263,6 @@ class MuroController extends Controller
             $comentarios = $query2->getResult();
 
         }
-
         $html .= '<table class="table" id="dt">
                         <thead class="sty__title">
                             <tr>
@@ -287,7 +274,7 @@ class MuroController extends Controller
                             </tr>
                         </thead>
                         <tbody>';
-
+       // return new response(var_dump($comentarios));
         foreach ($comentarios as $coment)
         {
 
