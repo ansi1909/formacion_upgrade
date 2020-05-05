@@ -393,8 +393,11 @@ class PaginaController extends Controller
 
         $pagina_id = $request->request->get('pagina_id');
         $nombre = $request->request->get('nombre');
+        $evaluacion = $request->request->get('duplica_evaluacion');
+        $evaluacion = $evaluacion ? 1: 0;
 
-        $return = $f->duplicarPagina($pagina_id, $nombre, $session->get('usuario')['id']);
+
+        $return = $f->duplicarPagina($pagina_id, $nombre, $session->get('usuario')['id'],$evaluacion);
         
         /*$return = array('id' => $r_arr[1],
                         'inserts' => $r_arr[0]);*/
@@ -800,6 +803,7 @@ class PaginaController extends Controller
             $puntajeAprueba = $request->request->get('puntajeAprueba');
             $maxIntentos = $request->request->get('maxIntentos');
             $prelacion = $request->request->get('prelacion');
+            $colaborativoSubp = $request->request->get('colaborativo_subpaginas');
 
             // Reformateo de fecha de inicio
             $fi = explode("/", $fechaInicio);
@@ -836,7 +840,10 @@ class PaginaController extends Controller
             // Si applyMuro es true se activa el muro para las sub-páginas
             $onlyMuro = $applyMuro ? 1 : 0;
 
-            $f->asignacionSubPaginas($pagina_empresa, $yml, $onlyDates, $onlyMuro);
+            // colaborativoSubp es true activa el colaborativo para las sub paginas
+            $onlyColaborativo = $colaborativoSubp ? 1 : 0;
+
+            $f->asignacionSubPaginas($pagina_empresa, $yml, $onlyDates, $onlyMuro, $onlyColaborativo);
 
             return $this->redirectToRoute('_showAsignacion', array('empresa_id' => $pagina_empresa->getEmpresa()->getId(),
                                                                    'pagina_id' => $pagina_empresa->getPagina() ? $pagina_empresa->getPagina()->getId() : 0));
@@ -875,11 +882,17 @@ class PaginaController extends Controller
             $prelaciones[] = array('id' => $pe->getPagina()->getId(),
                                    'nombre' => $pe->getPagina()->getNombre());
         }
+        // return new response(var_dump($pagina_empresa->getPagina()->getId()));
+        $estructura = $f->obtenerEstructura($pagina_empresa->getPagina()->getId(),$yml);
+        //return new response(var_dump($estructura));
+        $status = $f->statusChecksHerencia($pagina_empresa,$estructura);
+        //return new response(var_dump($status));
 
         return $this->render('LinkBackendBundle:Pagina:editAsignacion.html.twig', array('pagina_empresa' => $pagina_empresa,
                                                                                         'prueba' => $prueba,
                                                                                         'days_ago' => $f->timeAgo($pagina_empresa->getEmpresa()->getFechaCreacion()->format('Y-m-d H:i:s')),
-                                                                                        'prelaciones' => $prelaciones));
+                                                                                        'prelaciones' => $prelaciones,
+                                                                                        'status'=>$status));
 
     }
 
@@ -1062,7 +1075,7 @@ class PaginaController extends Controller
                 $query = $em->createQuery("SELECT p FROM LinkComunBundle:CertiPagina p 
                                             WHERE p.pagina IS NULL 
                                             AND p.id != :id
-                                            ORDER BY p.grado ASC, p.orden ASC")
+                                            ORDER BY  p.orden ASC")
                             ->setParameter('id', $pagina_id);
             }
             $paginas = $query->getResult();

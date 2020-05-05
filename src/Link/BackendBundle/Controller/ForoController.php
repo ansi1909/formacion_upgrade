@@ -261,15 +261,11 @@ class ForoController extends Controller
                             if($coment->getUsuario()->getId() == $usuario_id){
                                 $html .= '<a href="#" title="'.$this->get('translator')->trans("Editar").'" class="btn btn-link btn-sm edit" data-toggle="modal" data-target="#formModal" data="'.$coment->getId().'"><span class="fa fa-pencil"></span></a>';
                             }
-                            if ($answer_delete == 1)
-                            {
-                                $html .= '<a href="#" title="'.$this->get('translator')->trans("Responder").'" class="btn btn-link btn-sm add" data-toggle="modal" data-target="#formModal" data="'.$coment->getId().'"><span class="fa fa-plus"></span></a>';
-                            }
+                            // if ($answer_delete == 1)
+                            // {
+                            //     $html .= '<a href="#" title="'.$this->get('translator')->trans("Responder").'" class="btn btn-link btn-sm add" data-toggle="modal" data-target="#formModal" data="'.$coment->getId().'"><span class="fa fa-plus"></span></a>';
+                            // }
                             $html .= '<a href="#" title="'.$this->get('translator')->trans("Ver").'" class="btn btn-link btn-sm see" data="'.$coment->getId().'"><span class="fa fa-eye"></span></a>';
-                            if ($archivos)
-                            {
-                                $html .= '<a href="#" title="'.$this->get('translator')->trans("Archivos").'" class="btn btn-link btn-sm fileList" data="'.$coment->getId().'"><span class="fa fa-archive"></span></a>';
-                            }
                             $html .= '<a href="#" title="'.$this->get('translator')->trans("Eliminar").'" class="btn btn-link btn-sm '.$delete.' '.$delete_disabled.'" data="'.$coment->getId().'"><span class="fa fa-trash"></span></a>
                         </td>
                     </tr>';
@@ -315,12 +311,23 @@ class ForoController extends Controller
                         </thead>
                         <tbody>';
 
+        $query = $em->createQuery("SELECT COUNT(fa.id) FROM LinkComunBundle:CertiForoArchivo fa
+                                       WHERE fa.foro = :foro_id")
+                     ->setParameter('foro_id', $foro_id);
+        $archivos = $query->getResult();              
+
         foreach ($comentarios as $coment)
         {
 
             $delete_disabled = $f->linkEliminar($coment->getId(), 'CertiForo');
             $delete = $delete_disabled=='' ? 'delete' : '';
-            
+
+            $query = $em->createQuery("SELECT COUNT(fa.id) FROM LinkComunBundle:CertiForoArchivo fa
+                                       WHERE fa.foro = :foro_id
+                                       AND fa.usuario= :usuario_id")
+                     ->setParameters(array('foro_id'=>$foro_id,'usuario_id'=>$coment->getUsuario()->getId()));
+            $archivos = $query->getSingleScalarResult();   
+
             $html .= '<tr>
                         <td class="respuesta'.$coment->getId().'">'.$coment->getMensaje().'</td>
                         <td>'.$coment->getUsuario()->getNombre().' '.$coment->getUsuario()->getApellido().'</td>
@@ -329,6 +336,9 @@ class ForoController extends Controller
                           if($coment->getUsuario()->getId() == $usuario_id){
                              $html .= '<a href="#" title="'.$this->get('translator')->trans("Editar").'" class="btn btn-link btn-sm edit" data-toggle="modal" data-target="#formModal" data="'.$coment->getId().'"><span class="fa fa-pencil"></span></a>';
                           }
+                          if ($archivos){
+                                $html .= '<a href="#" title="'.$this->get('translator')->trans("Archivos").'" class="btn btn-link btn-sm fileList" data="'.$coment->getUsuario()->getId().'" data-foro="'.$foro_id.'"><span class="fa fa-archive"></span></a>';
+                            }
                           
                            $html .='<a href="#" title="'.$this->get('translator')->trans("Eliminar").'" class="btn btn-link btn-sm '.$delete.' '.$delete_disabled.'" data="'.$coment->getId().'"><span class="fa fa-trash"></span></a>';
                            $html .='
@@ -359,14 +369,16 @@ class ForoController extends Controller
        $em = $this->getDoctrine()->getManager();
        $f = $this->get('funciones');
        $foro_id = $request->request->get('foro_id');
+       $usuario_id = $request->request->get('usuario_id');
        $html ='';
        
        $foro = $this->getDoctrine()->getRepository('LinkComunBundle:CertiForo')->find($foro_id);
        
        $query = $em->createQuery("SELECT fa FROM LinkComunBundle:CertiForoArchivo fa
                                    WHERE fa.foro = :foro_id
+                                   AND fa.usuario = :usuario_id
                                    ORDER BY fa.id ASC")
-                     ->setParameter('foro_id', $foro_id);
+                     ->setParameters(array('foro_id'=>$foro_id,'usuario_id'=>$usuario_id));
        $archivos = $query->getResult();
        
        if ($archivos)
@@ -384,18 +396,18 @@ class ForoController extends Controller
                 $extension = explode('.',$archivo->getArchivo());
                 $iconoExtension = $f->getWebDirectory().'/front/assets/img/'.$extension[1].'.svg';
 
-                $html .= ($e%2==0)? ($e==0)? '<div class="row" style="margin-top: 15px;  border-bottom: 2px solid #EEE8E7;">':'</div><div class="row" style="margin-top: 15px; border-bottom: 2px solid #EEE8E7;">':'';
+                //$html .= '<div class="row" style="margin-top: 15px;  border-bottom: 2px solid #EEE8E7;">';
 
-                $html .= '
+                $html .= '<div class="row" style="margin-top: 15px;  border-bottom: 2px solid #EEE8E7;">
                           <div class ="col-md-1" style="margin-bottom:5px"> <img src="'.$iconoExtension.'" width=35  height=35 > </div>
-                          <div class ="col-md-7" style="margin-bottom:5px"><a href ="'.$ruta.'"  class="btn btn-link btn-sm " download>'.$archivo->getDescripcion().'</a></div>
-                          ';
+                          <div class ="col-md-7" style="margin-bottom:5px"><a href ="'.$ruta.'"  class="btn btn-link btn-sm " download>'.$archivo->getDescripcion().' - '.$archivo->getUsuario()->getNombre().' '.$archivo->getUsuario()->getApellido().'</a></div>
+                          </div>';
 
                 $e++;
 
             }
          
-            $html .= '</div>';
+            //$html .= '</div>';
 
        }
        

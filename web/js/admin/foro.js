@@ -85,7 +85,7 @@ function getListadoComentarios(empresa_id,pagina_id,usuario_id){
 			$('#loader').hide();
 			$('#list_comentarios').html(data.html);
 			$('#loading').hide();
-			applyDataTable();
+			aplicarDataTable();
 			observe();
 			clearTimeout( timerId );
 			editComentario();
@@ -98,6 +98,33 @@ function getListadoComentarios(empresa_id,pagina_id,usuario_id){
 }
 
 function observe(){
+
+	       $( ".fileList").unbind( "click" );
+            $('.fileList').click(function(){
+                $('#loadingFiles').show();
+                var usuario_id = $(this).attr('data');
+                var foro_id = $(this).attr('data-foro');
+                $.ajax({
+                    type: "POST",
+                    url: $('#url_files_foroList').val(),
+                    async: true,
+                    data: { foro_id: foro_id, usuario_id:usuario_id },
+                    dataType: "json",
+                    success: function(data) {
+                        title(data.tema);
+                        $('#listOfFiles').html(data.html);
+                        $('#loadingFiles').hide();
+                        $('#filesModal').modal('show');
+                    },
+                    error: function(){
+                        $('#loadingFiles').hide();
+                        $('#div-error-files').html($('#error-msg-files').val());
+                        notify($('#div-error-files').html());
+                        
+                    }
+                });
+                
+            });
 
 	var table = $('#dt').DataTable( {
 		destroy: true,
@@ -174,7 +201,44 @@ function saveComentario()
 		});
 	}
 }
-
+	function aplicarDataTable(){
+		var table = $('#dt').DataTable( {
+		destroy: true,
+        rowReorder: true,
+        responsive: false,
+        pageLength:10,
+        sPaginationType: "full_numbers",
+        lengthChange: false,
+        info: false,
+        fnDrawCallback: function(){
+         observe();
+        },
+        oLanguage: {
+            "sProcessing":    "Procesando...",
+            "sLengthMenu":    "'Mostrar _MENU_ registros",
+            "sZeroRecords":   "No se encontraron resultados",
+            "sEmptyTable":    "Ningún dato disponible en esta tabla",
+            "sInfo":          "Mostrando registros del _START_ al _END_ de un total de _TOTAL_.",
+            "sInfoEmpty":     "Mostrando registros del 0 al 0 de un total de 0 registros",
+            "sInfoFiltered":  "(filtrado de un total de _MAX_ registros)",
+            "sInfoPostFix":   "",
+            "sSearch":        "Buscar:",
+            "sUrl":           "",
+            "sInfoThousands":  ",",
+            "sLoadingRecords": "Cargando...",
+            oPaginate: {
+                sFirst: "<<",
+                sPrevious: "<",
+                sNext: ">", 
+                sLast: ">>" 
+            },
+            "oAria": {
+                "sSortAscending":  ": Activar para ordenar la columna de manera ascendente",
+                "sSortDescending": ": Activar para ordenar la columna de manera descendente"
+            }
+        }
+    } );
+}
 function segundaTabla()
 {
 	var table2 = $('#dtSub').DataTable( {
@@ -182,6 +246,9 @@ function segundaTabla()
         pageLength:10,
         destroy: true,
         sPaginationType: "full_numbers",
+        fnDrawCallback: function(){
+         observe();
+        },
         oLanguage: {
         	"sProcessing":    "Procesando...",
             "sLengthMenu":    "Mostrar _MENU_ registros",

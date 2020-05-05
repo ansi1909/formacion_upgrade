@@ -120,7 +120,8 @@
                                                 <label for="applyMuro" class="col-16 col-form-label">{{ 'Aplicar activación de muro a las sub-páginas'|trans }}</label>
                                                 <div class="col-4">
                                                     <div class="can-toggle demo-rebrand-2 small">
-                                                        <input id="f_applyMuro" name="applyMuro" type="checkbox">
+                                                        <input id="f_applyMuro" name="applyMuro" type="checkbox"
+                                                        {% if status.muro %}checked{% endif %}>
                                                         <label for="f_applyMuro">
                                                             <div class="can-toggle__switch" data-checked="{{ 'Si'|trans }}" data-unchecked="No"></div>
                                                         </label>
@@ -132,20 +133,39 @@
                                     <small id="muroHelp" class="form-text text-muted">{{ 'Si marca SI, la página tendrá una sección en el que los participantes podrán escribir en el muro.'|trans }}</small>
                                 </div>
                                 {% if not pagina_empresa.pagina.pagina %}
-                                    <div class="col-sm-8 col-md-8 col-lg-8">
-                                        <div class="form-group">
-                                            <label for="colaborativo" class="col-6 col-form-label">{{ 'Activar espacio colaborativo'|trans }}</label>
-                                            <div class="col-4">
-                                                <div class="can-toggle demo-rebrand-2 small">
-                                                    <input id="f_colaborativo" name="colaborativo" type="checkbox" {% if pagina_empresa.colaborativo %}checked{% endif %}>
-                                                    <label for="f_colaborativo">
-                                                        <div class="can-toggle__switch" data-checked="{{ 'Si'|trans }}" data-unchecked="No"></div>
-                                                    </label>
+                                <div class="col-sm-8 col-md-8 col-lg-8" >
+                                        <div class="row">
+                                            <div class="col-sm-8 col-md-8 col-lg-8" >
+                                                <div class="form-group">
+                                                    <label for="colaborativo" class="col-16 col-form-label">{{ 'Activar espacio colaborativo'|trans }}</label>
+                                                    <div class="col-4">
+                                                        <div class="can-toggle demo-rebrand-2 small">
+                                                            <input id="f_colaborativo" name="colaborativo" type="checkbox" {% if pagina_empresa.colaborativo %}checked{% endif %}>
+                                                            <label for="f_colaborativo">
+                                                                <div class="can-toggle__switch" data-checked="{{ 'Si'|trans }}" data-unchecked="No"></div>
+                                                            </label>
+                                                        </div>
+                                                    </div>
+                                                    
                                                 </div>
                                             </div>
-                                            <small id="muroHelp" class="form-text text-muted">{{ 'Si marca SI, el programa tendrá una sección en el que el tutor virtual podrá anexar contenido adicional.'|trans }}.</small>
+                                            <div class="col-sm-8 col-md-8 col-lg-8" >
+                                                <div class="form-group">
+                                                    <label for="colaborativo" class="col-16 col-form-label">{{ 'Espacio colaborativo a las subpaginas'|trans }}</label>
+                                                    <div class="col-4">
+                                                        <div class="can-toggle demo-rebrand-2 small">
+                                                            <input id="f_colaborativo_subpaginas" name="colaborativo_subpaginas" type="checkbox" {% if status.espacio %}checked{% endif %}>
+                                                            <label for="f_colaborativo_subpaginas">
+                                                                <div class="can-toggle__switch" data-checked="{{ 'Si'|trans }}" data-unchecked="No"></div>
+                                                            </label>
+                                                        </div>
+                                                    </div>
+                                                    
+                                                </div>
+                                            </div>
                                         </div>
-                                    </div>
+                                            <small id="muroHelp" class="form-text text-muted">{{ 'Si marca SI, el programa tendrá una sección en el que el tutor virtual podrá anexar contenido adicional.'|trans }}.</small>
+                                   </div>
                                 {% endif %}
                             </div>
                             <div class="wizard-footer">
@@ -191,7 +211,7 @@
                                         <label for="apply" class="col-10 col-form-label">{{ 'Aplicar periodo a las sub-páginas'|trans }}</label>
                                         <div class="col-4">
                                             <div class="can-toggle demo-rebrand-2 small">
-                                                <input id="f_apply" name="apply" type="checkbox">
+                                                <input id="f_apply" name="apply" type="checkbox"{% if status.periodo %}checked{% endif %}>
                                                 <label for="f_apply">
                                                     <div class="can-toggle__switch" data-checked="{{ 'Si'|trans }}" data-unchecked="No"></div>
                                                 </label>

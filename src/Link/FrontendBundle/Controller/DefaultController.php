@@ -22,7 +22,7 @@ class DefaultController extends Controller
         $em = $this->getDoctrine()->getManager();
         $f = $this->get('funciones');
         $session = new Session();
-
+        $timeZone = 0;
         if (!$session->get('iniFront') || $f->sesionBloqueda($session->get('sesion_id')))
         {
             return $this->redirectToRoute('_authExceptionEmpresa', array('tipo' => 'sesion'));
@@ -30,6 +30,7 @@ class DefaultController extends Controller
         $f->setRequest($session->get('sesion_id'));
 
         $yml = Yaml::parse(file_get_contents($this->get('kernel')->getRootDir().'/config/parametros.yml'));
+        $yml2 = Yaml::parse(file_get_contents($this->get('kernel')->getRootDir().'/config/parameters.yml'));
 
         $empresa = $this->getDoctrine()->getRepository('LinkComunBundle:AdminEmpresa')->find($session->get('empresa')['id']);
 
@@ -89,6 +90,31 @@ class DefaultController extends Controller
                     $pagina_empresa = $this->getDoctrine()->getRepository('LinkComunBundle:CertiPaginaEmpresa')->findOneBy(array('empresa' => $session->get('empresa')['id'],
                                                                                                                                  'pagina' => $grupo->getPagina()->getId()));
 
+                    $usuario = $this->getDoctrine()->getRepository('LinkComunBundle:AdminUsuario')->find($session->get('usuario')['id']);
+                    $fechaFin = $pagina_empresa->getFechaVencimiento();
+                    $fechaInicio = $pagina_empresa->getFechaInicio();
+
+                    if($usuario->getNivel()){
+                        if ($usuario->getNivel()->getFechaInicio() && $usuario->getNivel()->getFechaFin()) {
+                            $fechaInicio = $usuario->getNivel()->getFechaInicio();
+                            $fechaFin = $usuario->getNivel()->getFechaFin();
+                        }
+                    }
+
+                    if ($pagina_empresa->getEmpresa()->getZonaHoraria()) {
+                        $timeZone = 1;
+                        $zonaHoraria = $pagina_empresa->getEmpresa()->getZonaHoraria()->getNombre();  
+                    }
+
+                    if($timeZone){
+                        date_default_timezone_set($zonaHoraria);
+                    }
+
+                    $fechaActual = date('d-m-Y H:i:s');
+                    $fechaInicio = $fechaInicio->format('d-m-Y 00:00:00');
+                    $fechaFin = new \DateTime($fechaFin->format('d-m-Y 23:59:00'));
+                    $fechaFin = $fechaFin->format('d-m-Y H:i:s');
+                    $link_enabled = (strtotime($fechaActual)<strtotime($fechaFin))? 1:0;
                     $pagina_sesion = $session->get('paginas')[$grupo->getPagina()->getId()];
 
                     if (count($pagina_sesion['subpaginas']) >= 1)
@@ -99,7 +125,6 @@ class DefaultController extends Controller
                         $tiene_subpaginas = 0;
                     }
 
-                    $link_enabled = $pagina_empresa->getFechaVencimiento()->format('Y-m-d') <= date('Y-m-d') ? 0 : 1;
 
                     $pagina_log = $this->getDoctrine()->getRepository('LinkComunBundle:CertiPaginaLog')->findOneBy(array('usuario' => $session->get('usuario')['id'],
                                                                                                                          'pagina' => $grupo->getPagina()->getId()));
@@ -107,7 +132,7 @@ class DefaultController extends Controller
                     $modulo = $this->getDoctrine()->getRepository('LinkComunBundle:CertiPagina')->findOneBy(array('pagina' => $grupo->getPagina()->getId()));                                                                                                
                     $prueba = $this->getDoctrine()->getRepository('LinkComunBundle:CertiPrueba')->findOneBy(array('pagina' => $modulo->getId()));
                     $notas = $f->notasDisponibles($grupo->getPagina()->getId(),$session->get('usuario')['id'],$yml);
-                    //print_r($notas);exit();
+
                     if ($pagina_log)
                     {
                         if ($pagina_log->getEstatusPagina()->getId() == $yml['parameters']['estatus_pagina']['completada'])
@@ -132,50 +157,30 @@ class DefaultController extends Controller
                         $continuar = $link_enabled ? 0 : 4;
                     }
 
-                    $dias = $f->timeAgo($pagina_empresa->getFechaVencimiento()->format("Y/m/d"));
-                    //porcentaje_finalizacion($fechaInicio,$fechaFin,$diasVencimiento)
-                    $porcentaje = $f->porcentaje_finalizacion($pagina_empresa->getFechaInicio()->format("Y/m/d"),$pagina_empresa->getFechaVencimiento()->format("Y/m/d"),$dias);
+                    $dias = $f->timeAgo($fechaFin);
+                    $porcentaje = $f->porcentaje_finalizacion($fechaInicio,$fechaFin,$dias);
                     $porcentaje_finalizacion = $dias;
+                    $class_finaliza = $f->classFinaliza($porcentaje);
                     
                     if ($link_enabled)
                     {
-                      $class_finaliza = $f->classFinaliza($porcentaje);
+                      $nivel_vigente = true;
+                      if($dias == 0){
+                         $dias_vencimiento = $this->get('translator')->trans('Vence hoy');
+                      }else{
+                         $dias_vencimiento = $this->get('translator')->trans('Finaliza en').' '.$dias.' '.$this->get('translator')->trans('días');
+                      }
                     }
                     else {
-                        $class_finaliza = '';
+                        $nivel_vigente = false;
+                        $dias_vencimiento = $this->get('translator')->trans('Programa Vencido');
                     }
-                    $usuario = $this->getDoctrine()->getRepository('LinkComunBundle:AdminUsuario')->find($session->get('usuario')['id']);
-                    if($usuario->getNivel()){
-                        $nivel_usuario = $usuario->getNivel();
-                        if ($nivel_usuario->getFechaInicio() && $nivel_usuario->getFechaFin()) {
-                           $nivel_vigente = date('Y-m-d') <= $nivel_usuario->getFechaFin()->format('Y-m-d')? true:false;
-                           $link_enabled = $nivel_vigente;
-                           if ($nivel_vigente) {
-                             $dias = $f->timeAgo($nivel_usuario->getFechaFin()->format("Y-m-d"));
-                             $porcentaje_finalizacion = $dias;
-                             if ($dias == 0) {
-                               $dias_vencimiento = $this->get('translator')->trans('Vence hoy');
-                             }else{
-                              $dias_vencimiento = $link_enabled ? $this->get('translator')->trans('Finaliza en').' '.$dias.' '.$this->get('translator')->trans('días') : $this->get('translator')->trans('Programa Vencido');
-                             }
-                             $porcentaje_dias = $f->porcentaje_finalizacion($nivel_usuario->getFechaInicio()->format("Y-m-d"),$nivel_usuario->getFechaFin()->format("Y-m-d"),$dias);
-                             $class_finaliza = $f->classFinaliza($porcentaje_dias);
-
-                           }else{
-                              $dias_vencimiento = $this->get('translator')->trans('Programa Vencido');
-                           }
-                        }else{
-                            $nivel_vigente =  true;
-                            $dias_vencimiento = $link_enabled ? $this->get('translator')->trans('Finaliza en').' '.$porcentaje_finalizacion.' '.$this->get('translator')->trans('días') : $this->get('translator')->trans('Programa Vencido');
-                        }
-                      }
-                    //return new response(var_dump($usuario->getFechaNacimiento()));
-                    //return new response(var_dump ($ni));
 
                     $paginas[] = array('id' => $grupo->getPagina()->getId(),
                                        'nombre' => $grupo->getPagina()->getNombre(),
                                        'imagen' => $grupo->getPagina()->getFoto(),
                                        'descripcion' => $grupo->getPagina()->getDescripcion(),
+                                       'pdf' => ($grupo->getPagina()->getPdf())?$yml2['parameters']['folders']['uploads'].$grupo->getPagina()->getPdf():null,
                                        'dias_vencimiento' => $dias_vencimiento,
                                        'class_finaliza' => $class_finaliza,
                                        'tiene_subpaginas' => $tiene_subpaginas,
@@ -218,7 +223,6 @@ class DefaultController extends Controller
          
          $paso_actual_intro = $introduccion[0]->getPasoActual();
          $cancelar_intro = $introduccion[0]->getCancelado();
-         //return new response(var_dump($grupos[1]['paginas'][0]['notas']));
          return $this->render('LinkFrontendBundle:Default:index.html.twig', array('bienvenida' => $empresa->getBienvenida(),
                                                                                  'reciente' => $reciente,
                                                                                  'grupos' => $grupos,
@@ -227,6 +231,20 @@ class DefaultController extends Controller
                                                                                  'cancelar_intro' => $cancelar_intro));
 
     }
+
+    public function ajaxDescripcionAction(Request $request){
+        $em = $this->getDoctrine()->getManager();
+        $f = $this->get('funciones');
+
+        $pagina_id = $request->request->get('pagina_id');
+        $pagina = $this->getDoctrine()->getRepository('LinkComunBundle:CertiPagina')->find($pagina_id);
+        
+        $return = array('nombre'=>$pagina->getNombre(),'descripcion'=>$pagina->getDescripcion());
+        $return = json_encode($return);
+        return new Response($return, 200, array('Content-Type' => 'application/json'));
+
+    }
+
 
     public function authExceptionEmpresaAction($tipo)
     {

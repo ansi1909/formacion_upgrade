@@ -81,3 +81,14 @@ notificaciones:
 introduccion:
     resource: "@LinkFrontendBundle/Resources/config/routing/introduccion.yml"
     prefix: /introduccion
+
+_descripcion:
+    path:     /descripcion
+    defaults: { _controller: LinkFrontendBundle:Default:ajaxDescripcion }
+    requirements:
+        _method: POST 
+
+
+
+
+

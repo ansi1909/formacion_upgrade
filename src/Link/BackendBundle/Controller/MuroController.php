@@ -20,6 +20,7 @@ class MuroController extends Controller
     {
         $session = new Session();
         $f = $this->get('funciones');
+        $rs = $this->get('reportes');
         
         if (!$session->get('ini') || $f->sesionBloqueda($session->get('sesion_id')))
         {
@@ -59,16 +60,21 @@ class MuroController extends Controller
                         ->setParameter('empresa_id', $usuario->getEmpresa()->getId());
             $pages = $query->getResult();
 
-            if (count($pages))
-            {
-                $str .= '<li data-jstree=\'{ "icon": "fa fa-angle-double-right" }\' p_id="0" p_str="'.$this->get('translator')->trans('MOSTRAR TODOS LOS COMENTARIOS').'">'.$this->get('translator')->trans('MOSTRAR TODOS LOS COMENTARIOS').'</li>';
-            }
 
             foreach ($pages as $page)
             {
+                $total = 0;
                 $tiene++;
-                $cantidad_comentarios = $this->cantidadComentarios($page->getPagina()->getId(), $usuario->getEmpresa()->getId());
-                $str .= '<li data-jstree=\'{ "icon": "fa fa-angle-double-right" }\' p_id="'.$page->getPagina()->getId().'" p_str="'.$page->getPagina()->getCategoria()->getNombre().': '.$page->getPagina()->getNombre().'">'.$page->getPagina()->getCategoria()->getNombre().': '.$page->getPagina()->getNombre().' ('.$cantidad_comentarios.' '.$this->get('translator')->trans('comentarios').')';
+                $estructura = $f->obtenerEstructura($page->getPagina()->getId(),$yml);
+                sort($estructura);
+                foreach ($estructura as $id) {
+                     $listado = $rs->interaccionMuro($page->getEmpresa()->getId(), $id);    
+                     $total = $total + count($listado);
+                }
+               
+
+               // $cantidad_comentarios = $this->cantidadComentarios($page->getPagina()->getId(), $usuario->getEmpresa()->getId());
+                $str .= '<li data-jstree=\'{ "icon": "fa fa-angle-double-right" }\' p_id="'.$page->getPagina()->getId().'" p_str="'.$page->getPagina()->getCategoria()->getNombre().': '.$page->getPagina()->getNombre().'">'.$page->getPagina()->getCategoria()->getNombre().': '.$page->getPagina()->getNombre().' ('.$total.' '.$this->get('translator')->trans('comentarios').')';
                 $subPaginas = $this->subPaginasEmpresa($page->getPagina()->getId(), $usuario->getEmpresa()->getId());
                 if ($subPaginas['tiene'] > 0)
                 {
@@ -103,10 +109,7 @@ class MuroController extends Controller
             if ($empresa_id)
             {
                 $query2 = $em->createQuery("SELECT m FROM LinkComunBundle:CertiMuro m
-                                            JOIN LinkComunBundle:CertiPaginaEmpresa pe
-                                            WHERE pe.pagina = m.pagina
-                                            AND pe.empresa = m.empresa
-                                            AND m.muro IS NULL
+                                            WHERE m.muro IS NULL
                                             AND m.empresa = :empresa_id")
                               ->setParameter('empresa_id', $empresa_id);;
             }
@@ -152,16 +155,19 @@ class MuroController extends Controller
                         ->setParameter('empresa_id', $empresa_id);
             $pages = $query->getResult();
 
-            if (count($pages))
-            {
-                $str .= '<li data-jstree=\'{ "icon": "fa fa-angle-double-right" }\' p_id="0" p_str="'.$this->get('translator')->trans('MOSTRAR TODOS LOS COMENTARIOS').'">'.$this->get('translator')->trans('MOSTRAR TODOS LOS COMENTARIOS').'</li>';
-            }
 
             foreach ($pages as $page)
             {
+                $total = 0;
                 $tiene++;
-                $cantidad_comentarios = $this->cantidadComentarios($page->getPagina()->getId(), $empresa_id);
-                $str .= '<li data-jstree=\'{ "icon": "fa fa-angle-double-right" }\' p_id="'.$page->getPagina()->getId().'" p_str="'.$page->getPagina()->getCategoria()->getNombre().': '.$page->getPagina()->getNombre().'">'.$page->getPagina()->getCategoria()->getNombre().': '.$page->getPagina()->getNombre().' ('.$cantidad_comentarios.' '.$this->get('translator')->trans('comentarios').')';
+                $estructura = $f->obtenerEstructura($page->getPagina()->getId(),$yml);
+                sort($estructura);
+                foreach ($estructura as $id) {
+                     $listado = $rs->interaccionMuro($page->getEmpresa()->getId(), $id);    
+                     $total = $total + count($listado);
+                }
+                //$cantidad_comentarios = $this->cantidadComentarios($page->getPagina()->getId(), $empresa_id);
+                $str .= '<li data-jstree=\'{ "icon": "fa fa-angle-double-right" }\' p_id="'.$page->getPagina()->getId().'" p_str="'.$page->getPagina()->getCategoria()->getNombre().': '.$page->getPagina()->getNombre().'">'.$page->getPagina()->getCategoria()->getNombre().': '.$page->getPagina()->getNombre().' ('.$total.' '.$this->get('translator')->trans('comentarios').')';
                 $subPaginas = $this->subPaginasEmpresa($page->getPagina()->getId(), $empresa_id);
                 if ($subPaginas['tiene'] > 0)
                 {
@@ -226,29 +232,30 @@ class MuroController extends Controller
 
         $roles = $session->get('usuario')['roles'];
         $answer_delete= (in_array($yml['parameters']['rol']['tutor'],$roles) || in_array($yml['parameters']['rol']['empresa'],$roles)) ? 1:0; //verifica si el usuario posee el rol tutor virtual(3) o empresa(5)
+       
 
         if($pagina_id == 0){
             $query2 = $em->createQuery("SELECT m FROM LinkComunBundle:CertiMuro m
-                                       JOIN LinkComunBundle:CertiPaginaEmpresa pe
-                                       WHERE pe.pagina = m.pagina
-                                       AND pe.empresa = m.empresa
+                                       WHERE m.empresa=:empresa_id
                                        AND m.muro IS NULL
-                                       AND m.empresa = :empresa_id
                                        ORDER BY m.id ASC")
                          ->setParameter('empresa_id', $empresa_id);
             $comentarios = $query2->getResult();
         }
         else {
 
-            // Si la página es una lección, se busca directamente sus comentarios, sino se buscan todos los comentarios de las lecciones hijas.
-            $paginas_id = $this->leccionesId($pagina_id);
 
+            $pagina = $em->getRepository('LinkComunBundle:CertiPagina')->find($pagina_id);
+            if ($pagina->getCategoria()->getId() == $yml['parameters']['categoria']['programa'] || $pagina->getCategoria()->getId() == $yml['parameters']['categoria']['curso']) {
+              $paginas_id = $f->obtenerEstructura($pagina_id,$yml);
+              sort($paginas_id);
+            }
+            else{
+              $paginas_id = array($pagina_id);
+            }
             $query2 = $em->createQuery("SELECT m FROM LinkComunBundle:CertiMuro m
-                                       JOIN LinkComunBundle:CertiPaginaEmpresa pe
-                                       WHERE pe.pagina = m.pagina
-                                       AND pe.empresa = m.empresa
+                                       WHERE m.empresa=:empresa_id
                                        AND m.muro IS NULL
-                                       AND m.empresa = :empresa_id
                                        AND m.pagina IN (:paginas_id)
                                        ORDER BY m.id ASC")
                          ->setParameters(array('empresa_id' => $empresa_id,
@@ -256,7 +263,6 @@ class MuroController extends Controller
             $comentarios = $query2->getResult();
 
         }
-
         $html .= '<table class="table" id="dt">
                         <thead class="sty__title">
                             <tr>
@@ -268,7 +274,7 @@ class MuroController extends Controller
                             </tr>
                         </thead>
                         <tbody>';
-
+       // return new response(var_dump($comentarios));
         foreach ($comentarios as $coment)
         {
 
@@ -289,7 +295,7 @@ class MuroController extends Controller
                             if($coment->getUsuario()->getId() == $usuario_id){
                                 $html .= '<a href="#" title="'.$this->get('translator')->trans("Editar").'" class="btn btn-link btn-sm edit" data-toggle="modal" data-target="#formModal" data="'.$coment->getId().'"><span class="fa fa-pencil"></span></a>';
                             }
-                            if ($answer_delete == 1)
+                            if ($coment->getUsuario()->getId() !== $usuario_id )
                             {
                                 $html .= '<a href="#" title="'.$this->get('translator')->trans("Responder").'" class="btn btn-link btn-sm add" data-toggle="modal" data-target="#formModal" data="'.$coment->getId().'"><span class="fa fa-plus"></span></a>';
                             }
@@ -442,7 +448,8 @@ class MuroController extends Controller
 
         $usuario = $this->getDoctrine()->getRepository('LinkComunBundle:AdminUsuario')->find($session->get('usuario')['id']);
 
-        $fecha_actual = date('Y/m/d H:m:s');
+         //$fecha_actual = date('Y/m/d H:m:s');
+         $fecha_actual =  new \DateTime('now');
 
         if($comentario_id != ''){
             $new_respuesta = $this->getDoctrine()->getRepository('LinkComunBundle:CertiMuro')->find($comentario_id);
@@ -456,7 +463,7 @@ class MuroController extends Controller
         }
         
         $new_respuesta->setMensaje($respuesta);
-        $new_respuesta->setFechaRegistro(new \DateTime($fecha_actual));
+        $new_respuesta->setFechaRegistro($fecha_actual);
         $new_respuesta->setUsuario($usuario);
         $new_respuesta->setMuro($muro_padre);
         $em->persist($new_respuesta);
@@ -502,6 +509,8 @@ class MuroController extends Controller
         $subpaginas = array();
         $tiene = 0;
         $return = '';
+        $f = $this->get('funciones');
+        $rs = $this->get('reportes');
 
         $query = $em->createQuery("SELECT pe, p FROM LinkComunBundle:CertiPaginaEmpresa pe 
                                     JOIN pe.pagina p 
@@ -514,8 +523,10 @@ class MuroController extends Controller
         foreach ($subpages as $subpage)
         {
             $tiene++;
-            $cantidad_comentarios = $this->cantidadComentarios($subpage->getPagina()->getId(), $empresa_id);
-            $return .= '<li data-jstree=\'{ "icon": "fa fa-angle-double-right" }\' p_id="'.$subpage->getPagina()->getId().'" p_str="'.$subpage->getPagina()->getCategoria()->getNombre().': '.$subpage->getPagina()->getNombre().'">'.$subpage->getPagina()->getCategoria()->getNombre().': '.$subpage->getPagina()->getNombre().' ('.$cantidad_comentarios.' '.$this->get('translator')->trans('comentarios').')';
+            $listado = $rs->interaccionMuro($subpage->getEmpresa()->getId(), $subpage->getPagina()->getId());    
+            $cantidad = count($listado);
+            //$cantidad_comentarios = $this->cantidadComentarios($subpage->getPagina()->getId(), $empresa_id);
+            $return .= '<li data-jstree=\'{ "icon": "fa fa-angle-double-right" }\' p_id="'.$subpage->getPagina()->getId().'" p_str="'.$subpage->getPagina()->getCategoria()->getNombre().': '.$subpage->getPagina()->getNombre().'">'.$subpage->getPagina()->getCategoria()->getNombre().': '.$subpage->getPagina()->getNombre().' ('.$cantidad.' '.$this->get('translator')->trans('comentarios').')';
             $subPaginas = $this->subPaginasEmpresa($subpage->getPagina()->getId(), $subpage->getEmpresa()->getId());
             if ($subPaginas['tiene'] > 0)
             {

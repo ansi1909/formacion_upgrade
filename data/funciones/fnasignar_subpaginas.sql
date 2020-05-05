@@ -1,4 +1,4 @@
-CREATE FUNCTION fnasignar_subpaginas(pempresa_id integer,pestatus_contenido integer,only_dates boolean,only_muro boolean) RETURNS TEXT AS $$
+CREATE FUNCTION fnasignar_subpaginas(pempresa_id integer,pestatus_contenido integer,only_dates integer,only_muro integer,only_colaborativo integer) RETURNS TEXT AS $$
 DECLARE
    padres INT[];
    aux_padres INT[];
@@ -13,7 +13,7 @@ DECLARE
    tiene_prueba BOOLEAN;
    retorno TEXT :='';
    subpagina_empresa certi_pagina_empresa%ROWTYPE;
-   pagina_padre certi_pagina_empresa%ROWTYPE;
+
 
 BEGIN
    pagina_empresa_id := pempresa_id;
@@ -87,24 +87,30 @@ BEGIN
 
               ELSE
                   SELECT cpe.id INTO subpagina_empresa_id FROM certi_pagina_empresa AS cpe
-                    WHERE cpe.pagina_id = subpagina.id AND cpe.empresa_id = pagina_padre.empresa_id;
+                    WHERE cpe.pagina_id = subpagina.id AND cpe.empresa_id = pagina_empresa.empresa_id;
                       
-                      IF only_dates = TRUE THEN
+                      IF only_dates = 1  THEN
                         UPDATE certi_pagina_empresa AS cpe 
-                        SET fecha_inicio = pagina_padre.fecha_inicio, fecha_vencimiento = pagina_padre.fecha_vencimiento
+                        SET fecha_inicio = pagina_empresa.fecha_inicio, fecha_vencimiento = pagina_empresa.fecha_vencimiento
                         WHERE cpe.id = subpagina_empresa_id;
                       END IF;
 
-                      IF only_muro = TRUE THEN
+                      IF only_muro = 1 THEN
                          UPDATE certi_pagina_empresa AS cpe
-                         SET muro_activo = pagina_padre.muro_activo
+                         SET muro_activo = pagina_empresa.muro_activo
+                         WHERE cpe.id = subpagina_empresa_id;
+                      END IF;
+
+                      IF only_colaborativo = 1 THEN
+                         UPDATE certi_pagina_empresa AS cpe
+                         SET colaborativo = pagina_empresa.colaborativo
                          WHERE cpe.id = subpagina_empresa_id;
                       END IF;
                       
                       UPDATE certi_pagina_empresa AS cpe
                         SET orden = orden_pag
                         WHERE cpe.pagina_id = subpagina.id 
-                        AND cpe.empresa_id = pagina_padre.empresa_id;
+                        AND cpe.empresa_id = pagina_empresa.empresa_id;
               END IF;
 
                 IF is_padre>0 THEN 
