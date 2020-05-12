@@ -99,23 +99,30 @@ class NoticiasController extends Controller
         $f->setRequest($session->get('sesion_id'));
 
         $noticia = $this->getDoctrine()->getRepository('LinkComunBundle:AdminNoticia')->find($noticia_id);
-        $noticias=array();
+        $noticias = array();
 
-        if ($noticia->getTipoNoticia()->getId() == $yml['parameters']['tipo_noticias']['noticia']) {
+        if ($noticia->getTipoNoticia()->getId() == $yml['parameters']['tipo_noticias']['noticia']) 
+        {
             $query = $em->createQuery('SELECT n FROM LinkComunBundle:AdminNoticia n
                                        WHERE n.tipoNoticia = :noticia
-                                       AND n.id != :noticia_id')
+                                       AND n.id != :noticia_id 
+                                       AND n.empresa = :empresa_id')
                         ->setMaxResults(3)
-                        ->setParameters(array('noticia'=> $yml['parameters']['tipo_noticias']['noticia'],
-                                              'noticia_id'=> $noticia_id));
+                        ->setParameters(array('noticia' => $yml['parameters']['tipo_noticias']['noticia'],
+                                              'noticia_id' => $noticia_id,
+                                              'empresa_id' => $noticia->getEmpresa()->getId()));
             $noticias = $query->getResult();
-        }elseif ($noticia->getTipoNoticia()->getId() == $yml['parameters']['tipo_noticias']['novedad']) {
+        }
+        elseif ($noticia->getTipoNoticia()->getId() == $yml['parameters']['tipo_noticias']['novedad']) 
+        {
             $query = $em->createQuery('SELECT n FROM LinkComunBundle:AdminNoticia n
                                        WHERE n.tipoNoticia = :noticia
-                                       AND n.id != :noticia_id')
+                                       AND n.id != :noticia_id
+                                       AND n.empresa = :empresa_id')
                         ->setMaxResults(3)
-                        ->setParameters(array('noticia'=> $yml['parameters']['tipo_noticias']['novedad'],
-                                              'noticia_id'=> $noticia_id));
+                        ->setParameters(array('noticia' => $yml['parameters']['tipo_noticias']['novedad'],
+                                              'noticia_id' => $noticia_id,
+                                              'empresa_id' => $noticia->getEmpresa()->getId()));
             $noticias = $query->getResult();
         }
 
@@ -137,9 +144,11 @@ class NoticiasController extends Controller
         $qb->select('n')
            ->from('LinkComunBundle:AdminNoticia', 'n')
            ->where('n.tipoNoticia != :biblioteca')
-           ->andWhere('LOWER(n.titulo) LIKE :term')
+           ->andWhere('n.titulo LIKE :term')
+           ->andWhere('n.fechaVencimiento > :hoy')
            ->setParameters(array('biblioteca' => $yml['parameters']['tipo_noticias']['biblioteca_virtual'],
-                           'term' => '%'.$term.'%'));
+                                'term' => '%'.$term.'%',
+                                'hoy' => $hoy = new \DateTime()));
 
         $query = $qb->getQuery();
         $noticias_db = $query->getResult();

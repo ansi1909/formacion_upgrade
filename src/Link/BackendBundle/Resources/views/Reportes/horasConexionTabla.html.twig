@@ -3,7 +3,8 @@
 {% block body %}
     <div class="card">
         <div class="card-header gradiente">
-            <h5 class="card-title">{{ 'Horas de conexión de la empresa'|trans }} {{ empresa.nombre }}. {{ 'Desde'|trans }}: {{ desde }} / {{ 'Hasta'|trans }}: {{ hasta }}.</h5>
+            <h5 class="card-title">{{ 'Horas de conexión de la empresa'|trans }} {{ empresa.nombre }}. {{ 'Desde'|trans }}: {{ desde }} / {{ 'Hasta'|trans }}: {{ hasta }}. </h5>
+            <h4>{{'Huso horario'|trans}}: {{ timeZone }}</h4>
         </div>
         <div class="card-block">
             <table class="table styleTab" align="center">

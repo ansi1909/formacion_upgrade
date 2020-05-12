@@ -22,7 +22,7 @@
 			thumbnails/					# Aquí se almacenan los archivos para los thumbnails de las plantillas
 										# 	OJO: Podemos importar las imágenes iniciales a este directorio desde docs/prototipos/front/thumbnails
 			decorate_certificado.png	# Tomar la imagen de web/front/assets/img/
-			logo_formacion.png			# Tomar la imagen de web/img/
+			logo_formacion_smart.png	# Tomar la imagen de web/img/
 
 4. Las constantes globales para twig están seteadas en app/config/config.yml:
 	minlenght_bienvenida: Cantidad mínima de caracteres que debe tener el mensaje de bienvenida
@@ -52,13 +52,16 @@
 	- indices.sql
 	- listas.sql
 	- data_prueba.sql
+	- funciones/fnasignar_subpaginas
 	- funciones/fnavance_programa.sql
+	- funciones/fncantidad_programados.sql
 	- funciones/fncarga_participantes.sql
 	- funciones/fncerrar_sesiones.sql
 	- funciones/fnconexion_usuario.sql
 	- funciones/fnevaluaciones_modulo.sql
 	- funciones/fnhoras_conexion.sql
 	- funciones/fnimportar_participantes.sql
+	- funciones/fningresos_sistema.sql
 	- funciones/fninteraccion_espacio_colaborativo.sql
 	- funciones/fninteraccion_muro.sql
 	- funciones/fnlistado_participantes.sql
@@ -68,6 +71,10 @@
 	- funciones/fnreporte_general2.sql
 	- funciones/fnresumen_general.sql
 	- funciones/fnusuarios_conectados.sql
+	- funciones/fnasignar_subpaginas.sql
+	- funciones/fncorreos_noentregados.sql
+	- funciones/fnalarmas_participantes.sql
+
 
 	OJO: El archivo reserialize_tables.sql se importará solo cuando se haya corrido el comando de symfony:
 		 php bin/console doctrine:schema:update --force
@@ -108,8 +115,10 @@ Package phpoffice/phpexcel is abandoned, you should avoid using it. Use phpoffic
 
 18. Los cron jobs deben programarse bajo las siguientes frecuencia
 	a. php bin/console link:cerrar-sesiones				--> Cada hora
-	b. php bin/console link:espacio-colaborativo		--> Diariamente a las 01:00
+	b. php bin/console link:espacio-colaborativo		--> Cada hora
 	c. php bin/console link:evento						--> Diariamente a las 02:00
 	d. php bin/console link:recordatorio-programados	--> Diariamente a las 03:00
+	e. php bin/console link:correos-fallidos            --> Diariamente a las 04:00
+
 
 19. Para la configuración del CKFinder, ajustar los valores en web/assets/vendor/ckfinder/config.php

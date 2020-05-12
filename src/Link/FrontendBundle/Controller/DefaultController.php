@@ -10,6 +10,7 @@ use Symfony\Component\Yaml\Yaml;
 use Link\ComunBundle\Entity\AdminSesion;
 use Link\ComunBundle\Entity\AdminLike;
 use Link\ComunBundle\Entity\CertiMuro;
+use Link\ComunBundle\Entity\AdminIntroduccion;
 use Symfony\Component\HttpFoundation\Cookie;
 
 class DefaultController extends Controller
@@ -21,7 +22,7 @@ class DefaultController extends Controller
         $em = $this->getDoctrine()->getManager();
         $f = $this->get('funciones');
         $session = new Session();
-
+        $timeZone = 0;
         if (!$session->get('iniFront') || $f->sesionBloqueda($session->get('sesion_id')))
         {
             return $this->redirectToRoute('_authExceptionEmpresa', array('tipo' => 'sesion'));
@@ -29,155 +30,23 @@ class DefaultController extends Controller
         $f->setRequest($session->get('sesion_id'));
 
         $yml = Yaml::parse(file_get_contents($this->get('kernel')->getRootDir().'/config/parametros.yml'));
+        $yml2 = Yaml::parse(file_get_contents($this->get('kernel')->getRootDir().'/config/parameters.yml'));
 
         $empresa = $this->getDoctrine()->getRepository('LinkComunBundle:AdminEmpresa')->find($session->get('empresa')['id']);
 
-        // buscando las últimas 3 interacciones del usuario donde la página no esté completada
-        $query = $em->createQuery('SELECT pl FROM LinkComunBundle:CertiPaginaLog pl
-                                    JOIN pl.pagina p  
-                                    WHERE pl.usuario = :usuario_id
-                                        AND pl.estatusPagina != :completada
-                                        AND p.pagina IS NULL
-                                    ORDER BY pl.id DESC')
-                    ->setParameters(array('usuario_id' => $session->get('usuario')['id'],
-                                          'completada' => $yml['parameters']['estatus_pagina']['completada']))
-                    ->setMaxResults(3);
-        $actividadreciente_padre = $query->getResult();
+        /********************** LÓGICA PARA LA ESTRUCTURA DE ACTIVIDADES RECIENTES *******************/
 
-        $actividad_reciente = array();
-        
-        // Si tiene actividades
-        if (count($actividadreciente_padre))
-        {
+        $actividades_recientes = $f->getActividadesRecientes($session->get('usuario')['id'], $session->get('paginas'), $session->get('empresa')['id'], $yml);
+        $actividad_reciente = $actividades_recientes['actividad_reciente'];
+        $reciente = $actividades_recientes['reciente'];
 
-            $reciente = 1;
+        //return new Response(var_dump($actividad_reciente));
 
-            foreach ($actividadreciente_padre as $arp) 
-            {
-
-                $ar = array();
-                $pagina_sesion = $session->get('paginas')[$arp->getPagina()->getId()];
-                $subpaginas_ids = $f->hijas($pagina_sesion['subpaginas']);
-                //return new Response(var_dump($subpaginas_ids));
-                $pagina_empresa = $this->getDoctrine()->getRepository('LinkComunBundle:CertiPaginaEmpresa')->findOneBy(array('empresa' => $session->get('empresa')['id'],
-                                                                                                                             'pagina' => $arp->getPagina()->getId()));
-
-                $padre_id = $arp->getPagina()->getId();
-                $imagen = $arp->getPagina()->getFoto();
-                $porcentaje = round($arp->getPorcentajeAvance());
-                $link_enabled = $pagina_empresa->getFechaVencimiento()->format('Y-m-d') < date('Y-m-d') ? 0 : 1;
-                $dias_vencimiento = $link_enabled ? $this->get('translator')->trans('Finaliza en').' '.$f->timeAgo($pagina_empresa->getFechaVencimiento()->format("Y/m/d")).' '.$this->get('translator')->trans('días') : $this->get('translator')->trans('Vencido');
-
-                if (count($subpaginas_ids))
-                {
-
-                    $query = $em->createQuery('SELECT pl FROM LinkComunBundle:CertiPaginaLog pl 
-                                                WHERE pl.usuario = :usuario_id
-                                                    AND pl.estatusPagina != :completada
-                                                    AND pl.pagina IN (:hijas)
-                                                ORDER BY pl.id DESC')
-                                ->setParameters(array('usuario_id' => $session->get('usuario')['id'],
-                                                      'completada' => $yml['parameters']['estatus_pagina']['completada'],
-                                                      'hijas' => $subpaginas_ids))
-                                ->setMaxResults(1);
-                    $ar = $query->getResult();
-                }
-
-                if ($ar)
-                {
-
-                    $id =  $ar[0]->getPagina()->getId();
-                    $titulo_padre = $arp->getPagina()->getNombre();
-                    $titulo_hijo = $ar[0]->getPagina()->getNombre();
-                    $categoria = $ar[0]->getPagina()->getCategoria()->getNombre();
-                    
-                    // buscando registros de la pagina para validar si está en evaluación
-                    $pagina_log = $this->getDoctrine()->getRepository('LinkComunBundle:CertiPaginaLog')->findOneBy(array('usuario' => $session->get('usuario')['id'],
-                                                                                                                         'pagina' => $id));
-                    if ($pagina_log && $pagina_log->getEstatusPagina()->getId() == $yml['parameters']['estatus_pagina']['en_evaluacion'])
-                    {
-                        $avanzar = 2;
-                        $evaluacion_pagina = $id;
-                        $evaluacion_programa = $padre_id;
-                    }
-                    else {
-                        $avanzar = 0;
-                        $evaluacion_pagina = 0;
-                        $evaluacion_programa = 0;
-                    }
-
-                }
-                else {
-
-                    $id = 0;
-                    $titulo_padre = $arp->getPagina()->getNombre();
-                    $titulo_hijo = '';
-                    $categoria = $arp->getPagina()->getCategoria()->getNombre();
-                    
-                    // buscando registros de la pagina para validar si esta en evaluación
-                    $pagina_log = $this->getDoctrine()->getRepository('LinkComunBundle:CertiPaginaLog')->findOneBy(array('usuario' => $session->get('usuario')['id'],
-                                                                                                                        'pagina' => $padre_id));
-                    if ($pagina_log && $pagina_log->getEstatusPagina()->getId() == $yml['parameters']['estatus_pagina']['en_evaluacion'])
-                    {
-                        $avanzar = 2;
-                        $evaluacion_pagina = $padre_id;
-                        $evaluacion_programa = $padre_id;
-                    }
-                    else {
-                        $avanzar = 0;
-                        $evaluacion_pagina = 0;
-                        $evaluacion_programa = 0;
-                    }
-
-                }
-
-                $porcentaje_finalizacion = $f->timeAgoPorcentaje($pagina_empresa->getFechaInicio()->format("Y/m/d"), $pagina_empresa->getFechaVencimiento()->format("Y/m/d"));
-                if ($link_enabled)
-                {
-                    if ($porcentaje_finalizacion >= 70)
-                    {
-                       $class_finaliza = 'alertTimeGood';
-                    }
-                    elseif ($porcentaje_finalizacion >= 31 && $porcentaje_finalizacion <= 69)
-                    {
-                        $class_finaliza = 'alertTimeWarning';
-                    }
-                    elseif ($porcentaje_finalizacion <= 30) 
-                    {
-                        $class_finaliza = 'alertTimeDanger';
-                    }
-                    else {
-                        $class_finaliza = '';
-                    }
-                }
-                else {
-                    $class_finaliza = '';
-                }
-
-                $actividad_reciente[] = array('id' => $id,
-                                              'padre_id' => $padre_id,
-                                              'titulo_padre' => $titulo_padre,
-                                              'titulo_hijo' => $titulo_hijo,
-                                              'imagen' => $imagen,
-                                              'categoria' => $categoria,
-                                              'dias_vencimiento' => $dias_vencimiento,
-                                              'class_finaliza' => $class_finaliza,
-                                              'porcentaje' => $porcentaje,
-                                              'avanzar' => $avanzar,
-                                              'evaluacion_pagina' => $evaluacion_pagina,
-                                              'evaluacion_programa' => $evaluacion_programa,
-                                              'link_enabled' => $link_enabled);
-
-            }
-        
-        }
-        else {
-            $reciente = 0;
-        }
+        /***************** LÓGICA DE PREPARACIÓN DE TABS DE GRUPOS ***************************/
         
         // Convertimos los id de las paginas de la sesion en un nuevo array
         $paginas_ids = array();
-        foreach ($session->get('paginas') as $pg) 
+        foreach($session->get('paginas') as $pg) 
         {
             $paginas_ids[] = $pg['id'];
         }
@@ -221,6 +90,31 @@ class DefaultController extends Controller
                     $pagina_empresa = $this->getDoctrine()->getRepository('LinkComunBundle:CertiPaginaEmpresa')->findOneBy(array('empresa' => $session->get('empresa')['id'],
                                                                                                                                  'pagina' => $grupo->getPagina()->getId()));
 
+                    $usuario = $this->getDoctrine()->getRepository('LinkComunBundle:AdminUsuario')->find($session->get('usuario')['id']);
+                    $fechaFin = $pagina_empresa->getFechaVencimiento();
+                    $fechaInicio = $pagina_empresa->getFechaInicio();
+
+                    if($usuario->getNivel()){
+                        if ($usuario->getNivel()->getFechaInicio() && $usuario->getNivel()->getFechaFin()) {
+                            $fechaInicio = $usuario->getNivel()->getFechaInicio();
+                            $fechaFin = $usuario->getNivel()->getFechaFin();
+                        }
+                    }
+
+                    if ($pagina_empresa->getEmpresa()->getZonaHoraria()) {
+                        $timeZone = 1;
+                        $zonaHoraria = $pagina_empresa->getEmpresa()->getZonaHoraria()->getNombre();  
+                    }
+
+                    if($timeZone){
+                        date_default_timezone_set($zonaHoraria);
+                    }
+
+                    $fechaActual = date('d-m-Y H:i:s');
+                    $fechaInicio = $fechaInicio->format('d-m-Y 00:00:00');
+                    $fechaFin = new \DateTime($fechaFin->format('d-m-Y 23:59:00'));
+                    $fechaFin = $fechaFin->format('d-m-Y H:i:s');
+                    $link_enabled = (strtotime($fechaActual)<strtotime($fechaFin))? 1:0;
                     $pagina_sesion = $session->get('paginas')[$grupo->getPagina()->getId()];
 
                     if (count($pagina_sesion['subpaginas']) >= 1)
@@ -231,10 +125,14 @@ class DefaultController extends Controller
                         $tiene_subpaginas = 0;
                     }
 
-                    $link_enabled = $pagina_empresa->getFechaVencimiento()->format('Y-m-d') < date('Y-m-d') ? 0 : 1;
 
                     $pagina_log = $this->getDoctrine()->getRepository('LinkComunBundle:CertiPaginaLog')->findOneBy(array('usuario' => $session->get('usuario')['id'],
                                                                                                                          'pagina' => $grupo->getPagina()->getId()));
+
+                    $modulo = $this->getDoctrine()->getRepository('LinkComunBundle:CertiPagina')->findOneBy(array('pagina' => $grupo->getPagina()->getId()));                                                                                                
+                    $prueba = $this->getDoctrine()->getRepository('LinkComunBundle:CertiPrueba')->findOneBy(array('pagina' => $modulo->getId()));
+                    $notas = $f->notasDisponibles($grupo->getPagina()->getId(),$session->get('usuario')['id'],$yml);
+
                     if ($pagina_log)
                     {
                         if ($pagina_log->getEstatusPagina()->getId() == $yml['parameters']['estatus_pagina']['completada'])
@@ -259,60 +157,99 @@ class DefaultController extends Controller
                         $continuar = $link_enabled ? 0 : 4;
                     }
 
-                    $porcentaje_finalizacion = $f->timeAgoPorcentaje($pagina_empresa->getFechaInicio()->format("Y/m/d"), $pagina_empresa->getFechaVencimiento()->format("Y/m/d"));
+                    $dias = $f->timeAgo($fechaFin);
+                    $porcentaje = $f->porcentaje_finalizacion($fechaInicio,$fechaFin,$dias);
+                    $porcentaje_finalizacion = $dias;
+                    $class_finaliza = $f->classFinaliza($porcentaje);
+                    
                     if ($link_enabled)
                     {
-                        if ($porcentaje_finalizacion >= 70)
-                        {
-                           $class_finaliza = 'alertTimeGood';
-                        }
-                        elseif ($porcentaje_finalizacion >= 31 && $porcentaje_finalizacion <= 69)
-                        {
-                            $class_finaliza = 'alertTimeWarning';
-                        }
-                        elseif ($porcentaje_finalizacion <= 30) 
-                        {
-                            $class_finaliza = 'alertTimeDanger';
-                        }
-                        else {
-                            $class_finaliza = '';
-                        }
+                      $nivel_vigente = true;
+                      if($dias == 0){
+                         $dias_vencimiento = $this->get('translator')->trans('Vence hoy');
+                      }else{
+                         $dias_vencimiento = $this->get('translator')->trans('Finaliza en').' '.$dias.' '.$this->get('translator')->trans('días');
+                      }
                     }
                     else {
-                        $class_finaliza = '';
+                        $nivel_vigente = false;
+                        $dias_vencimiento = $this->get('translator')->trans('Programa Vencido');
                     }
-                    
-                    $dias_vencimiento = $link_enabled ? $this->get('translator')->trans('Finaliza en').' '.$f->timeAgo($pagina_empresa->getFechaVencimiento()->format("Y/m/d")).' '.$this->get('translator')->trans('días') : $this->get('translator')->trans('Vencido');
 
                     $paginas[] = array('id' => $grupo->getPagina()->getId(),
                                        'nombre' => $grupo->getPagina()->getNombre(),
                                        'imagen' => $grupo->getPagina()->getFoto(),
                                        'descripcion' => $grupo->getPagina()->getDescripcion(),
+                                       'pdf' => ($grupo->getPagina()->getPdf())?$yml2['parameters']['folders']['uploads'].$grupo->getPagina()->getPdf():null,
                                        'dias_vencimiento' => $dias_vencimiento,
                                        'class_finaliza' => $class_finaliza,
                                        'tiene_subpaginas' => $tiene_subpaginas,
                                        'continuar' => $continuar,
-                                       'link_enabled' => $link_enabled);
+                                       'link_enabled' => $link_enabled,
+                                       'nivel_vigente' => $nivel_vigente,
+                                       'prueba' => $prueba,
+                                       'notas' => $notas);
+                    
 
                 }
 
             }
-
+            
             $grupos[] = array('id' => $grupo_id,
                               'nombre' => $nombre_grupo,
                               'paginas' => $paginas);
 
         }
 
-        return $this->render('LinkFrontendBundle:Default:index.html.twig', array('bienvenida' => $empresa->getBienvenida(),
+         $user_id = $session->get('usuario')['id'];
+         $introduccion = $em->getRepository('LinkComunBundle:AdminIntroduccion')->findByUsuario(
+             array('id' => $user_id)
+         );
+
+         if (count($introduccion) == 0) {
+            $usuario_a_guardar = $em ->getRepository('LinkComunBundle:AdminUsuario')->findOneById($user_id);
+            $intro_nuevo =  new AdminIntroduccion();
+            $intro_nuevo->setUsuario($usuario_a_guardar);
+            $intro_nuevo->setPasoActual(1);
+            $intro_nuevo->setCancelado(false);
+            
+            $em->persist($intro_nuevo);
+            $em->flush();
+
+            $introduccion = $em->getRepository('LinkComunBundle:AdminIntroduccion')->findByUsuario(
+             array('id' => $user_id)
+            );
+         }
+         
+         $paso_actual_intro = $introduccion[0]->getPasoActual();
+         $cancelar_intro = $introduccion[0]->getCancelado();
+         return $this->render('LinkFrontendBundle:Default:index.html.twig', array('bienvenida' => $empresa->getBienvenida(),
                                                                                  'reciente' => $reciente,
                                                                                  'grupos' => $grupos,
-                                                                                 'actividad_reciente' => $actividad_reciente));
+                                                                                 'actividad_reciente' => $actividad_reciente,
+                                                                                 'paso_actual_intro' => $paso_actual_intro,
+                                                                                 'cancelar_intro' => $cancelar_intro));
 
     }
 
+    public function ajaxDescripcionAction(Request $request){
+        $em = $this->getDoctrine()->getManager();
+        $f = $this->get('funciones');
+
+        $pagina_id = $request->request->get('pagina_id');
+        $pagina = $this->getDoctrine()->getRepository('LinkComunBundle:CertiPagina')->find($pagina_id);
+        
+        $return = array('nombre'=>$pagina->getNombre(),'descripcion'=>$pagina->getDescripcion());
+        $return = json_encode($return);
+        return new Response($return, 200, array('Content-Type' => 'application/json'));
+
+    }
+
+
     public function authExceptionEmpresaAction($tipo)
     {
+
+        $yml = Yaml::parse(file_get_contents($this->get('kernel')->getRootDir().'/config/parametros.yml'));
 
         $preferencia = array('logo' => ($_COOKIE && isset($_COOKIE["logo"])) ? $_COOKIE["logo"] : '',
                              'favicon' => ($_COOKIE && isset($_COOKIE["favicon"])) ? $_COOKIE["favicon"] : '',
@@ -335,7 +272,7 @@ class DefaultController extends Controller
                 $mensaje = array('principal' => $this->get('translator')->trans('Certificado inexistente para este contenido'),
                                  'indicaciones' => array($this->get('translator')->trans('La empresa debe cargar el modelo de certificado y asociarlo a esta página'),
                                                          $this->get('translator')->trans('En el módulo administrativo de Certificados y Constancias se puede agregar certificados'),
-                                                         $this->get('translator')->trans('También puede solicitar la carga del certificado para esta página a través del Administrador de Contenido del equipo de Formación 2.0')));
+                                                         $this->get('translator')->trans('También puede solicitar la carga del certificado para esta página a través del Administrador de Contenido del equipo de Formación Smart')));
                 $continuar = '<a href="'.$this->generateUrl('_inicio').'"><button class="btn btn-warning btn-continuar continuar">'.$this->get('translator')->trans('Continuar').'</button></a>';
                 $imagen = 'front/assets/img/warning (1).svg';
                 $texto = $this->get('translator')->trans('Certificado no encontrado');
@@ -364,7 +301,7 @@ class DefaultController extends Controller
 
             case 'prueba':
                 $mensaje = array('principal' => $this->get('translator')->trans('No existe evaluación para esta página'),
-                                 'indicaciones' => array($this->get('translator')->trans('Puede solicitar crear una evaluación para esta página a través del Administrador de Contenido del equipo de Formación 2.0')));
+                                 'indicaciones' => array($this->get('translator')->trans('Puede solicitar crear una evaluación para esta página a través del Administrador de Contenido del equipo de Formación Smart')));
                 $continuar = '<a href="'.$this->generateUrl('_inicio').'"><button class="btn btn-warning btn-continuar continuar">'.$this->get('translator')->trans('Continuar').'</button></a>';
                 $imagen = 'front/assets/img/warning (1).svg';
                 $texto = $this->get('translator')->trans('Evaluación no encontrada');
@@ -378,13 +315,24 @@ class DefaultController extends Controller
                 $texto = $this->get('translator')->trans('Preguntas no encontradas');
                 break;
 
+            case 'mantenimiento':
+                $mensaje = array('principal' => $this->get('translator')->trans('Página en mantenimiento'),
+                                 'indicaciones' => array($this->get('translator')->trans('En estos momentos se están realizando optimizaciones en nuestros servidores'),
+                                                         $this->get('translator')->trans('Ofrecemos disculpas por las molestias ocasionadas')));
+                $empresa_id = ($_COOKIE && isset($_COOKIE["empresa_id"])) ? $_COOKIE["empresa_id"] : 0;
+                $continuar = '';
+                $imagen = 'front/assets/img/browser (1).svg';
+                $texto = $this->get('translator')->trans('Página en mantenimiento');
+                break;
+
         }
 
         return $this->render('LinkFrontendBundle:Default:authException.html.twig', array('mensaje' => $mensaje,
                                                                                          'preferencia' => $preferencia,
                                                                                          'imagen' => $imagen,
                                                                                          'texto' => $texto,
-                                                                                         'continuar' => $continuar));
+                                                                                         'continuar' => $continuar,
+                                                                                         'servidor_mantenimiento' => $yml['parameters']['servidor_mantenimiento']));
 
     }
 
@@ -414,7 +362,7 @@ class DefaultController extends Controller
 
             if (!$usuario)//validamos que el correo exista
             {
-                $error = $this->get('translator')->trans('El correo no existe en la base de datos, por favor inserte uno diferente o comuníquese a soporte@formacion2puntocero.com');
+                $error = $this->get('translator')->trans('El correo no existe en la base de datos, por favor inserte uno diferente o comuníquese a soporte@formacionsmart.com');
             }
             else{
                 if (!$usuario->getActivo()) //validamos que el usuario este activo
@@ -441,20 +389,24 @@ class DefaultController extends Controller
                             $yml = Yaml::parse(file_get_contents($this->get('kernel')->getRootDir().'/config/parametros.yml'));
                             $f = $this->get('funciones');
                             $background = $this->container->getParameter('folders')['uploads'].'recursos/decorate_certificado.png';
-                            $logo = $this->container->getParameter('folders')['uploads'].'recursos/logo_formacion.png';
+                            $logo = $this->container->getParameter('folders')['uploads'].'recursos/logo_formacion_smart.png';
+                            $footer = $this->container->getParameter('folders')['uploads'].'recursos/footer.bg.form.png';
                             $link_plataforma = $this->container->getParameter('link_plataforma').$empresa->getId();
                             // Envío de correo con los datos de acceso, usuario y clave
                             $parametros = array('asunto' => $yml['parameters']['correo_recuperacion']['asunto'],
-                                                'remitente'=>array($this->container->getParameter('mailer_user')),
+                                                'remitente' => $this->container->getParameter('mailer_user'),
+                                                'remitente_name' => $this->container->getParameter('mailer_user_name'),
                                                 'destinatario' => $correo,
+                                                'mailer' => 'soporte_mailer',
                                                 'twig' => 'LinkComunBundle:Default:emailRecuperacion.html.twig',
                                                 'datos' => array('usuario' => $usuario->getLogin(),
                                                                  'clave' => $usuario->getClave(),
-                                                                 'nombre'=> $usuario->getNombre().' '.$usuario->getApellido(),
+                                                                 'nombre' => $usuario->getNombre().' '.$usuario->getApellido(),
+                                                                 'correo_soporte' => $yml['parameters']['correo_soporte']['remitente'],
                                                                  'background' => $background,
-                                                                'logo'=>$logo,
-                                                                'link_plataforma'=>$link_plataforma) );
-                          
+                                                                 'logo' => $logo,
+                                                                 'footer' => $footer,
+                                                                 'link_plataforma' => $link_plataforma));
                             $correoRecuperacion = $f->sendEmail($parametros);
                             //return $this->redirectToRoute('_login', array('empresa_id'=> $empresa_id));
                         }
@@ -477,10 +429,16 @@ class DefaultController extends Controller
     public function loginAction($empresa_id, Request $request)
     {
 
+        $yml = Yaml::parse(file_get_contents($this->get('kernel')->getRootDir().'/config/parametros.yml'));
+
+        if ($yml['parameters']['servidor_mantenimiento'])
+        {
+            return $this->redirectToRoute('_authExceptionEmpresa', array('tipo' => 'mantenimiento'));
+        }
+        
         $f = $this->get('funciones');
         $error = '';
-        $verificacion='';
-        $yml = Yaml::parse(file_get_contents($this->get('kernel')->getRootDir().'/config/parametros.yml'));
+        $verificacion = '';
 
         $em = $this->getDoctrine()->getManager();
 
@@ -490,148 +448,144 @@ class DefaultController extends Controller
 
         if ($empresa_bd)
         {
-            if ($empresa_bd->getActivo())
+            
+            //se consulta la preferencia de la empresa
+            $preferencia = $em->getRepository('LinkComunBundle:AdminPreferencia')->findOneByEmpresa($empresa_id);
+
+            if ($preferencia)
             {
-                //se consulta la preferencia de la empresa
-                $preferencia = $em->getRepository('LinkComunBundle:AdminPreferencia')->findOneByEmpresa($empresa_id);
-
-                if ($preferencia)
-                {
-                    $logo = $preferencia->getLogo() ? $preferencia->getLogo() : '';
-                    $tipo_logo = $preferencia->getTipoLogo() ? $preferencia->getTipoLogo()->getCss() : 'imgLogoHor';
-                    $logo_login = $preferencia->getLogoLogin() ? $preferencia->getLogo() : '';
-                    $favicon = $preferencia->getFavicon();
-                    $layout = explode(".", $preferencia->getLayout()->getTwig());
-                    $layout = $layout[0]."_";
-                    $title = $preferencia->getTitle();
-                    $css = $preferencia->getCss();
-                    $webinar = $empresa_bd->getWebinar();
-                    $chat = $empresa_bd->getChatActivo();
-                    $plantilla = $preferencia->getLayout()->getTwig();
-                }
-                else {
-                    $logo = '';
-                    $tipo_logo = 'imgLogoHor';
-                    $logo_login = '';
-                    $favicon = '';
-                    $layout = 'base_';
-                    $title = '';
-                    $css = '';
-                    $webinar = false;
-                    $chat = false;
-                    $plantilla = 'base.html.twig';
-                }
-
-                // Usar las cookies para las preferencias de la empresa y personalizar la pantalla de excepción
-                setcookie("empresa_id", $empresa_id, time()+(60*60*24*365),'/');
-                setcookie("logo", $logo, time()+(60*60*24*365),'/');
-                setcookie("favicon", $favicon, time()+(60*60*24*365),'/');
-                setcookie("plantilla", $plantilla, time()+(60*60*24*365),'/');
-                setcookie("css", $css, time()+(60*60*24*365),'/');
-
-                $empresa = array('id' => $empresa_id,
-                                 'nombre' => $empresa_bd->getNombre(),
-                                 'chat' => $chat,
-                                 'webinar' => $webinar,
-                                 'plantilla' => $plantilla,
-                                 'logo' => $logo,
-                                 'tipo_logo' => $tipo_logo,
-                                 'favicon' => $favicon,
-                                 'titulo' => $title,
-                                 'css' => $css);
-
-                //validamos que exista una cookie
-                if ($_COOKIE && isset($_COOKIE["id_usuario"]))
-                {
-                    $usuario = $em->getRepository('LinkComunBundle:AdminUsuario')->findOneBy(array('id' => $_COOKIE["id_usuario"],
-                                                                                                   'empresa' => $empresa_bd->getId(),
-                                                                                                   'cookies' => $_COOKIE["marca_aleatoria_usuario"] ) );
-                    
-                    if ($usuario)
-                    {
-
-                        // Si tiene una sesión abierta se cierra, ya que lo respalda la Cookie
-                        if ($session->get('iniFront'))
-                        {
-                            if (!$f->sesionBloqueda($session->get('sesion_id')))
-                            {
-                                $sesion = $em->getRepository('LinkComunBundle:AdminSesion')->find($session->get('sesion_id'));
-                                if ($sesion)
-                                {
-                                    $sesion->setDisponible(false);
-                                    $em->persist($sesion);
-                                    $em->flush();
-                                }
-                                $session->invalidate();
-                                $session->clear();
-                            }
-                        }
-
-                        $recordar_datos = 1;
-                        $login = $usuario->getLogin();
-                        $clave = $usuario->getClave(); 
-                        $verificacion = 1;
-                    }
-                    else {
-                        // Eliminamos las cookies almacenada
-                        setcookie('id_usuario', '', time() - 42000, '/'); 
-                        setcookie('marca_aleatoria_usuario', '', time() - 42000, '/');
-                        //$error = $this->get('translator')->trans('La información almacenada en el navegador no es correcta, borre el historial.');
-                    }
-                }
-                else {
-                    if ($request->getMethod() == 'POST')
-                    {
-                        $recordar_datos = $request->request->get('recordar_datos');
-                        $login = $request->request->get('usuario');
-                        $clave = $request->request->get('password');
-                        $verificacion = 1;
-                    }
-                    else {
-                        if ($session->get('iniFront'))
-                        {
-                            if (!$f->sesionBloqueda($session->get('sesion_id')))
-                            {
-                                return $this->redirectToRoute('_inicio');
-                            }
-                        }
-                    }
-                }
-
-                if ($verificacion)
-                {
-                    $iniciarSesion = $f->iniciarSesion(array('recordar_datos' => $recordar_datos,
-                                                             'login' => $login,
-                                                             'clave' => $clave,
-                                                             'empresa' => $empresa,
-                                                             'yml' => $yml['parameters']));
-
-                    if ($iniciarSesion['exito'] == true)
-                    {
-                        return $this->redirectToRoute('_inicio');
-                    }
-                    else {
-                        if ($iniciarSesion['error'] == true)
-                        {
-
-                            $response = $this->render('LinkFrontendBundle:Default:'.$layout.'login.html.twig', array('empresa' => $empresa, 
-                                                                                                                     'logo_login' => $logo_login,
-                                                                                                                     'error' => $iniciarSesion['error']));
-                            return $response;
-                        }
-                    }                    
-                }
-                else {
-                    $response = $this->render('LinkFrontendBundle:Default:'.$layout.'login.html.twig', array('empresa' => $empresa, 
-                                                                                                             'logo_login' => $logo_login,
-                                                                                                             'error' => $error));
-                    return $response;
-                }
-
+                $logo = $preferencia->getLogo() ? $preferencia->getLogo() : '';
+                $tipo_logo = $preferencia->getTipoLogo() ? $preferencia->getTipoLogo()->getCss() : 'imgLogoHor';
+                $logo_login = $preferencia->getLogoLogin() ? $preferencia->getLogo() : '';
+                $favicon = $preferencia->getFavicon();
+                $layout = explode(".", $preferencia->getLayout()->getTwig());
+                $layout = $layout[0]."_";
+                $title = $preferencia->getTitle();
+                $css = $preferencia->getCss();
+                $webinar = $empresa_bd->getWebinar();
+                $chat = $empresa_bd->getChatActivo();
+                $plantilla = $preferencia->getLayout()->getTwig();
             }
             else {
-                return $this->redirectToRoute('_authExceptionEmpresa', array('tipo' => 'empresa'));
+                $logo = '';
+                $tipo_logo = 'imgLogoHor';
+                $logo_login = '';
+                $favicon = '';
+                $layout = 'base_';
+                $title = '';
+                $css = '';
+                $webinar = false;
+                $chat = false;
+                $plantilla = 'base.html.twig';
             }
+
+            // Usar las cookies para las preferencias de la empresa y personalizar la pantalla de excepción
+            setcookie("empresa_id", $empresa_id, time()+(60*60*24*365),'/');
+            setcookie("logo", $logo, time()+(60*60*24*365),'/');
+            setcookie("favicon", $favicon, time()+(60*60*24*365),'/');
+            setcookie("plantilla", $plantilla, time()+(60*60*24*365),'/');
+            setcookie("css", $css, time()+(60*60*24*365),'/');
+
+            $empresa = array('id' => $empresa_id,
+                             'nombre' => $empresa_bd->getNombre(),
+                             'chat' => $chat,
+                             'webinar' => $webinar,
+                             'plantilla' => $plantilla,
+                             'logo' => $logo,
+                             'tipo_logo' => $tipo_logo,
+                             'favicon' => $favicon,
+                             'titulo' => $title,
+                             'css' => $css);
+
+            //validamos que exista una cookie
+            if ($_COOKIE && isset($_COOKIE["id_usuario"]))
+            {
+                $usuario = $em->getRepository('LinkComunBundle:AdminUsuario')->findOneBy(array('id' => $_COOKIE["id_usuario"],
+                                                                                               'empresa' => $empresa_bd->getId(),
+                                                                                               'cookies' => $_COOKIE["marca_aleatoria_usuario"] ) );
+                
+                if ($usuario)
+                {
+
+                    // Si tiene una sesión abierta se cierra, ya que lo respalda la Cookie
+                    if ($session->get('iniFront'))
+                    {
+                        if (!$f->sesionBloqueda($session->get('sesion_id')))
+                        {
+                            $sesion = $em->getRepository('LinkComunBundle:AdminSesion')->find($session->get('sesion_id'));
+                            if ($sesion)
+                            {
+                                $sesion->setDisponible(false);
+                                $em->persist($sesion);
+                                $em->flush();
+                            }
+                            $session->invalidate();
+                            $session->clear();
+                        }
+                    }
+
+                    $recordar_datos = 1;
+                    $login = $usuario->getLogin();
+                    $clave = $usuario->getClave(); 
+                    $verificacion = 1;
+                    
+                }
+                else {
+                    // Eliminamos las cookies almacenada
+                    setcookie('id_usuario', '', time() - 42000, '/'); 
+                    setcookie('marca_aleatoria_usuario', '', time() - 42000, '/');
+                    //$error = $this->get('translator')->trans('La información almacenada en el navegador no es correcta, borre el historial.');
+                }
+            }
+            else {
+                if ($request->getMethod() == 'POST')
+                {
+                    $recordar_datos = $request->request->get('recordar_datos');
+                    $login = $request->request->get('usuario');
+                    $clave = $request->request->get('password');
+                    $verificacion = 1;
+                }
+                else {
+                    if ($session->get('iniFront'))
+                    {
+                        if ($empresa_bd->getActivo() && !$f->sesionBloqueda($session->get('sesion_id')))
+                        {
+                            return $this->redirectToRoute('_inicio');
+                        }
+                    }
+                }
+            }
+
+            if ($verificacion)
+            {
+                $iniciarSesion = $f->iniciarSesion(array('recordar_datos' => $recordar_datos,
+                                                         'login' => $login,
+                                                         'clave' => $clave,
+                                                         'empresa' => $empresa,
+                                                         'yml' => $yml['parameters']));
+
+                if ($iniciarSesion['exito'])
+                {
+                    return $this->redirectToRoute('_inicio');
+                }
+                else {
+                    if ($iniciarSesion['error'] != '')
+                    {
+
+                        $response = $this->render('LinkFrontendBundle:Default:'.$layout.'login.html.twig', array('empresa' => $empresa, 
+                                                                                                                 'logo_login' => $logo_login,
+                                                                                                                 'error' => $iniciarSesion['error']));
+                        return $response;
+                    }
+                }                    
+            }
+            else {
+                $response = $this->render('LinkFrontendBundle:Default:'.$layout.'login.html.twig', array('empresa' => $empresa, 
+                                                                                                         'logo_login' => $logo_login,
+                                                                                                         'error' => $error));
+                return $response;
+            }
+
         }
         else {
             return $this->redirectToRoute('_authExceptionEmpresa', array('tipo' => 'url'));
@@ -833,23 +787,24 @@ class DefaultController extends Controller
                                    'tipo'=>$alarma->getTipoAlarma()->getid(),
                                    'entidad'=>$alarma->getEntidadId());
 
-                if($alarma->getLeido() == TRUE)
+                if ($alarma->getLeido() == TRUE)
                 {
-                    $leidas[] =array('id'=>$alarma->getId(),
-                                   'descripcion'=>$alarma->getDescripcion(),
-                                   'css'=>$alarma->getTipoAlarma()->getCss(),
-                                   'icono'=>$alarma->getTipoAlarma()->getIcono(),
-                                   'tipo'=>$alarma->getTipoAlarma()->getid(),
-                                   'entidad'=>$alarma->getEntidadId());
+                    $leidas[] = array('id'=>$alarma->getId(),
+                                      'descripcion'=>$alarma->getDescripcion(),
+                                      'css'=>$alarma->getTipoAlarma()->getCss(),
+                                      'icono'=>$alarma->getTipoAlarma()->getIcono(),
+                                      'tipo'=>$alarma->getTipoAlarma()->getid(),
+                                      'entidad'=>$alarma->getEntidadId());
 
-                }elseif ($alarma->getLeido() == FALSE) 
+                }
+                elseif ($alarma->getLeido() == FALSE) 
                 {
-                    $no_leidas[] =array('id'=>$alarma->getId(),
-                                   'descripcion'=>$alarma->getDescripcion(),
-                                   'css'=>$alarma->getTipoAlarma()->getCss(),
-                                   'icono'=>$alarma->getTipoAlarma()->getIcono(),
-                                   'tipo'=>$alarma->getTipoAlarma()->getid(),
-                                   'entidad'=>$alarma->getEntidadId());
+                    $no_leidas[] = array('id'=>$alarma->getId(),
+                                         'descripcion'=>$alarma->getDescripcion(),
+                                         'css'=>$alarma->getTipoAlarma()->getCss(),
+                                         'icono'=>$alarma->getTipoAlarma()->getIcono(),
+                                         'tipo'=>$alarma->getTipoAlarma()->getid(),
+                                         'entidad'=>$alarma->getEntidadId());
                 }
             }
 

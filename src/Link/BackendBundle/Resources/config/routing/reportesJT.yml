@@ -21,3 +21,29 @@ _ajaxUsuariosConectados:
     defaults: { _controller:  LinkBackendBundle:Default:ajaxUsuariosConectados }
     requirements:
         _method: POST
+
+_detalleParticipante:
+    path: /detalleParticipante
+    defaults: { _controller: LinkBackendBundle:ReportesJT:detalleParticipante }
+    requirements: 
+        _method: POST
+
+_ajaxUsernamesEmpresa:
+    path: /ajaxUsernamesEmpresa
+    defaults: { _controller: LinkBackendBundle:ReportesJT:ajaxUsernamesEmpresa }
+    requirements: 
+        _method: GET
+
+_ajaxDetalleParticipante:
+    path: /ajaxDetalleParticipante
+    defaults: { _controller: LinkBackendBundle:ReportesJT:ajaxDetalleParticipante }
+    requirements:
+        _method: POST
+
+_ajaxUrlpaginaEmpresa:
+    path: /ajaxUrlpaginaEmpresa
+    defaults: { _controller: LinkBackendBundle:ReportesJT:ajaxUrlpaginaEmpresa }
+    requirements:
+        _method: POST 
+
+

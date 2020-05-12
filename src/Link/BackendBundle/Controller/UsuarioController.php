@@ -180,6 +180,8 @@ class UsuarioController extends Controller
 
     }
 
+
+
     public function usuarioAction($usuario_id, Request $request){
 
         $session = new Session();
@@ -224,7 +226,6 @@ class UsuarioController extends Controller
             $usuario->setFechaRegistro(new \DateTime('now'));
             $empresa_asignada = $f->rolEmpresa($session->get('usuario')['id'], $session->get('usuario')['roles'], $yml);
         }
-
         // Lista de paises
         $qb = $em->createQueryBuilder();
         $qb->select('p')
@@ -331,12 +332,31 @@ class UsuarioController extends Controller
             $usuario->setCorreoPersonal($correo_personal);
             $usuario->setCorreoCorporativo($correo_corporativo);
             $usuario->setActivo($activo ? true : false);
-            $fn_array = explode("/", $fecha_nacimiento);
-            $d = $fn_array[0];
-            $m = $fn_array[1];
-            $a = $fn_array[2];
-            $fecha_nacimiento = "$a-$m-$d";
-            $usuario->setFechaNacimiento(new \DateTime($fecha_nacimiento));
+            if ($fecha_nacimiento)
+            {
+                $fn_array = explode("/", $fecha_nacimiento);
+                $d = $fn_array[0];
+                $m = $fn_array[1];
+                $a = $fn_array[2];
+                $fecha_nacimiento = "$a-$m-$d";
+                $usuario->setFechaNacimiento(new \DateTime($fecha_nacimiento));
+            }
+            else {
+                $usuario->setFechaNacimiento(null);
+            }
+            
+            $query = $em->getConnection()->prepare("SELECT MAX(CAST(codigo AS INTEGER)) FROM admin_usuario where empresa_id = ".$empresa_id." AND codigo ~ '^\d+$'");
+            $query->execute();
+            $r = $query->fetchAll();
+            $max_codigo = $r[0]['max'] != '' ? $r[0]['max'] : 0;
+            $max_codigo++;
+            if ($usuario_id) {
+                if ($usuario->getCodigo()=='') {
+                    $usuario->setCodigo($max_codigo);
+                }
+            }else{
+                $usuario->setCodigo($max_codigo);
+            }
             $usuario->setPais($pais);
             $usuario->setCampo1($campo1);
             $usuario->setCampo2($campo2);
@@ -466,6 +486,46 @@ class UsuarioController extends Controller
         return new Response($return, 200, array('Content-Type' => 'application/json'));
         
     }
+
+    public function ajaxValidQueryAction(Request $request)
+    {
+        $em = $this->getDoctrine()->getManager();
+        $f = $this->get('funciones');
+        $html ='';
+        $login = strtolower(trim($request->request->get('login')));
+        $usuario_id = (int)$request->request->get('usuario_id');
+        $correo_corporativo =  strtolower(trim($request->request->get('correo_corporativo')));
+        $correo_personal =  strtolower(trim($request->request->get('correo_personal')));
+        $empresa_id = $request->request->get('empresa_id');
+        $uid = ($usuario_id != 0)? $usuario_id:0;
+        //validar si existe el login cuando se agrega un nuevo usuario
+        if ($usuario_id == 0 ) {
+             $query = $em->createQuery('SELECT COUNT(u.id) FROM LinkComunBundle:AdminUsuario u 
+                                    WHERE u.login = :login')
+                    ->setParameter('login', $login);
+             $lg = $query->getSingleScalarResult();
+             if ($lg!=0) {
+                $html .= '<li> -'.$this->get('translator')->trans('El login ya existe').'.</li>';
+             }
+        }
+        //validar si los correos ingresados existen
+        if($correo_corporativo!=''){
+            $cc = $f->searchMail($correo_corporativo,$empresa_id,$uid);
+            if($cc!=0){
+              $html .= '<li> -'.$this->get('translator')->trans('El correo corporativo ya existe para la empresa seleccionada').'.</li>';
+            }
+        }  
+        if($correo_personal!=''){
+            $cp = $f->searchMail($correo_personal,$empresa_id,$uid);
+            if($cp!=0){
+              $html .= '<li> -'.$this->get('translator')->trans('El correo personal ya existe para la empresa seleccionada').'.</li>';
+            }
+        }
+        $return = json_encode(array('html' => $html));
+        return new Response($return, 200, array('Content-Type' => 'application/json'));
+        
+    }
+
 
     public function participantesAction($app_id, Request $request)
     {
@@ -669,12 +729,31 @@ class UsuarioController extends Controller
             $usuario->setCorreoPersonal($correo_personal);
             $usuario->setCorreoCorporativo($correo_corporativo);
             $usuario->setActivo($activo ? true : false);
-            $fn_array = explode("/", $fecha_nacimiento);
-            $d = $fn_array[0];
-            $m = $fn_array[1];
-            $a = $fn_array[2];
-            $fecha_nacimiento = "$a-$m-$d";
-            $usuario->setFechaNacimiento(new \DateTime($fecha_nacimiento));
+            if ($fecha_nacimiento)
+            {
+                $fn_array = explode("/", $fecha_nacimiento);
+                $d = $fn_array[0];
+                $m = $fn_array[1];
+                $a = $fn_array[2];
+                $fecha_nacimiento = "$a-$m-$d";
+                $usuario->setFechaNacimiento(new \DateTime($fecha_nacimiento));
+            }
+            else {
+                $usuario->setFechaNacimiento(null);
+            }
+
+            $query = $em->getConnection()->prepare("SELECT MAX(CAST(codigo AS INTEGER)) FROM admin_usuario where empresa_id = ".$empresa_id." AND codigo ~ '^\d+$'");
+            $query->execute();
+            $r = $query->fetchAll();
+            $max_codigo = $r[0]['max'] != '' ? $r[0]['max'] : 0;
+            $max_codigo++;
+            if ($usuario_id) {
+                if ($usuario->getCodigo()=='') {
+                    $usuario->setCodigo($max_codigo);
+                }
+            }else{
+                $usuario->setCodigo($max_codigo);
+            }
             $usuario->setPais($pais);
             $usuario->setCampo1($campo1);
             $usuario->setCampo2($campo2);
@@ -820,6 +899,7 @@ class UsuarioController extends Controller
                     $errores['general'] = $this->get('translator')->trans('El archivo debe tener al menos una fila con datos').'.';
                 }
                 else {
+					
 
                     //Se recorre toda la hoja excel desde la fila 2
                     $hay_data = 0;
@@ -830,7 +910,8 @@ class UsuarioController extends Controller
                     for ($row=2; $row<=$highestRow; ++$row) 
                     {
 
-                        $filas_analizadas++;
+                    
+					   $filas_analizadas++;
 
                         // Código del empleado
                         $col = 0;
@@ -936,7 +1017,7 @@ class UsuarioController extends Controller
                         $clave = trim($cell->getValue());
                         if (!$clave)
                         {
-                            $particulares[$this->get('translator')->trans('Línea').' '.$row][$this->get('translator')->trans('Columna').' '.$col_name] = $this->get('translator')->trans('La clave es requerida.');
+                            $particulares[$this->get('translator')->trans('Línea').' '.$row][$this->get('translator')->trans('Columna').' '.$col_name] = $this->get('translator')->trans('La contraseña es requerida').'.';
                         }
                         else {
                             $hay_data++;
@@ -947,22 +1028,40 @@ class UsuarioController extends Controller
                         $col_name = 'G';
                         $cell = $objWorksheet->getCellByColumnAndRow($col, $row);
                         $correo = trim($cell->getValue());
+						//print_r($correo);exit();   
                         if ($correo)
                         {
                             $hay_data++;
-                            if (!filter_var($correo, FILTER_VALIDATE_EMAIL))
-                            {
-                                $particulares[$this->get('translator')->trans('Línea').' '.$row][$this->get('translator')->trans('Columna').' '.$col_name] = $this->get('translator')->trans('Formato de correo inválido').'.';
-                            }
-                            else {
-                                if (in_array($correo, $correos))
+							//print_r(filter_var($correo,FILTER_VALIDATE_EMAIL));exit();   
+							if ( filter_var($correo,FILTER_VALIDATE_EMAIL))
+							{
+								 if (in_array($correo, $correos))
                                 {
                                     $particulares[$this->get('translator')->trans('Línea').' '.$row][$this->get('translator')->trans('Columna').' '.$col_name] = $this->get('translator')->trans('Correo electrónico repetido').'.';
                                 }
                                 else {
                                     $correos[] = $correo;
                                 }
-                            }
+							}else
+							{
+								$particulares[$this->get('translator')->trans('Línea').' '.$row][$this->get('translator')->trans('Columna').' '.$col_name] = $this->get('translator')->trans('Formato de correo inválido').'.';
+							}
+							
+							
+                            // if (!filter_var($correo,FILTER_VALIDATE_EMAIL))
+                            // {
+                                // $particulares[$this->get('translator')->trans('Línea').' '.$row][$this->get('translator')->trans('Columna').' '.$col_name] = $this->get('translator')->trans('Formato de correo inválido').'.';
+                            // }
+                            // else {
+								
+                                // if (in_array($correo, $correos))
+                                // {
+                                    // $particulares[$this->get('translator')->trans('Línea').' '.$row][$this->get('translator')->trans('Columna').' '.$col_name] = $this->get('translator')->trans('Correo electrónico repetido').'.';
+                                // }
+                                // else {
+                                    // $correos[] = $correo;
+                                // }
+                            // }
                         }
                         else {
                             $particulares[$this->get('translator')->trans('Línea').' '.$row][$this->get('translator')->trans('Columna').' '.$col_name] = $this->get('translator')->trans('Correo electrónico requerido').'.';
@@ -1123,7 +1222,7 @@ class UsuarioController extends Controller
         $empresa = $em->getRepository('LinkComunBundle:AdminEmpresa')->find($empresa_id);
 
         // Ultimó código entero para la empresa
-        $query = $em->getConnection()->prepare("SELECT MAX(codigo) FROM admin_usuario where empresa_id = ".$empresa_id." AND codigo ~ '^\d+$'");
+        $query = $em->getConnection()->prepare("SELECT MAX(CAST(codigo AS INTEGER)) FROM admin_usuario where empresa_id = ".$empresa_id." AND codigo ~ '^\d+$'");
         $query->execute();
         $r = $query->fetchAll();
         $max = $r[0]['max'] != '' ? $r[0]['max'] : 0;
@@ -1146,7 +1245,7 @@ class UsuarioController extends Controller
                        ->setLastModifiedBy($usuario->getNombre().' '.$usuario->getApellido())
                        ->setTitle("CSV Autogenerado")
                        ->setSubject("CSV Autogenerado")
-                       ->setDescription("Documento generado para la importación del XLS a formato CSV y posteriormente a la tabla tempral de BD.")
+                       ->setDescription("Documento generado para la importación del XLS a formato CSV y posteriormente a la tabla temporal de BD.")
                        ->setKeywords("office 2005 openxml php")
                        ->setCategory("Archivo temporal");
         $phpExcelObject->setActiveSheetIndex(0);
@@ -1320,7 +1419,7 @@ class UsuarioController extends Controller
         if (file_exists($csv))
         {
 
-            chmod($csv,0777);
+            chmod($csv,0755);
             // Llamada a la función que importa el CSV a la BD
             $query = $em->getConnection()->prepare('SELECT
                                                     fnimportar_participantes(:pcsv) as
@@ -1329,7 +1428,7 @@ class UsuarioController extends Controller
             $query->execute();
             $r = $query->fetchAll();
 
-            // Llamada a la función de BD que duplica la página
+            // Llamada a la función de BD que realiza la carga de participantes
             $query = $em->getConnection()->prepare('SELECT
                                                     fncarga_participantes(:pempresa_id, :ptransaccion) as
                                                     resultado;');

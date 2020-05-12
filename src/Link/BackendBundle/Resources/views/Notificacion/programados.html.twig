@@ -1,15 +1,35 @@
 {% extends '::admin.html.twig' %}
-
 {% block stylesheets %}
     {{ parent() }}
     <link rel="stylesheet" href="{{ asset('assets/vendor/jstree/dist/themes/default/style.min.css') }}" type="text/css">
+    <style type="text/css" media="screen">
+        .alignment{
+            padding: 4%;
+            text-align: left;
+        }
+        .alignment_{
+            padding: 4%;
+            text-align: center;
+        }
+        .smallth{
+            width: 12%;
+        }
+        .small_th{
+            width: 16%;
+        }
+        .big_th{
+            width: 20%;
+        }
+        .bigth{
+            width: 40%;
+        }
+    </style>
 {% endblock %}
-
 {% block body %}
 <br>
 <input type="hidden" id="url_programados" name="url_programados" value="{{ path('_ajaxProgramados') }}">
+<input type="hidden" id="url_correos_excel" name="url_correos_excel" value="{{ path('_ajaxExcelCorreos') }}">
 <input type="hidden" id="url_tree" name="url_tree" value="{{ path('_ajaxTreeGrupoProgramado') }}">
-
 <div class="row align-items-center justify-content-between">
     <div class="col-12 col-sm-12 page-title">
         <h3>{{ 'Notificaciones programadas'|trans }}</h3>
@@ -22,7 +42,7 @@
                 <h5 class="card-title">{{ 'Listado de notificaciones'|trans }}</h5>
             </div>
             <div class="card-block">
-                <table class="table" id="dt">
+                <table class="table" id="t-programados-index">
                     <thead class="sty__title">
                         <tr>
                             {% if not usuario.empresa %}
@@ -61,7 +81,7 @@
                 <h5 class="card-title">{{ 'Avisos programados de'|trans }} <span id="notificacionTitle"></span></h5>
             </div>
             <div class="card-block">
-                <div class="row" id="div-programados-alert" style="display:none;">
+                <div class="row" id="div-programados-alert" style="display: none">
                     <div class="col-sm-2">
                         &nbsp;
                     </div>
@@ -91,4 +111,46 @@
     {{ parent() }}
     <script type="text/javascript" src="{{ asset('assets/vendor/jstree/dist/jstree.min.js') }}"></script>
     <script type="text/javascript" src="{{ asset('js/admin/programados.js') }}"></script>
+    <script type="text/javascript">
+             function applyDataTableProgramados()
+                {
+                    $('#t-programados,#t-programados-index').DataTable({
+                        destroy: true,
+                        rowReorder: true,
+                        responsive: false,
+                        pageLength:10,
+                        sPaginationType: "full_numbers",
+                        lengthChange: false,
+                        info: true,
+                        fnDrawCallback: function(){
+                            observe();
+                        },
+                        oLanguage: {
+                            "sProcessing":    "{{ 'Procesando'|trans }}...",
+                            "sLengthMenu":    "{{ 'Mostrar'|trans }} _MENU_ {{ 'registros'|trans }}",
+                            "sZeroRecords":   "{{ 'No se encontraron resultados'|trans }}",
+                            "sEmptyTable":    "{{ 'Ningún dato disponible en esta tabla'|trans }}",
+                            "sInfo":          "{{ 'Total de registros'|trans }} _TOTAL_.",
+                            "sInfoEmpty":     "{{ 'Mostrando registros del'|trans }} 0 al 0 de un total de 0 registros",
+                            "sInfoFiltered":  "({{ 'filtrado de un total de'|trans }} _MAX_ {{ 'registros'|trans }})",
+                            "sInfoPostFix":   "",
+                            "sSearch":        "{{ 'Buscar'|trans }}:",
+                            "sUrl":           "",
+                            "sInfoThousands":  ",",
+                            "sLoadingRecords": "{{ 'Cargando..'|trans }}.",
+                            oPaginate: {
+                                sFirst: "<<",
+                                sPrevious: "<",
+                                sNext: ">", 
+                                sLast: ">>" 
+                            },
+                            "oAria": {
+                                "sSortAscending":  ": {{ 'Activar para ordenar la columna de manera ascendente'|trans }}",
+                                "sSortDescending": ": {{ 'Activar para ordenar la columna de manera descendente'|trans }}"
+                            }
+                        }
+                    });
+                }
+       
+    </script>
 {% endblock %}

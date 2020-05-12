@@ -11,8 +11,8 @@
 {% block header %}
     <nav class="navbar justify-content-between py-0 fixed-top bg-white">
         <a class="navbar-brand" href="#">
-            {% set img_logo = preferencia.logo is not null and preferencia.logo != '' ? uploads~preferencia.logo : asset('front/assets/img/logo_formacion.png') %}
-            <img class="img-fluid py-1" src="{{ img_logo }}" width= "200" alt="logo formación 2.0">
+            {% set img_logo = preferencia.logo is not null and preferencia.logo != '' ? uploads~preferencia.logo : asset('front/assets/img/logo_formacion_smart.png') %}
+            <img class="img-fluid py-1" src="{{ img_logo }}" width= "200" alt="logo formación smart">
         </a>
     </nav>
 {% endblock %}
@@ -23,7 +23,9 @@
     <section class="mt-22v error_except">
         <div class="row align-content-center">
             <div class="col-8">
-                <h3 class="titulo-error sub-line">{{ 'Error de Excepción'|trans }}</h3>
+                {% if not servidor_mantenimiento %}
+                    <h3 class="titulo-error sub-line">{{ 'Error de Excepción'|trans }}</h3>
+                {% endif %}
                 <h5 class="subtitulo-error">{{ mensaje.principal }}</h5>
                 <ul class="lista-error">
                     {% for indicacion in mensaje.indicaciones %}
@@ -35,12 +37,15 @@
             </div>
             <div class="col-4 text-center">
                 <img class="img-error" src="{{ asset ( imagen ) }}" alt="">
-                <h3 class="titulo-error">{{ texto }}</h3>
+                {% if not servidor_mantenimiento %}
+                    <h3 class="titulo-error">{{ texto }}</h3>
+                {% endif %}
                 {{ continuar|raw }}
             </div>
         </div>
     </section>
 {% endblock %}
+
 {% block javascripts %}
     <script src="{{ asset('front/js/jquery-3.3.1.min.js') }}"></script>
     <script src="{{ asset('front/js/bootstrap.min.js') }}"></script>

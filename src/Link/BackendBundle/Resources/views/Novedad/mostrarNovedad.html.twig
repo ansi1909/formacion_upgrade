@@ -53,7 +53,7 @@
         <div class="card">
             <div class="card-header gradiente">
                 <div class="card-title">
-                    <h6>{{ 'Detalles de la Noticia y Novedad'|trans }}</h6>
+                    <h6>{{ 'Detalle de la Noticia y Novedad'|trans }}</h6>
                 </div>
             </div>
             <div class="card-block">
@@ -121,14 +121,14 @@
                             <br>
                             <div class="row">
                                 <div class="col-sm-8 col-md-8 col-lg-8">
-                                    <h5>{{ 'Fecha de Publicación'|trans }}</h5>
+                                    <h5>{{ 'Fecha de publicación'|trans }}</h5>
                                     <div class="col-14">
                                         {% set fecha_publicacion = noticia.fechaPublicacion ? noticia.fechaPublicacion|date('d/m/Y') : '' %}
                                         <p>{{ fecha_publicacion }}</p>
                                     </div>
                                 </div>
                                 <div class="col-sm-8 col-md-8 col-lg-8">
-                                    <h5>{{ 'Fecha de Vencimiento'|trans }}</h5>
+                                    <h5>{{ 'Fecha de vencimiento'|trans }}</h5>
                                     <div class="col-14">
                                         {% set fecha_vencimiento = noticia.fechaVencimiento ? noticia.fechaVencimiento|date('d/m/Y') : '' %}
                                         <p>{{ fecha_vencimiento }}</p>

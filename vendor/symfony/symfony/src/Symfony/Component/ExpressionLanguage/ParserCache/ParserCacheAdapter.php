@@ -18,7 +18,7 @@ use Symfony\Component\Cache\CacheItem;
 /**
  * @author Alexandre GESLIN <alexandre@gesl.in>
  *
- * @internal This class should be removed in Symfony 4.0.
+ * @internal and will be removed in Symfony 4.0.
  */
 class ParserCacheAdapter implements CacheItemPoolInterface
 {
@@ -30,7 +30,7 @@ class ParserCacheAdapter implements CacheItemPoolInterface
         $this->pool = $pool;
 
         $this->createCacheItem = \Closure::bind(
-            function ($key, $value, $isHit) {
+            static function ($key, $value, $isHit) {
                 $item = new CacheItem();
                 $item->key = $key;
                 $item->value = $value;
@@ -65,7 +65,7 @@ class ParserCacheAdapter implements CacheItemPoolInterface
     /**
      * {@inheritdoc}
      */
-    public function getItems(array $keys = array())
+    public function getItems(array $keys = [])
     {
         throw new \BadMethodCallException('Not implemented');
     }

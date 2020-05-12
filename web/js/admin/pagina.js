@@ -66,6 +66,7 @@ $(document).ready(function() {
         dataType: 'json',
         acceptFileTypes: /(\.|\/)(gif|jpe?g|png|pdf)$/i,
         add: function (e, data) {
+        	$('#loader_img').show();
 	        var goUpload = true;
 	        var uploadFile = data.files[0];
 	        var file_input = $('#file_input').val();
@@ -86,6 +87,7 @@ $(document).ready(function() {
 	        }
 	    },
         done: function (e, data) {
+        	$('#loader_img').hide();
         	$.each(data.result.response.files, function (index, file) {
         		var file_input = $('#file_input').val();
         		var uploads = $('#uploads').val();

@@ -15,6 +15,38 @@
         label.error, label.mensaje-error {
             color: #f00c0c;
         }
+        .margin_container{
+            margin: 1rem 2rem;
+        }
+        .margin1{
+            width: 80%;
+        }
+        .margin2{
+            padding: calc(3rem - 6px) 2rem calc(2rem - 5px) 2rem;
+            width:57.25rem;
+        }
+        .table-card-det .f-card-det {
+            padding: calc(3rem - 6px) 2rem calc(2rem - 5px) 2rem;
+            width: 72.25rem;
+            border-bottom: 1px solid #F0F4F7;
+            width: 57.25rem;
+        }
+        #container-buttons{
+            margin-left: 0%;
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+
+        }
+        .margin_row{
+            margin-left: -17px;
+            margin-right: -17px;
+        }
+        #nameUpload{
+            top: .5rem;
+            left:-.1rem
+        }
     </style>
 {% endblock %}
 
@@ -22,8 +54,8 @@
     <nav class="navbar justify-content-between py-0 fixed-top bg-white">
         <div class="logo d-sm-block d-md-block">
             <a class="navbar-brand" href="{{ path('_inicio') }}">
-                {% set img_logo = app.session.get('empresa').logo is defined ? app.session.get('empresa').logo is not null and app.session.get('empresa').logo != '' ? uploads~app.session.get('empresa').logo : asset('front/assets/img/logo_formacion.png') : asset('front/assets/img/logo_formacion.png') %}
-                <img class="img-fluid py-1 {{ app.session.get('empresa').tipo_logo }}" src="{{ img_logo }}" alt="logo formación 2.0">
+                {% set img_logo = app.session.get('empresa').logo is defined ? app.session.get('empresa').logo is not null and app.session.get('empresa').logo != '' ? uploads~app.session.get('empresa').logo : asset('front/assets/img/logo_formacion_smart.png') : asset('front/assets/img/logo_formacion_smart.png') %}
+                <img class="img-fluid py-1 {{ app.session.get('empresa').tipo_logo }}" src="{{ img_logo }}" alt="logo formación smart">
             </a>
         </div>
         <div class="wraper-title-lesson d-flex flex-column align-items-center">
@@ -36,7 +68,7 @@
             </a>
             {{ include('LinkFrontendBundle:Default:notificaciones.html.twig') }}
             <div class="d-flex flex-column">
-                <div class="wrapperDdMenu" title="{{ 'Configuración del participante'|trans }}" data-toggle="tooltip" data-placement="bottom">
+                <div class="wrapperDdMenu" title="{{ 'Perfil del participante'|trans }}" data-toggle="tooltip" data-placement="bottom">
                     <a href="#" class="perfil no-decorate" id="config">
                         {% set img = app.session.get('usuario').foto is defined ? app.session.get('usuario').foto is not null and app.session.get('usuario').foto != '' ? uploads~app.session.get('usuario').foto : asset('front/assets/img/user.svg') : asset('front/assets/img/user.svg') %}
                         <img class="img-fluid mx-auto avatar-img" src="{{ img }}" alt="usuario"><span class="material-icons color-light-grey icDown">expand_more</span>
@@ -45,7 +77,7 @@
                         <li class="mark"></li>
                         <a href="{{ path('_usuariop') }}">
                             <li class="opcList">
-                                <span>{{ 'Preferencias de participante'|trans }} <i class="material-icons icMenu">style</i></span>
+                                <span>{{ 'Perfil del participante'|trans }} <i class="material-icons icMenu">style</i></span>
                             </li>
                         </a>
                         <a href="#" data-toggle="modal" data-target="#modalCs">
@@ -67,6 +99,7 @@
 {% block body %}
 
     <input type="hidden" id="foro_main_id" name="foro_main_id" value="{{ foro.id }}">
+    <input type="hidden" id="usuario_name" name="usuario_name" value="{{ app.session.get('usuario').nombre }}">
     <input type="hidden" id="foro_id" name="foro_id" value="0">
     <input type="hidden" id="pagina_id" name="pagina_id" value="{{ programa.id }}">
     <input type="hidden" id="mensaje_content" name="mensaje_content" value="">
@@ -182,15 +215,18 @@
         </div>
     </section>
     
-    <section class="esp_col" id="section-list">
-        <div class="row align-items-center justify-content-between">
+    <section class="esp_col margin_container" id="section-list">
+        <div class="row align-items-center justify-content-between" style="margin-left:75px;">
             <div class="col-4 col-lg-4 col-xl-4 col-md-4 col-sm-4 col-xs-4 text-left">
-                <a href="{{ path('_espacioColaborativo', { 'programa_id': programa.id, 'subpagina_id': subpagina_id }) }}"><button class="btn btn-primary btn-nw-tema">{{ 'Volver al listado'|trans }}</button></a>
+                <a class="" href="{{ path('_espacioColaborativo', { 'programa_id': programa.id, 'subpagina_id': subpagina_id }) }}"><button class="btn btn-primary btn-nw-tema">{{ 'Volver al listado'|trans }}</button></a>
             </div>
         </div>
         <div class="row">
-            <ul class="table-card-det">
-                <li class="f-card-det">
+            <div class="lesson-container container py-4 text-center">
+                <h2>{{ foro.tema }}</h2>
+            </div>
+            <ul class="table-card-det margin1">
+                <li class="f-card-det ">
                     <div class="cont-det">
                         <div class="row justify-content-between">
                             <div class="col-auto">
@@ -218,7 +254,7 @@
                     </div>
                 </li>
             </ul>
-            <ul class="table-card-det">
+            <ul class="table-card-det margin1">
                 {% for foro_hijo in foros_hijos %}
                     <li class="f-card-det" id="toDel-{{ foro_hijo.id }}">
                         <div class="cont-det">
@@ -300,7 +336,7 @@
                 {% endif %}
                 <li class="f-card-det-resp" id="li_responder">
                     <form id="form-response" method="POST">
-                        <div class="row align-items-center justify-content-center">
+                        <div class="row align-items-center justify-content-center margin_row">
                             <div class="form-group">
                                 <div class="col-12">
                                     <label class="mb-2 titulo-form" for="mensaje"> {{ 'Tu respuesta'|trans }}: </label>
@@ -309,16 +345,13 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="row align-items-center justify-content-end">
-                            <div class="col-auto text-right">
+                        <div class="row "  id="container-buttons">
+                                <button id="iconDownloads2" type="button" class="btn btn-info" data-toggle="modal" >{{ 'Subir archivo'|trans }}</button>
                                 <button type="button" class="btn btn-primary boton" id="publicar">{{ 'Responder'|trans }}</button>
-                            </div>
+  
                         </div>
                     </form>
-                    <br>
-                    <div class="form-group text-right">
-                        <a id="iconDownloads2" href="#li_responder"><span class="material-icons color-light-grey icUpload" title="{{ 'Subir archivo'|trans }}" data-toggle="tooltip" data-placement="bottom">file_upload</span></a>
-                    </div>
+
 
 
                 </li>
@@ -334,7 +367,7 @@
         </div>
     </div>
 
-    <div class="downloads">
+    <div class="downloads" >
         <div class="d-flex px-3 row justify-content-between">
             <div class="col-auto col-sm-auto col-md-auto col-xl-auto col-lg-auto">
                 <h5 class="color-grey text-left titulo">{{ 'Descargas'|trans }}</h5>
@@ -350,11 +383,11 @@
                 {% for archivo in archivos %}
                     <li class="element-downloads">
                         <div class="row px-0 d-flex justify-content-between">
-                            <div class="col-auto col-sm-auto col-md-auto col-lg-auto col-xl-auto px-0 d-flex">
+                            <div class="col-auto col-sm-auto col-md-auto col-lg-auto col-xl-auto px-0 d-flex" >
                                 <img src="{{ archivo.img }}" class="imgdl" alt="">
                                 <p class="nameArch">{{ archivo.descripcion }}</p>
                             </div>
-                            <div class="col-auto col-sm-auto col-md-auto col-lg-auto col-xl-auto px-0">
+                            <div class="col-auto col-sm-auto col-md-auto col-lg-auto col-xl-auto px-0" >
                                 <div class="cont-opc">
                                     {% set file = uploads~archivo.archivo %}
                                     <a href="{{ file }}" target="_blank"><span class="material-icons icDl" title="{{ 'Descargar archivo'|trans }}" data-toggle="tooltip" data-placement="bottom">file_download</span></a>
@@ -363,7 +396,7 @@
                         </div>
                         <div class="row px-0 justify-content-start">
                             <div class="col-auto col-sm-auto col-md-auto col-lg-auto col-xl-auto px-0 d-flex">
-                                <p class="nameUpload">{{ archivo.usuario }}</p>
+                                <p class="nameUpload " id="nameUpload">{{ archivo.usuario }}</p>
                             </div>
                         </div>
                     </li>
@@ -393,10 +426,6 @@
             </div>
         </div>
     </div>
-
-    <!--
-    http://localhost/formacion2.0/web/app_dev.php/espacioColaborativo/detalle/4/14
-    -->
 
 {% endblock %}
 

@@ -1,0 +1,103 @@
+{% extends '::admin.html.twig' %}
+
+{% block body %}
+
+<br>
+<input type="hidden" id="error-msg" name="error-msg" value="{{ 'Ha ocurrido un error en el procesamiento de la consulta. Contacte al administrador del sistema.'|trans }}">
+<input type="hidden" id="error-msg-nodata" name="error-msg-nodata" value="{{ 'No se encontró información para este usuario'|trans }}.">
+<input type="hidden" id="url_username" name="url_username" value="{{ path('_ajaxUsernamesEmpresa')}}">
+<input type="hidden" id="photo" name="photo" value="{{ asset('img/user.png') }}">
+
+<div class="col-sm-8 col-md-8 col-lg-8 alert alert-danger" role="alert" id="div-error" style="display:none;">
+    <ul></ul>
+</div>
+<div class="col-sm-8 col-md-8 col-lg-8 alert alert-danger" role="alert" id="div-error-server" style="display:none;">
+</div>
+<div class="row align-items-center justify-content-between">
+    <div class="col-12 col-sm-12 offset-sm-5 offset-md-5 offset-lg-5 page-title">
+        <h3>{{ 'Detalle del participante'|trans }}</h3>
+    </div>
+</div>
+<form id="form" name="form" action="{{ path ('_ajaxDetalleParticipante') }}" method="POST">
+    <div class="row">
+        <div class="col-sm-8 col-md-8 col-lg-8 col-xl-8 offset-sm-4 offset-md-4 offset-lg-4">
+            <div class="card">
+                <div class="card-header"  style=" background: linear-gradient(to right, #d5ff00 0%, #A3C300 100%); ">
+                    <h5 class="card-title">{{ 'Filtro'|trans }}</h5>
+                </div>
+                <div class="card-block">
+                    {% if not usuario.empresa %}
+                        <div class="row">
+                            <div class="col-sm-16 col-md-16 col-lg-16">
+                                <label for="empresa_id" class="col-sm-10 col-md-10 col-lg-10 col-form-label">{{ 'Empresa'|trans }}</label>
+                                <div class="col-sm-16 col-md-16 col-lg-16">
+                                    <select class="form_sty_sel form-control" style="border-radius: 5px" id="empresa_id" name="empresa_id">
+                                        <option value=""></option>
+                                        {% for empresa in empresas %}
+                                            <option value="{{ empresa.id }}">{{ empresa.nombre }}</option>
+                                        {% endfor %}
+                                    </select>
+                                    <span class="fa fa-industry"></span>
+                                    <span class="bttn_d"><img src="{{ asset('img/down-arrowbck.png') }}"></span>
+                                </div>
+                            </div>
+                        </div>
+                        <br>
+                    {% else %}
+                        <input type="hidden" id="empresa_id" name="empresa_id" value="{{ usuario.empresa.id }}">
+                    {% endif %}
+                    <div class="row">
+                        <div class="col-sm-16 col-md-16 col-lg-16">
+                            <label for="username" class="col-sm-10 col-md-10 col-lg-10 col-form-label">{{ 'Usuario'|trans }}</label>
+                            <div class="col-sm-16 col-md-16 col-lg-16">
+                                <input type="text" class="form-control form_sty1" id="username" name="username">
+                                <span class="fa fa-user"></span>
+                                <img id="user-loader" class="img-loader descargable loadUser" src="{{ asset('img/ui-anim_basic_16x16.gif') }}" style="display: none;float: right; margin-top: -27px; margin-left:-30px; position: relative; z-index: 2;">
+                            </div>
+                        </div>
+                    </div>
+                    <br>
+                </div>
+                <div class="card-footer">
+                    <div class="col-sm-16 col-md-16 text-right">
+                        <button type="button" id="search" class="bttn__saved" data-toggle="tooltip" data-placement="bottom" title="{{ 'Consultar'|trans }}"><span class="fa fa-search"></span></button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+
+{# Sección de resultados del reporte #}
+{{ include('LinkBackendBundle:Reportes:participantDetail.html.twig') }}
+
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script type="text/javascript" src="{{ asset('jq/jquery-validation-1.15.0/dist/jquery.validate.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('js/admin/reportes/detalleParticipante.js') }}"></script>
+    <script type="text/javascript">
+        $("#form").validate({
+            errorLabelContainer: "#div-error ul",
+            wrapper: "li",
+            ignore: "",
+            rules: {
+                'empresa_id': {
+                    required: true
+                },
+                'username': {
+                    required: true
+                }
+            },
+            messages: {
+                'empresa_id': {
+                    required: "- {{ 'La empresa es requerida.'|trans }}"
+                },
+                'username': {
+                    required: "- {{ 'El usuario es requerido'|trans }}."
+                }
+            }
+        });
+    </script>
+{% endblock %}

@@ -30,7 +30,9 @@ class DefaultController extends Controller
         if($session->get('administrador') == 'true' || !$usuario->getEmpresa())
         {
 
-            $empresas_db = $em->getRepository('LinkComunBundle:AdminEmpresa')->findAll();
+            $query = $em->createQuery('SELECT e FROM LinkComunBundle:AdminEmpresa e
+                                      ORDER BY e.nombre ASC');
+            $empresas_db = $query->getResult();
             $empresasA = array();
             $empresasI = array();
             $empresas_a = 0;
@@ -219,7 +221,7 @@ class DefaultController extends Controller
                         <th class="hd__title">'.$this->get('translator')->trans('Fecha Fin').'</th>
                         <th class="hd__title text-center">'.$this->get('translator')->trans('Usuarios no iniciados').'</th>
                         <th class="hd__title text-center">'.$this->get('translator')->trans('Usuarios cursando').'</th>
-                        <th class="hd__title text-center">'.$this->get('translator')->trans('Usuarios culminado').'</th>
+                        <th class="hd__title text-center">'.$this->get('translator')->trans('Usuarios culminados').'</th>
                         <th class="hd__title text-center">'.$this->get('translator')->trans('Usuarios activos').'</th>
                         <th class="hd__title text-center">'.$this->get('translator')->trans('Usuarios registrados').'</th>
                     </tr>
@@ -241,10 +243,10 @@ class DefaultController extends Controller
                         <td >'. $re['nombre'] .'</td>
                         <td >'. $re['fecha_inicio'] .'</td>
                         <td >'. $re['fecha_vencimiento'].'</td>
-                        <td class="text-center"><a href="'.$this->generateUrl('_participantesNoIniciados', array('app_id' => 20, 'pagina_id' => $re['id'], 'empresa_id' => $empresa_id )).'"><span>'. $re['no_iniciados'] .' <i class="fa fa-user"></i></span></a></td>
-                        <td class="text-center"><a href="'.$this->generateUrl('_participantesCursando', array('app_id' => 20, 'pagina_id' => $re['id'], 'empresa_id' => $empresa_id )).'"><span>'. $re['cursando'] .'<i class="fa fa-user"></i></span></a></td>
-                        <td class="text-center"><a href="'.$this->generateUrl('_participantesAprobados', array('app_id' => 20, 'pagina_id' => $re['id'], 'empresa_id' => $empresa_id )).'"><span>'. $re['culminado'] .' <i class="fa fa-user"></i></span></a></td>
-                        <td class="text-center"><a href="#"><span>'. $re['activos'] .'<i class="fa fa-user"></i></span></a></td>
+                        <td class="text-center"><a href="'.$this->generateUrl('_participantesNoIniciados', array('app_id' => 34, 'pagina_id' => $re['id'], 'empresa_id' => $empresa_id )).'"><span>'. $re['no_iniciados'] .' <i class="fa fa-user"></i></span></a></td>
+                        <td class="text-center"><a href="'.$this->generateUrl('_participantesCursando', array('app_id' => 21, 'pagina_id' => $re['id'], 'empresa_id' => $empresa_id )).'"><span>'. $re['cursando'] .'<i class="fa fa-user"></i></span></a></td>
+                        <td class="text-center"><a href="'.$this->generateUrl('_participantesAprobados', array('app_id' => 22, 'pagina_id' => $re['id'], 'empresa_id' => $empresa_id )).'"><span>'. $re['culminado'] .' <i class="fa fa-user"></i></span></a></td>
+                        <td class="text-center"><span>'. $re['activos'] .'<i class="fa fa-user"></i></span></td>
                         <td class="text-center"><a href="'.$this->generateUrl('_participantesRegistrados', array('app_id' => 20, 'pagina_id' => $re['id'], 'empresa_id' => $empresa_id )).'"><span>'. $re['registrados'] .'<i class="fa fa-user"></i></span></a></td>
                       </tr>';
         }
@@ -275,12 +277,17 @@ class DefaultController extends Controller
     {
 
         $em = $this->getDoctrine()->getManager();
-
         $id = $request->request->get('id');
         $entity = $request->request->get('entity');
+        if($entity=='AdminNotificacionProgramada'){
+          //eliminar hijos dentro de la misma tabla
+           $query = $em->createQuery("DELETE  FROM LinkComunBundle:AdminNotificacionProgramada np
+                                      WHERE np.grupo = :padre_id")
+                    ->setParameter('padre_id',$id);
+            $query->getResult();
+        }
 
         $ok = 1;
-
         $object = $em->getRepository('LinkComunBundle:'.$entity)->find($id);
         $em->remove($object);
         $em->flush();
@@ -402,14 +409,17 @@ class DefaultController extends Controller
         $size = $request->request->get('size');
 
         $nombre = $nombre.'.png';
+        $dir_uploads = $this->container->getParameter('folders')['dir_uploads'];
+        $uploads = $this->container->getParameter('folders')['uploads'];
 
-        \PHPQRCode\QRcode::png($contenido, "../qr/".$nombre, 'H', $size, 4);
+        \PHPQRCode\QRcode::png($contenido, $dir_uploads."recursos/qr/".$nombre, 'H', $size, 4);
 
-        $ruta ='<img src="/formacion2.0/qr/'.$nombre.'">';
+        $ruta ='<img src="'.$uploads.'recursos/qr/'.$nombre.'">';
         
         $return = array('ruta' =>$ruta);
         $return = json_encode($return);
         return new Response($return, 200, array('Content-Type' => 'application/json'));
+        
     }
 
     public function reordenarAsignacionAction($empresa_id, Request $request)

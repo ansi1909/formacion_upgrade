@@ -8,6 +8,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Yaml\Yaml;
 use Link\ComunBundle\Entity\AdminSesion;
+use Link\ComunBundle\Entity\AdminIntroduccion;
 use Symfony\Component\HttpFoundation\Cookie;
 use Link\ComunBundle\Entity\CertiPaginaLog;
 
@@ -36,8 +37,8 @@ class ProgramaController extends Controller
         $pagina_log = $this->getDoctrine()->getRepository('LinkComunBundle:CertiPaginaLog')->findOneBy(array('usuario' => $session->get('usuario')['id'],
                                                                                                              'pagina' => $programa_id));
 
-        if(!$pagina_log){
-
+        if(!$pagina_log)
+        {
             $pagina_log = new CertiPaginaLog();
             $pagina_log->setPagina($pagina_obj);
             $pagina_log->setUsuario($usuario_obj);
@@ -53,15 +54,25 @@ class ProgramaController extends Controller
         $pagina = $this->getDoctrine()->getRepository('LinkComunBundle:CertiPagina')->find($programa_id);
 
         $pagina_sesion = $session->get('paginas')[$programa_id];
-        /*echo $programa_id;
-        var_dump($pagina_sesion);*/
+        
         $lis_mods = '';
-        if (count($pagina_sesion['subpaginas'])) {
+        $tiene_evaluacion = 0;
+
+        if (count($pagina_sesion['subpaginas'])) 
+        {
 
             $modulos = 1;
             $contador = 0;
-            foreach ($pagina_sesion['subpaginas'] as $subpagina){
+
+            foreach ($pagina_sesion['subpaginas'] as $subpagina)
+            {
+
                 $contador = $contador + 1;
+
+                if ($subpagina['tiene_evaluacion'])
+                {
+                    $tiene_evaluacion = 1;
+                }
                 $lis_mods .= '<div class="card-hrz card-mod">';
                 $lis_mods .= '<div class="card-mod-num  mr-xl-3 d-flex justify-content-center align-items-center px-3 py-3 px-md-6 py-md-6">';
                 $lis_mods .= '<h1>'.$contador.'</h1>';
@@ -78,18 +89,21 @@ class ProgramaController extends Controller
                 $evaluacion_pagina = 0;
                 $evaluacion_programa = 0;
 
-                if($datos_log && $datos_log->getPorcentajeAvance()){
-                    $boton = 'Continuar';
+                if ($datos_log && $datos_log->getPorcentajeAvance())
+                {
+                    $boton = $this->get('translator')->trans('Continuar');
                     $clase = 'btn-continuar';
                     $porcentaje = round($datos_log->getPorcentajeAvance());
-                }else{
-                    $boton = 'Iniciar';
+                }
+                else {
+                    $boton = $this->get('translator')->trans('Iniciar');
                     $clase = 'btn-primary';
                     $porcentaje = 0;
                     $next_pagina = $subpagina['id'];
                 }
 
-                if($subpagina['prelacion']){
+                if ($subpagina['prelacion'])
+                {
                     $query = $em->createQuery('SELECT COUNT(pl.id) FROM LinkComunBundle:CertiPaginaLog pl 
                                                WHERE pl.pagina = :pagina_id 
                                                AND pl.usuario = :usuario_id 
@@ -99,9 +113,11 @@ class ProgramaController extends Controller
                                                       'completada' => $yml['parameters']['estatus_pagina']['completada']));
                     $leccion_completada = $query->getSingleScalarResult();
 
-                    if($leccion_completada){
+                    if ($leccion_completada)
+                    {
                         $avanzar = 1;
-                    }else{
+                    }
+                    else {
                         $avanzar = 0;
                     }
                 }else{
@@ -109,7 +125,8 @@ class ProgramaController extends Controller
                 }
 
                 // validando si la subpagina esta en evaluacion
-                if($datos_log && $datos_log->getEstatusPagina()->getId() == $yml['parameters']['estatus_pagina']['en_evaluacion']){
+                if ($datos_log && $datos_log->getEstatusPagina()->getId() == $yml['parameters']['estatus_pagina']['en_evaluacion'])
+                {
                     $avanzar = 2;
                     $evaluacion_pagina = $subpagina['id'];
                     $evaluacion_programa = $programa_id;
@@ -117,9 +134,16 @@ class ProgramaController extends Controller
                 
                 if (count($subpagina['subpaginas']))
                 {
+
                     $lis_mods .= '<ol>';
+
                     foreach ($subpagina['subpaginas'] as $sub_subpagina)
                     {
+
+                        if ($sub_subpagina['tiene_evaluacion'])
+                        {
+                            $tiene_evaluacion = 1;
+                        }
 
                         if ($sub_subpagina['acceso'])
                         {
@@ -136,24 +160,27 @@ class ProgramaController extends Controller
                             $datos_log_sub = $this->getDoctrine()->getRepository('LinkComunBundle:CertiPaginaLog')->findOneBy(array('usuario' => $session->get('usuario')['id'],
                                                                                                                                     'pagina' => $sub_subpagina['id'])) ;
                             //Obteniendo el status de la subpagina
-                            $statusPaginaId = ($datos_log_sub) ? $datos_log_sub->getEstatusPagina()->getId():0;
+                            $statusPaginaId = ($datos_log_sub) ? $datos_log_sub->getEstatusPagina()->getId() : 0;
 
-                            if(!$leccion_completada){
-                                if($next_pagina == 0){
+                            if(!$leccion_completada)
+                            {
+                                if($next_pagina == 0)
+                                {
                                     $next_pagina = $sub_subpagina['id'];
                                 }
                             }
 
                             //validando si la leccion se vio inicio 
-                            if ($statusPaginaId!=0) {
+                            if ($statusPaginaId != 0) 
+                            {
                                 
                                 $enlace = $this->generateUrl('_lecciones', array('programa_id' => $programa_id)).'/'.$sub_subpagina['id'];
                                 // seleccionando el icono que debe mostrarse
-                                if ($statusPaginaId==$yml['parameters']['estatus_pagina']['completada']) {
-                                    $icono=['nombre'=>'visibility','tooltit'=>'Volver al contenido'];
+                                if ($statusPaginaId == $yml['parameters']['estatus_pagina']['completada']) {
+                                    $icono = ['nombre' => 'visibility', 'tooltit' => $this->get('translator')->trans('Volver al contenido')];
                                 }
                                 else{
-                                     $icono=['nombre'=>'visibility','tooltit'=>'Volver al contenido'];
+                                     $icono = ['nombre' => 'visibility', 'tooltit' => $this->get('translator')->trans('Volver al contenido')];
                                 }
 
                                 
@@ -163,101 +190,106 @@ class ProgramaController extends Controller
                                                          <i class="material-icons d-flex icVc " title="'.$icono['tooltit'].'" data-toggle="tooltip" data-placement="bottom">'.$icono['nombre'].'</i>
                                                      </li>
                                                   <a/>';
-                            }
-                            else{
 
+                            }
+                            else {
                                 $titulo_leccion =  '<li class="mygit-1 color-grey" >'.$sub_subpagina['nombre'].'  </li>';
                             }
 
                             // validando si la sub_subpagina esta en evaluacion
-                            if($statusPaginaId == $yml['parameters']['estatus_pagina']['en_evaluacion']){
+                            if ($statusPaginaId == $yml['parameters']['estatus_pagina']['en_evaluacion'])
+                            {
                                 $avanzar = 2;
                                 $evaluacion_pagina = $sub_subpagina['id'];
                                 $evaluacion_programa = $programa_id;
                             }
                            
                             $lis_mods .= $titulo_leccion;
-
-                           
-                            
                             
                         }
                     }
+
                     $lis_mods .= '</ol>';
                     $lis_mods .= '</div>';
                     
-                }else{
-                    
+                }
+                else {
                     $lis_mods .= '</div>';
                 }
+                
                 // buscando registros de la pagina principal para validar si esta en evaluación
                 $datos_log_pag = $this->getDoctrine()->getRepository('LinkComunBundle:CertiPaginaLog')->findOneBy(array('usuario' => $session->get('usuario')['id'],
                                                                                                                         'pagina' => $programa_id));
-                if($datos_log_pag && $datos_log_pag->getEstatusPagina()->getId() == $yml['parameters']['estatus_pagina']['en_evaluacion']){
+                if ($datos_log_pag && $datos_log_pag->getEstatusPagina()->getId() == $yml['parameters']['estatus_pagina']['en_evaluacion'])
+                {
                     $avanzar = 2;
                     $evaluacion_pagina = $programa_id;
                     $evaluacion_programa = $programa_id;
                 }
-                // depurando en el log symfony
-                //$logger = $this->get('logger');
-                //$logger->error('AVANZAR = '.$avanzar);
 
                 $lis_mods .= '<div class="progress mt-4 mb-3">';
                 $lis_mods .= '<div class="progress-bar" role="progressbar" style="width: '.$porcentaje.'%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>';
                 $lis_mods .= '</div>';
                 $lis_mods .= '</div>';
-                if($datos_log && $datos_log->getEstatusPagina()->getId() == $yml['parameters']['estatus_pagina']['completada']){
+                if ($datos_log && $datos_log->getEstatusPagina()->getId() == $yml['parameters']['estatus_pagina']['completada'])
+                {
 
                     $datos_certi_pagina = $this->getDoctrine()->getRepository('LinkComunBundle:CertiPaginaEmpresa')->findOneBy(array('empresa' => $session->get('empresa')['id'],
                                                                                                                                      'pagina' => $programa_id));
 
-                    if($datos_certi_pagina->getAcceso()){
+                    if ($datos_certi_pagina->getAcceso())
+                    {
                         // aprobado y con acceso de seguir viendo
                         $boton_continuar = '<a href="'. $this->generateUrl('_lecciones', array('programa_id' => $programa_id, 'subpagina_id' => 0)).'" class="btn btn-sm btn-primary mt-3 btnAp px-4"> Ver </a>';
                         $div_class1 = 'card-hrz-right d-flex flex-column justify-content-top mx-3 pb-1';
                         $div_class2 = 'percent text-center mt-3';
                         $span_class = 'count mt-0 text-xs color-light-grey';
-                    }else{
+                    }
+                    else {
                         $boton_continuar = '';
                         $div_class1 = 'card-hrz-right d-flex flex-column justify-content-top mx-4 pb-1';
                         $div_class2 = 'percent text-center mt-5';
                         $span_class = 'count mt-0 mb-2 text-xs color-light-grey';                        
                     }
+                    $score = $tiene_evaluacion ? $this->get('translator')->trans('Calificación') : '';
                     $lis_mods .= '<div class="'.$div_class1.'">';
                     $lis_mods .= '<div class="'.$div_class2.'">';
                     $lis_mods .= '<h2 class="color-light-grey mb-0 pb-0"> '.$porcentaje.' </h2>';
-                    $lis_mods .= '<span class="'.$span_class.'">Calificación</span>';
+                    $lis_mods .= '<span class="'.$span_class.'">'.$score.'</span>';
                     $lis_mods .= '</div>';
                     $lis_mods .= '<div class="badge-wrap-mod mt-3 d-flex flex-column align-items-center">';
                     $lis_mods .= '<i class="material-icons badge-aprobado text-center">check_circle</i>';
-                    $lis_mods .= '<span class="text-badge"> Aprobado </span>';
+                    $lis_mods .= '<span class="text-badge"> '.$this->get('translator')->trans('Aprobado').' </span>';
                     $lis_mods .= '</div>';
                     $lis_mods .= $boton_continuar;
                     $lis_mods .= '</div>';
                     
-                }else{
+                }
+                else {
 
                     $lis_mods .= '<div class="card-hrz-right d-flex flex-column  justify-content-end mx-4 pb-1">';
                     $lis_mods .= '<div class="percent text-center mt-3">';
                     $lis_mods .= '<h2 class="color-light-grey mb-0 pb-0"> '.$porcentaje.'% </h2>';
                     $lis_mods .= '</div>';
-                    if($avanzar == 2){
+                    if($avanzar == 2)
+                    {
                         $lis_mods .= '<a href="'. $this->generateUrl('_test', array('pagina_id' => $evaluacion_pagina, 'programa_id' => $evaluacion_programa)).'" class="btn btn-sm '.$clase.' mt-6 mb-4"> '.$boton.' </a>';
-                    }elseif($avanzar == 1){
+                    }
+                    elseif($avanzar == 1)
+                    {
                         $lis_mods .= '<a href="'. $this->generateUrl('_lecciones', array('programa_id' => $programa_id, 'subpagina_id' => $next_pagina)).'" class="btn btn-sm '.$clase.' mt-6 mb-4"> '.$boton.' </a>';
-                    }else{
+                    }
+                    else{
                         $lis_mods .= '<a href="#" class="btn btn-sm disabled '.$clase.' mt-6 mb-4"> '.$boton.' </a>';
                     }
                     
                     $lis_mods .= '</div>';
 
-
-
-
                 }
 
                 $lis_mods .= '</div>';
                 $lis_mods .= '</div>';
+
             }
         }
         else{
@@ -266,10 +298,19 @@ class ProgramaController extends Controller
 
         }
 
+        $user_id = $session->get('usuario')['id'];
+        $intro_del_usuario = $em->getRepository('LinkComunBundle:AdminIntroduccion')->findByUsuario(
+            array('id' => $user_id)
+        );
+        $paso_actual_intro = $intro_del_usuario[0]->getPasoActual();
+        $cancelar_intro = $intro_del_usuario[0]->getCancelado();
+        
         return $this->render('LinkFrontendBundle:Programa:index.html.twig', array('pagina' => $pagina,
                                                                                   'modulos' =>$modulos,
                                                                                   'porcentaje_avance' =>$porcentaje_avance,
-                                                                                  'lis_mods' =>$lis_mods));
+                                                                                  'lis_mods' =>$lis_mods,
+                                                                                  'paso_actual_intro' =>$paso_actual_intro,
+                                                                                  'cancelar_intro' =>$cancelar_intro));
 
         $response->headers->setCookie(new Cookie('Peter', 'Griffina', time() + 36, '/'));
 
@@ -294,149 +335,14 @@ class ProgramaController extends Controller
         
         $empresa = $this->getDoctrine()->getRepository('LinkComunBundle:AdminEmpresa')->find($session->get('empresa')['id']);
 
-        // buscando las últimas 3 interacciones del usuario donde la página no esté completada
-        $query = $em->createQuery('SELECT pl FROM LinkComunBundle:CertiPaginaLog pl
-                                    JOIN pl.pagina p  
-                                    WHERE pl.usuario = :usuario_id
-                                        AND pl.estatusPagina != :completada
-                                        AND p.pagina IS NULL
-                                    ORDER BY pl.id DESC')
-                    ->setParameters(array('usuario_id' => $session->get('usuario')['id'],
-                                          'completada' => $yml['parameters']['estatus_pagina']['completada']))
-                    ->setMaxResults(3);
-        $actividadreciente_padre = $query->getResult();
+        /********************** LÓGICA PARA LA ESTRUCTURA DE ACTIVIDADES RECIENTES *******************/
 
-        $actividad_reciente = array();
+        $actividades_recientes = $f->getActividadesRecientes($session->get('usuario')['id'], $session->get('paginas'), $session->get('empresa')['id'], $yml);
+        $actividad_reciente = $actividades_recientes['actividad_reciente'];
+        $reciente = $actividades_recientes['reciente'];
+
         
-        // Si tiene actividades
-        if (count($actividadreciente_padre))
-        {
-
-            $reciente = 1;
-
-            foreach ($actividadreciente_padre as $arp) 
-            {
-
-                $ar = array();
-                $pagina_sesion = $session->get('paginas')[$arp->getPagina()->getId()];
-                $subpaginas_ids = $f->hijas($pagina_sesion['subpaginas']);
-                //return new Response(var_dump($subpaginas_ids));
-                $pagina_empresa = $this->getDoctrine()->getRepository('LinkComunBundle:CertiPaginaEmpresa')->findOneBy(array('empresa' => $session->get('empresa')['id'],
-                                                                                                                             'pagina' => $arp->getPagina()->getId()));
-
-                $padre_id = $arp->getPagina()->getId();
-                $imagen = $arp->getPagina()->getFoto();
-                $porcentaje = round($arp->getPorcentajeAvance());
-                $link_enabled = $pagina_empresa->getFechaVencimiento()->format('Y-m-d') < date('Y-m-d') ? 0 : 1;
-                $dias_vencimiento = $link_enabled ? $this->get('translator')->trans('Finaliza en').' '.$f->timeAgo($pagina_empresa->getFechaVencimiento()->format("Y/m/d")).' '.$this->get('translator')->trans('días') : $this->get('translator')->trans('Vencido');
-
-                if (count($subpaginas_ids))
-                {
-
-                    $query = $em->createQuery('SELECT pl FROM LinkComunBundle:CertiPaginaLog pl 
-                                                WHERE pl.usuario = :usuario_id
-                                                    AND pl.estatusPagina != :completada
-                                                    AND pl.pagina IN (:hijas)
-                                                ORDER BY pl.id DESC')
-                                ->setParameters(array('usuario_id' => $session->get('usuario')['id'],
-                                                      'completada' => $yml['parameters']['estatus_pagina']['completada'],
-                                                      'hijas' => $subpaginas_ids))
-                                ->setMaxResults(1);
-                    $ar = $query->getResult();
-                }
-
-                if ($ar)
-                {
-
-                    $id =  $ar[0]->getPagina()->getId();
-                    $titulo_padre = $arp->getPagina()->getNombre();
-                    $titulo_hijo = $ar[0]->getPagina()->getNombre();
-                    $categoria = $ar[0]->getPagina()->getCategoria()->getNombre();
-                    
-                    // buscando registros de la pagina para validar si está en evaluación
-                    $pagina_log = $this->getDoctrine()->getRepository('LinkComunBundle:CertiPaginaLog')->findOneBy(array('usuario' => $session->get('usuario')['id'],
-                                                                                                                         'pagina' => $id));
-                    if ($pagina_log && $pagina_log->getEstatusPagina()->getId() == $yml['parameters']['estatus_pagina']['en_evaluacion'])
-                    {
-                        $avanzar = 2;
-                        $evaluacion_pagina = $id;
-                        $evaluacion_programa = $padre_id;
-                    }
-                    else {
-                        $avanzar = 0;
-                        $evaluacion_pagina = 0;
-                        $evaluacion_programa = 0;
-                    }
-
-                }
-                else {
-
-                    $id = 0;
-                    $titulo_padre = $arp->getPagina()->getNombre();
-                    $titulo_hijo = '';
-                    $categoria = $arp->getPagina()->getCategoria()->getNombre();
-                    
-                    // buscando registros de la pagina para validar si esta en evaluación
-                    $pagina_log = $this->getDoctrine()->getRepository('LinkComunBundle:CertiPaginaLog')->findOneBy(array('usuario' => $session->get('usuario')['id'],
-                                                                                                                        'pagina' => $padre_id));
-                    if ($pagina_log && $pagina_log->getEstatusPagina()->getId() == $yml['parameters']['estatus_pagina']['en_evaluacion'])
-                    {
-                        $avanzar = 2;
-                        $evaluacion_pagina = $padre_id;
-                        $evaluacion_programa = $padre_id;
-                    }
-                    else {
-                        $avanzar = 0;
-                        $evaluacion_pagina = 0;
-                        $evaluacion_programa = 0;
-                    }
-
-                }
-
-                $porcentaje_finalizacion = $f->timeAgoPorcentaje($pagina_empresa->getFechaInicio()->format("Y/m/d"), $pagina_empresa->getFechaVencimiento()->format("Y/m/d"));
-                if ($link_enabled)
-                {
-                    if ($porcentaje_finalizacion >= 70)
-                    {
-                       $class_finaliza = 'alertTimeGood';
-                    }
-                    elseif ($porcentaje_finalizacion >= 31 && $porcentaje_finalizacion <= 69)
-                    {
-                        $class_finaliza = 'alertTimeWarning';
-                    }
-                    elseif ($porcentaje_finalizacion <= 30) 
-                    {
-                        $class_finaliza = 'alertTimeDanger';
-                    }
-                    else {
-                        $class_finaliza = '';
-                    }
-                }
-                else {
-                    $class_finaliza = '';
-                }
-
-                $actividad_reciente[] = array('id' => $id,
-                                              'padre_id' => $padre_id,
-                                              'titulo_padre' => $titulo_padre,
-                                              'titulo_hijo' => $titulo_hijo,
-                                              'imagen' => $imagen,
-                                              'categoria' => $categoria,
-                                              'dias_vencimiento' => $dias_vencimiento,
-                                              'class_finaliza' => $class_finaliza,
-                                              'porcentaje' => $porcentaje,
-                                              'avanzar' => $avanzar,
-                                              'evaluacion_pagina' => $evaluacion_pagina,
-                                              'evaluacion_programa' => $evaluacion_programa,
-                                              'link_enabled' => $link_enabled);
-
-            }
-        
-        }
-        else {
-            $reciente = 0;
-        }
-
+        /********************** LÓGICA PARA LA ESTRUCTURA DE LOS PROGRAMAS FINALIZADOS *******************/        
         $paginas = array();
         
         // Convertimos los id de las paginas de la sesion en un nuevo array
@@ -468,6 +374,9 @@ class ProgramaController extends Controller
                 $pagina_empresa = $this->getDoctrine()->getRepository('LinkComunBundle:CertiPaginaEmpresa')->findOneBy(array('empresa' => $session->get('empresa')['id'],
                                                                                                                              'pagina' => $pl->getPagina()->getId()));
 
+                $modulo = $this->getDoctrine()->getRepository('LinkComunBundle:CertiPagina')->findOneBy(array('pagina' => $pagina_empresa->getPagina()->getId()));                                                                                                
+                $prueba = $this->getDoctrine()->getRepository('LinkComunBundle:CertiPrueba')->findOneBy(array('pagina' => $modulo->getId()));
+
                 $link_enabled = $pagina_empresa->getFechaVencimiento()->format('Y-m-d') < date('Y-m-d') ? 0 : 1;
 
                 if ($pagina_empresa->getAcceso() && $link_enabled)
@@ -488,7 +397,8 @@ class ProgramaController extends Controller
                                    'descripcion' => $pl->getPagina()->getDescripcion(),
                                    'dias_vencimiento' => $dias_vencimiento,
                                    'continuar' => $continuar,
-                                   'link_enabled' => $link_enabled);
+                                   'link_enabled' => $link_enabled,
+                                   'prueba' => $prueba);
                 
             }
             
@@ -580,6 +490,10 @@ class ProgramaController extends Controller
 
                     $pagina_log = $this->getDoctrine()->getRepository('LinkComunBundle:CertiPaginaLog')->findOneBy(array('usuario' => $session->get('usuario')['id'],
                                                                                                                          'pagina' => $grupo->getPagina()->getId()));
+                    
+                    $modulo = $this->getDoctrine()->getRepository('LinkComunBundle:CertiPagina')->findOneBy(array('pagina' => $grupo->getPagina()->getId()));                                                                                                
+                    $prueba = $this->getDoctrine()->getRepository('LinkComunBundle:CertiPrueba')->findOneBy(array('pagina' => $modulo->getId()));                                                                                                   
+
                     if ($pagina_log)
                     {
                         if ($pagina_log->getEstatusPagina()->getId() == $yml['parameters']['estatus_pagina']['completada'])
@@ -637,7 +551,8 @@ class ProgramaController extends Controller
                                        'class_finaliza' => $class_finaliza,
                                        'tiene_subpaginas' => $tiene_subpaginas,
                                        'continuar' => $continuar,
-                                       'link_enabled' => $link_enabled);
+                                       'link_enabled' => $link_enabled,
+                                       'prueba' => $prueba);
 
                 }
 

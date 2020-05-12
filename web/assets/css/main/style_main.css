@@ -47,7 +47,7 @@
     /*fin Sidebar*/
 
     /*Estilos de formularios*/
-        .form_sty1, .form_sty2, .form_sty_modal, .form_sty_select, .form_sty_sm, .form_sty_sel, .form_sty_modal2{
+        .form_sty1, .form_sty2, .form_sty_modal, .form_sty_select, .form_sty_sm, .form_sty_sel, .form_sty_modal2,.form_sty_modal3{
             display: inline-block;
             width: 100%;
             padding: 10px 0px 10px 15px;
@@ -60,7 +60,7 @@
 
         .form_sty1:focus, .form_sty1:active, .form_sty2:focus, .form_sty2:active, .form_sty_modal:focus, .form_sty_modal:active,
         .form_sty_select:focus, .form_sty_select:active, .form_sty_sm:focus, .form_sty_sm:active, .form_sty_modal2:focus, 
-        .form_sty_modal2:active{
+        .form_sty_modal2:active,.form_sty_modal3:focus,.form_sty_modal3:active{
             text-indent: 35px;
             background: #fff;
             transition: all .25s ease-in-out;
@@ -141,6 +141,19 @@
             text-shadow: 0 1px 0 rgba(19, 74, 70, 0.4);
             transition: all .3s ease-in-out;
         }
+        .form_sty_modal3 + span {
+            display: inline-block;
+            opacity: 0;
+            position: absolute;
+            top: 13.7rem;
+            left: -2.1rem;
+            padding: 10px 15px;
+            background: #007bcd;
+            border-radius: 15px 0px 0px 15px;
+            color: #fff;
+            text-shadow: 0 1px 0 rgba(19, 74, 70, 0.4);
+            transition: all .3s ease-in-out;
+        }
 
         .form_sty_select + span{
             display: inline-block;
@@ -185,7 +198,7 @@
             transform: translateX(2rem);
         }
 
-        .form_sty_modal:focus + span, .form_sty_modal2:focus + span{
+        .form_sty_modal:focus + span, .form_sty_modal2:focus + span,.form_sty_modal3:focus + span{
             opacity: 1;
             transform: translateX(2.75rem);
         }

@@ -1,0 +1,38 @@
+Link\ComunBundle\Entity\AdminIntroduccion:
+    type: entity
+    table: admin_introduccion
+    indexes:
+        IDX_418F99EFDB38439E:
+            columns:
+                - usuario_id
+    id:
+        id:
+            type: integer
+            nullable: false
+            options:
+                unsigned: false
+            id: true
+            generator:
+                strategy: SEQUENCE
+    fields:
+        pasoActual:
+            type: integer
+            nullable: true
+            options:
+                unsigned: false
+            column: paso_actual
+        cancelado:
+            type: boolean
+            nullable: true
+    manyToOne:
+        usuario:
+            targetEntity: AdminUsuario
+            cascade: {  }
+            fetch: LAZY
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                usuario_id:
+                    referencedColumnName: id
+            orphanRemoval: false
+    lifecycleCallbacks: {  }

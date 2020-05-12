@@ -33,14 +33,15 @@ class UsersEventoCommand extends ContainerAwareCommand
         $yml2 = Yaml::parse(file_get_contents($this->getApplication()->getKernel()->getRootDir().'/config/parameters.yml'));
         $base = $yml2['parameters']['base_url'];
         $background = $yml2['parameters']['folders']['uploads'].'recursos/decorate_certificado.png';
-        $logo = $yml2['parameters']['folders']['uploads'].'recursos/logo_formacion.png';
+        $logo = $yml2['parameters']['folders']['uploads'].'recursos/logo_formacion_smart.png';
+        $footer = $yml2['parameters']['folders']['uploads'].'recursos/footer.bg.form.png';
         $link_plataforma = $yml2['parameters']['link_plataforma'];
-        $tomorrow_start = date('Y-m-d', strtotime('tomorrow')).' 00:00:00';
-        $tomorrow_end = date('Y-m-d', strtotime('tomorrow')).' 23:59:59';
+        $tomorrow_start = date('Y-m-d', strtotime('now')).' 00:00:00';
+        $tomorrow_end = date('Y-m-d', strtotime('now')).' 23:59:59';
 
         $query = $em->createQuery("SELECT ev FROM LinkComunBundle:AdminEvento ev 
                                     JOIN ev.empresa e 
-                                    WHERE ev.fechaInicio BETWEEN :tomorrow_start AND :tomorrow_end 
+                                    WHERE ev.fechaCreacion BETWEEN :tomorrow_start AND :tomorrow_end 
                                     AND e.activo = :activo 
                                     ORDER BY ev.id ASC")
                     ->setParameters(array('tomorrow_start' => $tomorrow_start,
@@ -48,6 +49,7 @@ class UsersEventoCommand extends ContainerAwareCommand
                                           'activo' => true));
         $eventos = $query->getResult();
 
+    
         foreach ($eventos as $evento)
         {
 
@@ -73,10 +75,13 @@ class UsersEventoCommand extends ContainerAwareCommand
                                                                 'href' => $base.$ruta,
                                                                 'background' => $background,
                                                                 'logo' => $logo,
+                                                                'footer' => $footer,
                                                                 'link_plataforma' => $link_plataforma.$usuario->getEmpresa()->getId()),
-                                               'asunto' => 'Formación 2.0: Recordatorio de evento corporativo.',
-                                               'remitente' => $yml['parameters']['mailer_user'],
-                                               'destinatario' => $correo_usuario);
+                                               'asunto' => 'Formación Smart: Recordatorio de evento corporativo.',
+                                               'remitente' => $yml2['parameters']['mailer_user_tutor'],
+                                               'remitente_name' => $yml2['parameters']['mailer_user_tutor_name'],
+                                               'destinatario' => $correo_usuario,
+                                               'mailer' => 'tutor_mailer');
                     $correo = $f->sendEmail($parametros_correo);
                     $output->writeln(var_dump($parametros_correo));
                     $output->writeln(var_dump($correo));

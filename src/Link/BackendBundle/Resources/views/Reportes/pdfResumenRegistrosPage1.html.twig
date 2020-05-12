@@ -29,6 +29,7 @@
         }
         .gradiente {
             background-color: #bce100 !important;
+            text-align: center;
         }
         .card-header {
             padding: 7px 12px;
@@ -113,7 +114,7 @@
 {% block body %}
     <div class="card">
         <div class="card-header gradiente">
-            <h5 class="card-title">{{ 'Resumen general de registros'|trans }}. {{ 'Empresa'|trans }}: {{ empresa }}.</h5>
+            <h5 class="card-title">{{ 'Resumen general de registros'|trans }}. {{ 'Empresa'|trans }}: {{ empresa }}. <BR> {{'Huso horario'|trans}}: {{ timeZone }} </h5>
         </div>
         <div class="card-block">
             <table class="main">
@@ -166,7 +167,7 @@
                         </td>
                         <td class="main-td">
                             <br>
-                            <img src="{{ src.src1 }}" alt="Formación 2.0">
+                            <img src="{{ src.src1 }}" alt="Formación Smart">
                         </td>
                     </tr>
                     <tr>
@@ -217,7 +218,7 @@
                         </td>
                         <td class="main-td">
                             <br>
-                            <img src="{{ src.src2 }}" alt="Formación 2.0">
+                            <img src="{{ src.src2 }}" alt="Formación Smart">
                         </td>
                     </tr>
                 </tbody>

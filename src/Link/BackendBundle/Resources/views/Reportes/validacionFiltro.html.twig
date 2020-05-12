@@ -84,6 +84,9 @@
             },
             'pagina_id': {
                 required: $('#filtro_programas').val()=='1' ? true : false
+            },
+            'tema_id': {
+                required: $('#filtro_tema').val()=='1' ? true : false
             }
         },
         messages: {
@@ -99,6 +102,9 @@
             },
             'pagina_id': {
                 required: "- {{ 'El programa es requerido'|trans }}."
+            },
+            'tema_id': {
+                required: "- {{ 'El tema es requerido'|trans }}."
             }
         }
     });

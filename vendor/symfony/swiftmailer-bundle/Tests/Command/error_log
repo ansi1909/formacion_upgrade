@@ -1,0 +1,1 @@
+[14-Apr-2019 21:44:41 America/Caracas] PHP Fatal error:  Class 'PHPUnit_Framework_TestCase' not found in /home/smrtfrmcn/public_html/aulavirtual/vendor/symfony/swiftmailer-bundle/Tests/Command/SendEmailCommandTest.php on line 11

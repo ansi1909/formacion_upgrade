@@ -7,7 +7,6 @@ jQuery(document).ready(function($) {
     	$('.generable').show();
     	$('#resultado').hide();
     });
-  
 	
 });
 
@@ -19,11 +18,9 @@ function mostrarReporte(data)
 	$('#resultado').html(data.html);
 	$('#resultado').show();
 	$("#excel_contenedor").show();
-	applyDataTable();
+	applyDataTableDetail();
+	observeList();
 	observe();
-
-	
-
 }
 
 

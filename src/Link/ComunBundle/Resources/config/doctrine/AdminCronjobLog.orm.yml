@@ -1,0 +1,29 @@
+Link\ComunBundle\Entity\AdminCronjobLog:
+    type: entity
+    table: admin_cronjob_log
+    id:
+        id:
+            type: integer
+            nullable: false
+            options:
+                unsigned: false
+            id: true
+            generator:
+                strategy: SEQUENCE
+    fields:
+        nombre:
+            type: string
+            nullable: true
+            length: 100
+            options:
+                fixed: false
+        mensaje:
+            type: string
+            nullable: true
+            length: 500
+            options:
+                fixed: false
+        fecha:
+            type: date
+            nullable: true
+    lifecycleCallbacks: {  }

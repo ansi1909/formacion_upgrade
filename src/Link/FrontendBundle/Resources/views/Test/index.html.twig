@@ -10,10 +10,11 @@
             {% if app.session.started and app.session.get('empresa').titulo is defined and app.session.get('empresa').titulo != '' %}
                 {{ app.session.get('empresa').titulo }}
             {% else %}
-                {{ 'Sistema Formación'|trans }} 2.0
+                {{ 'Sistema Formación Smart'|trans }}
             {% endif %}
         </title>
         {% set img = app.session.get('empresa').favicon is defined ? app.session.get('empresa').favicon is not null and app.session.get('empresa').favicon != '' ? uploads~app.session.get('empresa').favicon : asset('img/icono.png') : asset('img/icono.png') %}
+        <link rel="stylesheet" href="{{ asset('front/js/plugins/introjs/introjs.css') }}">
         <link rel="icon" type="image/x-icon" href="{{ img }}" />
         <link rel="stylesheet" href="{{ asset('front/base_styles/css/bootstrap/bootstrap.css') }}">
         {% set css = app.session.get('empresa').css is defined ? app.session.get('empresa').css is not null and app.session.get('empresa').css != '' ? asset(app.session.get('empresa').css) : asset('front/client_styles/formacion/css/main.css') : asset('front/client_styles/formacion/css/main.css') %}
@@ -23,6 +24,15 @@
             #psc {
                 font-weight: bold;
             }
+        .disabled {
+            cursor: default;
+        }
+        .card-footer {
+            transform: translateY(0);
+        }
+        .card .badge-wrap {
+            transform: translateY(0);
+        }
         </style>
     </head>
     
@@ -36,37 +46,63 @@
         <input type="hidden" id="pregunta_str" name="pregunta_str" value="{{ preguntas_str }}">
         <input type="hidden" id="preguntas_sin_contestar" name="preguntas_sin_contestar" value="">
         <input type="hidden" id="url_respuesta" name="url_respuesta" value="{{ path('_ajaxTestResponse') }}">
-        <input type="hidden" id="url_fin" name="url_fin" value="{{ path('_finTest', { 'programa_id': programa_id, 'prueba_log_id': prueba_log.id, 'cantidad_preguntas': preguntas|length, 'preguntas_str': preguntas_str }) }}">
-        <input type="hidden" id="url_resultados" name="url_resultados" value="{{ path('_resultadosTest', { 'programa_id': programa_id, 'prueba_log_id': prueba_log.id }) }}">
+        <input type="hidden" id="url_fin" name="url_fin" value="{{ path('_finTest', { 'programa_id': programa.id, 'prueba_log_id': prueba_log.id, 'cantidad_preguntas': preguntas|length, 'preguntas_str': preguntas_str }) }}">
+        <input type="hidden" id="url_resultados" name="url_resultados" value="{{ path('_resultadosTest', { 'programa_id': programa.id, 'prueba_log_id': prueba_log.id }) }}">
+        <input type="hidden" id="url_cambiar_estado" name="url_cambiar_estado" value="{{ path('_ajaxCambiarEstado') }}">
+        <input type="hidden" id="paso_actual_intro" name="paso_actual_intro" value="{{ paso_actual_intro }}" data-pasoCorrecto="3">
+        <input type="hidden" id="cancelar_intro" name="cancelar_intro" value="{{ cancelar_intro }}">
+        {% set categoria = prueba_log.prueba.pagina.categoria.nombre %}
+        {% if categoria == 'Materia' %}
+            {% set articulo = 'de la'|trans %}
+        {% elseif categoria == 'Lección' %}
+            {% set articulo = 'de la'|trans %}
+        {% else %}
+            {% set articulo = 'del'|trans %}
+        {% endif %}
 
         <header>
             <nav class="navbar eval_header justify-content-between py-0 fixed-top bg-white">
-                <div class="navbar-brand d-flex justify-content-center align-items-center">
+                <div class="navbar-brand d-flex justify-content-center align-items-center" id="tuto_step4">
                     <a href="#" data-toggle="modal" data-target="#modalCe">
                         <i class="material-icons mr-3 color-light-grey rotate-180 exit_eval">exit_to_app</i>
                     </a>
                     <span class="txt_eval_header">{{ 'Salir de la evaluación'|trans }}</span>
                 </div>
                 <div class="navbar-brand justify-content-center align-items-center " href="#">
-                    <h2 class="titulo_eval pl-5">{{ prueba_log.prueba.nombre }}</h2>
-                    <h5 class="sub_titulo_eval pl-5">{{ prueba_log.prueba.pagina.nombre }}</h5>
+                    <h2 class="titulo_eval pl-5">{{ programa.categoria.nombre }}: {{ programa.nombre }}</h2>
+                    <h5 class="sub_titulo_eval pl-5">{{ 'Evaluación'|trans }} {{ articulo }} {{ categoria }}: {{ prueba_log.prueba.pagina.nombre }}</h5>
                 </div>
                 <div class="countDownHMS" id="divCountD">
                     <div class="countDownC classCountD"></div>
                 </div>
-                <!--<div class="countDown">
-                    <div class="clock"></div>
-                </div>-->
                 <a class="navbar-brand" href="#">
-                    {% set img_logo = app.session.get('empresa').logo is defined ? app.session.get('empresa').logo is not null and app.session.get('empresa').logo != '' ? uploads~app.session.get('empresa').logo : asset('front/assets/img/logo_formacion.png') : asset('front/assets/img/logo_formacion.png') %}
-                    <img class="img-fluid py-1 {{ app.session.get('empresa').tipo_logo }}" src="{{ img_logo }}" alt="logo formación 2.0">
+                    {% set img_logo = app.session.get('empresa').logo is defined ? app.session.get('empresa').logo is not null and app.session.get('empresa').logo != '' ? uploads~app.session.get('empresa').logo : asset('front/assets/img/logo_formacion_smart.png') : asset('front/assets/img/logo_formacion_smart.png') %}
+                    <img class="img-fluid py-1 {{ app.session.get('empresa').tipo_logo }}" src="{{ img_logo }}" alt="logo formación smart">
                 </a>
             </nav>
         </header>
-
+        {# {% if paso_actual_intro == 1 and not cancelar_intro %} #}
+            <div class="tuto-intro-overlay">
+                <div class="tuto-intro-modal">
+                    <h2 class="tuto-intro-title">
+                        ¡Bienvenido!
+                    </h2>
+                    <p class="tuto-intro-text">
+                        ¿Quieres hacer un tour guiado?
+                    </p>
+                    <div class="tuto-intro-buttons">
+                        <div class="tuto-intro-button btn mb-2" id="tuto-btn-start">
+                            Comenzar
+                        </div>
+                        <div class="tuto-intro-skip" id="tuto-btn-skip">
+                            Omitir
+                        </div>
+                    </div>
+                </div>
+            </div>
         <div class="container-fluid mt-18v mb-5 mt-xs-15v">
 
-            <div class="row">
+            <div class="row" id="tuto-step1">
                 <div class="col-2 px-sm-0 px-0 text-center">
                     {% set total = preguntas|length < 10 ? '0'~preguntas|length : preguntas|length %}
                     <span class="num_preg"><span id="nro_pregunta">01</span> / {{ total }}</span>
@@ -100,10 +136,10 @@
                         {% if pregunta.tipo_pregunta != tipo_pregunta.asociacion %}
                             {# Opciones simples o múltiples #}
                             <input type="hidden" id="pregunta_id{{ pregunta.id }}" name="pregunta_id{{ pregunta.id }}" value="">
-                            {{ include('LinkFrontendBundle:Test:opciones.html.twig', { 'opciones': pregunta.opciones, 'tipo_pregunta': pregunta.tipo_pregunta, 'tipo_elemento': tipo_elemento, 'tipo_elemento_pregunta': pregunta.tipo_elemento, 'pregunta_id': pregunta.id }) }}
+                            {{ include('LinkFrontendBundle:Test:opciones.html.twig', { 'opciones': pregunta.opciones, 'tipo_pregunta': pregunta.tipo_pregunta, 'tipo_elemento': tipo_elemento, 'tipo_elemento_pregunta': pregunta.tipo_elemento, 'pregunta_id': pregunta.id, 'intro_class': 'tuto_step2' }) }}
                         {% else %}
                             {# Opciones de asociación #}
-                            {{ include('LinkFrontendBundle:Test:opcionesAsociacion.html.twig', { 'opciones': pregunta.opciones, 'tipo_elemento': tipo_elemento, 'tipo_elemento_pregunta': pregunta.tipo_elemento, 'pregunta_id': pregunta.id }) }}
+                            {{ include('LinkFrontendBundle:Test:opcionesAsociacion.html.twig', { 'opciones': pregunta.opciones, 'tipo_elemento': tipo_elemento, 'tipo_elemento_pregunta': pregunta.tipo_elemento, 'pregunta_id': pregunta.id, 'intro_class': 'tuto_step2' }) }}
                         {% endif %}
                     </form>
 
@@ -118,7 +154,7 @@
                     </a>
                 </div>
                 <div class="col-6 text-center">
-                    <a href="#" class="btn_sp1 btn_sp" id="next">
+                    <a href="#" class="btn_sp1 btn_sp tuto-step3" id="next">
                         <span>{{ 'Siguiente'|trans }}</span>
                     </a>
                 </div>
@@ -152,7 +188,7 @@
                 </div>
                 <div class="row mt-3 align-items-center justify-content-center toHide">
                     <div class="col-8 col-md-8 col-sm-8 col-xs-8 col-lg-8 col-xl-8 text-center">
-                        <a href="{{ path('_finLecciones', { 'programa_id': programa_id, 'subpagina_id': pagina_id }) }}"><button type="button" class="btn btn-danger btn-Cs">{{ 'Salir de la evaluación'|trans }}</button></a>
+                        <a href="{{ path('_finLecciones', { 'programa_id': programa.id, 'subpagina_id': pagina_id }) }}"><button type="button" class="btn btn-danger btn-Cs">{{ 'Salir de la evaluación'|trans }}</button></a>
                     </div>
                 </div>
                 <div class="row mt-3 align-items-end justify-content-center toHide">
@@ -201,10 +237,42 @@
         <script src="{{ asset('front/js/plugins/SlickCircularCountDown.js/js/jquery.knob.js') }}"></script>
         <script src="{{ asset('front/js/plugins/SlickCircularCountDown.js/js/jquery.throttle.js') }}"></script>
         <script src="{{ asset('front/js/plugins/SlickCircularCountDown.js/js/jquery.classycountdown.js') }}"></script>
+        <script type="text/javascript" src="{{ asset('front/js/plugins/introjs/intro.js') }}"></script>
         <script src="{{ asset('front/js/custom.js') }}"></script>
         <script src="{{ asset('front/js/eval.js') }}"></script>
         <script src="{{ asset('front/js/countDownCircular.js') }}"></script>
         <script type="text/javascript" src="{{ asset('js/front/test.js') }}"></script>
 
+        <script type="text/javascript" src="{{ asset('js/front/tuto.js') }}"></script>
+
+        <script> 
+            const skipIntroButton = document.querySelector('#tuto-btn-skip');
+              {# function startCountDown(e) {
+                startCircularCountDown()
+             }
+            skipIntroButton.addEventListener('click', startCountDown); #}
+
+            const introSteps = [
+                {
+                    element: document.querySelector('#divCountD'),
+                    intro: 'Cuando comiences la evaluación, el cronómetro iniciará la cuenta regresiva para indicarte el tiempo restante.'
+                },
+                {
+                    element: document.querySelector('.tuto_step2'),
+                    intro: 'Responde a cada pregunta, seleccionando la opción que consideres correcta.'
+                },
+                {
+                    element: document.querySelector('.tuto-step3'),
+                    intro: 'Luego, haz clic en el botón "Siguiente" para avanzar a la próxima pregunta.'
+                },
+                {
+                    element: document.querySelector('#tuto_step4'),
+                    intro: 'Si quieres volver a revisar los contenidos y cancelar la evaluación, haz clic en el botón "Salir de la evaluación".'
+                }
+            ];
+
+            startIntro(introSteps, true, true);
+        
+        </script>
     </body>
 </html>

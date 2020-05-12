@@ -1,0 +1,2 @@
+[15-Jun-2019 18:55:08 America/Caracas] PHP Fatal error:  Interface 'Swift_CharacterStream' not found in /home/smrtfrmcn/public_html/aulavirtual/vendor/swiftmailer/swiftmailer/lib/classes/Swift/CharacterStream/NgCharacterStream.php on line 17
+[16-Oct-2019 12:50:37 America/Caracas] PHP Fatal error:  Interface 'Swift_CharacterStream' not found in /home/smrtfrmcn/public_html/aulavirtual/vendor/swiftmailer/swiftmailer/lib/classes/Swift/CharacterStream/ArrayCharacterStream.php on line 17

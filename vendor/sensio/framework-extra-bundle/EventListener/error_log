@@ -1,0 +1,1 @@
+[18-Oct-2019 05:08:26 America/Caracas] PHP Fatal error:  Interface 'Symfony\Component\EventDispatcher\EventSubscriberInterface' not found in /home/smrtfrmcn/public_html/aulavirtual/vendor/sensio/framework-extra-bundle/EventListener/ParamConverterListener.php on line 27

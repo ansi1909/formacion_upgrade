@@ -22,12 +22,13 @@ class PaginaController extends Controller
 {
     public function indexAction($app_id)
     {
-
+        
     	$session = new Session();
         $f = $this->get('funciones');
         
         if (!$session->get('ini') || $f->sesionBloqueda($session->get('sesion_id')))
-        {
+        {   
+            
             return $this->redirectToRoute('_loginAdmin');
         }
         else {
@@ -35,9 +36,11 @@ class PaginaController extends Controller
         	$session->set('app_id', $app_id);
         	if (!$f->accesoRoles($session->get('usuario')['roles'], $session->get('app_id')))
         	{
+                
         		return $this->redirectToRoute('_authException');
         	}
         }
+        
         $f->setRequest($session->get('sesion_id'));
 
         $em = $this->getDoctrine()->getManager();
@@ -46,8 +49,10 @@ class PaginaController extends Controller
                                     WHERE p.pagina IS NULL
                                     ORDER BY p.orden ASC");
         $pages = $query->getResult();
+        
 
         $paginas = $f->paginas($pages);
+        
 
         return $this->render('LinkBackendBundle:Pagina:index.html.twig', array('paginas' => $paginas));
 
@@ -388,8 +393,11 @@ class PaginaController extends Controller
 
         $pagina_id = $request->request->get('pagina_id');
         $nombre = $request->request->get('nombre');
+        $evaluacion = $request->request->get('duplica_evaluacion');
+        $evaluacion = $evaluacion ? 1: 0;
 
-        $return = $f->duplicarPagina($pagina_id, $nombre, $session->get('usuario')['id']);
+
+        $return = $f->duplicarPagina($pagina_id, $nombre, $session->get('usuario')['id'],$evaluacion);
         
         /*$return = array('id' => $r_arr[1],
                         'inserts' => $r_arr[0]);*/
@@ -795,6 +803,7 @@ class PaginaController extends Controller
             $puntajeAprueba = $request->request->get('puntajeAprueba');
             $maxIntentos = $request->request->get('maxIntentos');
             $prelacion = $request->request->get('prelacion');
+            $colaborativoSubp = $request->request->get('colaborativo_subpaginas');
 
             // Reformateo de fecha de inicio
             $fi = explode("/", $fechaInicio);
@@ -831,7 +840,10 @@ class PaginaController extends Controller
             // Si applyMuro es true se activa el muro para las sub-páginas
             $onlyMuro = $applyMuro ? 1 : 0;
 
-            $f->asignacionSubPaginas($pagina_empresa, $yml, $onlyDates, $onlyMuro);
+            // colaborativoSubp es true activa el colaborativo para las sub paginas
+            $onlyColaborativo = $colaborativoSubp ? 1 : 0;
+
+            $f->asignacionSubPaginas($pagina_empresa, $yml, $onlyDates, $onlyMuro, $onlyColaborativo);
 
             return $this->redirectToRoute('_showAsignacion', array('empresa_id' => $pagina_empresa->getEmpresa()->getId(),
                                                                    'pagina_id' => $pagina_empresa->getPagina() ? $pagina_empresa->getPagina()->getId() : 0));
@@ -870,11 +882,17 @@ class PaginaController extends Controller
             $prelaciones[] = array('id' => $pe->getPagina()->getId(),
                                    'nombre' => $pe->getPagina()->getNombre());
         }
+        // return new response(var_dump($pagina_empresa->getPagina()->getId()));
+        $estructura = $f->obtenerEstructura($pagina_empresa->getPagina()->getId(),$yml);
+        //return new response(var_dump($estructura));
+        $status = $f->statusChecksHerencia($pagina_empresa,$estructura);
+        //return new response(var_dump($status));
 
         return $this->render('LinkBackendBundle:Pagina:editAsignacion.html.twig', array('pagina_empresa' => $pagina_empresa,
                                                                                         'prueba' => $prueba,
                                                                                         'days_ago' => $f->timeAgo($pagina_empresa->getEmpresa()->getFechaCreacion()->format('Y-m-d H:i:s')),
-                                                                                        'prelaciones' => $prelaciones));
+                                                                                        'prelaciones' => $prelaciones,
+                                                                                        'status'=>$status));
 
     }
 
@@ -1043,7 +1061,43 @@ class PaginaController extends Controller
             $pagina_padre_id = $request->request->get('pagina_padre_id');
             $pagina_padre = $em->getRepository('LinkComunBundle:CertiPagina')->find($pagina_padre_id);
 
+            // Reordenar su anterior grupo
+            if ($pagina->getPagina())
+            {
+                $query = $em->createQuery("SELECT p FROM LinkComunBundle:CertiPagina p 
+                                            WHERE p.pagina = :pagina_id 
+                                            AND p.id != :id
+                                            ORDER BY p.orden ASC")
+                            ->setParameters(array('pagina_id' => $pagina->getPagina()->getId(),
+                                                  'id' => $pagina_id));
+            }
+            else {
+                $query = $em->createQuery("SELECT p FROM LinkComunBundle:CertiPagina p 
+                                            WHERE p.pagina IS NULL 
+                                            AND p.id != :id
+                                            ORDER BY  p.orden ASC")
+                            ->setParameter('id', $pagina_id);
+            }
+            $paginas = $query->getResult();
+
+            $orden = 0;
+            foreach ($paginas as $p)
+            {
+                $orden++;
+                $p->setOrden($orden);
+                $em->persist($p);
+                $em->flush();
+            }
+
+            // Quedará de último en el orden
+            $query = $em->createQuery('SELECT MAX(p.orden) FROM LinkComunBundle:CertiPagina p 
+                                        WHERE p.pagina = :pagina_id')
+                        ->setParameter('pagina_id', $pagina_padre_id);
+            $orden = $query->getSingleScalarResult();
+            $orden++;
+
             $pagina->setPagina($pagina_padre);
+            $pagina->setOrden($orden);
             $em->persist($pagina);
             $em->flush();
 

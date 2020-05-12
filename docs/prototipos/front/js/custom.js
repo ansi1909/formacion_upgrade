@@ -134,6 +134,7 @@ $(document).ready(function() {
             $(".markApps").fadeOut(550);
             z = 0;
         }
+
     });   
     
     $("#equis").click(function(){
@@ -146,12 +147,12 @@ $(document).ready(function() {
 
     });
 
-    $("#iconComments").click(function(){
+    $(".iconComments").click(function(){
+        event.preventDefault();
         $("#comments").toggleClass("open-comments");
-        $("#main").toggleClass("ml-comments");
-        if (!$(".main-sidenav-close")[0]){
-             closeNav();
-        }
+        $('html, body').animate({scrollTop: $('#comments').offset().top -100 }, 'slow');
+        $('#ocultarComent').toggle();
+        $('#verComent').toggle();
     });
     
     $("#iconDownloads").click(function(){

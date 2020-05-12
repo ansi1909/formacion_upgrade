@@ -8,6 +8,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
 use Link\ComunBundle\Entity\CertiPruebaLog;
 use Link\ComunBundle\Entity\CertiRespuesta;
+use Link\ComunBundle\Entity\AdminIntroduccion;
 use Symfony\Component\Yaml\Yaml;
 
 class TestController extends Controller
@@ -28,6 +29,7 @@ class TestController extends Controller
         $em = $this->getDoctrine()->getManager();
 
         $prueba = $em->getRepository('LinkComunBundle:CertiPrueba')->findOneByPagina($pagina_id);
+        $programa = $em->getRepository('LinkComunBundle:CertiPagina')->find($programa_id);
 
         // Duración en segundos
         $duracion = intval($prueba->getDuracion()->format('G'))*3600;
@@ -42,9 +44,6 @@ class TestController extends Controller
         $status_pagina = $em->getRepository('LinkComunBundle:CertiEstatusPagina')->find($yml['parameters']['estatus_pagina']['en_evaluacion']);
         $pagina_log = $em->getRepository('LinkComunBundle:CertiPaginaLog')->findOneBy(array('usuario' => $session->get('usuario')['id'],
                                                                                             'pagina' => $pagina_id));
-        $pagina_log->setEstatusPagina($status_pagina);
-        $em->persist($pagina_log);
-        $em->flush();
 
         $prueba_log = $em->getRepository('LinkComunBundle:CertiPruebaLog')->findOneBy(array('prueba' => $prueba->getId(),
                                                                                             'usuario' => $session->get('usuario')['id'],
@@ -71,6 +70,15 @@ class TestController extends Controller
                 $prueba_log->setFechaInicio(new \DateTime('now'));
                 $prueba_log->setEstado($yml['parameters']['estado_prueba']['curso']);
             }
+        }
+
+        if ($pagina_log->getEstatusPagina()->getId() == $yml['parameters']['estatus_pagina']['completada']){
+            return $this->redirectToRoute('_inicio');
+        }
+        else {
+            $pagina_log->setEstatusPagina($status_pagina);
+            $em->persist($pagina_log);
+            $em->flush();
         }
 
         // Reseteo de valores
@@ -197,14 +205,23 @@ class TestController extends Controller
             return $this->redirectToRoute('_authExceptionEmpresa', array('tipo' => 'pregunta'));
         }
 
+
+        $user_id = $session->get('usuario')['id'];
+        $intro_del_usuario = $em->getRepository('LinkComunBundle:AdminIntroduccion')->findByUsuario(
+            array('id' => $user_id)
+        );
+        $paso_actual_intro = $intro_del_usuario[0]->getPasoActual();
+        $cancelar_intro = $intro_del_usuario[0]->getCancelado();
+
+         
         return $this->render('LinkFrontendBundle:Test:index.html.twig', array('prueba_log' => $prueba_log,
                                                                               'preguntas' => $preguntas,
                                                                               'preguntas_str' => $preguntas_str,
-                                                                              'programa_id' => $programa_id,
+                                                                              'programa' => $programa,
                                                                               'pagina_id' => $pagina_id,
                                                                               'tipo_pregunta' => $yml['parameters']['tipo_pregunta'],
                                                                               'tipo_elemento' => $yml['parameters']['tipo_elemento'],
-                                                                              'duracion' => $duracion));
+                                                                              'duracion' => $duracion, 'paso_actual_intro' => $paso_actual_intro, 'cancelar_intro' => $cancelar_intro));
 
     }
 
@@ -641,6 +658,7 @@ class TestController extends Controller
                                  'nombre_pagina' => '');
 
         $prueba_log = $em->getRepository('LinkComunBundle:CertiPruebaLog')->find($prueba_log_id);
+        $programa = $this->getDoctrine()->getRepository('LinkComunBundle:CertiPagina')->find($programa_id);
 
         if (trim($prueba_log->getPreguntasErradas()))
         {
@@ -709,7 +727,6 @@ class TestController extends Controller
             $indexedPages = $f->indexPages($session->get('paginas')[$programa_id]);
 
             // También se anexa a la indexación el programa
-            $programa = $this->getDoctrine()->getRepository('LinkComunBundle:CertiPagina')->find($programa_id);
             $pagina = $session->get('paginas')[$programa_id];
             $pagina['padre'] = 0;
             $pagina['sobrinos'] = 0;
@@ -730,7 +747,7 @@ class TestController extends Controller
 
         return $this->render('LinkFrontendBundle:Test:resultados.html.twig', array('prueba_log' => $prueba_log,
                                                                                    'preguntas' => $preguntas,
-                                                                                   'programa_id' => $programa_id,
+                                                                                   'programa' => $programa,
                                                                                    'try_button' => $try_button,
                                                                                    'continue_button' => $continue_button,
                                                                                    'estados' => $yml['parameters']['estado_prueba'],

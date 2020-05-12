@@ -11,14 +11,17 @@
 
 namespace Symfony\Bundle\MonologBundle\DependencyInjection;
 
+use Monolog\Processor\ProcessorInterface;
+use Monolog\ResettableInterface;
+use Symfony\Bridge\Monolog\Handler\FingersCrossed\HttpCodeActivationStrategy;
+use Symfony\Bridge\Monolog\Processor\TokenProcessor;
+use Symfony\Bridge\Monolog\Processor\WebProcessor;
 use Symfony\Component\HttpKernel\DependencyInjection\Extension;
 use Symfony\Component\DependencyInjection\Loader\XmlFileLoader;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\Definition;
 use Symfony\Component\DependencyInjection\Reference;
-use Symfony\Component\DependencyInjection\ContainerInterface;
-use Elastica\Client;
 
 /**
  * MonologExtension is an extension for the Monolog library.
@@ -54,11 +57,6 @@ class MonologExtension extends Extension
             $loader->load('monolog.xml');
 
             $container->setParameter('monolog.use_microseconds', $config['use_microseconds']);
-
-            // always autowire the main logger, require Symfony >= 2.8, < 3.3
-            if (!method_exists('Symfony\Component\DependencyInjection\ContainerBuilder', 'fileExists') && method_exists('Symfony\Component\DependencyInjection\Definition', 'addAutowiringType')) {
-                $container->getDefinition('monolog.logger')->addAutowiringType('Psr\Log\LoggerInterface');
-            }
 
             $handlers = array();
 
@@ -110,6 +108,18 @@ class MonologExtension extends Extension
         }
 
         $container->setParameter('monolog.additional_channels', isset($config['channels']) ? $config['channels'] : array());
+
+        if (method_exists($container, 'registerForAutoconfiguration')) {
+            if (interface_exists(ProcessorInterface::class)) {
+                $container->registerForAutoconfiguration(ProcessorInterface::class)
+                    ->addTag('monolog.processor');
+            } else {
+                $container->registerForAutoconfiguration(WebProcessor::class)
+                    ->addTag('monolog.processor');
+            }
+            $container->registerForAutoconfiguration(TokenProcessor::class)
+                ->addTag('monolog.processor');
+        }
     }
 
     /**
@@ -133,15 +143,24 @@ class MonologExtension extends Extension
         if ('service' === $handler['type']) {
             $container->setAlias($handlerId, $handler['id']);
 
+            if (!empty($handler['nested']) && true === $handler['nested']) {
+                $this->markNestedHandler($handlerId);
+            }
+
             return $handlerId;
         }
 
-        $definition = new Definition($this->getHandlerClassByType($handler['type']));
+        $handlerClass = $this->getHandlerClassByType($handler['type']);
+        $definition = new Definition($handlerClass);
 
         $handler['level'] = $this->levelToMonologConst($handler['level']);
 
         if ($handler['include_stacktraces']) {
             $definition->setConfigurator(array('Symfony\\Bundle\\MonologBundle\\MonologBundle', 'includeStacktraces'));
+        }
+
+        if (null === $handler['process_psr_3_messages']) {
+            $handler['process_psr_3_messages'] = !isset($handler['handler']) && !$handler['members'];
         }
 
         if ($handler['process_psr_3_messages']) {
@@ -162,6 +181,7 @@ class MonologExtension extends Extension
                 $handler['level'],
                 $handler['bubble'],
                 $handler['file_permission'],
+                $handler['use_locking'],
             ));
             break;
 
@@ -170,6 +190,7 @@ class MonologExtension extends Extension
                 null,
                 $handler['bubble'],
                 isset($handler['verbosity_levels']) ? $handler['verbosity_levels'] : array(),
+                $handler['console_formater_options']
             ));
             $definition->addTag('kernel.event_subscriber');
             break;
@@ -184,22 +205,18 @@ class MonologExtension extends Extension
 
         case 'gelf':
             if (isset($handler['publisher']['id'])) {
-                $publisherId = $handler['publisher']['id'];
+                $publisher = new Reference($handler['publisher']['id']);
             } elseif (class_exists('Gelf\Transport\UdpTransport')) {
                 $transport = new Definition("Gelf\Transport\UdpTransport", array(
                     $handler['publisher']['hostname'],
                     $handler['publisher']['port'],
                     $handler['publisher']['chunk_size'],
                 ));
-                $transportId = uniqid('monolog.gelf.transport.', true);
                 $transport->setPublic(false);
-                $container->setDefinition($transportId, $transport);
 
                 $publisher = new Definition('Gelf\Publisher', array());
-                $publisher->addMethodCall('addTransport', array(new Reference($transportId)));
-                $publisherId = uniqid('monolog.gelf.publisher.', true);
+                $publisher->addMethodCall('addTransport', array($transport));
                 $publisher->setPublic(false);
-                $container->setDefinition($publisherId, $publisher);
             } elseif (class_exists('Gelf\MessagePublisher')) {
                 $publisher = new Definition('Gelf\MessagePublisher', array(
                     $handler['publisher']['hostname'],
@@ -207,15 +224,13 @@ class MonologExtension extends Extension
                     $handler['publisher']['chunk_size'],
                 ));
 
-                $publisherId = uniqid('monolog.gelf.publisher.', true);
                 $publisher->setPublic(false);
-                $container->setDefinition($publisherId, $publisher);
             } else {
                 throw new \RuntimeException('The gelf handler requires the graylog2/gelf-php package to be installed');
             }
 
             $definition->setArguments(array(
-                new Reference($publisherId),
+                $publisher,
                 $handler['level'],
                 $handler['bubble'],
             ));
@@ -223,7 +238,7 @@ class MonologExtension extends Extension
 
         case 'mongo':
             if (isset($handler['mongo']['id'])) {
-                $clientId = $handler['mongo']['id'];
+                $client = new Reference($handler['mongo']['id']);
             } else {
                 $server = 'mongodb://';
 
@@ -237,13 +252,11 @@ class MonologExtension extends Extension
                     $server,
                 ));
 
-                $clientId = uniqid('monolog.mongo.client.', true);
                 $client->setPublic(false);
-                $container->setDefinition($clientId, $client);
             }
 
             $definition->setArguments(array(
-                new Reference($clientId),
+                $client,
                 $handler['mongo']['database'],
                 $handler['mongo']['collection'],
                 $handler['level'],
@@ -253,7 +266,7 @@ class MonologExtension extends Extension
 
         case 'elasticsearch':
             if (isset($handler['elasticsearch']['id'])) {
-                $clientId = $handler['elasticsearch']['id'];
+                $elasticaClient = new Reference($handler['elasticsearch']['id']);
             } else {
                 // elastica client new definition
                 $elasticaClient = new Definition('Elastica\Client');
@@ -268,7 +281,7 @@ class MonologExtension extends Extension
                         $elasticaClientArguments,
                         array(
                             'headers' => array(
-                                'Authorization ' =>  'Basic ' . base64_encode($handler['elasticsearch']['user'] . ':' . $handler['elasticsearch']['password'])
+                                'Authorization' => 'Basic ' . base64_encode($handler['elasticsearch']['user'] . ':' . $handler['elasticsearch']['password'])
                             )
                         )
                     );
@@ -278,19 +291,54 @@ class MonologExtension extends Extension
                     $elasticaClientArguments
                 ));
 
-                $clientId = uniqid('monolog.elastica.client.', true);
                 $elasticaClient->setPublic(false);
-                $container->setDefinition($clientId, $elasticaClient);
             }
 
             // elastica handler definition
             $definition->setArguments(array(
-                new Reference($clientId),
+                $elasticaClient,
                 array(
                     'index' => $handler['index'],
                     'type' => $handler['document_type'],
                     'ignore_error' => $handler['ignore_error']
                 ),
+                $handler['level'],
+                $handler['bubble'],
+            ));
+            break;
+        case 'redis':
+        case 'predis':
+            if (isset($handler['redis']['id'])) {
+                $clientId = $handler['redis']['id'];
+            } elseif ('redis' === $handler['type']) {
+                if (!class_exists(\Redis::class)) {
+                    throw new \RuntimeException('The \Redis class is not available.');
+                }
+
+                $client = new Definition(\Redis::class);
+                $client->addMethodCall('connect', array($handler['redis']['host'], $handler['redis']['port']));
+                $client->addMethodCall('auth', array($handler['redis']['password']));
+                $client->addMethodCall('select', array($handler['redis']['database']));
+                $client->setPublic(false);
+                $clientId = uniqid('monolog.redis.client.', true);
+                $container->setDefinition($clientId, $client);
+            } else {
+                if (!class_exists(\Predis\Client::class)) {
+                    throw new \RuntimeException('The \Predis\Client class is not available.');
+                }
+
+                $client = new Definition(\Predis\Client::class);
+                $client->setArguments(array(
+                    $handler['redis']['host'],
+                ));
+                $client->setPublic(false);
+
+                $clientId = uniqid('monolog.predis.client.', true);
+                $container->setDefinition($clientId, $client);
+            }
+            $definition->setArguments(array(
+                new Reference($clientId),
+                $handler['redis']['key_name'],
                 $handler['level'],
                 $handler['bubble'],
             ));
@@ -329,6 +377,9 @@ class MonologExtension extends Extension
             if (isset($handler['activation_strategy'])) {
                 $activation = new Reference($handler['activation_strategy']);
             } elseif (!empty($handler['excluded_404s'])) {
+                if (class_exists(HttpCodeActivationStrategy::class)) {
+                    @trigger_error('The "excluded_404s" option is deprecated in MonologBundle since version 3.4.0, you should rely on the "excluded_http_codes" option instead.', E_USER_DEPRECATED);
+                }
                 $activationDef = new Definition('Symfony\Bridge\Monolog\Handler\FingersCrossed\NotFoundActivationStrategy', array(
                     new Reference('request_stack'),
                     $handler['excluded_404s'],
@@ -336,6 +387,17 @@ class MonologExtension extends Extension
                 ));
                 $container->setDefinition($handlerId.'.not_found_strategy', $activationDef);
                 $activation = new Reference($handlerId.'.not_found_strategy');
+            } elseif (!empty($handler['excluded_http_codes'])) {
+                if (!class_exists('Symfony\Bridge\Monolog\Handler\FingersCrossed\HttpCodeActivationStrategy')) {
+                    throw new \LogicException('"excluded_http_codes" cannot be used as your version of Monolog bridge does not support it.');
+                }
+                $activationDef = new Definition('Symfony\Bridge\Monolog\Handler\FingersCrossed\HttpCodeActivationStrategy', array(
+                    new Reference('request_stack'),
+                    $handler['excluded_http_codes'],
+                    $handler['action_level']
+                ));
+                $container->setDefinition($handlerId.'.http_code_strategy', $activationDef);
+                $activation = new Reference($handlerId.'.http_code_strategy');
             } else {
                 $activation = $handler['action_level'];
             }
@@ -429,6 +491,9 @@ class MonologExtension extends Extension
                 $handler['level'],
                 $handler['bubble'],
             ));
+            if ($handler['ident']) {
+                $definition->addArgument($handler['ident']);
+            }
             break;
 
         case 'swift_mailer':
@@ -475,6 +540,9 @@ class MonologExtension extends Extension
                 $handler['level'],
                 $handler['bubble'],
             ));
+            if (!empty($handler['headers'])) {
+                $definition->addMethodCall('addHeader', [$handler['headers']]);
+            }
             break;
 
         case 'socket':
@@ -502,6 +570,12 @@ class MonologExtension extends Extension
                 $handler['level'],
                 $handler['bubble'],
             ));
+            if (isset($handler['timeout'])) {
+                $definition->addMethodCall('setTimeout', array($handler['timeout']));
+            }
+            if (isset($handler['connection_timeout'])) {
+                $definition->addMethodCall('setConnectionTimeout', array($handler['connection_timeout']));
+            }
             break;
 
         case 'hipchat':
@@ -517,6 +591,12 @@ class MonologExtension extends Extension
                 !empty($handler['host']) ? $handler['host'] : 'api.hipchat.com',
                 !empty($handler['api_version']) ? $handler['api_version'] : 'v1',
             ));
+            if (isset($handler['timeout'])) {
+                $definition->addMethodCall('setTimeout', array($handler['timeout']));
+            }
+            if (isset($handler['connection_timeout'])) {
+                $definition->addMethodCall('setConnectionTimeout', array($handler['connection_timeout']));
+            }
             break;
 
         case 'slack':
@@ -531,6 +611,12 @@ class MonologExtension extends Extension
                 $handler['use_short_attachment'],
                 $handler['include_extra'],
             ));
+            if (isset($handler['timeout'])) {
+                $definition->addMethodCall('setTimeout', array($handler['timeout']));
+            }
+            if (isset($handler['connection_timeout'])) {
+                $definition->addMethodCall('setConnectionTimeout', array($handler['connection_timeout']));
+            }
             break;
 
         case 'slackwebhook':
@@ -588,7 +674,10 @@ class MonologExtension extends Extension
             } else {
                 $client = new Definition('Raven_Client', array(
                     $handler['dsn'],
-                    array('auto_log_stacks' => $handler['auto_log_stacks'])
+                    array(
+                        'auto_log_stacks' => $handler['auto_log_stacks'],
+                        'environment' => $handler['environment']
+                    )
                 ));
                 $client->setPublic(false);
                 $clientId = 'monolog.raven.client.'.sha1($handler['dsn']);
@@ -701,7 +790,12 @@ class MonologExtension extends Extension
             break;
 
         default:
-            throw new \InvalidArgumentException(sprintf('Invalid handler type "%s" given for handler "%s"', $handler['type'], $name));
+            $nullWarning = '';
+            if ($handler['type'] == '') {
+                $nullWarning = ', if you meant to define a null handler in a yaml config, make sure you quote "null" so it does not get converted to a php null';
+            }
+
+            throw new \InvalidArgumentException(sprintf('Invalid handler type "%s" given for handler "%s"' . $nullWarning, $handler['type'], $name));
         }
 
         if (!empty($handler['nested']) && true === $handler['nested']) {
@@ -711,6 +805,11 @@ class MonologExtension extends Extension
         if (!empty($handler['formatter'])) {
             $definition->addMethodCall('setFormatter', array(new Reference($handler['formatter'])));
         }
+
+        if (!in_array($handlerId, $this->nestedHandlers) && is_subclass_of($handlerClass, ResettableInterface::class)) {
+            $definition->addTag('kernel.reset', array('method' => 'reset'));
+        }
+
         $container->setDefinition($handlerId, $definition);
 
         return $handlerId;
@@ -771,6 +870,8 @@ class MonologExtension extends Extension
             'mongo' => 'Monolog\Handler\MongoDBHandler',
             'elasticsearch' => 'Monolog\Handler\ElasticSearchHandler',
             'server_log' => 'Symfony\Bridge\Monolog\Handler\ServerLogHandler',
+            'redis' => 'Monolog\Handler\RedisHandler',
+            'predis' => 'Monolog\Handler\RedisHandler',
         );
 
         if (!isset($typeToClassMapping[$handlerType])) {

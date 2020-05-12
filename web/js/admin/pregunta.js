@@ -1,6 +1,7 @@
 $(document).ready(function() {
-
+    var estatus_activo = 2; 
 	var root_site = $('#root_site').val();
+	$('#form_estatusContenido option[value='+ estatus_activo +']').attr("selected",true);
 
     $('.iframe-btn').fancybox({	
 		'width'		: 900,

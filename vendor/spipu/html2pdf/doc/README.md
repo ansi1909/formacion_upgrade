@@ -11,6 +11,7 @@
   * [Bookmark](./bookmark.md)
   * [Font](./font.md)
   * [SVG](./svg.md)
+  * [Electronic Signature](./cert.md)
   * [Extensions](./extension.md)
   * [Exceptions](./exception.md)
   * [Useful Methods](./methods.md)
@@ -29,7 +30,7 @@
      * `setTestIsImage` method:      test that images must exist
      * `setTestTdInOnePage` method:  test that the contents of TDs fit on one page
 
-  * A DEBUG mode to know the resources used is present. It is activated by adding the following command just after the contructor (see Example 0): `$htmlpdf->setModeDebug();`
+  * A DEBUG mode to know the resources used is present. It is activated by adding the following command just after the contructor (see Example 0): `$html2pdf->setModeDebug();`
   * Some specific tags have been introduced:
   
      * `<page></page>`  (CF Exemple 7)

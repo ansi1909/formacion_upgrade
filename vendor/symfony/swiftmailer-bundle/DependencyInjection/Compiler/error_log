@@ -1,0 +1,1 @@
+[18-Oct-2019 10:51:07 America/Caracas] PHP Fatal error:  Interface 'Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface' not found in /home/smrtfrmcn/public_html/aulavirtual/vendor/symfony/swiftmailer-bundle/DependencyInjection/Compiler/RegisterPluginsPass.php on line 24

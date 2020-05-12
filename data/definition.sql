@@ -53,14 +53,18 @@ bienvenida text,
 pais_id character(3),
 chat_activo boolean,
 webinar boolean, 
+zona_horaria_id integer,
  PRIMARY KEY (id),
- FOREIGN KEY (pais_id) REFERENCES admin_pais (id));
+ FOREIGN KEY (pais_id) REFERENCES admin_pais (id),
+ FOREIGN KEY (zona_horaria_id) REFERENCES admin_zona_horaria (id));
 
 CREATE TABLE admin_nivel(
 -- Attributes --
 id serial,
 nombre varchar(50),
 empresa_id integer,
+fecha_inicio date,
+fecha_fin date,
  PRIMARY KEY (id),
  FOREIGN KEY (empresa_id) REFERENCES admin_empresa (id));
 
@@ -359,7 +363,7 @@ tipo_biblioteca_id integer,
 CREATE TABLE certi_muro(
 -- Attributes --
 id serial,
-mensaje varchar(350),
+mensaje varchar(1100),
 pagina_id integer,
 usuario_id integer,
 muro_id integer,
@@ -434,7 +438,7 @@ notificacion_id integer,
 tipo_destino_id integer,
 entidad_id integer,
 usuario_id integer,
-fecha_difusion timestamp without time zone,
+fecha_difusion date,
 grupo_id integer,
 enviado boolean,
  PRIMARY KEY (id),
@@ -494,7 +498,7 @@ CREATE TABLE admin_faqs(
 id serial,
 tipo_pregunta_id integer,
 pregunta varchar(500),
-respuesta varchar(500),
+respuesta varchar(2000),
  PRIMARY KEY (id),
  FOREIGN KEY (tipo_pregunta_id) REFERENCES admin_tipo_pregunta (id));
 
@@ -552,6 +556,7 @@ descripcion text,
 lugar text,
 fecha_inicio timestamp without time zone,
 fecha_fin timestamp without time zone,
+fecha_creacion timestamp without time zone,
 usuario_id integer,
  PRIMARY KEY (id),
  FOREIGN KEY (empresa_id) REFERENCES admin_empresa (id),
@@ -645,3 +650,62 @@ fecha_creacion timestamp without time zone,
  PRIMARY KEY (id),
  FOREIGN KEY (tipo_alarma_id) REFERENCES admin_tipo_alarma (id),
  FOREIGN KEY (usuario_id) REFERENCES admin_usuario (id));
+
+CREATE TABLE admin_tipo_correo(
+-- Attributes --
+id serial,
+nombre varchar(100),
+ PRIMARY KEY (id));
+
+CREATE TABLE admin_correo(
+-- Attributes --
+id serial,
+tipo_correo_id integer,
+entidad_id integer,
+usuario_id integer,
+correo varchar(100),
+fecha timestamp without time zone,
+ PRIMARY KEY (id),
+ FOREIGN KEY (tipo_correo_id) REFERENCES admin_tipo_correo (id),
+ FOREIGN KEY (usuario_id) REFERENCES admin_usuario (id));
+
+CREATE TABLE admin_correo_fallido(
+-- Attributes --
+id serial,
+correo varchar(100),
+usuario_id integer,
+entidad_id integer,
+fecha timestamp without time zone,
+reenviado boolean,
+mensaje text,
+ PRIMARY KEY (id),
+ FOREIGN KEY (usuario_id) REFERENCES admin_usuario (id));
+
+CREATE TABLE admin_cronjob_log(
+-- Attributes --
+id serial,
+nombre varchar(100),
+mensaje text,
+fecha date,
+ PRIMARY KEY (id)
+ );
+
+CREATE TABLE admin_introduccion(
+-- Attributes --
+id serial,
+usuario_id integer,
+paso_actual integer,
+cancelado boolean,
+ PRIMARY KEY (id),
+ FOREIGN KEY (usuario_id) REFERENCES admin_usuario (id));
+
+CREATE TABLE admin_zona_horaria(
+-- Attributes --
+id serial,
+pais_id character(3),
+nombre varchar(300),
+ PRIMARY KEY (id),
+ FOREIGN KEY (pais_id) REFERENCES admin_pais (id));
+
+
+

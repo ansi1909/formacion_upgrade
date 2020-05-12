@@ -1,0 +1,1 @@
+[19-Oct-2019 11:19:33 America/Caracas] PHP Fatal error:  Class 'Swift_DependencyContainer' not found in /home/smrtfrmcn/public_html/aulavirtual/vendor/swiftmailer/swiftmailer/lib/dependency_maps/transport_deps.php on line 3

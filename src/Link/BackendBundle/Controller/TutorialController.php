@@ -20,6 +20,7 @@ class TutorialController extends Controller
 
     	$session = new Session();
         $f = $this->get('funciones');
+        $yml = Yaml::parse(file_get_contents($this->get('kernel')->getRootDir().'/config/parametros.yml'));
         
         if (!$session->get('ini'))
         {
@@ -34,7 +35,7 @@ class TutorialController extends Controller
         	}
         }
 
-       return $this->render('LinkBackendBundle:Tutorial:index.html.twig' );
+       return $this->render('LinkBackendBundle:Tutorial:index.html.twig', array('upload_file'=>$yml['parameters']['upload_file']) );
 
     }
 
@@ -133,7 +134,7 @@ class TutorialController extends Controller
         $f = $this->get('funciones');
         $dir_uploads = $this->container->getParameter('folders')['dir_uploads'].'recursos/tutoriales';
         $em = $this->getDoctrine()->getManager();
-
+        //return new response('aqui');
         $usuario = $em->getRepository('LinkComunBundle:AdminUsuario')->find($session->get('usuario')['id']);
 
         $tutorial_id = $request->request->get('tutorial_id');
@@ -223,7 +224,7 @@ class TutorialController extends Controller
             $enlacePdf = '<a href="'.$ruta.$tutorial->getId().'/'.$tutorial->getPdf().'" target="_blank">'.$tutorial->getPdf().' </a>';
             $enlaceVideo = '<a href="'.$ruta.$tutorial->getId().'/'.$tutorial->getVideo().'" target="_blank">'.$tutorial->getVideo().' </a>';
             $acciones = '<td class="center" >
-                            <a href="#" title="'.$this->get('translator')->trans('Editar').'"  class="btn btn-link btn-sm edit" data-toggle="modal" data-target="#formModal" data="'.$tutorial->getId().'"><span class="fa fa-pencil"></span></a>
+                            <a href="#" title="'.$this->get('translator')->trans('Editar').'"  class="btn btn-link btn-sm edit button-tutorial" data-toggle="modal" data-target="#formModal" data="'.$tutorial->getId().'"><span class="fa fa-pencil"></span></a>
                             <a href="#" title="'.$this->get('translator')->trans('Eliminar').'" class="btn btn-link btn-sm delete" data="'.$tutorial->getId().'" data-ubicacion="1"><span class="fa fa-trash"></span></a>
                         </td>';
             array_push($data['data'],[$tutorial->getId(),$tutorial->getNombre(),$enlacePdf,$enlaceVideo,$acciones]);
@@ -258,16 +259,17 @@ class TutorialController extends Controller
     {
         $session = new Session();
         $auxTut=$request->request->get('tutorial_id');
+        //return new response($auxTut);
         $tutorial_id = ($auxTut>0) ? $auxTut.'/' : ''; 
-
+        //return new response($tutorial_id);
         $dir_uploads = $this->container->getParameter('folders')['dir_uploads'];
+        //return new response($dir_uploads);
         $uploads = $this->container->getParameter('folders')['uploads'];
         $upload_dir = $dir_uploads.'recursos/tutoriales/'.$tutorial_id;
         $upload_url = $uploads.'recursos/tutoriales/'.$tutorial_id;
         $options = array('upload_dir' => $upload_dir,
                          'upload_url' => $upload_url);
         $upload_handler = new UploadHandler($options);
-
         $return = json_encode($upload_handler);
         return new Response($return, 200, array('Content-Type' => 'application/json'));
     }

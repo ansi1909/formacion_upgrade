@@ -1,4 +1,4 @@
--- Function: fnavance_programa(refcursor, integer, integer, timestamp, timestamp)
+﻿-- Function: fnavance_programa(refcursor, integer, integer, timestamp, timestamp)
 
 -- DROP FUNCTION fnavance_programa(refcursor, integer, integer, timestamp, timestamp);
 
@@ -15,9 +15,9 @@ begin
 
     OPEN resultado FOR 
 
-    SELECT u.id, u.codigo AS codigo, u.login AS login, u.nombre AS nombre, u.apellido AS apellido, u.correo_personal AS correo_personal, 
+    SELECT u.id, u.codigo AS codigo, u.login AS login, u.nombre AS nombre, u.apellido AS apellido, u.activo AS activo, u.correo_personal AS correo_personal, 
         u.correo_corporativo AS correo_corporativo, e.nombre AS empresa, c.nombre AS pais, n.nombre AS nivel, 
-        TO_CHAR(u.fecha_registro, 'DD/MM/YYYY') AS fecha_registro, u.campo1 AS campo1, u.campo2 AS campo2, u.campo3 AS campo3, u.campo4 AS campo4, 
+        u.fecha_registro AS fecha_registro, u.campo1 AS campo1, u.campo2 AS campo2, u.campo3 AS campo3, u.campo4 AS campo4, 
         (SELECT COUNT(pl.id) AS modulos FROM certi_pagina_log pl INNER JOIN certi_pagina p ON pl.pagina_id = p.id 
             WHERE pl.estatus_pagina_id = 3 
             AND pl.usuario_id = u.id 
@@ -44,35 +44,43 @@ begin
          WHERE  pl.pagina_id = ppagina_id
          AND    pl.usuario_id = u.id
          )as status,
-        (SELECT TO_CHAR(pl.fecha_inicio, 'DD/MM/YYYY') AS fecha_inicio_programa FROM certi_pagina_log pl 
+        (SELECT pl.fecha_inicio AS fecha_inicio_programa FROM certi_pagina_log pl 
             WHERE pl.usuario_id = u.id 
             AND pl.pagina_id = ppagina_id 
             AND pl.fecha_inicio BETWEEN pdesde AND phasta 
         ) as fecha_inicio_programa, 
-        (SELECT TO_CHAR(pl.fecha_inicio, 'HH:MI AM') AS hora_inicio_programa FROM certi_pagina_log pl 
+        (SELECT pl.fecha_inicio AS hora_inicio_programa FROM certi_pagina_log pl 
             WHERE pl.usuario_id = u.id 
             AND pl.pagina_id = ppagina_id 
             AND pl.fecha_inicio BETWEEN pdesde AND phasta 
         )as hora_inicio_programa,
-        (SELECT TO_CHAR(pl.fecha_fin, 'DD/MM/YYYY') AS fecha_fin_programa FROM certi_pagina_log pl 
+        (SELECT pl.fecha_fin AS fecha_fin_programa FROM certi_pagina_log pl 
             WHERE pl.usuario_id = u.id 
             AND pl.pagina_id = ppagina_id 
             AND pl.fecha_inicio BETWEEN pdesde AND phasta 
         ) as fecha_fin_programa, 
-        (SELECT TO_CHAR(pl.fecha_fin, 'HH:MI AM') AS hora_fin_programa FROM certi_pagina_log pl 
+        (SELECT pl.fecha_fin AS hora_fin_programa FROM certi_pagina_log pl 
             WHERE pl.usuario_id = u.id 
             AND pl.pagina_id = ppagina_id 
             AND pl.fecha_inicio BETWEEN pdesde AND phasta 
         ) as hora_fin_programa
     FROM admin_usuario u INNER JOIN (admin_empresa e INNER JOIN admin_pais c ON e.pais_id = c.id) ON u.empresa_id = e.id 
     INNER JOIN admin_nivel n ON u.nivel_id = n.id 
+    INNER JOIN certi_pagina_log cpl ON u.id = cpl.usuario_id
     WHERE u.empresa_id = pempresa_id 
-    AND u.id IN (SELECT ru.usuario_id FROM admin_rol_usuario ru WHERE ru.rol_id = 2)
+    AND u.login NOT LIKE 'temp%'
+    AND (u.id IN (SELECT cpl.usuario_id FROM certi_pagina_log cpl WHERE cpl.fecha_inicio BETWEEN pdesde AND phasta AND cpl.pagina_id = ppagina_id) 
+            OR u.id NOT IN (SELECT cpl.usuario_id FROM certi_pagina_log cpl WHERE cpl.pagina_id = ppagina_id) )
+    AND u.id IN (SELECT ru.usuario_id FROM admin_rol_usuario ru WHERE ru.rol_id = 2) 
+    AND u.id IN (SELECT DISTINCT(s.usuario_id) FROM admin_sesion s) 
     AND u.nivel_id IN 
         (SELECT np.nivel_id FROM certi_nivel_pagina np WHERE np.pagina_empresa_id IN 
             (SELECT pe.id FROM certi_pagina_empresa pe WHERE pe.empresa_id = u.empresa_id AND pe.pagina_id = ppagina_id)
         )
+    GROUP BY u.id,u.codigo,u.login,u.nombre,u.apellido,u.activo,u.correo_personal,u.correo_corporativo,e.nombre,c.nombre,n.nombre,u.fecha_registro,u.campo1,u.campo2,u.campo3,u.campo4
+
     ORDER BY u.codigo ASC, u.login ASC;
+
     
     RETURN resultado;
 

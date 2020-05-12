@@ -3,41 +3,44 @@
 {% block stylesheets %}
     {{ parent() }}
     <link rel="stylesheet" href="{{ asset('assets/vendor/bootstrap-datepicker-1.6.4-dist/css/bootstrap-datepicker.css') }}" type="text/css">
-    <link href="{{ asset('fancybox/jquery.fancybox.css') }}" rel="stylesheet" />
+    <link rel="stylesheet" href="{{ asset('front/js/plugins/jquery-upload-file/css/style.css') }}">
+    <link rel="stylesheet" href="{{ asset('front/js/plugins/jquery-upload-file/css/jquery.fileupload.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/vendor/loumultiselect/css/multi-select.css') }}" type="text/css">
     <link rel="stylesheet" href="{{ asset('assets/vendor/bootstrap-multiselect-master/dist/css/bootstrap-multiselect.css') }}" type="text/css">
     <style>
-        .input-group-addon{padding:0px;}
+        <style>
+        .input-group-addon{
+            padding:0px;
+            border-radius: 50px !important;
+        }
         .input-group .form-control {
             z-index: 1;
         }
         .input-group {
             margin-top: 35px;
+            margin-left: 20px;
         }
-        .photo_img{
-            width: 35rem;
-            height: auto;
-            overflow: hidden;
-            border: 0;
-            -webkit-border-radius: 1rem;
-            -moz-border-radius: 1rem;
-            -ms-border-radius: 1rem;
-            border-radius: 1rem;
-            -webkit-box-shadow: 0 5px 10px 0 rgba(0, 0, 0, 0.4) ;
-            -moz-box-shadow: 0 5px 10px 0 rgba(0, 0, 0, 0.4) ;
-            -ms-box-shadow: 0 5px 10px 0 rgba(0, 0, 0, 0.4) ;
-            box-shadow: 0 5px 10px 0 rgba(0, 0, 0, 0.4) ;
-            margin: 1rem 1rem 0 3rem;
-        }        
+        .fileinput-button {
+            position: absolute;
+        }
+        #btn_foto, #btn_pdf {
+            padding-top: 17px;
+        } 
     </style>
 {% endblock %}
 
 {% block body %}
 
 {% set uri = app.request.getbasepath %}
+<form id="form" name="form" action="{{ path('_registroNovedad', { 'noticia_id': noticia.id }) }}" class="container-fluid p-0" method="POST">
 <input type="hidden" id="root_site" name="root_site" value="{{ uri }}" />
 <input type="hidden" id="deslen" name="deslen" value="0" />
 <input type="hidden" id="deslen2" name="deslen2" value="0" />
+<input type="hidden" id="photo" name="photo" value="{{ asset('img/picture.png') }}">
+<input type="hidden" id="url_upload" name="url_upload" value="{{ path('_ajaxUpload') }}">
+<input type="hidden" id="base_upload" name="base_upload" value="noticias/">
+<input type="hidden" id="uploads" name="uploads" value="{{ uploads }}">
+<input type="hidden" id="file_input" value="">
 <input type="hidden" id="photo" name="photo" value="{{ asset('img/picture.png') }}">
 {% if usuario_empresa %}
     <input type="hidden" id="usuario_empresa" name="usuario_empresa" value="{{ usuario_empresa }}" />
@@ -92,7 +95,7 @@
                             </div>
                         </div>
                     </div>
-                    <form id="form" name="form" action="{{ path('_registroNovedad', { 'noticia_id': noticia.id }) }}" class="container-fluid p-0" method="POST">
+                    
                         <div class="row setup-content" id="det0">   
                             <div class="col-sm-16">
                                 <div class="row">
@@ -153,7 +156,7 @@
                                 <br>
                                 <div class="row">
                                     <div class="col-sm-8 col-md-8 col-lg-8">
-                                        <label for="texto" class="col-6 col-form-label">{{ 'Fecha de Publicación'|trans }}</label>
+                                        <label for="texto" class="col-6 col-form-label">{{ 'Fecha de publicación'|trans }}</label>
                                         <div class="col-14">
                                             {% set fecha_publicacion = noticia.fechaPublicacion ? noticia.fechaPublicacion|date('d/m/Y') : '' %}
                                             <input type="text" class="form-control form_sty1 date_picker" name="fecha_publicacion" id="fecha_publicacion" value="{{ fecha_publicacion }}" placeholder="DD/MM/YYYY">
@@ -161,7 +164,7 @@
                                         </div>
                                     </div>
                                     <div class="col-sm-8 col-md-8 col-lg-8">                                            
-                                        <label for="texto" class="col-6 col-form-label">{{ 'Fecha de Vencimiento'|trans }}</label>
+                                        <label for="texto" class="col-6 col-form-label">{{ 'Fecha de vencimiento'|trans }}</label>
                                         <div class="col-14">
                                             {% set fecha_vencimiento = noticia.fechaVencimiento ? noticia.fechaVencimiento|date('d/m/Y') : '' %}
                                             <input type="text" class="form-control form_sty1 date_picker" name="fecha_vencimiento" id="fecha_vencimiento" value="{{ fecha_vencimiento }}" placeholder="DD/MM/YYYY">
@@ -237,25 +240,22 @@
                                 <br>
                                 <div class="row">
                                     <div class="col-md-auto col-sm-auto col-xl-auto col-lg-auto">
-                                        <label for="imagen" class="col-sm-6 col-md-6 col-lg-6 col-form-label">{{ 'Imagen'|trans }}</label>
-                                        {% set img = noticia.imagen ? uploads~noticia.imagen  : asset('img/picture.png') %}
-                                        <div class="photo_img" id="figure"><img src="{{ img }}" alt="{{ 'Imagen'|trans }}" style="width: 512px; height: auto; margin: 0 1rem;"></div>
+                                        Imagen
+                                        {% set img = noticia.imagen ? uploads~noticia.imagen : asset('img/picture.png') %}
+                                        <div class="photo_img" id="figure"><img id="foto_img" src="{{ img }}" alt="Imagen" style="width: 512px; height: auto; margin: 0 1rem;"></div>
                                     </div>
                                     <div class="col-md-auto col-sm-auto col-xl-auto col-lg-auto">
                                         <div class="input-group">
                                             <input type="hidden" name="imagen" id="imagen" value="{{ noticia.imagen }}" readonly="readonly">
-                                            <span class="input-group-addon">
-                                            {% if usuario_empresa %}
-                                                <a href="{{ uri }}/jq/ResponsiveFilemanager/filemanager/dialog.php?type=1&field_id=imagen&rootFolder=recursos/noticias/{{ usuario_empresa }}"  class="btn iframe-btn" type="button">
-                                            {% else %}
-                                                <a href="{{ uri }}/jq/ResponsiveFilemanager/filemanager/dialog.php?type=1&field_id=imagen&rootFolder=recursos/noticias" class="btn iframe-btn" type="button">
-                                            {% endif %}                                            
-                                                    <button type="button" class="btn_addImg">
+                                            <span class="">
+                                                <a href="#" class="iframe-btn uploadFileHref" data-etiqueta="imagen" id="btn_foto">
+                                                    <button type="button" class="btn_addImg fileinput-button">
                                                         <span class="fa fa-photo"></span>
+                                                        <input class="fileupload" type="file" name="files[]" multiple>
                                                     </button>
                                                 </a>
                                             </span>
-                                            <span class="input-group-addon">
+                                            <span class="">
                                                 <button id="btn_clear" class="btn_clearImg" type="button">
                                                     <span class="fa fa-times"></span>
                                                 </button>
@@ -266,26 +266,23 @@
                                 <br>
                                 <div class="row">
                                     <div class="col-sm-8 col-lg-8 col-md-8">
-                                        <label for="imagen" class="col-sm-6 col-md-6 col-lg-6 col-form-label">{{ 'Recurso'|trans }}</label>
+                                        <label for="imagen" class="col-sm-6 col-md-6 col-lg-6 col-form-label">Recurso</label>
                                         <div class="col-sm-16 col-md-16 col-lg-16">
-                                            <input type="text" class="form-control form_sty1" name="pdf" id="pdf" value="{{ noticia.pdf }}" readonly="readonly" placeholder="{{ 'Sólo archivos con extensión pdf.'|trans }}">
+                                            <input type="text" class="form-control form_sty1" name="pdf" id="pdf" value="{{ noticia.pdf }}" readonly="readonly" placeholder="Sólo archivos con extensión pdf.">
                                             <span class="fa fa-file-pdf-o"></span>
                                         </div>
                                     </div>
-                                    <div class="col-sm-3 col-md-3 col-lg-3">
+                                    <div class="col-sm-5 col-md-5 col-lg-5 justify-content-between">
                                         <div class="input-group">
-                                            <span class="input-group-addon">
-                                            {% if usuario_empresa %}
-                                                <a href="{{ uri }}/jq/ResponsiveFilemanager/filemanager/dialog.php?type=2&field_id=pdf&rootFolder=recursos/noticias/{{ usuario_empresa }}" class="btn iframe-btn" type="button">
-                                            {% else %}
-                                                <a href="{{ uri }}/jq/ResponsiveFilemanager/filemanager/dialog.php?type=2&field_id=pdf&rootFolder=recursos/noticias" class="btn iframe-btn" type="button">
-                                            {% endif %}                                            
-                                                    <button type="button" class="btn_addImg">
+                                            <span class="">
+                                                <a href="#" class="iframe-btn uploadFileHref" data-etiqueta="pdf" id="btn_pdf">                                          
+                                                    <button type="button" class="btn_addImg fileinput-button">
                                                         <span class="fa fa-file-pdf-o"></span>
+                                                        <input class="fileupload" type="file" name="files[]" multiple>
                                                     </button>
                                                 </a>
                                             </span>
-                                            <span class="input-group-addon">
+                                            <span class="">
                                                 <button id="btn_clear2" class="btn_clearImg2" type="button">
                                                     <span class="fa fa-times"></span>
                                                 </button>
@@ -316,7 +313,9 @@
     <script type="text/javascript" src="{{ asset('jq/jquery-validation-1.15.0/dist/additional-methods.min.js') }}"></script>
     <script type="text/javascript" src="{{ asset('assets/vendor/bootstrap-datepicker-1.6.4-dist/js/bootstrap-datepicker.min.js') }}"></script>
     <script type="text/javascript" src="{{ asset('assets/vendor/bootstrap-datepicker-1.6.4-dist/locales/bootstrap-datepicker.es.min.js') }}" charset="UTF-8"></script> 
-    <script type="text/javascript" src="{{ asset('fancybox/jquery.fancybox.pack.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('front/js/plugins/jquery-upload-file/js/vendor/jquery.ui.widget.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('front/js/plugins/jquery-upload-file/js/jquery.iframe-transport.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('front/js/plugins/jquery-upload-file/js/jquery.fileupload.js') }}"></script>
     <script type="text/javascript" src="{{ asset('assets/vendor/loumultiselect/js/jquery.multi-select.js') }}"></script>
     <script type="text/javascript" src="{{ asset('assets/vendor/bootstrap-multiselect-master/dist/js/bootstrap-multiselect.js') }}"></script>
     <script type="text/javascript" src="{{ asset('js/admin/novedad.js') }}"></script>
@@ -388,6 +387,7 @@
                     extension: "pdf"
                 },
                 'imagen': {
+                    required: true,
                     extension: "jpg|png"
                 }                
             },
@@ -416,6 +416,7 @@
                     extension: "- {{ 'Sólo archivos con extensión .pdf'|trans }}"
                 },
                 'imagen': {
+                    required: "- {{ 'La imagen es requerida.'|trans }}",
                     extension: "- {{ 'Sólo archivos con extensión .jpg o .png'|trans }}"
                 }                
             }

@@ -100,6 +100,12 @@ class CalendarioController extends Controller
                 $selected = $nivel->getId() == $id_nivel ? 'selected' : '';
                 $options .= '<option value="'.$nivel->getId().'" '.$selected.'>'.$nivel->getNombre().'</option>';
             }
+            if($selected)
+            {
+                $options .= '<option value="">'.$this->get('translator')->trans('Todos los niveles').'</option>';
+            }else{
+                $options .= '<option value="" selected>'.$this->get('translator')->trans('Todos los niveles').'</option>';
+            }
         
             $e = array('id' => $evento->getId(),
                        'title' => $evento->getNombre(),
@@ -132,6 +138,7 @@ class CalendarioController extends Controller
         $fecha_fin = $request->request->get('end');
         $empresa_id = $request->request->get("empresa_id");
         $nivel_id = $request->request->get("nivel_id");
+        $hoy = date('Y-m-d h:i:s');
         $yml = Yaml::parse(file_get_contents($this->get('kernel')->getRootDir().'/config/parametros.yml'));
         
         if ($nivel_id != 0)

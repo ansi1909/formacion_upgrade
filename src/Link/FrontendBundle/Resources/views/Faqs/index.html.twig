@@ -26,7 +26,7 @@
                     {% for respuesta in faq.preguntas %}
                     <li>
                         <span class="enun_faqs"><span class="num">{{respuesta.numero}}.</span>{{respuesta.pregunta}}</span>
-                        <p>{{respuesta.respuesta}} </p>
+                        <p>{{ respuesta.respuesta|raw }} </p>
                     </li>
                     {% endfor %}
                 </ul>

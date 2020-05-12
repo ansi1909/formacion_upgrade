@@ -187,19 +187,20 @@
                     </div>
                     <div class="row setup-content" id="det3">   
                         <div class="col-sm-16">
-                            <div class="row">
+                            <div class="row" >
                                 <div class="col-sm-16">
                                     <h3 class="mb-2">{{ 'Paso'|trans }} 4</h3>
                                 </div>
                             </div>
                             <br>
-                            <div class="row">
-                                <div class="col-md-auto col-sm-auto col-xl-auto col-lg-auto">
+                            <div class="row"  >
+                                <div class="col-md-auto col-sm-auto col-xl-auto col-lg-auto" >
                                     {{ form_label(form.foto) }}
                                     {% set img = pagina.foto ? uploads~pagina.foto : asset('img/picture.png') %}
+                                    {% set loader = asset('img/loader_.gif') %}
                                     <div class="photo_img" id="figure"><img id="foto_img" src="{{ img }}" alt="{{ 'Foto de la página'|trans }}" style="width: 512px; height: auto; margin: 0 1rem;"></div>
                                 </div>
-                                <div class="col-md-auto col-sm-auto col-xl-auto col-lg-auto">
+                                <div class="col-md-auto col-sm-auto col-xl-auto col-lg-auto" >
                                     <div class="input-group">
                                         {{ form_widget(form.foto, { 'attr': { 'readonly': 'readonly'} }) }}
                                         <span class="input-group-addon">
@@ -215,9 +216,10 @@
                                         </span>
                                     </div>
                                 </div>
+                                <div class="" id="loader"><img id="loader_img" src="{{ loader }}"  style="width: 400px; height: 400px;margin-top: 2rem;display: none;"></div>
                             </div>
                             <br>
-                            <div class="row">
+                            <div class="row" >
                                 <div class="col-sm-8 col-lg-8 col-md-8">
                                     <label for="pdf" class="col-sm-6 col-md-6 col-lg-6 col-form-label">{{ form_label(form.pdf) }}</label>
                                     <div class="col-sm-16 col-md-16 col-lg-16">
@@ -243,7 +245,7 @@
                             </div>
                             {% if not pagina.pagina %}
                                 <br>
-                                <div class="row">
+                                <div class="row" >
                                     <div class="col-sm-12 col-lg-12 col-md-12">
                                         <label for="encuesta" class="col-sm-6 col-md-6 col-lg-6 col-form-label">{{ form_label(form.encuesta) }}</label>
                                         <div class="col-sm-10 col-md-10 col-lg-10">

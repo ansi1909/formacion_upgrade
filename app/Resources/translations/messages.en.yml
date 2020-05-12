@@ -1,3 +1,5 @@
+a continuación te presento los detalles: these are the details
+A la publicación de: In response of
 académicas: academics
 Acceso: Access
 Acceso a la página: Access to this page
@@ -12,6 +14,8 @@ Activar muro: Enable wall
 Activar para ordenar la columna de manera ascendente: Enable to order column ascending
 Activar para ordenar la columna de manera descendente: Enable to order column descending
 Activar webinar: Activate webinar
+Actividad en el muro: Wall activity
+Actividad en el espacio colaborativo: Activity in the collaborative space
 Actividades en curso: Activities in progress
 Actividades Recientes: Recents Activities
 Activo: Active
@@ -21,6 +25,7 @@ Advertencia: Warning
 Agregar: Add
 Agregar opción: Add option
 Agregar pregunta: Add question
+Agregar respuesta: Add answer
 Agregar sub-página: Add sub-page
 Agregar tipo de pregunta: Add question type
 Agrupación de páginas: Grouping pages
@@ -44,6 +49,7 @@ Aquí podrás acceder a tus últimas actividades, y ver tu progreso en ellas.: H
 Aquí podrás ver tus actividades finalizadas: Here you can see your finished activities
 Archivo procesado con éxito: File processed successfully
 Archivos: Files
+Archivo: File
 Archivos de este espacio: Files of this space
 Artículo: Article
 Artículos: Articles
@@ -62,8 +68,11 @@ Atrás: Back
 Aún no has respondido las preguntas: You have not answered the questions yet
 Aún no se han creado las opciones: No options added yet
 Aún no se han creado las preguntas: No questions added yet
+Aún sin presentar la evaluación: Has not yet presented the evaluation
 Aún sin publicar: Not yet published
 Autor: Author
+Avance en el módulo: Module avance
+Avance en el programa: Program avance
 Avance en programas: Advance in programs
 Aviso de cierre de sesión: Notice of session closure
 Avisos programados de: Programmed notifications of
@@ -72,6 +81,7 @@ Ayuda: Help
 Biblioteca: Library
 Biblioteca virtual: Virtual library
 Bienvenida: Welcome
+Bienvenido: Welcome
 Bien hecho: Well done
 Buen trabajo: Good job
 Buscar: Search
@@ -80,11 +90,15 @@ Búsqueda de participantes por empresa: Search participants by company
 Búsqueda de notificaciones empresa: Search notifications company
 Búsqueda de notificaciones por empresa: Search notifications by company
 Calendario: Calendar
+Calificación: Qualification
 Cambiar contraseña: Change password
 Cambiar imagen: Change image
+Campo: Camp
 Cancelar: Cancel
+Cantidad: Quantity
 Cantidad de conexiones: Number of connections
 Cantidad de filas: Number of rows
+Cantidad de participantes por programa: Number of participants per program
 Cantidad de preguntas a mostrar: Number of questions to show
 Cantidad de preguntas de la evaluación: Number of test questions
 Cantidad de registros creados: Number of records created
@@ -113,6 +127,13 @@ Código del empleado repetido: Employee code repeated
 Columna: Column
 ¡Comencemos! Elige tu programa: Let's start! Choose your program
 Comentar: Comment
+Comenzar: Start
+comento lo siguiente: comment the following
+comento una publicación en el espacio colaborativo de: comment on a publication in the collaborative space of
+comento tu publicación en el espacio colaborativo de: comment your publication in the collaborative space of
+Comentario: Comment
+Comentario seleccionado: Selected comment
+comentarios: comments
 Comentarios: Comments
 Comparativo hasta el: Comparative until
 Competencia debe ser un valor entero: Competition must be an integer value
@@ -140,7 +161,9 @@ Contacte al Administrador del Sistema para agregar thumbnails para esta plantill
 Contacte al Administrador del Sistema para mayor información: Contact to System Administrator for further information
 Constancia de Notas: Proof of Notes
 Consultar: Search
+Contestar: Answer
 Contenido: Content
+Contenido del: Content of
 Contenido que debe ser aprobado previamente: Content that must be approved before
 Contenido Relacionado: Related Content
 Continuar: Continue
@@ -148,13 +171,16 @@ Continuar al siguiente contenido: Continue to next content
 Continuar en la Evaluación: Continue in the Evaluation
 Contraseña: Password
 Copia: Copy
+Cordial saludo, tienes una solicitud de soporte técnico proveniente de la plataforma Formación Smart, a continuación te presento los detalles: Best regards, you have a request for technical support from platform Formación Smart, these are the details
 Correcta: Correct
 Correo: Email
 Correo adicional: Additional email
+Correo del participante: Participant email
 Correo electrónico: Email
 Correo electrónico repetido: Email repeated
 Correo electrónico requerido: Email required
 Correo corporativo: Company email
+Correos no enviados: Emails not sent
 Correo personal: Personal email
 Correo secundario: Secondary email
 Creado el: Created at
@@ -184,16 +210,20 @@ de la: of the
 de la evaluación: of the test
 de un total de: of total of
 Debe coincidir con la contraseña: It must be equal to password
+Debe elegir una empresa: You must choose a company
+Debe elegir un programa: You must choose a program
 Debe escribir su respuesta: You must write your response
-Debe ingresar el correo electrónico.: You must enter the email.
-Debe seleccionar al menos un rol.: You must select at least one role.
+Debes ingresar el correo electrónico: You must enter the email
+Debes ingresar el correo personal o el correo corporativo: You must enter either personal email or corporate email
+Debe seleccionar al menos un programa: You must select at least one program
+Debe seleccionar al menos un rol: You must select at least one role
 Debe seleccionar el grupo: You must select the group
 Debe seleccionar el tipo de pregunta o agregar una nueva: You must select the question type or add a new one
 Debe seleccionar la fecha inicial: You must select the initial date
 Debe seleccionar la fecha final: You must select the final date
 Debe seleccionar la página.: You must select the page.
 Debe seleccionar la página destino: You must select the destination page
-Debe seleccionar tanto la empresa como el nivel.: You must select both the company and the level.
+Debes seleccionar tanto la empresa como el nivel: You must select both the company and the level
 Debe seleccionar una fecha de publicación.: You must select a publication date.
 Debe seleccionar una fecha de vencimiento.: You must select a due date.
 Debe ser mínimo de 3 caracteres.: This field must have at least 3 characters.
@@ -209,45 +239,55 @@ Desde: Since
 Destinado a: Target
 Destino: Destination
 Detalle: Detail
-Detalle de la Biblioteca Virtual: Detail of the Virtual Library
+Detalles de la biblioteca virtual: Virtual library details
 Detalle de la Noticia y Novedad: Detail of the News and New
 Detalles de la página: Page details
-Detalle del Certificado y Constancia: Certificate and Certificate Detail
+Detalle del certificado y constancia: Certificate Detail and Certificate
+Detalle del participante: Participant detail
 Día/Hora: Day/Time
 días: days
 Dimensiones recomendadas: Recommended dimensions
 Diseño: Design
 Domingo: Sunday
 Duplicar página y sub-páginas: Duplicate page and sub-pages
+Duplicar evaluación: Duplicate test
 Editar: Edit
 Editar asignación: Edit assignment
+Editar comentario: Edit comment
 Editar evaluación: Edit test
 Editar página: Edit page
 Editar perfil: Edit profile
 Editar tema: Edit topic
 El archivo seleccionado no se cargo correctamente.: The selected file is not loaded correctly.
 Elegir empresa: Choose company
+Elementos seleccionados: Selected items
+Elementos sin seleccionar: Unselected items
 Elija el destino de la página: Choose target of the page
 Eliminado: Deleted
 Eliminar: Remove
-El apellido del usuario debe ser mínimo de 3 caracteres.: User last name must have at least 3 characters.
-El apellido del usuario es requerido.: User last name is required.
+El apellido del usuario debe ser mínimo de 3 caracteres: User last name must have at least 3 characters
+El apellido del usuario es requerido: User last name is required
 El archivo: The file
+El archivo excede el tamaño maximo permitido: File exceeds maximum size allowed
 El archivo debe tener al menos una fila con datos: File must have at least one row with data
 El archivo es requerido.: File is required.
 El archivo presentó errores en alguna de sus líneas. Ver los detalles en el cuadro más abajo.: File have errors into some of its lines. See details in table below.
 El asunto debe ser mínimo de 3 caracteres: The subject must have at least 3 characters
 El asunto es requerido: The subject is required
+El asunto de la notificación debe ser mínimo de 3 caracteres: The subject of the notification must be a minimum of 3 characters
 El autor es requerido.: The author is required.
 El autor debe ser mínimo de 3 caracteres.: The author must be at least 3 characters.
-El campo usuario debe ser mínimo de 3 caracteres.: User field must have at least 3 characters.
-El campo usuario es requerido.: User field is required.
+El campo usuario debe ser mínimo de 3 caracteres: User field must have at least 3 characters
+El campo usuario es requerido: User field is required
 El contenido es requerido.: Content is required.
 El correo es requerido: Mail is required
-El correo corporativo tiene un formato inválido.: Company email has invalid format.
-El correo no existe en la base de datos, por favor inserte uno diferente o comuníquese a soporte@formacion2puntocero.com: The mail does not exist in the database, please insert a different one or contact support@formacion2puntocero.com
+El correo corporativo ya existe para la empresa seleccionada: Corporate mail already exists for the selected company
+El correo personal ya existe para la empresa seleccionada: Personal email already exists for the selected company
+El correo corporativo tiene un formato inválido: Company email has invalid format
+El correo secundario tiene un formato inválido: Secondary mail has an invalid format
+El correo no existe en la base de datos, por favor inserte uno diferente o comuníquese a soporte@formacionsmart.com: The mail does not exist in the database, please insert a different one or contact soporte@formacionsmart.com
 El correo no pertenece a un Usuario de la empresa. Contacte al administrador del sistema.: The mail does not belong to a User of the company. Contact the system administrator.
-El correo personal tiene un formato inválido.: Personal email has invalid format.
+El correo personal tiene un formato inválido: Personal email has invalid format
 El Encabezado es requerido.: The Header is required
 El Encabezado debe ser mínimo de 3 caracteres.: The Header must be at least 3 characters.
 El enlace de la encuesta no es un válido URL: Poll link is not a valid URL
@@ -258,7 +298,7 @@ El logo de la empresa se mostrará en la página de login: Will this logo be sho
 El título es requerido.: The title is required.
 El título debe ser mínimo de 3 caracteres.: The title must be at least 3 characters.
 El grupo ha sido almacenada con éxito: The group has been stored successfully
-El login ya existe.: Login already exists.
+El login ya existe: Login already exists
 El lugar es requerido.: The place is required.
 El material complementario debe ser sólo archivo con extensión pdf.: Complementary content must be a pdf file extension.
 El mensaje es requerido.: The message is required.
@@ -273,15 +313,19 @@ El nombre de la página es requerido.: Page name is required.
 El nombre del archivo no debe contener acentos o caracteres especiales: File name must not have neither accents nor special characters
 El nombre del tutorial debe ser mínimo de 3 caracteres: Tutorial name must have at least 3 characters
 El nombre del tutorial es requerido: Tutorial name is required
-El nombre del usuario debe ser mínimo de 3 caracteres.: User first name must have at least 3 characters.
-El nombre del usuario es requerido.: User first name is required.
+El nombre del usuario debe ser mínimo de 3 caracteres: User first name must have at least 3 characters
+El nombre del usuario es requerido: User first name is required
 El país es requerido.: Country is required.
 El país no existe en la base de datos: Country does not exist in database
+El participante: The participant
 El programa es requerido: Program is required
 El puntaje con que se aprueba es requerido.: The score with it is approved is required.
 El servidor a tardado mucho en responder, verifique su conexión a internet o comuníquese con el administrador del sistema: The server has been slow to respond, verify your internet connection or contact the system administrator
 El recurso es requerido: The resource is required
+El resumen es requerido.: The summary is required.
+El resumen debe ser mínimo de 3 caracteres.: The abstract must be a minimum of 3 characters.
 El rol ha sido almacenada con éxito: The rol has been stored successfully
+El tema es requerido: Subject is required
 El tiempo de duración es requerido.: Duration is required.
 El tiempo de inactividad dentro de la aplicación ha superado el límite máximo de conexión: Inactive time has reached the maximum time of connection
 El Tipo de Certificado es requerido.: The Type of Certificate is required.
@@ -298,6 +342,7 @@ El título debe ser mínimo de 3 caracteres.: The title must be at least 3 chara
 El tutor virtual aún no ha creado un tema de discusión: Virtual tutor has not yet created a topic of discussion
 El tutorial ha sido almacenado con éxito: The tutorial has been stored successfully
 El Url proporcionado no es correcto: Url given is incorrect
+El usuario: The user
 El usuario es requerido: Username is required
 El Usuario no pertenece a la empresa. Contacte al administrador del sistema.: The User does not belong to the company. Contact the system administrator.
 El valor de la pregunta debe ser un valor numérico.: Question weighing must be a numeric value.
@@ -320,6 +365,7 @@ Empresas registradas: Registered companies
 En curso: In progress
 En evaluación: In evaluation
 En el módulo administrativo de Certificados y Constancias se puede agregar certificados: In Admin interface, in module Certificados y Constancias, you can add certificates
+En estos momentos se están realizando optimizaciones en nuestros servidores: Optimizations are currently being made on our servers
 en la biblioteca: in the library
 Encabezado: Header
 Enlace de la encuesta: Poll link
@@ -327,6 +373,7 @@ Enunciado: Statement
 Enunciado (Lado A): Statement (Side A)
 Entidad: Entity
 Entrar: Get in
+Evaluación: Evaluation
 Enviado: Sent
 Enviar: Send
 Equivalente a: Equivalent to
@@ -336,6 +383,7 @@ Error al obtener el historial.: Error ocurred retrieving history.
 Error al obtener la repuesta: Error getting the answer
 Error al obtener las notificaciones programadas: Error ocurred retrieving the programmed notifications
 Error al obtener las páginas asignadas.: Error ocurred retrieving assigned pages.
+Error al obtener los programas: Error ocurred retrieving programs
 Error al obtener las subaplicaciones.: Error ocurred retrieving subapps.
 Error al obtener los thumbnails: Error ocurred retrieving thumbnails
 Error de Excepción: Exception Error
@@ -356,11 +404,12 @@ Esta evaluación no tiene preguntas configuradas: This test has not setted quest
 Esta notificación será enviada por el sistema de forma automática, puede dejar la fecha de hoy: This notification will be sent by the system automatically, you can leave today
 Esta página no tiene evaluación asignada: This page does not have assigned test
 Esta plantilla no posee thumbnails en la base de datos: This template does not have thumbnails into database
-¿Estás list@?: Are you ready?
+¿Estás listo/a?: Are you ready?
 ¿Estás segur@ de que deseas cerrar la sesión?: Are you sure of loging out?
 ¿Estás segur@ de que deseas eliminar este registro?: Are you sure of deleting this item?
 ¿Estás Segur@ que deseas salir de la evaluación?: You are sure you want to exit the evaluation
 ¿Estás Segur@ que deseas volver al contenido sin realizar la evaluación?: Are you sure of returning to the start without taking the evaluation?
+Estas son tus credenciales de acceso a la plataforma: These are your access credentials
 Estado: Status
 Estatus: Status
 Estatus del programa: Program status
@@ -368,9 +417,12 @@ Estatus de las sub-paginas: Sub-pages status
 Estatus de los participantes de la empresa: Participants status of the company
 este archivo descargable: this downloadable file
 Este campo es requerido.: This field is required.
+Este correo no puede ser igual al corporativo: This email can't be the same as corporate
+Este correo se encuentra registrado: This email is registered
 Este logo se mostrará en la página de login: This logo will be shown in login page
 Este rol aún no tiene permisos de acceso: This role does not have access permissions yet
-Este usuario tiene una sesión activa: This user has an active session
+Este usuario tiene una sesión activa. Espera 5 minutos e intenta ingresar de nuevo.: This user has an active session. Wait 5 minutes and try again.
+Estimado: Dear
 ¡Estimado participante! Envía tus comentarios o dudas sobre cualquier aspecto relacionado con los programas de certificación.: Dear participant! Post your comments or doubts about any subject related to certification programs.
 Estimado participante, si decides salir de la evaluación en este momento, perderás las respuestas que hayas marcado hasta ahora: Dear participant, if you decide to leave the evaluation at this time, you will lose the answers you have marked so far
 Estimado participante, si usted decide salir antes de terminar la evaluación perderá todas las respuestas que haya contestado hasta los momentos: Dear participant, if you decide leave the page before finish the evaluation, you will lose all answers
@@ -378,26 +430,35 @@ Estos son los resultados que has obtenido: This are the results you got
 Estructura: Structure
 Evaluación: Test
 Evaluación activa: Enabled test
+Evaluación del módulo: Module evaluation
 Evaluación no encontrada: Evaluation not found
+Evaluaciones de las materias: Evaluations of the subjects
 Evaluaciones por módulo: Evaluations per module
 Evento guardado: Saved event
 Evento no guardado: Unsaved event
 Excelente: Excelent
+Existe actividad en el espacio colaborativo, a continuación te presento los detalles: There is activity in the collaborative space, below I present the details
+Existe actividad en uno de los muros monitoreados por ti, a continuación te presento los detalles: There is an activity in one of the walls monitored by you, these are the details
 Experimenta la potencialidad de la capacitación online: Experience the potential of online training
 Extensiones aceptadas: Allowed extensions
 Extensiones aceptadas para el campo PDF: Allowed extensions for PDF file
 Extensiones aceptadas para imagen: Allowed extensions for image
 Extensiones aceptadas para vídeo: Allowed extensions for video
 Fecha: Date
+Fecha automática: Automatic date
 Fecha Creación: Creation Date
 Fecha fin: End date
 Fecha inicio: Start date
+Fecha de creación: Creation date
 Fecha de difusión: Broadcasting date
 Fecha de nacimiento: Birthday
-Fecha de nacimiento es requerida.: Birthday is required.
+Fecha de publicación: Publication date
 Fecha de Publicación: Publication date
 Fecha de registro: Registration date
+Fecha de vencimiento: Due date
 Fecha de Vencimiento: Due date
+Fecha inicio requerida: Start date required
+Fecha fin requerida: End date required
 FELICITACIONES: CONGRATULATIONS
 Fila: Row
 filtrado de un total de: filtered of a total of
@@ -406,6 +467,7 @@ Filtrar comentarios del muro: Filter wall comments
 Filtrar usuarios: Filter users
 Filtrar participantes: Filter participants
 Filtro: Filter
+Filtro automático: Automatic filter
 Fin del programa: End of the program
 Finaliza en: Ends in
 Finalizar: Finish
@@ -430,7 +492,7 @@ Ha ocurrido un error al generar el archivo de participantes, verifique su conexi
 Ha ocurrido un error en el procesamiento de la consulta. Contacte al administrador del sistema.: An error ocurred into query processing. Contact your system administrator.
 Ha ocurrido un error en el servidor. Contacte al administrador del sistema.: An error ocurred on the server. Contact your system administrator.
 Ha ocurrido un error en la eliminación de este registro: An error ocurred deleting this item
-Ha ocurrido un error en la validación del usuario.: An error ocurred validating user login.
+Ha ocurrido un error en la validación del usuario: An error ocurred validating user login
 Ha ocurrido un error obteniendo los programas. Contacte al administrador del sistema.: An error ocurred getting the programs. Contact your system administrator.
 Ha ocurrido un error reordenando de este registro: An error ocurred reordering this item
 Ha ocurrido un error al cargar los participantes conectados, verifique su conexión a internet o contacte al administrador del sistema.: An error occurred when loading the connected participants, check your internet connection or contact the system administrator.
@@ -441,6 +503,7 @@ Has aprobado con éxito la evaluación: You have approved successfully the test
 Has completado con éxito los contenidos: You have successfully completed the contents
 Has ganado: You win
 Hasta: Until
+Hemos detectado que estás usando un navegador no recomendado, te invitamos a usar Google Chrome, Mozilla Firefox o Microsoft Edge en sus últimas versiones para garantizar una correcta funcionalidad de la plataforma: We have detected that you are using a nonrecommended browser, we invite you to use Google Chrome, Mozilla Firefox or Microsoft Edge in its latest versions to ensure correct functionality of the platform
 Historial de programaciones de: Programation history of
 Hizo un comentario: Made a comment
 Hola: Hi
@@ -451,10 +514,14 @@ Horas de conexión: Conection hours
 Horas de conexión de la empresa: Connection hours of the company
 Horas de conexión por empresa: Connection hours per company
 Hoy a las: Today at
+Huso horario: Time zone
+Huso horario requerido: Required time zone
 Icono: Icon
 Icono de la empresa: Company icon
 Imagen: Image
 Imagen lado: Image side
+Imprimir certificado: Print certificate
+Imprimir constancia de notas: Print proof of notes
 Inactivos: Inactive
 Índice: Index
 Ingrese un correo valido: Enter a valid email
@@ -465,19 +532,19 @@ Ingrese el mensaje que desea enviar: Enter the message you want to send
 Ingresa tu usuario: Enter your username
 Ingrese el Url de acceso al sistema recibido por el usuario autorizado de su empresa: Enter the access Url received by the authorized user of your company
 Ingrese lo que desea buscar: Enter what you want to search
+Ingresos al sistema: System entries
 Iniciado: Initiated
 Inicia el: Starts at
 Iniciar: Start
 Iniciar Sesión: Log in
 Inicio: Begin
+Inicio del programa: Program start
 Inicio de la evaluación: Evaluation start
 Inicio del programa: Program start
 tu usuario y clave. Ingresa tu correo.: your username and password. Enter your email.
 Interacción: Interaction
 Interacción en los muros: Wall interactions
 Interacción en los muros por empresa: Wall interactions per company
-Imprimir certificado: Print certificate
-Imprimir constancia de notas: Print proof of notes
 Ir a detalles de la página: Go to page details
 Ir al inicio: Go to home
 Ir al listado: Go to list
@@ -499,7 +566,7 @@ La cantidad máxima de intentos debe ser un valor entero.: The max number of att
 La cantidad máxima de intentos es requerida.: The max number of attempts is required.
 La categoría es requerida.: Category is required.
 La categoría ha sido almacenada con éxito: Category has been saved successfully
-La clave es requerida.: Password is required.
+La clave es requerida: Password is required
 La columna Activo debe ser un valor entero: The Active column must be an integer value
 La columna Activo debe tener como valor 0 o 1: The Active column must be 1 or 0
 La contraseña es requerida: Password is required
@@ -534,7 +601,9 @@ La recuperación de tus credenciales se realizó correctamente, revisa tu correo
 La respuesta es requerida: Answer is required
 La sesión se cerrará automáticamente en: Session will finish automatically in
 Lado: Side
+Lección: Lesson
 Lecciones: Lessons
+Lecciones vistas: Lessons seen
 Leidos: Read
 Libro: Book
 Libros: Books
@@ -544,6 +613,7 @@ Archivos para el comentario de: Files for the comment of
 Listado de: List of
 Listado de Aplicaciones: List of Applications
 Listado de categorías: Category List
+Listado de certificados y constancias: List of certificates and certificates
 Listado de comentarios: List of comments
 Listado de Empresas: List of Companies
 Listado de empresas activas: List of active companies
@@ -553,6 +623,7 @@ Listado de grupos: List of groups
 Listado de niveles: List of levels
 Listado de notificaciones: List of notifications
 Listado de participantes: List of participants
+Listado de participantes aprobados: List of approved participants
 Listado de preguntas: List of questions
 Listado de preguntas de la evaluación: Questions list of test
 Listado de programas: List of programs
@@ -563,7 +634,9 @@ Listado de temas: List of topics
 Listado de Tipos de Notificaciones: List of Types of Notifications
 Listado de tutoriales: List of tutorials
 Listado de usuarios: List of users
+Listado de participantes por empresa: List of participants per company
 Lo sentimos. Sesión expirada.: We are sorry. Session is expired.
+Logueado: Logged in
 Login repetido: Login repeated
 Login requerido: Login required
 Logo de la empresa: Company logo
@@ -577,7 +650,7 @@ Martes: Tuesday
 Más recientes: Most recent
 Más valorados: Most valued
 Material complementario: Complementary content
-Materias vistas: Matter seen
+Materias vistas: Subjects seen
 Mensaje: Message
 Mensaje del servidor: Server message
 Mi avance: My progress
@@ -588,36 +661,40 @@ Mis Programas: My Programs
 Modificado el: Modified at
 Modificado por: Modified by
 Modificar evento: Modify event
+Módulo: Module
 Módulos: Modules
 Módulos vistos: Modules seen
 Mostrando registros del: Showing items of
 Mostrar: Show
+Mostrar contraseña: Show password
 Mostrar los resultados de la evaluación: Show evaluation results
 Mostrar preferencia: Show preference
 Mostrar resultados: Show results
+MOSTRAR TODOS LOS COMENTARIOS: SHOW ALL COMMENTS
 Mover: Move
-Mover página: Move page
 Muro: Wall
+Mover página: Move page
 Ningún dato disponible en esta tabla: No data available in this table
 Nivel: Level
 Nivel no existente para esta empresa: No level for this company
 Niveles: Levels
 Niveles por empresas: Levels by companies
 no existe: does not exit
-No has elegido el tipo de pregunta: You have not chosen the question type
-no posee participantes registrados: does not have registered participants
 No existe destino al que se pueda mover la página: There is not destination in which the page can be moved
 No existe evaluación para esta página: There is not test for this page
 No existen páginas: There are no pages
 No existen registros para esta consulta: No records for this query
 No existen usuarios conectados en este momento: There are no users connected at this time
-No hay problema, te enviaremos un correo con: No problem, we send you an email with
-No hay Programas disponibles para la empresa. Contacte al administrador del sistema.: There are no Programs available for the company. Contact the system administrator.
 No has alcanzado la aprobación de la evaluación: You have not reached the evaluation approval
 No has alcanzado la calificación para la aprobación de: You have not reached the qualification for the approval of
+No has elegido el tipo de pregunta: You have not chosen the question type
+No hay problema, te enviaremos un correo con: No problem, we send you an email with
+No hay Programas disponibles para la empresa. Contacte al administrador del sistema.: There are no Programs available for the company. Contact the system administrator.
 No iniciados: Without starting
 No Iniciado: Not started
+no posee participantes registrados: does not have registered participants
 No se encontraron resultados: No found results
+No se encontró información para este usuario: No data found for this username
 No se ha registrado ninguna actividad... Se cerrará su sesión en los próximos 5 segundos: No activity has been recorded ... Your session will be closed in the next 5 seconds
 No se mostrará en la página de login: It will not be shown in login page
 No se permiten espacios en blanco.: Blank spaces are not allowed.
@@ -629,17 +706,19 @@ No se pudo filtrar el listado.: It could not filter the list.
 No se pudo guardar el evento. Inténtalo de nuevo.: The event could not be saved. Try again.
 No se pudo habilitar/inhabilitar el acceso a esta página.: It could not allow/deny the access to this page.
 No te rindas: Do not give up
+No tiene evaluación: It does not have evaluation
 No tiene sub-páginas: It has not sub-pages
 Nombre: Name
 Nombre de usuario: Username
 Nombre para esta página: Name for this page
 Nombre requerido: Name required
-Nombre del partcipante: Name of the participant
+Nombre del participante: Name of the participant
 Nombres deben ser solo alfabéticos: Names must be alphabetical
 Nota: Score
 Notas: Scores
 Noticia: News
 Noticias: News
+Notificación: Notification
 Noticias y Novedades: News and Novelties
 Notificaciones: Notifications
 Notificaciones programadas: Programmed notifications
@@ -652,8 +731,12 @@ Nuevo espacio colaborativo: New collaborative space
 Nuevo nivel: New level
 Nuevo nivel de la empresa: New level of company
 Nuevo registro: New item
+Nuevo Registro: New item
 Nuevo tipo de pregunta: New type of question
 Nuevos registros almacenados: New records added
+Ocultar: answer
+Omitir: Skip
+Ofrecemos disculpas por las molestias ocasionadas: We apologize for the inconvenience caused
 Opción: Option
 Opción correcta (Lado B): Correct option (Side B)
 Opciones: Options
@@ -666,6 +749,7 @@ Página a mover: Page to move
 Página movida: Page moved
 Página seleccionada: Selected page
 Página asociada a la evaluación: Page associated to this test
+Página en mantenimiento: Page in maintenance
 Página padre: Father page
 Páginas: Pages
 Páginas asignadas a: Assigned pages to
@@ -674,19 +758,21 @@ Páginas por niveles: Pages by levels
 Panel de acceso: Login
 Paso: Step
 País: Country
+Para disponer del archivo accede a: To have the file go to
+Para una correcta visualización de los recursos disponbles en : For a correct visualization of the resources available in 
 Para enviar la notificación inmediatamente seleccione la fecha de hoy: To send the notification immediately select today
 Para ver el detalle del evento puede entrar al siguiente enlace: To see the detail of the event you can enter the following link
+participante: participant
+Participante: Participant
 participantes: participants
 Participantes: Participants
-participante: participant
 Participantes activos: Active participants
 Participantes inactivos: Inactive participants
 Participantes no iniciados: Uninitiated participants
 Participantes registrados: Registered participants
-Participantes de la empresa: Company participants
-Participantes cursando: Participantes cursando
-Participantes culminados: Participantes culminados
-Participantes conectados: Participantes conectados
+Participantes cursando: Participants taking part
+Participantes culminados: Finished participants
+Participantes conectados: Connected participants
 Participantes que aunque tienen usuario y clave nunca se han logueado en la plataforma: Participants who, although they have username and password, have never logged on the platform
 Participantes que han aprobado el último módulo del programa o curso: Participants who have approved the last module of the program or course
 Participantes que han ingresado al programa o curso asignado: Participants who have entered the assigned program or course
@@ -698,9 +784,9 @@ Participantes seleccionados: Sele participants
 Pdf: Pdf
 PDF requerido: PDF is required
 Perfil de usuario: User profile
-Perfil de participante: Participant profile
+Perfil del participante: Participant profile
 Perfil Empresarial: Company Profile
-Periodo: Period
+Período: Period
 Permisos: Permissions
 Permisos de Acceso: Access Permissions
 Permisos de Acceso para el rol: Access Permissions for role
@@ -721,6 +807,7 @@ Preguntas no encontradas: Questions not found
 Prelación: Prelation
 Prelada por: Preached by
 Presiona el botón finalizar para completar: Press finish button to complete
+Primera conexión: First connection
 Procesando: Processing
 Procesar: Process
 Programa: Program
@@ -728,24 +815,34 @@ Programación del aviso: Notification schedule
 Programado para: scheduled at
 Programar nuevo aviso: Program new notice
 Programas: Programs
+Programas asignados: Assigned programs
+Programas en curso: Programs in progress
 Programas Finalizados: Finished programs
+Programas no iniciados: Programs not started
 Prog. asociados: Associated Prog.
-Promedio de conexiones: Average connections
+Promedio: Average
+Promedio de conexión: Connection average
 Promedio evaluación módulo: Average evaluation module
 Publicar: Publish
 Puede acceder a este espacio a través del siguiente enlace: You can access through following link
 Puede cerrar y reiniciar sesión para restablecer los permisos de acceso: You can sign out and restart session to reset your access permissions
 Puede contactar con el Administrador del Sistema para otorgarle permisos de acceso a este módulo: You can contact to System Administrator in order to grant access to this module
 Puede ingresar de nuevo desde la pantalla de login: You can try loging in again
-Puede solicitar crear una evaluación para esta página a través del Administrador de Contenido del equipo de Formación 2.0: You can request create a test for this page through the Content Administrator of Formación 2.0 team
+Puede solicitar crear una evaluación para esta página a través del Administrador de Contenido del equipo de Formación Smart: You can request create a test for this page through the Content Administrator of Formación Smart team
 Puntaje: Score
 Puntaje con que se aprueba: Score with which it is approved
 Puntaje definitivo del programa: Definitive score of the program
 que aún no han ingresado a la plataforma: that have not yet entered the platform
 QR: QR
+Quieres hacer un tour guiado: You want to take a guided tour
 realizó una publicación en el muro de: make a publication on the wall of 
+realizó una publicación en el en el espacio colaborativo de: made a publication in the in the collaborative space of
+formación smart, recomendamos utilizar la ultima versión del: formación smart, we recommend using the latest version of the
+Recomendación: Recommendation
 Recordarme: Remember me
-Recordar mi contaseña: Remember my password
+Recordar mi contraseña: Remember my password
+Recuperación de contraseña: Password recovery
+Recurso: Resource
 Recursos: Resources
 Recursos del programa: Program resources
 Registrar Empresa: Add/Edit Company
@@ -759,20 +856,30 @@ Recuperar contraseña: Recover password
 Repetir evaluación: Repeat evaluation
 Reportar problema: Report issue
 Reporte de participantes aprobados por programas: Report of participants approved by programs
+Reporte de participantes aprobados en programas: Report of approved participants in programs
 Reporte de participantes cursando por programas: Report of participants studying through programs
-Reporte de participantes no iniciados en programas: Report of participants not initiated in programs
-Reporte de participantes registrados por programas: Report of participants registered by programs
+Reporte de participantes cursando el programa: Report of participants attending the program
+Reporte de participantes no iniciados en programa: Report of participants not initiated in program
+Reporte de participantes registrados en programas: Report of registered participants
 Reporte de participantes por empresa: Participant report by company
 Reportar un problema: Report a problem
 Responder: Answer
+Responder comentario: Answer comment
 Responder publicación: Answering post
 respondió en el muro al comentario de: answered the comment on the wall
 respondió a tu comentario en el muro de: answered to your comment on wall
+respondió a tu publicación en el espacio colaborativo de: responded to your post in the collaborative space of
+respondió una publicación en el espacio colaborativo de: replied a post in the collaborative space of
+respondió a uno de tus comentarios en el muro de: answered to one of your comments on wall of
 Respuesta: Answer
-Respuestas comentario seleccionado: Answers selected comment
+Respuesta creada con éxito: Response created successfully
+Respuestas: Answers
+Respuestas comentario seleccionado: Selected comment answers
+Respuestas del tema seleccionado: Selected subject answers
 Resultado del archivo procesado: Result of the processed file
 Resultados: Results
 Resumen: Summary
+Resumen de registros de participantes del: Summary of records of participants of the
 Resumen de registros de participantes en el: Summary of records of participants in the
 Resumen general de registros: General summary of records
 Resumen general de registros por empresa: General summary of records per company
@@ -796,6 +903,7 @@ Seleccione la empresa para mostrar las páginas asignadas: Select the company in
 Seleccione la fecha difusión: Select broadcasting date
 Sesión expirada: Expired session
 Si: Yes
+Sí: Yes
 Si acepta no puede revertir el cambio: If you accept, you can not revert this change
 Si desea que la notificación se difunda al guardar los cambios, seleccione la fecha de hoy.: If you want the notifiaction to be broadcast when you save the changes, select today date.
 Si deseas, puedes realizar la evaluación haciendo clic en el botón: If you want, you can take the evaluation clicking the button
@@ -806,7 +914,8 @@ Si marca SI, la página tendrá una sección en el que los participantes podrán
 Si marca SI, los usuarios de la empresa podrán acceder al contenido de esta página, incluso si ellos han aprobado.: If check YES, users of this company can access to this page content, even if they have approved.
 Si marca SI, los usuarios de la empresa podrán visualizar el enlace de esta página.: If check YES, users of this company can view this page link.
 Si marca SI, todas las sub-página tendrán la misma fecha de inicio y vencimiento.: If check YES, all of sub-pages have same start and expiration date.
-Si necesitas ayuda escribenos a: If you need help email us to
+Si necesitas ayuda escríbenos a: If you need help email us to
+Si no realizaste la solicitud de credenciales, comunícate con el equipo de soporte a traves de: If you did not make the credential request, contact the support team through
 Si presionas: If you press
 Si marca SI, los participantes de la empresa podrán visualizar el enlace de esta página.: If you check YES, company participants can view the link on this page.
 Si marca SI, los participantes de la empresa podrán acceder al contenido de esta página, incluso si ellos han aprobado.: If you check YES, the participants of the company can access the content of this page, even if they have approved.
@@ -815,12 +924,16 @@ Si un participante ya está registrado en la base de datos solo se actualizarán
 Sigue aprendiendo: Keep learning
 Sigue intentándolo: Keep trying
 Siguiente: Next
+Sin correo: Without email
 Sin leer: Unread
-Sistema Formación: System Training
+Sistema Formación Smart: System Formación Smart
 Sólo archivo en PDF: Only PDF file
 Sólo archivos con extensión xls, xlsx o csv.: Only xls, xlsx or csv extension
 Sólo archivos con extensión .jpg o .png: Only files with extension .jpg or .png
 Sólo archivos con extensión .pdf: Only files with .pdf extension
+Sólo archivos con extensión .mp4 o .webm o .ogv: Only files with extension .mp4 or .webm or .ogv
+Sólo archivos con extensión .mp3: Only files with extension .mp3
+Sólo archivos con extensión mp4 o webm.: Only files with mp4 or webm extension.
 Solo es necesaria una columna que tendrá los nombres de los niveles: Only it is necessary one column for levels name
 Soporte virtual: Virtual support
 Su registro ha sido eliminado: The item has been deleted
@@ -830,9 +943,10 @@ Subir Archivo de participantes: Upload participants file
 Sub-Aplicación de: Sub-Application of
 Sub-Aplicaciones de: Sub-Applications of
 Sub-páginas: Sub-pages
-También puede solicitar la carga del certificado para esta página a través del Administrador de Contenido del equipo de Formación 2.0: You can also request the upload of this certificate through the Content Manager of Formación 2.0 team
+También puede solicitar la carga del certificado para esta página a través del Administrador de Contenido del equipo de Formación Smart: You can also request the upload of this certificate through the Content Manager of Formación Smart team
 Teléfono de contacto: Contact Number
 Tema: Theme
+Tema seleccionado: Selected subject
 Tendrás: You will have
 Thumbnails de la plantilla: Thumbnails of template
 Thumbnails inexistentes: No thumbnails
@@ -848,6 +962,7 @@ Tipo de elemento: Element type
 Tipo de Imagen: Type of Image
 Tipo de Imagen Certificado: Type of Image Certified
 Tipo de logo: Type of logo
+Tipo de recurso: Resource Type
 Tipo de pregunta: Question type
 Tipo de Noticia: Type of News
 Tipo de notificación: Notification type
@@ -859,11 +974,15 @@ Todos: All
 Todos los derechos reservados: All rights reserved
 Todos los empleados de la empresa: All of the employees of the company
 Todos los niveles: All levels
+TODOS LOS TEMAS: ALL SUBJECTS
 Tomar evaluación: Take test
+Total aprobados: Total approved
+Total de registros: Total records
 Tu calificación: Your score
 Tu comentario: Your comment
 Tu respuesta: Your answer
 Tutoriales: Tutorials
+Última conexión: Last connection
 Últimos 12: Last 12
 Url de la empresa no existe: Url for this company not found
 Url no encontrada: Url not found
@@ -889,6 +1008,7 @@ Variables de colores que se aplican a la plantilla: Color variables that are app
 Veces cursadas: Times Coursed
 Vencido: Expired
 Vencimiento: Expiration
+Vence hoy: Expire today
 Ver: See
 Ver historial: See history
 Ver más: See more
@@ -901,6 +1021,8 @@ Ver ranking: See ranking
 Ver respuesta: See answer
 Ver Sub-Aplicaciones: See Sub-Applications
 Ver thumbnails: See thumbnails
+Ver Comentarios: See comments
+Vídeo requerido: Vídeo requerido
 Viernes: Friday
 Vista previa: Preview
 Vista previa del dashboard: Dashboard preview
@@ -911,7 +1033,9 @@ Volver al contenido: Back to the content
 Volver al inicio del contenido: Back to the begining of the content
 Volver al programa: Back to program page
 Volver al inicio: Back to home
+Volver al listado: Back to list
 y el: and
 y finaliza el: and ends at
 Yo: Me
+Zona horaria: Time zone
 ¿Olvidaste tu contraseña?: Did you forget your password?

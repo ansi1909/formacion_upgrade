@@ -10,7 +10,7 @@
             {% if app.session.started and app.session.get('empresa').titulo is defined and app.session.get('empresa').titulo != '' %}
                 {{ app.session.get('empresa').titulo }}
             {% else %}
-                {{ 'Sistema Formación'|trans }} 2.0
+                {{ 'Sistema Formación Smart'|trans }}
             {% endif %}
         </title>
         {% set img = app.session.get('empresa').favicon is defined ? app.session.get('empresa').favicon is not null and app.session.get('empresa').favicon != '' ? uploads~app.session.get('empresa').favicon : asset('img/icono.png') : asset('img/icono.png') %}
@@ -22,11 +22,20 @@
     
     <body>
         
-        <input type="hidden" id="url_programa" name="url_programa" value="{{ path('_programa', { 'programa_id': programa_id }) }}">
+        <input type="hidden" id="url_programa" name="url_programa" value="{{ path('_programa', { 'programa_id': programa.id }) }}">
         <input type="hidden" id="url_inicio" name="url_inicio" value="{{ path('_inicio') }}">
-        <input type="hidden" id="url_next" name="url_next" value="{{ path('_lecciones', { 'programa_id': programa_id, 'subpagina_id': continue_button.next_lesson }) }}">
-        <input type="hidden" id="url_test" name="url_test" value="{{ path('_test', { 'pagina_id': continue_button.evaluacion, 'programa_id': programa_id }) }}">
-        <input type="hidden" id="url_content" name="url_content" value="{{ path('_lecciones', { 'programa_id': programa_id, 'subpagina_id': prueba_log.prueba.pagina.id }) }}">
+        <input type="hidden" id="url_next" name="url_next" value="{{ path('_lecciones', { 'programa_id': programa.id, 'subpagina_id': continue_button.next_lesson }) }}">
+        <input type="hidden" id="url_test" name="url_test" value="{{ path('_test', { 'pagina_id': continue_button.evaluacion, 'programa_id': programa.id }) }}">
+        <input type="hidden" id="url_content" name="url_content" value="{{ path('_lecciones', { 'programa_id': programa.id, 'subpagina_id': prueba_log.prueba.pagina.id }) }}">
+
+        {% set categoria = prueba_log.prueba.pagina.categoria.nombre %}
+        {% if categoria == 'Materia' %}
+            {% set articulo = 'de la'|trans %}
+        {% elseif categoria == 'Lección' %}
+            {% set articulo = 'de la'|trans %}
+        {% else %}
+            {% set articulo = 'del'|trans %}
+        {% endif %}
         
         <header>
             <nav class="navbar eval_header justify-content-between py-0 fixed-top bg-white">
@@ -34,12 +43,12 @@
                     
                 </div>
                 <div class="navbar-brand justify-content-center align-items-center " href="#">
-                    <h2 class="titulo_eval pl-5">{{ prueba_log.prueba.nombre }}</h2>
-                    <h5 class="sub_titulo_eval pl-5">{{ 'Resultados'|trans }}</h5>
+                    <h2 class="titulo_eval pl-5">{{ programa.categoria.nombre }}: {{ programa.nombre }}</h2>
+                    <h5 class="sub_titulo_eval pl-5">{{ 'Evaluación'|trans }} {{ articulo }} {{ categoria }}: {{ prueba_log.prueba.pagina.nombre }}</h5>
                 </div>
                 <a class="navbar-brand" href="#">
-                    {% set img_logo = app.session.get('empresa').logo is defined ? app.session.get('empresa').logo is not null and app.session.get('empresa').logo != '' ? uploads~app.session.get('empresa').logo : asset('front/assets/img/logo_formacion.png') : asset('front/assets/img/logo_formacion.png') %}
-                    <img class="img-fluid py-1 {{ app.session.get('empresa').tipo_logo }}" src="{{ img_logo }}" alt="logo formación 2.0">
+                    {% set img_logo = app.session.get('empresa').logo is defined ? app.session.get('empresa').logo is not null and app.session.get('empresa').logo != '' ? uploads~app.session.get('empresa').logo : asset('front/assets/img/logo_formacion_smart.png') : asset('front/assets/img/logo_formacion_smart.png') %}
+                    <img class="img-fluid py-1 {{ app.session.get('empresa').tipo_logo }}" src="{{ img_logo }}" alt="logo formación smart">
                 </a>
             </nav>
         </header>
@@ -56,7 +65,7 @@
                         </div>
                         <div class="col-10 mt-3 text-center">
                             <h3 class="color-light-black">{{ 'Si deseas volver a intentarlo haz clic aquí'|trans }}:</h3>
-                            <a href="{{ path('_test', { 'pagina_id': prueba_log.prueba.pagina.id, 'programa_id': programa_id }) }}">
+                            <a href="{{ path('_test', { 'pagina_id': prueba_log.prueba.pagina.id, 'programa_id': programa.id }) }}">
                                 <button class="btn btnRepeatEval"><span class="material-icons ic-resul alreves" title="{{ 'Repetir evaluación'|trans }}" data-toggle="tooltip" data-placement="bottom">replay</span></button>
                             </a>
                         </div>
@@ -83,20 +92,20 @@
                 <section class="pb-4">
                     <div class="row align-items-center justify-content-center">
                         <div class="col-10 my-3 text-center">
-                            <h2 class="titulo-resul">{{ 'FELICITACIONES'|trans }}</h2>
+                            <h2 class="titulo-resul">¡{{ 'FELICITACIONES'|trans }}!</h2>
                             <h3>{{ 'Has aprobado con éxito la evaluación'|trans }}</h3>
                         </div>
                         {% if not try_button and continue_button.evaluacion == 0 and continue_button.next_lesson == 0 %}
                             <ul class="panelBtn">
                                 <li class="seccBtn">
-                                    <a href="{{ path('_generarCertificado', { 'programa_id': programa_id }) }}" target="_blank">
+                                    <a href="{{ path('_generarCertificado', { 'programa_id': programa.id }) }}" target="_blank">
                                         <button class="btn btnC text-center" data-toggle="tooltip" data-placement="bottom" title="{{ 'Imprimir certificado'|trans }}">
                                             <img src="{{ asset('front/assets/img/certificado.svg') }}" alt="" class="certi">
                                         </button>
                                     </a>
                                 </li>
                                 <li class="seccBtn">
-                                    <a href="{{ path('_generarNotas', { 'programa_id': programa_id }) }}" target="_blank">
+                                    <a href="{{ path('_generarNotas', { 'programa_id': programa.id }) }}" target="_blank">
                                         <button class="btn btnC text-center" data-toggle="tooltip" data-placement="bottom" title="{{ 'Imprimir constancia de notas'|trans }}">
                                             <img src="{{ asset('front/assets/img/certi_notas.svg') }}" alt="" class="notas">
                                         </button>
@@ -122,7 +131,7 @@
                                         {% set articulo = 'del'|trans %}
                                     {% endif %}
                                     <h4 class="color-light-black">{{ 'Es momento de tomar la evaluación'|trans }} {{ articulo~' '~continue_button.nombre_pagina }}.</h4>
-                                    <h4 class="color-light-black">{{ 'Tendrás'|trans }} <strong>{{ continue_button.duracion }}</strong> {{ 'minutos para completar la evaluación'|trans }}. {{ '¿Estás list@?'|trans }}</h4>
+                                    <h4 class="color-light-black">{{ 'Tendrás'|trans }} <strong>{{ continue_button.duracion }}</strong> {{ 'minutos para completar la evaluación'|trans }}. {{ '¿Estás listo/a?'|trans }}</h4>
                                 </div>
                             </div>
                             <div class="row mt-5 align-items-center justify-content-center">

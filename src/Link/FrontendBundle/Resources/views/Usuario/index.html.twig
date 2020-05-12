@@ -5,10 +5,54 @@
     <link rel="stylesheet" href="{{ asset('front/js/plugins/jquery-upload-file/css/style.css') }}">
     <link rel="stylesheet" href="{{ asset('front/js/plugins/jquery-upload-file/css/jquery.fileupload.css') }}">
     <style>
-        .error {
-            color: #e60f0f;
-        }
-    </style>
+            .ancho{
+
+                height: 350px;"
+            }
+            .error__style{
+                color: #fd5c63; 
+                margin: 5px 10px 0px 0px; 
+                text-align: left;
+            }
+            .success__style{
+                color: #49A12F; 
+                margin: 5px 10px 0px 0px; 
+                text-align: left;
+            }
+            #contCorreoRecu{
+                margin-left: 14px;
+            }
+            .field-icon{
+              float: right;
+              margin-top: -48px;
+              position: relative;
+              z-index: 2;
+            }
+            .blocked{
+                background-image: linear-gradient(-180deg, #8E8C8F 4%, #8E8C8F 95%) !important;
+                color: #ffffff !important;
+                pointer-events: none;
+            }
+            .exito_clave{
+                color: #5CAEE6;
+            }
+            .error_clave{
+                color: #e60f0f;
+            }
+            #error_clave{
+                font-size: 1.1rem;
+            }
+            #radar-img{
+                position:absolute;
+                z-index:100;
+                top: 3.5rem;
+            }
+            #pic-img{
+                display: flex;
+                justify-content: center;
+
+            }
+        </style>
 {% endblock %}
 
 {% block body %}
@@ -26,7 +70,12 @@
 <section class="card-datos">
     <div class="row align-items-center justify-content-center">
         <div class="col-sm-3 col-md-3 col-3 col-lg-3 col-xl-3 text-right">
-            <div class="pic-img">
+            <div class="pic-img" id="pic-img">
+            <div class="float-right mt-4"  id="radar-img" style="display: none;">
+               <div class="contenedor">
+                  <div class="radar"></div>
+               </div>
+            </div>
                 <form id="form-upload" method="POST">
                     <input type="hidden" id="url_upload" name="url_upload" value="{{ path('_ajaxUploadFotoUsuario') }}">
                     <input type="hidden" id="uploads" name="uploads" value="{{ uploads }}">
@@ -44,7 +93,7 @@
             <h2 class="name-titulo text-center">{{ nombre }} {{ apellido }}</h2>
             <div class="row justify-content-between">
                 <div class="col-6 text-right">
-                    <span class="info_datos">{{ 'Nombre del partcipante'|trans }}</span>
+                    <span class="info_datos">{{ 'Nombre del participante'|trans }}</span>
                 </div>
                 <div class="col-6">
                     <span class="datos_user">{{ login }}</span>
@@ -75,6 +124,7 @@
                 </div>
             </div>
         </div>
+        <!-- Modal cambiar contraseña-->
         <!--<div class="col-xs-4 col-sm-4 col-md-4 col-4 col-lg-4 col-xl-4 text-center" >
             <div class="imgExp-coin">
                 <img class="imgExp" src="{{asset('img/medal.svg')}}" alt="">
@@ -93,22 +143,22 @@
     </div>
     <div class="row align-items-center justify-content-around mt-12v">
         <div class="col-sm-auto col-md-auto col-auto col-lg-auto col-xl-auto text-center">
-            <a href="{{ path('_misProgramas', { 'activo':1 }) }}"><button type="button" class="btn btn-primary">{{ 'Ver mis certificados'|trans }}</button></a>
+            <a href="{{ path('_misProgramas', { 'activo': 1 }) }}"><button type="button" class="btn btn-primary">{{ 'Ver mis certificados'|trans }}</button></a>
         </div>
         <div class="col-xs-auto col-sm-auto col-md-auto col-auto col-lg-auto col-xl-auto text-center">
-            <a href="#" data-toggle="modal" data-target="#modaledit"><button type="button" class="btn btn-primary">{{ 'Editar perfil'|trans }}</button></a>
+            <a href="#" data-toggle="modal" data-target="#modaledit"><button type="button" class="btn btn-primary" id="editar">{{ 'Editar perfil'|trans }}</button></a>
         </div>
         {#<div class="col-xs-auto col-sm-auto col-md-auto col-auto col-lg-auto col-xl-auto text-center">
             <a href="{{ path('_ranking') }}"><button type="button" class="btn btn-primary">{{ 'Ver ranking'|trans }}</button></a>
         </div>#}
         <div class="col-sm-auto col-md-auto col-auto col-lg-auto col-xl-auto text-center">
-            <a href="#" data-toggle="modal" data-target="#modalpwd"><button type="button" class="btn btn-primary">{{ 'Cambiar contraseña'|trans }}</button></a>
+            <a href="#" data-toggle="modal" data-target="#modalpwd"><button type="button" class="btn btn-primary" id="cambiar">{{ 'Cambiar contraseña'|trans }}</button></a>
         </div>
     </div>
 </section>
 
 <!-- Modal Editar perfil-->
-<div class="modal modalEditP" id="modaledit" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal modalEditP" id="modaledit" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" style="height: 92%;">
     <div class="container-fluid">
         <div class="row justify-content-end">
             <div class="col-auto">
@@ -136,7 +186,9 @@
                     <div class="form-group text-left">
                         <label for="correo_corporativo">{{ 'Correo secundario'|trans }}</label>
                         <input type="mail" class="form-control " id="correo_secundario" name="correo_secundario" value="{{ correo_corporativo }}">
-                        <p id="correo_usado" style="display:none; font-size: 1rem;">Correo existente</p>
+                        <p id="correo_usado" style="display:none; font-size: 1.04rem;text-align: center;" class="error__style" ></p>
+                        <p id="correo_exito" style="display:none; font-size: 1.04rem;text-align: center;   color: #5CAEE6;" class="error__style" >Cambio de correo realizado</p>
+
                     </div>
                     <div class="form-group text-left">
                         <label for="fecha_nacimiento">{{ 'Fecha de nacimiento'|trans }}</label>
@@ -146,7 +198,7 @@
             </div>
             <div class="row aling-item-center justify-content-center">
                 <div class="col-6 text-center">
-                    <button type="button" class="btn btn-primary boton" id="modificar">{{ 'Guardar'|trans }}</button>
+                    <button type="button" class="btn btn-primary boton blocked" id="modificar">{{ 'Guardar'|trans }}</button>
                 </div>
             </div>
             <div class="row justify-content-center" style="display:none;" id="wait_profile">
@@ -176,21 +228,28 @@
             </div>
         </div>
         <form id="form-clave" action="{{ path('_ajaxClave') }}">
-            <div class="row aling-item-center justify-content-center mt-5">
+            <div class="row aling-item-center justify-content-center mt-5 pnlogin">
                 <div class="col-10">
-                    <div class="form-group text-left">
-                        <label for="clave">{{ 'Nueva contraseña'|trans }}</label>
-                        <input type="password" class="form-control mb-1" id="clave" name="clave">
+                    <div class="form-group text-left pwdLogin">
+                        <label class="mb-2" for="password">{{ 'Nueva contraseña'|trans }}</label>
+                        <input type="password" class="form-control mb-1" id="password" name="password" placeholder="{{ 'Contraseña'|trans }}">
+                        <a href="#" id="check_mostrar" class="field-icon" style="border:solid 2px #000000;height: 44px;border-top-right-radius: 7px;border-bottom-right-radius: 7px;border-color:#80ccff;">
+                        <i class="material-icons" style="margin-top: 7px;">visibility</i>
+                        </a>
                     </div>
                     <div class="form-group text-left">
-                        <label for="confirmar">{{ 'Confirmar contraseña'|trans }}</label>
-                        <input type="password" class="form-control mb-1" id="confirmar" name="confirmar">
+                        <label class="mb-2" for="confirmar">{{ 'Confirmar contraseña'|trans }}</label>
+                        <input type="password" class="form-control mb-1" id="confirmar" name="confirmar" placeholder="{{ 'Contraseña'|trans }}">
+                        <a href="#" id="check_mostrar1" class="field-icon" style="border:solid 2px #000000;height: 44px;border-top-right-radius: 7px;border-bottom-right-radius: 7px;border-color:#80ccff;">
+                        <i class="material-icons" style="margin-top: 7px;">visibility</i>
+                        </a>
                     </div>
                 </div>
             </div>
+            <span id="error_clave" class="row aling-item-center justify-content-center mt-5"></span>
             <div class="row aling-item-center justify-content-center mt-5">
                 <div class="col-auto">
-                    <button type="button" class="btn btn-primary boton" id="cambio">{{ 'Cambiar contraseña'|trans }}</button>
+                    <button type="button" class="btn btn-primary boton blocked" id="cambio">{{ 'Cambiar contraseña'|trans }}</button>
                 </div>
             </div>
             <div class="row justify-content-center" style="display:none;" id="wait_password">
@@ -220,48 +279,139 @@
     <script type="text/javascript">
         $("#form").validate({
             rules: {
-                'correo_personal': {
-                    required: true,
+                
+                'correo_secundario': {
                     email: true
-                },
-                'correo_corporativo': {
-                    email: true
-                },
-                'fecha_nacimiento': {
-                    required: true
                 }
             },
             messages: {
-                'correo_personal': {
-                    required: "{{ 'Debe ingresar el correo electrónico.'|trans }}",
-                    email: "{{ 'El correo personal tiene un formato inválido.'|trans }}"
-                },
-                'correo_corporativo': {
-                    email: "{{ 'El correo corporativo tiene un formato inválido.'|trans }}"
-                },
-                'fecha_nacimiento': {
-                    required: "{{ 'Fecha de nacimiento es requerida.'|trans }}"
+                
+                'correo_secundario': {
+                    email: "{{ 'El correo secundario tiene un formato inválido'|trans }}."
                 }
             }
         });
 
         $("#form-clave").validate({
+            errorLabelContainer: "#error_clave",
             rules: {
-                'clave': {
-                    required: true
+                'password': {
+                    required: true,
+                    minlength: 4,
+				    maxlength: 10,
+				    alphanumeric: true
+                    
                 },
                 'confirmar': {
-                    equalTo: "#clave"
+                    equalTo: "#password"
                 }
             },
             messages: {
-                'clave': {
-                    required: "{{ 'La contraseña es requerida'|trans }}"
+                'password': {
+                    required: "{{ 'La contraseña es requerida'|trans }}",
+                    minlength: "{{ 'Debe tener mínimo 4 caracteres' }}",
+                    maxlength: "{{ 'Debe tener máximo 10 caracteres' }}",
+                    alphanumeric: "{{ ' No se aceptan caracteres especiales, ejempo' }} !@#$%&"
                 },
                 'confirmar': {
                     equalTo: "{{ 'Debe coincidir con la contraseña'|trans }}"
                 }
             }
         });
+
+        jQuery.validator.addMethod("alphanumeric", function(value, element) {
+            return this.optional(element) || /^[\w.]+$/i.test(value);
+        }, "Sólo se permiten letras, números y guiones bajos");
+
+        $('#check_mostrar, #check_mostrar1').click(function(event)
+            {
+                var mostrar = $(this).attr('id');
+                 event.preventDefault();
+                 console.log(mostrar);
+                 if(mostrar == 'check_mostrar')
+                 {
+                    var check= document.getElementById('password');
+                    if(check.type=="password")
+                    {
+                        check.type="text";
+                    }
+                    else
+                    {
+                        check.type="password";
+                    }
+                 }
+                 else if(mostrar == 'check_mostrar1'){
+                    var check= document.getElementById('confirmar');
+                    if(check.type=="password")
+                    {
+                        check.type="text";
+                    }
+                    else
+                    {
+                        check.type="password";
+                    }
+                 }
+                 
+            });
+        
+            $("#confirmar").keyup(function(){
+				var password = $('#password').val();
+				var confirmar = $('#confirmar').val();
+				if (password == confirmar){
+					var valid = $("#form-clave").valid();
+					if (!valid) 
+					{
+						$("#cambio").addClass( "blocked" );
+					}
+					else {
+						$("#cambio").removeClass( "blocked" );
+					}
+				}
+				else {
+					$("#cambio").addClass( "blocked" );
+				}
+            });
+
+            $("#correo_secundario").keyup(function(){
+                var valid = $("#form").valid();
+                if (!valid) 
+                {
+                    $("#modificar").addClass( "blocked" );
+                    $('#correo_usado').html('');
+                }
+                else {
+                    $("#modificar").removeClass( "blocked" );
+                }
+            });
+
+            $("#password").keyup(function(){
+                $('#error_clave').html("");
+                var password = $('#password').val();
+				var confirmar = $('#confirmar').val();
+				if (password == confirmar){
+					var valid = $("#form-clave").valid();
+					if (!valid) 
+					{
+						$("#cambio").addClass( "blocked" );
+					}
+					else {
+						$("#cambio").removeClass( "blocked" );
+					}
+				}
+				else {
+					$("#cambio").addClass( "blocked" );
+				}
+            });
+            
+            $("#editar").click(function(){
+                $("#modificar").addClass( "blocked" );
+            });
+
+            $("#cambiar").click(function(){
+                $("#cambio").addClass( "blocked" );
+                $("#password").val("");
+                $("#confirmar").val("");
+                $('#error_clave').hide();
+            });
     </script>
 {% endblock %}

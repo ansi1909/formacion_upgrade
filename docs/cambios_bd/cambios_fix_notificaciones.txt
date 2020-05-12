@@ -1,0 +1,26 @@
+1 - Cambios en funciones de base de datos
+  . Se elimino el uso de la funcion TO_CHAR() para formatear las fechas, los formateos se realizan en los contraladores.
+	 Funciones modificadas(Deben ser cargadas nuevamente en las bases de datos a utilizar):
+		*fninteraccion_espacio_colaborativo.sql
+		*fninteraccion_muro.sql
+		*fningresos_sistema.sql
+		*fnevaluaciones_modulo.sql
+		*fnavance_programa.sql
+		*fnconexion_usuario.sql
+		*fnlistado_participantes.sql
+	. Se hicieron ajusten en el codigo de las siguientes funciones:
+	   *fnasignar_subpaginas
+	
+	. Se crearon las siguientes funcuiones:
+	  *fncorreos_noentregados.sql
+		
+2 - Nuevas tablas y entidades(las sentencias SQL para crear las tablas se encuentran en: definition.sql)
+    *admin_zona_horaria (Tabla para almacenar las Zonas horarias correspondientes a los paises)
+	*admin_cronjob (Tabla para almacener informacion correspondiente a las ejecuciones de los cronjob)
+	*admin_correo_fallido (Tabla para almacenar informacion de los correos cuya entrega a los usuarios fallo)
+	*admin_introduccion (Tabla creada para almacenar informacion correspondiente al tutorial de introduccion a la plataforma creado por domingo)
+	
+3 - Modificaciones a tablas y entidades(Cambios registrados en: definition.sql)
+   *admin_emprea (Se agrego el campo : zona_horaria_id, para asociar una zona horaria a una empresa)
+   
+	

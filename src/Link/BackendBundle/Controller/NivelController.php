@@ -51,6 +51,12 @@ class NivelController extends Controller
 
         $nombre = $request->request->get('nombre');
         $empresa_id = $request->request->get('empresa_id');
+        $fecha_inicio = $request->request->get('fechaInicio');
+        $fecha_fin = $request->request->get('fechaFin');
+        $fi = explode("/", $fecha_inicio);
+        $inicio = $fi[2].'-'.$fi[1].'-'.$fi[0];
+        $ff = explode("/", $fecha_fin);
+        $fin = $ff[2].'-'.$ff[1].'-'.$ff[0];
 
         $empresa = $em->getRepository('LinkComunBundle:AdminEmpresa')->find($empresa_id);
     
@@ -58,6 +64,8 @@ class NivelController extends Controller
 
         $nivel->setNombre($nombre);
         $nivel->setEmpresa($empresa);
+        $nivel->setFechaInicio(new \DateTime($inicio));
+        $nivel->setFechaFin(new \DateTime($fin));
                 
         $em->persist($nivel);
         $em->flush();
@@ -142,9 +150,20 @@ class NivelController extends Controller
         $nivel_id = $request->request->get('nivel_id');
         $nombre = $request->request->get('nombre');
         $empresa_id = $request->request->get('empresa_id');
+        $fecha_inicio = $request->request->get('fechaInicio');
+        $fecha_fin = $request->request->get('fechaFin');
+        if ($fecha_inicio && $fecha_fin) {
+            $inicio = explode("/",$fecha_inicio);
+            $fin = explode("/", $fecha_fin);
+            $fecha_inicio = new \DateTime($inicio[2].'-'.$inicio[1].'-'.$inicio[0]);
+            $fecha_fin = new \DateTime($fin[2].'-'.$fin[1].'-'.$fin[0]);
+        }else{
+            $fecha_inicio = NULL;
+            $fecha_fin = NULL;
+        }
 
         $empresa = $em->getRepository('LinkComunBundle:AdminEmpresa')->find($empresa_id);
-        
+
         if ($nivel_id){
             $nivel = $em -> getRepository('LinkComunBundle:AdminNivel')->find($nivel_id);
         }
@@ -152,8 +171,12 @@ class NivelController extends Controller
             $nivel = new AdminNivel();
         }
 
+
         $nivel->setNombre($nombre);
         $nivel->setEmpresa($empresa);
+        $nivel->setFechaInicio($fecha_inicio);
+        $nivel->setFechaFin($fecha_fin);
+
                 
         $em->persist($nivel);
         $em->flush();
@@ -173,8 +196,12 @@ class NivelController extends Controller
         $nivel_id = $request->query->get('nivel_id');
         
         $nivel = $this->getDoctrine()->getRepository('LinkComunBundle:AdminNivel')->find($nivel_id);
+
+        //return new response(var_dump($nivel->getFechaInicio()));
         
-        $return = array('nombre' => $nivel->getNombre());
+        $return = array('nombre' => $nivel->getNombre(),
+                        'fechaInicio'=> $nivel->getFechaInicio()? $nivel->getFechaInicio()->format('d/m/Y'):NULL,
+                        'fechaFin'=> $nivel->getFechaFin()? $nivel->getFechaFin()->format('d/m/Y'):NULL);
         
         $return = json_encode($return);
         return new Response($return, 200, array('Content-Type' => 'application/json'));
@@ -189,7 +216,7 @@ class NivelController extends Controller
         $niveles = $this->getDoctrine()->getRepository('LinkComunBundle:AdminNivel')->findBy(array('empresa' => $empresa_id),
                                                                                              array('nombre' => 'ASC'));
 
-        $options = '<option value=""></option>';
+        $options = '<option value="0">Todos los niveles</option>';
         foreach ($niveles as $nivel)
         {
             $options .= '<option value="'.$nivel->getId().'">'.$nivel->getNombre().'</option>';
@@ -206,19 +233,40 @@ class NivelController extends Controller
     {
         $em = $this->getDoctrine()->getManager();
         $empresa_id = $request->query->get('empresa_id');
-        
-        $niveles = $this->getDoctrine()->getRepository('LinkComunBundle:AdminNivel')->findBy(array('empresa' => $empresa_id),
+        $calendario = $request->query->get('calendario');
+
+        if($calendario)
+        {
+            $niveles = $this->getDoctrine()->getRepository('LinkComunBundle:AdminNivel')->findBy(array('empresa' => $empresa_id),
                                                                                              array('nombre' => 'ASC'));
 
-        $options = '<option value=""></option>';
-        foreach ($niveles as $nivel)
-        {
-            $nivel_usuario = $this->getDoctrine()->getRepository('LinkComunBundle:AdminUsuario')->findOneByNivel($nivel->getId());
-            if ($nivel_usuario)
+            $options = '<option value=""></option>';
+            foreach ($niveles as $nivel)
             {
-                $options .= '<option value="'.$nivel->getId().'">'.$nivel->getNombre().'</option>';
+                $nivel_usuario = $this->getDoctrine()->getRepository('LinkComunBundle:AdminUsuario')->findOneByNivel($nivel->getId());
+                if ($nivel_usuario)
+                {
+                    $options .= '<option value="'.$nivel->getId().'">'.$nivel->getNombre().'</option>';
+                }
+            }
+
+            $options .= '<option value="">'.$this->get('translator')->trans('Todos los niveles').'</option>';
+        }
+        else{
+            $niveles = $this->getDoctrine()->getRepository('LinkComunBundle:AdminNivel')->findBy(array('empresa' => $empresa_id),
+                                                                                             array('nombre' => 'ASC'));
+
+            $options = '<option value=""></option>';
+            foreach ($niveles as $nivel)
+            {
+                $nivel_usuario = $this->getDoctrine()->getRepository('LinkComunBundle:AdminUsuario')->findOneByNivel($nivel->getId());
+                if ($nivel_usuario)
+                {
+                    $options .= '<option value="'.$nivel->getId().'">'.$nivel->getNombre().'</option>';
+                }
             }
         }
+        
         
         $return = array('options' => $options);
         

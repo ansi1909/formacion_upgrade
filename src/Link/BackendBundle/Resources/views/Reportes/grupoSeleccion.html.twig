@@ -1,0 +1,10 @@
+<div class="col-sm-16 col-md-16 col-lg-16" id="div-grupo">
+    <label for="programas" class="col-sm-16 col-md-16 col-lg-16 col-form-label">{{ 'Programas'|trans }}</label>
+    <div class="col-sm-16 col-md-16 col-lg-16">
+        <select name="programas[]" id="programas" class="form-control multiple" multiple="multiple">
+            {% for valor in valores %}
+                <option value="{{ valor.id }}" {{ valor.selected }}>{{ valor.nombre }}</option>
+            {% endfor %}
+        </select>
+    </div>
+</div>

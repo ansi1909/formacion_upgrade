@@ -51,7 +51,7 @@
 
 {% set uri = app.request.getbasepath %}
 <form id="form" name="form" action="{{ path('_preferencia', { 'empresa_id': preferencia.empresa.id, 'preferencia_id': preferencia.id }) }}" method="POST">
-<input type="hidden" id="default_logo" name="default_logo" value="{{ asset('front/assets/img/logo_formacion.png') }}">
+<input type="hidden" id="default_logo" name="default_logo" value="{{ asset('front/assets/img/logo_formacion_smart.png') }}">
 <input type="hidden" id="default_favicon" name="default_favicon" value="{{ asset('img/icono.png') }}">
 <input type="hidden" id="url_upload" name="url_upload" value="{{ path('_ajaxUploadLogo') }}">
 <input type="hidden" id="base_upload" name="base_upload" value="recursos/empresas/{{ preferencia.empresa.id }}/">
@@ -124,7 +124,7 @@
                                                 </div>
                                                 <p class="card-text">{{ thumbnail.nombre }}</p>
                                             </div>
-                                            {% if loop.index is divisibleby(2) %}
+                                            {% if loop.index is divisible by(2) %}
                                                 </div>
                                                 <br>
                                                 {% if not loop.last %}
@@ -155,7 +155,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                {% if loop.index is divisibleby(2) %}
+                                {% if loop.index is divisible by(2) %}
                                     </div>
                                     </div>
                                     {% if not loop.last %}
@@ -205,7 +205,7 @@
                                         <small id="atributoHelp{{ atributo.id }}" class="form-text text-muted">{{ atributo.descripcion }}</small>
                                     </div>
                                 </div>
-                                {% if loop.index is divisibleby(2) %}
+                                {% if loop.index is divisible by(2) %}
                                     </div>
                                     <br>
                                     {% if not loop.last %}

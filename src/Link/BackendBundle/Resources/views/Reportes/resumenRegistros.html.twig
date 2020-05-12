@@ -39,6 +39,7 @@
         }
         .verde {
             background-color: #00b050 !important;
+            color: #000 !important;
         }
         .total {
             background-color: #dff0d8 !important;
@@ -56,7 +57,7 @@
 {% set encabezado = usuario.empresa ? 'Resumen general de registros'|trans : 'Resumen general de registros por empresa'|trans %}
 
 <form id="form" name="form" action="{{ path ('_ajaxResumenRegistros') }}" method="POST">
-    {{ include('LinkBackendBundle:Reportes:filtro.html.twig', { 'encabezado': encabezado, 'usuario': usuario, 'empresas': empresas, 'filtro_programas': 1 ,'filtro_tema': 0 }) }}
+    {{ include('LinkBackendBundle:Reportes:filtro.html.twig', { 'encabezado': encabezado, 'usuario': usuario, 'empresas': empresas, 'filtro_programas': 1 ,'filtro_tema': 0 , 'filtro_fecha': 1 ,'resumen_registro': 1, 'filtro_username': 0 }) }}
 </form>
 
 {# Sección de resultados del reporte #}
@@ -68,7 +69,7 @@
     <div class="col-sm-16">
         <div class="card">
             <div class="card-header gradiente">
-                <h5 class="card-title">{{ encabezado }}. <span id="label_filtro" style="display:none;">{{ 'Comparativo hasta el'|trans }} <span id="label_desde"></span> {{ 'y el' }}  <span id="label_hasta"></span>.</span></h5>
+                <h5 class="card-title">{{ encabezado }}. <span id="label_filtro" style="display:none;">{{ 'Comparativo hasta el'|trans }} <span id="label_desde"></span> {{ 'y el' }}  <span id="label_hasta"></span>. {{'Huso horario'|trans}}: <span id="label_horario"></span>.</span></h5>
             </div>
             <div class="card-block">
                 <div id="resultado" style="display:none;">

@@ -5,11 +5,16 @@ $(document).ready(function() {
 	var subpagina_id = $('#subpagina_id').val();
 
 	$('.circle-nav').click(function(){
-
 		var circle_nav = $(this);
+		var muroActivo = $('#muroActivo'+new_pagina_id).val();
+		if (muroActivo == 1) {
+			$("#comments").removeClass("open-comments");
+			$('#ocultarComent').hide();
+			$('#verComent').show();
+		}
+
 		$('video').trigger('pause');
 		$('audio').trigger('pause');
-
 		// Se suprime el css circle-less-viendo
 		if (circle_nav.attr('id') != $('#tab_activo').val())
 		{
@@ -47,18 +52,27 @@ $(document).ready(function() {
 			}
 		});
 
-		// Activar el muro
 		var muroActivo = $('#muroActivo'+new_pagina_id).val();
 		if (muroActivo == 1)
 		{
+			$('#div-botones').addClass('d-flex');
+			$("#comments").removeClass("open-comments");
 			$('#iconComments').show();
-			$('#mas_valorados_comments-'+new_pagina_id).hide(1000);
+			$('#iconComments').prop('disabled',false);
+			$('#verComent').prop('disabled',false);
+			$('#ocultarComent').prop('disabled',false);
+			$('#verComent').show();
+			$('#ocultarComent').hide();
 			$('#mas_recientes_comments-'+new_pagina_id).show(1000);
+			$('#div-botones').show();
 		}
 		else {
+			$('#div-botones').removeClass('d-flex');
+			$('#div-botones').hide();
+			$('#iconComments').prop('disabled',true);
+			$('#verComent').prop('disabled',true);
+			$('#ocultarComent').prop('disabled',true);
 			$("#comments").removeClass("open-comments");
-			$("#main").removeClass("ml-comments");
-			$('#iconComments').hide();
 		}
 
 		$('#pagina_id_viendo').val(new_pagina_id);
@@ -189,82 +203,90 @@ $(document).ready(function() {
 
 	// FUNCIONALIDADES DEL MURO
 	$('#button-comment').click(function(){
-		var comentario = $.trim($('#comentario').val());
-		var prefix = $('#prefix').val();
-		$( this ).hide();
-		if (comentario != '')
-		{
-			$.ajax({
-				type: "POST",
-				url: $('#form-comment').attr('action'),
-				async: true,
-				data: { pagina_id: $('#pagina_id_viendo').val(), mensaje: comentario, muro_id: 0, prefix: prefix },
-				dataType: "json",
-				success: function(data) {
-					$('#comentario').val('');
-					$('#mas_'+prefix+'_comments-'+$('#pagina_id_viendo').val()).prepend(data.html);
-					var puntos = $('#puntos_agregados').val();
-					puntos = parseInt(puntos) + parseInt(data.puntos_agregados);
-					$('#puntos_agregados').val(puntos);
-					$('#button-comment').show();
-					$('#dirty_'+$('#pagina_id_viendo').val()).val(1);
-					observeMuroLecciones();
-					observeLikeLecciones();
-					//clearTimeout( timerId );
-				},
-				error: function(){
-					console.log('Error comentando el muro'); // Hay que implementar los mensajes de error para el frontend
-					$('#button-comment').show();
-				}
-			});
-		}
-	});
-
-	$('.tab_rv').click(function(){
-		var prefix = $('#prefix').val();
-		var pagina_id = $('#pagina_id_viendo').val();
-		var link_tab = $(this);
-		var dirty = $('#dirty_'+pagina_id).val();
-		var link_tab_id = $(this).attr('id');
-		var link_tab_arr = link_tab_id.split('_');
-		var last_tab = $('#mas_'+prefix+'_comments-'+pagina_id);
-		var new_tab = $('#mas_'+link_tab_arr[1]+'_comments-'+pagina_id);
-		if (link_tab_arr[1] != $('#prefix').val())
-		{
-			$('#mas_'+prefix).removeClass('active-line');
-			$('#prefix').val(link_tab_arr[1]);
-			link_tab.addClass('active-line');
-			if (dirty == 1)
+		if($('#comentario').val().trim()!=''){
+			var comentario = $.trim($('#comentario').val());
+			var prefix = $('#prefix').val();
+			$( this ).hide();
+			$('#radar-comment').show();
+			if (comentario != '')
 			{
-				// Refrescar el tab
 				$.ajax({
-					type: "GET",
-					url: $('#url_refresh').val(),
-					async: false,
-					data: { pagina_id: pagina_id, prefix: $('#prefix').val() },
+					type: "POST",
+					url: $('#form-comment').attr('action'),
+					async: true,
+					data: { pagina_id: $('#pagina_id_viendo').val(), mensaje: comentario, muro_id: 0, prefix: prefix },
 					dataType: "json",
 					success: function(data) {
-						new_tab.html(data.html);
-						observeMuro();
+						$('#comentario').val('');
+						$('#mas_'+prefix+'_comments-'+$('#pagina_id_viendo').val()).prepend(data.html);
+						document.getElementById('verComent').innerHTML= $('#ver_comentarios').val()+' ( '+data.comentarios+' )';
+						var puntos = $('#puntos_agregados').val();
+						puntos = parseInt(puntos) + parseInt(data.puntos_agregados);
+						$('#puntos_agregados').val(puntos);
+						$('#button-comment').show();
+						$('#radar-comment').hide();
+						$('#dirty_'+$('#pagina_id_viendo').val()).val(1);
+						observeMuroLecciones();
 						observeLikeLecciones();
-						observeMore();
-						observeMoreResponses();
-						last_tab.hide(1000);
-						new_tab.show(1000);
-						$('#dirty_'+pagina_id).val(0);
 						//clearTimeout( timerId );
 					},
 					error: function(){
-						console.log('Error refrescando el muro'); // Hay que implementar los mensajes de error para el frontend
+						$('#comentario').val('');
+						console.log('Error comentando el muro'); // Hay que implementar los mensajes de error para el frontend
+						$('#button-comment').show();
+
 					}
 				});
 			}
-			else {
-				// Solo mostrar lo que ya está cargado en el tab
-				last_tab.hide(1000);
-				new_tab.show(1000);
-			}
 		}
+	});
+
+	$('.tab_rv').click(function(e){
+		e.preventDefault();
+		// var prefix = $('#prefix').val();
+		// var pagina_id = $('#pagina_id_viendo').val();
+		// var link_tab = $(this);
+		// var dirty = $('#dirty_'+pagina_id).val();
+		// var link_tab_id = $(this).attr('id');
+		// var link_tab_arr = link_tab_id.split('_');
+		// var last_tab = $('#mas_'+prefix+'_comments-'+pagina_id);
+		// var new_tab = $('#mas_'+link_tab_arr[1]+'_comments-'+pagina_id);
+		// if (link_tab_arr[1] != $('#prefix').val())
+		// {
+		// 	$('#mas_'+prefix).removeClass('active-line');
+		// 	$('#prefix').val(link_tab_arr[1]);
+		// 	link_tab.addClass('active-line');
+		// 	if (dirty == 1)
+		// 	{
+		// 		// Refrescar el tab
+		// 		$.ajax({
+		// 			type: "GET",
+		// 			url: $('#url_refresh').val(),
+		// 			async: false,
+		// 			data: { pagina_id: pagina_id, prefix: $('#prefix').val() },
+		// 			dataType: "json",
+		// 			success: function(data) {
+		// 				new_tab.html(data.html);
+		// 				observeMuro();
+		// 				observeLikeLecciones();
+		// 				observeMore();
+		// 				observeMoreResponses();
+		// 				last_tab.hide(1000);
+		// 				new_tab.show(1000);
+		// 				$('#dirty_'+pagina_id).val(0);
+		// 				//clearTimeout( timerId );
+		// 			},
+		// 			error: function(){
+		// 				console.log('Error refrescando el muro'); // Hay que implementar los mensajes de error para el frontend
+		// 			}
+		// 		});
+		// 	}
+		// 	else {
+		// 		// Solo mostrar lo que ya está cargado en el tab
+		// 		last_tab.hide(1000);
+		// 		new_tab.show(1000);
+		// 	}
+		// }
 	});
 
 	observeMuroLecciones();
@@ -300,8 +322,7 @@ function startLesson(programa_id, pagina_id)
 		dataType: "json",
 		success: function(data) {
 			console.log('Logs iniciados:');
-			console.log(data.logs);
-			//clearTimeout( timerId );
+			document.getElementById('verComent').innerHTML= $('#ver_comentarios').val()+' ( '+data.comentarios+' )';
 		},
 		error: function(){
 			console.log('Error iniciando la lección'); // Hay que implementar los mensajes de error para el frontend
@@ -337,8 +358,10 @@ function observeMuroLecciones()
 {
 
 	$('.reply_comment').unbind('click');
-	$('.reply_comment').click(function(){
+	$('.reply_comment').click(function(e){
+		e.preventDefault();
 		var muro_id = $(this).attr('data');
+		$('#href_reply_'+muro_id).hide();
 		var response_container = $('#response-'+muro_id);
 		var prefix = $('#prefix').val();
 		if (response_container.length)
@@ -358,6 +381,7 @@ function observeMuroLecciones()
 					//clearTimeout( timerId );
 				},
 				error: function(){
+					$('#href_reply_'+muro_id).hide();
 					console.log('Error renderizando el campo de respuesta'); // Hay que implementar los mensajes de error para el frontend
 				}
 			});
@@ -369,43 +393,52 @@ function observeMuroLecciones()
 function observeReply()
 {
 	$('.button-reply').unbind('click');
-	$('.button-reply').click(function(){
+	$('.button-reply').click(function(e){
 		var muro_id = $(this).attr('data');
-		var prefix = $('#prefix').val();
-		$( this ).hide();
-		var respuesta = $.trim($('#'+prefix+'_respuesta_'+muro_id).val());
-		if (respuesta != '')
-		{
-			$.ajax({
-				type: "POST",
-				url: $('#form-comment').attr('action'),
-				async: true,
-				data: { pagina_id: $('#pagina_id_viendo').val(), mensaje: respuesta, muro_id: muro_id, prefix: prefix },
-				dataType: "json",
-				success: function(data) {
-					$('#'+prefix+'_respuesta_'+muro_id).val('');
-					$('#'+prefix+'_respuestas-'+muro_id).prepend(data.html);
-					$('#'+prefix+'_button-reply-'+muro_id).show();
-					var puntos = $('#puntos_agregados').val();
-					puntos = parseInt(puntos) + parseInt(data.puntos_agregados);
-					$('#puntos_agregados').val(puntos);
-					$('#dirty_'+$('#pagina_id_viendo').val()).val(1);
-					observeLikeLecciones();
-					//clearTimeout( timerId );
-				},
-				error: function(){
-					console.log('Error respondiendo al comentario'); // Hay que implementar los mensajes de error para el frontend
-					$('#button-reply-'+muro_id).show();
-				}
-			});
+	    var prefix = $('#prefix').val();
+		e.preventDefault();
+		if ($('#'+prefix+'_'+'respuesta'+'_'+muro_id).val().trim() != '') {
+			$( this ).hide();
+			$('#radar-comment-'+muro_id).show();
+			var respuesta = $.trim($('#'+prefix+'_respuesta_'+muro_id).val());
+			if (respuesta != '')
+			{
+				$.ajax({
+					type: "POST",
+					url: $('#form-comment').attr('action'),
+					async: true,
+					data: { pagina_id: $('#pagina_id_viendo').val(), mensaje: respuesta, muro_id: muro_id, prefix: prefix },
+					dataType: "json",
+					success: function(data) {
+						$('#radar-comment-'+muro_id).hide();
+						$('#'+prefix+'_respuesta_'+muro_id).val('');
+						$('#'+prefix+'_respuestas-'+muro_id).prepend(data.html);
+						$('#'+prefix+'_button-reply-'+muro_id).show();
+						var puntos = $('#puntos_agregados').val();
+						puntos = parseInt(puntos) + parseInt(data.puntos_agregados);
+						$('#puntos_agregados').val(puntos);
+						$('#dirty_'+$('#pagina_id_viendo').val()).val(1);
+						observeLikeLecciones();
+						//clearTimeout( timerId );
+					},
+					error: function(data){
+						console.log(data.mensaje);
+						//console.log('Error respondiendo al comentario'); // Hay que implementar los mensajes de error para el frontend
+						$('#radar-comment-'+muro_id).hide();
+						$('#button-reply-'+muro_id).show();
+					}
+				});
+			}
 		}
+
 	});
 }
 
 function observeLikeLecciones()
 {
 	$('.like').unbind('click');
-	$('.like').click(function(){
+	$('.like').click(function(e){
+		e.preventDefault();
 		var muro_id = $(this).attr('data');
 		var prefix = $('#prefix').val();
 		$('#'+prefix+'_i-'+muro_id).removeClass('ic-lke-act');
@@ -437,7 +470,8 @@ function observeLikeLecciones()
 function observeMore()
 {
 	$('.more_comments').unbind('click');
-	$('.more_comments').click(function(){
+	$('.more_comments').click(function(e){
+		e.preventDefault();
 		var a = $(this);
 		var pagina_id = a.attr('data');
 		var prefix = $('#prefix').val();
@@ -459,6 +493,7 @@ function observeMore()
 				observeMuroLecciones();
 				observeLikeLecciones();
 				observeMore();
+				observeMoreResponses();
 				//clearTimeout( timerId );
 			},
 			error: function(){
@@ -471,7 +506,8 @@ function observeMore()
 function observeMoreResponses()
 {
 	$('.more_answers').unbind('click');
-	$('.more_answers').click(function(){
+	$('.more_answers').click(function(e){
+		e.preventDefault();
 		var a = $(this);
 		var muro_id = a.attr('data');
 		var prefix = $('#prefix').val();
@@ -499,4 +535,8 @@ function observeMoreResponses()
 			}
 		});
 	});
+}
+
+function resetaWall(){
+
 }
