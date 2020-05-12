@@ -1161,11 +1161,13 @@ public function porcentaje_finalizacion($fechaInicio,$fechaFin,$diasVencimiento)
         {
           $i++;
           $active = '';
+          $isCurrentPage = '';
           if ($subpagina_id && $to_activate)
           {
             if ($subpagina['id'] == $subpagina_id)
             {
               $active = ' active';
+              $isCurrentPage = 'j-current';
               $to_activate = 0;
             }
             else {
@@ -1271,7 +1273,7 @@ public function porcentaje_finalizacion($fechaInicio,$fechaFin,$diasVencimiento)
           }
 
           $menu_str .= '<li title="'.$prelada_por.'" class="'.$class_aprobada.'" data-toggle="tooltip" data-placement="bottom">
-                  <a href="'.$href.'/'.$subpagina['id'].'" class="'.$active.' '.$bloqueada.'" id="m-'.$subpagina['id'].'">'.$icon_aprobada.$subpagina['nombre'].'</a>';
+                  <a href="'.$href.'/'.$subpagina['id'].'" class="'.$active.' '.$bloqueada.' '.$isCurrentPage.'" id="m-'.$subpagina['id'].'">'.$icon_aprobada.$subpagina['nombre'].'</a>';
           if (count($subpagina['subpaginas']) && $dimension == 1)
           {
             // Recorremos las sub-páginas de la sub-página a ver si existe al menos una que tenga acceso
@@ -1354,7 +1356,7 @@ public function porcentaje_finalizacion($fechaInicio,$fechaFin,$diasVencimiento)
         }
 
         $menu_str .= '<li title="'.$prelada_por.'" class="'.$class_aprobada.'" data-toggle="tooltip" data-placement="bottom">
-                <a href="'.$href.'" class="'.$active.' '.$bloqueada.'" id="m-'.$programa['id'].'">'.$icon_aprobada.$programa['nombre'].'</a>';
+                <a href="'.$href.'" class="'.$active.' '.$bloqueada.' '.$isCurrentPage.'" id="m-'.$programa['id'].'">'.$icon_aprobada.$programa['nombre'].'</a>';
         $menu_str .= '</li>';
 
       }
