@@ -37,7 +37,6 @@ class ReportesJTController extends Controller
         }
         $f->setRequest($session->get('sesion_id'));
         $em = $this->getDoctrine()->getManager();
-        $em = $this->getDoctrine()->getManager();
 
         $usuario = $this->getDoctrine()->getRepository('LinkComunBundle:AdminUsuario')->find($session->get('usuario')['id']);
 
