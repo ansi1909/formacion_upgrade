@@ -39,10 +39,10 @@ body {
         padding: 16px 10px 10px 16px;
         max-width: 99%;
     }
-    /*@include media-breakpoint-down(xs){
+    @media screen and (max-width: 575.98px){
         margin-left: 1rem;
         padding-right: 0px;
-    }*/
+    }
 }
 
 .bckgd{

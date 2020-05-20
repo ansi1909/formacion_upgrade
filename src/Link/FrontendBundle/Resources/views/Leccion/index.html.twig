@@ -10,6 +10,10 @@
       margin-right: 2rem;
       margin-top: 6.5rem;
    }
+   .iframe-resized {
+      width: 100%;
+      max-width: 800px;
+   }
 </style>
 {% endblock %}
 {% block clbody %}
@@ -105,7 +109,7 @@ bg-white
    {% if not wizard %}
    <input type="hidden" style="width: 5%;" id="muroActivo{{ lecciones.id }}" name="muroActivo{{ lecciones.id }}" value="{{ lecciones.muro_activo ? '1' : '0' }}">
    <div class="tab-pane fade show active" id="unico" role="tabpanel" aria-labelledby="one-tab">
-      <div class="lesson-container container py-4 text-center">
+      <div class="lesson-container container py-4 text-center j-lesson">
          <h2>{{ lecciones.nombre }}</h2>
          {% if lecciones.foto %}
          {% set img = uploads~lecciones.foto %}
@@ -134,7 +138,7 @@ bg-white
    {% else %}
    {% for subpagina in lecciones.subpaginas %}
    <div class="tab-pane fade {% if loop.index == 1 %}show active{% endif %}" id="href-{{ subpagina.id }}" role="tabpanel" aria-labelledby="{% if loop.index==1 %}one-tab{% else %}tab-{{ subpagina.id }}{% endif %}">
-      <div class="lesson-container container py-4 text-center">
+      <div class="lesson-container container py-4 text-center j-lesson">
          <h2>{{ subpagina.nombre }}</h2>
          {% if subpagina.foto %}
          {% set img = uploads~subpagina.foto %}
@@ -257,5 +261,31 @@ bg-white
 <script src="{{ asset('front/js/popper.min.js') }}" charset="utf-8"></script>
 <script src="{{ asset('front/js/jquery.scrollTo.min.js') }}" charset="utf-8"></script>
 <script src="{{ asset('front/js/navLecciones.js') }}"></script>
+<script src="{{ asset('front/js/plugins/iframeResizer/iframeResizer.min.js') }}"></script>
 <script type="text/javascript" src="{{ asset('js/front/lecciones.js') }}"></script>
+<script>
+const allImages = document.querySelectorAll('.j-lesson img');
+const allIframes = document.querySelectorAll('.j-lesson iframe'); 
+let currentIframe = '';
+let imageWidth = '';
+for(let count = 0; count < allIframes.length; count++) {
+   currentIframe = allIframes[count];
+   currentIframe.id = `iframeResize${count}`;   
+   currentIframe.removeAttribute('width');
+   currentIframe.removeAttribute('height');
+   currentIframe.classList.add('iframe-resized');
+   iFrameResize({
+      log:true
+   },
+   `#iframeResize${count}`);
+}
+
+allImages.forEach(image => {
+   imageWidth = image.offsetWidth;
+   image.style.width = '100%';
+   image.style.maxWidth = imageWidth + 'px';
+   image.style.height = 'auto';
+   console.log(image, imageWidth);
+});
+</script>
 {% endblock %}
