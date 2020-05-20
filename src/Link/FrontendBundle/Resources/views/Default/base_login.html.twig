@@ -58,15 +58,15 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-md-7 col-sm-12 col-5 col-xl-5 col-lg-5 text-center mx-auto d-lg-flex justify-content-center">
-                    <div class="d-sm-block d-md-none mt-5 mb-6 imgLogin">
+                <div class="col-md-7 col-sm-12 col-12 col-xl-5 col-lg-5 text-center mx-auto d-lg-flex justify-content-center">
+                    <div class="d-sm-block d-md-none mt-5 mt-sm-4 mb-6 mb-sm-4 mx-auto imgLogin">
                         <img width="65%" class="img-fluid" src="{{ img_logo }}" alt="logo formación smart">
                     </div>
                     <div class="col-12 mt-12v pnlogin">
                         <h3 class="title-grey titleLogin">{{ 'Iniciar Sesión'|trans }}</h3>
                         <p class="mb-4 txtLogin">{{ 'Por favor, ingresa tu usuario y contraseña'|trans }}</p>
                         <form id="form_inicio" name="form_inicio" method="POST">
-                            <div class="col-lg-8 col-xl-8 col-8 col-sm-12 col-md-12 mx-auto">
+                            <div class="col-lg-8 col-xl-8 col-12 col-sm-12 col-md-12 mx-auto d-flex flex-column align-items-center">
                                 <div class="form-group text-left userLogin">
                                     <label class="mb-2" for="usuario">{{ 'Usuario'|trans }}</label>
                                     <input type="text" class="form-control mb-4" id="usuario_pre" name="usuario_pre" aria-describedby="usuarioHelp" placeholder="{{ 'Ingresa tu usuario'|trans }}">
@@ -84,7 +84,7 @@
                                     
                                 </div>
                                
-                                <div class="wrap-recordar-check ml-1 mb-5 d-flex align-items-center justify-content-start checkLogin">
+                                <div class="wrap-recordar-check ml-1 mb-5 d-flex align-items-center justify-content-center checkLogin">
                                     <input type="checkbox" id="check_recordar" class="mr-2">
                                     <label class="text-sm py-0 my-0" for="check_recordar">{{ 'Recordar mi contraseña'|trans }}</label>
                                     <input type="hidden" id="recordar_datos" name="recordar_datos" value="0">
