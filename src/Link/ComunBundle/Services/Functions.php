@@ -697,25 +697,26 @@ public function porcentaje_finalizacion($fechaInicio,$fechaFin,$diasVencimiento)
 
     $ok = 0;
     $em = $this->em;
+    if($roles){
+          foreach ($roles as $rol_id)
+              {
+                $qb = $em->createQueryBuilder();
+            $qb->select('COUNT(p.id)')
+                 ->from('LinkComunBundle:AdminPermiso', 'p')
+                 ->where('p.aplicacion = :app_id AND p.rol = :rol_id')
+                 ->setParameters(array('app_id' => $app_id,
+                             'rol_id' => $rol_id));
+              $query = $qb->getQuery();
+              $cuenta = $query->getSingleScalarResult();
+            if ($cuenta)
+            {
+              $ok = 1;
+              break;
+            }
+              }
+  }
     
-    foreach ($roles as $rol_id)
-        {
-          $qb = $em->createQueryBuilder();
-      $qb->select('COUNT(p.id)')
-           ->from('LinkComunBundle:AdminPermiso', 'p')
-           ->where('p.aplicacion = :app_id AND p.rol = :rol_id')
-           ->setParameters(array('app_id' => $app_id,
-                       'rol_id' => $rol_id));
-        $query = $qb->getQuery();
-        $cuenta = $query->getSingleScalarResult();
-      if ($cuenta)
-      {
-        $ok = 1;
-        break;
-      }
-        }
-    
-    return $ok;
+  return $ok;
 
   }
 
