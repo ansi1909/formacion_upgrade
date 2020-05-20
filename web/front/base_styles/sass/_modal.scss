@@ -712,43 +712,44 @@
 }
 
 %modal-m{
-    height: 40rem;
-    width: 33.5rem;
-    @include media-breakpoint-down(xl){
-        height: 36rem;
-        width: 30.5rem;
-    }
-    @include media-breakpoint-only(xs){
-        height: 33rem;
-        width: 19.5rem;
-        &::-webkit-scrollbar {
-            width: .7rem;
-        }
-        &::-webkit-scrollbar-track {
-        }
-        &::-webkit-scrollbar-thumb {
-            background-color: $gray-400;
-        }
-    }
+    height: max-content;
+    width: 90%;
+    // @include media-breakpoint-down(xl){
+    //     height: 36rem;
+    //     width: 30.5rem;
+    // }
+    // @include media-breakpoint-only(xs){
+    //     height: 33rem;
+    //     width: 19.5rem;
+    //     &::-webkit-scrollbar {
+    //         width: .7rem;
+    //     }
+    //     &::-webkit-scrollbar-track {
+    //     }
+    //     &::-webkit-scrollbar-thumb {
+    //         background-color: $gray-400;
+    //     }
+    // }
 }
 
 %modal{
-    margin: 8rem auto !important;
+    margin: 2rem auto 0 auto;
     border-radius: 1rem;
     background: $gray-100;
     @include media-breakpoint-down(xl){
-        margin: calc(2rem - 4px) auto !important;
+        // margin: calc(2rem - 4px) auto !important;
     }
     @include media-breakpoint-down(xs){
-        margin: 5rem auto !important;
+        // margin: 5rem auto !important;
     }
-    @include media-breakpoint-down(xxs){
-        margin: calc(2rem + 4px) auto !important;
-    }
+    // @include media-breakpoint-down(xxs){
+    //     margin: calc(2rem + 4px) auto !important;
+    // }
     .btn_close_modal{
         position: relative;
-        top: 1.3125rem;
-        right: 0;
+        z-index: 10;
+        // top: 1.3125rem;
+        // right: 0;
         border: 0;
         background: transparent;
         @include media-breakpoint-down(xs){
