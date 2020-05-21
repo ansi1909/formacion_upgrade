@@ -86,8 +86,10 @@
     <script type="text/javascript" src="{{ asset('front/js/plugins/introjs/intro.js') }}"></script>
     <script type="text/javascript" src="{{ asset('js/front/tuto.js') }}"></script>
     <script>
+    
         $(document).ready(function(){
             $('#proG').addClass("active");
+            const allImages = document.querySelectorAll('#message img');
             const introSteps = [
                 {
                     element: document.getElementById('tuto-step1'),
@@ -102,7 +104,15 @@
                     intro: 'Para ingresar al programa haz clic en el botón iniciar.'
                 }
             ]
+            let imageWidth = '';
 
+            allImages.forEach(image => {
+                imageWidth = image.offsetWidth;
+                image.style.width = '100%';
+                image.style.maxWidth = imageWidth + 'px';
+                image.style.height = 'auto';
+                console.log(image, imageWidth);
+            });
             startIntro(introSteps);
 
         });

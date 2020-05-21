@@ -40,12 +40,13 @@
         // max-width: 1444px;
         position: relative;
         border-radius: 1rem;
+        text-align: center;
         @include media-breakpoint-down(sm){
             padding: 3rem .75rem 1rem .75rem !important;
             width: 100%;
             max-width: 31.5rem;
             h4{
-                text-align: left;
+                // text-align: left;
             }
         }
         @include media-breakpoint-down(xs){
@@ -129,7 +130,6 @@
     }
     img{
         width: 820px;
-        transform: translateX(3.75%);
         border-radius: .5rem;
     }
 }
