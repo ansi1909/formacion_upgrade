@@ -15,7 +15,7 @@ begin
            ON u.nivel_id = n.id 
            WHERE np.pagina_empresa_id = pe.id
                AND u.id IN (SELECT ru.usuario_id FROM admin_rol_usuario ru WHERE ru.rol_id = 2)
-               AND u.login NOT LIKE 'temp%'
+               AND LOWER(n.nombre) <> 'revisor'
                AND u.empresa_id = pempresa_id
        ) as registrados,
        (SELECT COUNT(u.id) AS cursando FROM admin_usuario u INNER JOIN 
@@ -23,21 +23,23 @@ begin
            ON u.nivel_id = n.id 
            WHERE np.pagina_empresa_id = pe.id
                AND u.id IN (SELECT ru.usuario_id FROM admin_rol_usuario ru WHERE ru.rol_id = 2) 
-               AND u.login NOT LIKE 'temp%'
+               AND LOWER(n.nombre) <> 'revisor'
                AND u.empresa_id = pempresa_id
                AND u.id IN (SELECT pl.usuario_id FROM certi_pagina_log pl WHERE pl.pagina_id = pe.pagina_id AND pl.estatus_pagina_id != 3)        
        ) as cursando,
        (SELECT COUNT(u.id) AS culminado FROM admin_usuario u 
+        INNER JOIN admin_nivel n ON n.id = u.nivel_id
         INNER JOIN certi_pagina_log pl ON u.id = pl.usuario_id
         WHERE pl.pagina_id = pe.pagina_id  AND pl.estatus_pagina_id = 3
         AND u.empresa_id = pe.empresa_id
+        AND LOWER(n.nombre) <> 'revisor'
         ) as culminado,
        (SELECT COUNT(u.id) AS no_iniciados FROM admin_usuario u INNER JOIN 
            (admin_nivel n INNER JOIN certi_nivel_pagina np ON n.id = np.nivel_id) 
            ON u.nivel_id = n.id 
            WHERE np.pagina_empresa_id = pe.id 
                AND u.id IN (SELECT ru.usuario_id FROM admin_rol_usuario ru WHERE ru.rol_id = 2) 
-               AND u.login NOT LIKE 'temp%'
+               AND LOWER(n.nombre) <> 'revisor'
                AND u.empresa_id = pempresa_id 
                AND u.id IN (SELECT DISTINCT(s.usuario_id) FROM admin_sesion s) 
                AND u.id NOT IN (SELECT pl.usuario_id FROM certi_pagina_log pl WHERE pl.pagina_id = pe.pagina_id)
@@ -47,7 +49,7 @@ begin
            ON u.nivel_id = n.id 
            WHERE np.pagina_empresa_id = pe.id
                AND u.id IN (SELECT ru.usuario_id FROM admin_rol_usuario ru WHERE ru.rol_id = 2)
-               AND u.login NOT LIKE 'temp%'
+               AND LOWER(n.nombre) <> 'revisor'
                AND u.empresa_id = pempresa_id 
                AND u.id IN (SELECT DISTINCT(s.usuario_id) FROM admin_sesion s )
        ) as activos

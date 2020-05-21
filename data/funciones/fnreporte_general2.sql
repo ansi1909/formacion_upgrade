@@ -11,17 +11,15 @@ $BODY$
 begin
 
     OPEN resultado FOR 
-       SELECT count(a.id) as logueado, 
-               u.login as login
-        FROM admin_usuario u INNER JOIN admin_nivel n ON u.nivel_id = n.id
-        LEFT JOIN admin_sesion a ON u.id = a.usuario_id
-        INNER JOIN admin_rol_usuario ru ON u.id = ru.usuario_id
-        WHERE u.empresa_id = pempresa_id 
-        AND u.login NOT LIKE 'temp%'
+        SELECT count(ass.usuario_id) as logueado,au.login as login
+        FROM admin_usuario au 
+        LEFT  JOIN admin_sesion ass ON au.id = ass.usuario_id
+        INNER JOIN admin_nivel an ON au.nivel_id = an.id
+        INNER JOIN admin_rol_usuario ru ON au.id = ru.usuario_id
+        WHERE au.empresa_id = pempresa_id
+        AND LOWER(an.nombre) <> 'revisor'
         AND ru.rol_id = 2
-        GROUP BY u.login;
-   
-    
+        GROUP BY au.id,au.login;
     RETURN resultado;
 
 end;
