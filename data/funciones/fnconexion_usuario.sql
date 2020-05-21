@@ -26,7 +26,7 @@ begin
     AND u.empresa_id = pempresa_id 
     AND u.id IN (SELECT ru.usuario_id FROM admin_rol_usuario ru WHERE ru.rol_id = 2) 
     AND s.fecha_ingreso BETWEEN pdesde AND phasta 
-    AND u.login NOT LIKE 'temp%'
+    AND LOWER(n.nombre) <> 'revisor'
     GROUP BY u.id, e.nombre, c.nombre, n.nombre, u.codigo ,u.login, u.nombre , u.apellido, u.correo_personal,
              u.correo_corporativo, u.fecha_registro, u.campo1, u.campo2 , u.campo3, u.campo4
     ORDER BY u.login ASC;
