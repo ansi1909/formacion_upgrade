@@ -192,7 +192,8 @@
     transition: .5s;
     height: auto;
     @include media-breakpoint-down(xs) {
-        display: block;
+        // display: block;
+        flex-direction: column;
     }
     .alertTimeGood{
         background: $green;
@@ -281,9 +282,9 @@
         // position: absolute;
         // top: 0;
         width: 25%;
-        height: auto;
+        height: 100%;
         @include media-breakpoint-down(sm) {
-            width: 25%;
+            width: 35%;
         }
         @include media-breakpoint-down(xs) {
             width: 100%;

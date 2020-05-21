@@ -1,4 +1,4 @@
-<div class="card-hrz card-current" >
+<div class="card-hrz card-current align-items-center" >
     <img class="card-hrz-img rounded-left" src="{{ uploads ~ ar.imagen }}" alt="">
     <div class="card-hrz-body {% if ar.link_enabled!=1 %} text-vencido {% endif %}" >
         <h5 class="title-grey " >{{ ar.titulo_padre }}</h5>
@@ -14,7 +14,7 @@
              <span class="count mt-0 mb-2 text-xs d-none d-lg-block  color-light-grey" >{{ ar.dias_vencimiento }}</span>
         {% endif %}
     </div>
-    <div class="card-hrz-right float-right px-2 d-flex flex-wrap align-items-center justify-content-center">
+    <div class="card-hrz-right float-right px-2 d-flex flex-column flex-sm-row flex-wrap align-items-center justify-content-center">
         
         {% if ar.link_enabled %}
         <div class="percent text-center mt-3">
