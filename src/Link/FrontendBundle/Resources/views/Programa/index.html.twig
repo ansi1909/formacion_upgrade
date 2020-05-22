@@ -93,6 +93,7 @@
     {{ parent() }}
     <script type="text/javascript" src="{{ asset('front/js/plugins/introjs/intro.js') }}"></script>
     <script type="text/javascript" src="{{ asset('js/front/tuto.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('js/front/resizeElements.js') }}"></script>
     <script>
     
         $(document).ready(function(){
@@ -112,17 +113,11 @@
                     intro: 'Para ingresar al programa haz clic en el botón iniciar.'
                 }
             ]
-            let imageWidth = '';
+            
 
-            allImages.forEach(image => {
-                imageWidth = image.offsetWidth;
-                image.style.width = '100%';
-                image.style.maxWidth = imageWidth + 'px';
-                image.style.height = 'auto';
-                console.log(image, imageWidth);
-            });
+
             startIntro(introSteps);
-
+            resizeImages(allImages);
         });
     </script>
     <script type="text/javascript" src="{{ asset('js/front/programa_inicio.js') }}"></script> 

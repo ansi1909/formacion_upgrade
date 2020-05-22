@@ -263,29 +263,16 @@ bg-white
 <script src="{{ asset('front/js/navLecciones.js') }}"></script>
 <script src="{{ asset('front/js/plugins/iframeResizer/iframeResizer.min.js') }}"></script>
 <script type="text/javascript" src="{{ asset('js/front/lecciones.js') }}"></script>
+<script type="text/javascript" src="{{ asset('js/front/resizeElements.js') }}"></script>
 <script>
-const allImages = document.querySelectorAll('.j-lesson img');
-const allIframes = document.querySelectorAll('.j-lesson iframe'); 
-let currentIframe = '';
-let imageWidth = '';
-for(let count = 0; count < allIframes.length; count++) {
-   currentIframe = allIframes[count];
-   currentIframe.id = `iframeResize${count}`;   
-   currentIframe.removeAttribute('width');
-   currentIframe.removeAttribute('height');
-   currentIframe.classList.add('iframe-resized');
-   iFrameResize({
-      log:true
-   },
-   `#iframeResize${count}`);
-}
 
-allImages.forEach(image => {
-   imageWidth = image.offsetWidth;
-   image.style.width = '100%';
-   image.style.maxWidth = imageWidth + 'px';
-   image.style.height = 'auto';
-   console.log(image, imageWidth);
-});
+   const allImages = document.querySelectorAll('.j-lesson img');
+   const allIframes = document.querySelectorAll('.j-lesson iframe'); 
+
+   $(document).ready(function() {
+      resizeImages(allImages)
+      resizeIframes(allIframes);
+   });
+   
 </script>
 {% endblock %}
