@@ -88,14 +88,14 @@
     background: linear-gradient(to left, $blue 0%, $blue 100%) !important;
     border-radius: 2rem;
     position: relative;
-    top: calc(1rem + 8px);
+    // top: calc(1rem + 8px);
     transition: all .25s ease-in-out;
     color: $white;
     @include media-breakpoint-down(sm){
-        top: -.5rem;
+        // top: -.5rem;
     }
     @include media-breakpoint-down(xxs){
-        top: -2rem;
+        // top: -2rem;
     }
     &:hover{
         background: linear-gradient(to right, $blue 0%, $bluedark 100%) !important;
@@ -108,14 +108,14 @@
     background-color: $yellow !important;
     border-radius: 2rem;
     position: relative;
-    top: calc(1rem + 8px);
+    // top: calc(1rem + 8px);
     transition: all .25s ease-in-out;
     color: $gray-700;
     @include media-breakpoint-down(sm){
-        top: -.5rem;
+        // top: -.5rem;
     }
     @include media-breakpoint-down(xxs){
-        top: calc(2rem + 8px);
+        // top: calc(2rem + 8px);
     }
     &:hover{
         background-color: $yellow !important;

@@ -102,13 +102,13 @@
             </div>
         <div class="container-fluid mt-18v mb-5 mt-xs-15v">
 
-            <div class="row" id="tuto-step1">
-                <div class="col-2 px-sm-0 px-0 text-center">
+            <div class="d-flex flex-column flex-md-row align-items-center justify-content-center mx-auto eval-progress" id="tuto-step1">
+                <div class="col-12 col-md-3 px-sm-0 px-0 text-center d-flex justify-content-center justify-content-md-start">
                     {% set total = preguntas|length < 10 ? '0'~preguntas|length : preguntas|length %}
                     <span class="num_preg"><span id="nro_pregunta">01</span> / {{ total }}</span>
                 </div>
-                <div class="col-8 px-sm-0">
-                    <div class="progress progUb mt-3">
+                <div class="col-12 col-md-6 px-sm-0 mt-2">
+                    <div class="progress progUb">
                         <div class="progress-bar progress-bar_eval" role="progressbar" id="progreso" style="width: 0%" aria-valuenow="10" aria-valuemin="0" aria-valuemax="100"></div>
                     </div>
                 </div>
@@ -116,7 +116,7 @@
             
             {% for pregunta in preguntas %}
 
-                <div id="pregunta-{{ loop.index }}" {{ loop.index==1 ? '' : 'style="display:none;"' }} data="{{ pregunta.id }}">
+                <div id="pregunta-{{ loop.index }}" {{ loop.index==1 ? '' : 'style="display:none;"' }} data="{{ pregunta.id }}" class="pregunta">
                     {% set img = pregunta.imagen ? uploads~pregunta.imagen : '' %}
                     {% if img != '' %}
                         <div class="row justify-content-center align-items-center">
@@ -124,9 +124,9 @@
                                 <img class="img-enun_eval" src="{{ img }}" alt="">
                     {% else %}
                         <div class="row justify-content-center">
-                            <div class="col-10">
+                            <div class="col-12 align-items-center d-flex flex-column">
                     {% endif %}
-                            <p class="enun_eval">
+                            <p class="enun_eval my-2">
                                 {{ pregunta.enunciado }}
                             </p>
                         </div>
@@ -147,7 +147,7 @@
 
             {% endfor %}
 
-            <div class="row mt-2 align-items-center justify-content-around">
+            <div class="row mt-3 mt-md-5 align-items-center justify-content-around">
                 <div class="col-6 text-center">
                     <a href="#" class="btn_sp2 btn_sp" id="before" style="display:none;">
                         <span>{{ 'Atrás'|trans }}</span>
