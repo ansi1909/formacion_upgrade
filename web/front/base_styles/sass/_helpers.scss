@@ -31,6 +31,11 @@
         margin-top: 10rem;
     }
 }
+.mt-md-15rem {
+    @include media-breakpoint-down(sm) {
+        margin-top: 15rem;
+    }
+}
 
 .color-light-grey { color: $gray-500;}
 .color-grey { color: $gray-700; }
@@ -111,3 +116,8 @@ a.active-line, .active-line {
     }
 }
 
+.justify-content-md-evenly {
+    @include media-breakpoint-up(md) {
+        justify-content: space-evenly !important;
+    }
+}

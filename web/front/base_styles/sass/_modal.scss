@@ -205,11 +205,18 @@
 
 //Modal cerrar evaluacion
 .modalCEval{
-    @extend %modal-sm;
+    // @extend %modal-sm;
+    width: 90vw;
+    max-width: 25rem;
+    height: 27rem;
     @extend %modal;
     -webkit-animation: bounce .5s ease-in 1 forwards;
     /*-moz-animation-name: bounce;*/
     animation: bounce .5s ease-in 1 forwards;
+
+    .btn_close_modal {
+        right: 0 !important;
+    }
     .textModalCs{
         font-size: calc(1rem + 9px);
         font-family: $primary-font;
@@ -227,11 +234,11 @@
         background: linear-gradient(to left, $yellow 0%, $yellow 100%);
         @include media-breakpoint-down(xs){
             position: relative;
-            left: -1.5rem;
+            // left: -1.5rem;
         }
         @include media-breakpoint-down(xxs){
             font-size: .9rem;
-            left: -1.75rem;
+            // left: -1.75rem;
         }
         &:hover{
             background: linear-gradient(to right, $yellow 0%, $yellow 100%);
@@ -678,10 +685,10 @@
 }
 
 %modal-sm{
-    height: 33.5rem;
+    height: 28.5rem;
     width: 33.5rem;
     @include media-breakpoint-down(xl){
-        height: 25.5rem;
+        height: 28.5rem;
         width: 30.5rem;
     }
     @include media-breakpoint-down(xs){
@@ -750,11 +757,11 @@
         position: relative;
         z-index: 10;
         // top: 1.3125rem;
-        // right: 0;
+        right: 0;
         border: 0;
         background: transparent;
         @include media-breakpoint-down(xs){
-            right: -1rem;
+            // right: -1rem;
         }
         .ic-close-white{
             height: 1.5rem;
