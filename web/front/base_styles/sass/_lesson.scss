@@ -2,13 +2,15 @@
 // se pueden definir estilos del CKEDITOR dentro de la clase .lesson-container
 .lesson_title_small_devices {
     border-bottom: 1px solid $gray-500;
-    border-bottom: 1px solid #adb5bd;
     width: 100%;
     max-width: 500px;
 }
 .lesson-container {
 
-
+    @include media-breakpoint-down(md) {
+        padding-left: 2px;
+        padding-right: 2px;
+    }
 
     h2 {
         font-family: $lessons-font;
@@ -34,6 +36,13 @@
         line-height: 1.5rem;
         width: 75%;
 
+        @include media-breakpoint-down(md) {
+            font-size: inherit;
+        }
+        @include media-breakpoint-down(sm) {
+            width: 80%;
+            padding-left: 15px;
+        }
         li{
             margin-bottom: 1rem;
         }
@@ -142,9 +151,11 @@
         padding-left: 5%;
         padding-right: 5%;
         justify-content: start;
+        overflow: hidden;
         @include media-breakpoint-down(xs) {
             justify-content: start;
             padding-left: 1%;
+            padding-right: 1%;
         }
     }
     &.nav-tabs, .nav-link.active {
