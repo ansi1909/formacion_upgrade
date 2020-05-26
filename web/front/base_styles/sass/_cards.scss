@@ -456,18 +456,13 @@
 //Card profile
 .card-datos{
     position: relative;
-    top: -2rem;
-    left: 0;
     background: $gray-200;
     border-radius: 1rem;
-    padding: calc(7rem - 6px) calc(2rem + 3px) calc(4rem - 4px) calc(2rem + 3px);
     .pic-img{
         height: calc(1rem * 10);
         width: calc(1rem * 10);
         position: relative;
         overflow: hidden;
-        left:5rem;
-        top: 0;
         padding: 0;
         border-radius: 50rem;
         @include media-breakpoint-down(md) {
@@ -535,11 +530,9 @@
         font-weight: $font-weight-normal-hard;
         line-height: calc(3rem - 6px);
         position: relative;
-        left: calc(-1 * calc(2rem + 4px));
         color: $black-300;
         @include media-breakpoint-down(sm){
             font-size: $h3-font-size;
-            left: calc(-1 * calc (1rem + 8px));
         }
     }
     .numExp{
