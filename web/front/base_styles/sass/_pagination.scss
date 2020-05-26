@@ -82,13 +82,14 @@
 
 .paginate-pagination ul{
     height: 3rem;
-    width: auto;
+    width: max-content;
+    max-width: 40rem;
+    margin: 0 auto;
     border: 2px solid $gray-400;	
     border-radius: calc(2rem - 4px);	
     background-color: transparent;
     display: flex;
     flex-direction: row;
-    margin: 0;
     padding: 0;
     position: relative;
     list-style: none;
