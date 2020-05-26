@@ -1100,6 +1100,9 @@
             flex-wrap: wrap;
             justify-content: space-evenly;
             align-items: center;
+            @include media-breakpoint-down(xxs) {
+                width: 15rem;
+            }
             &>a {
                 display: block;
                 width: 100%;
