@@ -1,11 +1,11 @@
 .tabs{
     position: relative;
-    width: 100%;
     display: flex;
     justify-content: space-evenly;
     width: 100%;
-    max-width: 25rem;
+    max-width: 45rem;
     padding: 0;
+    flex-wrap: wrap;
     li{
         display: inline-block;
         list-style: none;
