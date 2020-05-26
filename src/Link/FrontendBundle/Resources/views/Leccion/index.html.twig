@@ -20,14 +20,14 @@
 lesson-body
 {% endblock %}
 {% block header %}
-<nav class="navbar justify-content-between py-0 fixed-top bg-white">
+<nav class="navbar justify-content-around justify-content-md-between py-0 fixed-top bg-white">
    <div class="logo d-sm-block d-md-block">
       <a class="navbar-brand" href="{{ path('_inicio') }}">
       {% set img_logo = app.session.get('empresa').logo is defined ? app.session.get('empresa').logo is not null and app.session.get('empresa').logo != '' ? uploads~app.session.get('empresa').logo : asset('front/assets/img/logo_formacion_smart.png') : asset('front/assets/img/logo_formacion_smart.png') %}
       <img class="img-fluid py-1 {{ app.session.get('empresa').tipo_logo }}" src="{{ img_logo }}" alt="logo formación smart">
       </a>
    </div>
-   <div class="wraper-title-lesson d-flex flex-column align-items-center">
+   <div class="wraper-title-lesson d-none d-md-flex flex-column align-items-center">
       <h4 class="my-1 color-grey" >{{ titulo }} </h4>
       <h6 class="mt-0 color-grey" >{{ subtitulo }}</h6>
    </div>
@@ -81,10 +81,17 @@ bg-white
 <input type="hidden" id="puntos_agregados" name="puntos_agregados" value="{{ puntos }}">
 <input type="hidden" id="prefix" name="prefix" value="recientes">
 <input type="hidden" id="ver_comentarios" name="ver_comentarios" value="{{'Ver Comentarios' |trans}}">
+
+<div class="d-flex d-md-none flex-column text-center lesson_title_small_devices mx-auto">
+      <h4 class="my-1 color-grey" >{{ titulo }} </h4>
+      <h6 class="mt-0 color-grey" >{{ subtitulo }}</h6>
+</div>
+
 {% if wizard and lecciones.subpaginas|length > 1 %}
 <input type="hidden" id="tab_activo" name="tab_activo" value="one-tab">
 {# NAVEGACION LECCION #}
 {# La clase .circle-less-viendo es por donde va el usuario y coloca el scroll en esa posicion con el JS ScrollTo #}
+
 <div class="wraper-nav-less" id="wraperNavLess">
    <h4 class="text-center mt-4 mb-0 color-grey">{{ 'Lecciones'|trans }}</h4>
    <div  name="button" class="btn-lessons" id="btnLessLeft"><i class="material-icons">keyboard_arrow_left</i></div>

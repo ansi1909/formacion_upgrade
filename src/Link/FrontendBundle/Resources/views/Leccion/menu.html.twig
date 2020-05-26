@@ -1,24 +1,24 @@
 <div id="mainSidenav" class="main-sidenav main-sidenav nav-lesson">
         
     <div class="row justify-content-around w-100 d-flex flex-wrap mx-0">
-        <a href="{{ path('_inicio') }}"><i class="material-icons" title="{{ 'Ir al inicio'|trans }}" data-toggle="tooltip" data-placement="bottom">home</i></a>
-        <a href="javascript:void(0)" onclick="closeNav()"><i id="menuArrow" class="arrow mr-2" data-toggle="tooltip" data-placement="bottom" title="{{ 'Cerrar Menú'|trans }}"></i></a>
+        <a href="{{ path('_inicio') }}"><i class="material-icons py-1" title="{{ 'Ir al inicio'|trans }}" data-toggle="tooltip" data-placement="bottom">home</i></a>
+        <a href="javascript:void(0)" onclick="closeNav()"><i id="menuArrow" class="arrow mr-2 py-1" data-toggle="tooltip" data-placement="bottom" title="{{ 'Cerrar Menú'|trans }}"></i></a>
     </div>
 
     <ul class="nav justify-content-around w-100 mb-3 d-flex flex-wrap mx-0" id="pills-tab" role="tablist">
         <li class="nav-item">
             <a class="nav-link" href="{{ path('_programa', { 'programa_id': programa.id }) }}">
-                <i class="material-icons rotate-180" data-toggle="tooltip" data-placement="bottom" title="{{ 'Volver al programa'|trans }}">exit_to_app</i>
+                <i class="material-icons rotate-180 py-1" data-toggle="tooltip" data-placement="bottom" title="{{ 'Volver al programa'|trans }}">exit_to_app</i>
             </a>
         </li>
         <li class="nav-item">
             <a class="nav-link {% if active == 'lecciones' %}active{% endif %}" id="pills-indice-tab" data-toggle="pill" href="#pills-indice" role="tab" aria-controls="pills-home" aria-selected="true">
-                <i class="material-icons" data-toggle="tooltip" data-placement="bottom" title="{{ 'Indice del contenido'|trans }}">view_list</i>
+                <i class="material-icons py-1" data-toggle="tooltip" data-placement="bottom" title="{{ 'Indice del contenido'|trans }}">view_list</i>
             </a>
         </li>
         <li class="nav-item">
             <a class="nav-link {% if active == 'espacio' %}active{% endif %}" id="pills-profile-tab" data-toggle="pill" href="#pills-recursos" role="tab" aria-controls="pills-profile" aria-selected="false">
-                <i class="material-icons" data-toggle="tooltip" data-placement="bottom" title="{{ 'Espacio colaborativo'|trans }}">widgets</i>
+                <i class="material-icons py-1" data-toggle="tooltip" data-placement="bottom" title="{{ 'Espacio colaborativo'|trans }}">widgets</i>
             </a>
         </li>
     </ul>

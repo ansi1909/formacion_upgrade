@@ -51,6 +51,11 @@
     transform: translateX(50%);
     overflow: hidden;
     display: none;
+    @include media-breakpoint-down(sm){
+        opacity: 1;
+        transform: translateX(0);
+        display: block !important;
+    }
 }
 
 a.active-line, .active-line {
@@ -116,7 +121,9 @@ a.active-line, .active-line {
         border: 0px solid transparent !important;
     }
 }
-
+.justify-content-evenly {
+    justify-content: space-evenly !important;
+}
 .justify-content-md-evenly {
     @include media-breakpoint-up(md) {
         justify-content: space-evenly !important;

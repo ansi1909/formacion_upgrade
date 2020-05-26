@@ -162,20 +162,10 @@ a.active {
 
 .nav-lesson {
     top: 71px;
-    width: 240px;
+    // width: 240px;
     font-family: $primary-font;
     padding-bottom: 136px;
-    @include media-breakpoint-down(md) {
-        top: 68px;
-    }
     
-    &#mainSidenav.main-sidenav-close {
-      width: 40px;  
-
-      a {
-          padding-top: 10px !important;
-      }
-    }
     a {
         padding: 0 !important;
     }
@@ -254,15 +244,6 @@ a.active {
             }
         }
     }
-    .arrow
-    {
-        transform: rotate(135deg) !important;
-        -webkit-transform: rotate(135deg) !important;
-        &.right {
-            transform: rotate(-45deg) !important;
-            -webkit-transform: rotate(-45deg) !important;
-        }
-    }
 }
 
 .nav-lesson #pills-tabContent{
@@ -270,6 +251,9 @@ a.active {
     width: 100%;
     max-height: 1000px;
     overflow: unset;
+    @include media-breakpoint-down(sm){
+        display: none;
+    }
 
 }
 
