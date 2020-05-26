@@ -26,7 +26,7 @@ begin
       ON f.usuario_id = u.id
       WHERE f.empresa_id = pempresa_id AND f.pagina_id = ppagina_id 
       AND f.foro_id = pforo_id
-      AND u.login NOT LIKE 'temp%'
+      AND LOWER(n.nombre) NOT LIKE 'revisor%'
       ORDER BY u.login ASC, f.fecha_registro ASC;
     
     RETURN resultado;

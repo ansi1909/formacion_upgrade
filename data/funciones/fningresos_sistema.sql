@@ -31,18 +31,18 @@ begin
     WHERE s.usuario_id = pusuario_id 
     ORDER BY s.id DESC LIMIT 1;
 
-    -- Cantidad de conexiones y promedio de conexión
-    SELECT INTO reg COUNT(s.id) AS conexiones, SUM(s.fecha_request - s.fecha_ingreso) AS total_conexion, TO_CHAR(SUM(s.fecha_request - s.fecha_ingreso), 'HH') AS horas, TO_CHAR(SUM(s.fecha_request - s.fecha_ingreso), 'MI') AS minutos 
+    -- Cantidad de conexiones y promedio de conexión en minutos
+    SELECT INTO reg COUNT(s.id) AS conexiones,AVG(s.fecha_request - s.fecha_ingreso) as promedio
     FROM admin_sesion s 
     WHERE s.usuario_id = pusuario_id;
 
-    IF reg.conexiones > 0 THEN
-        promedioConexion = ((reg.horas::integer*60)+reg.minutos::integer)/reg.conexiones;
-        promedioConexion = ROUND(promedioConexion::numeric,0);
-    ELSE 
+    IF reg.promedio > time '00:00:00'  THEN
+        SELECT INTO promedioConexion (extract(hour from reg.promedio)*60) + (extract(minute from reg.promedio)) + 1; -- Horas convertidas a minutos + minutos + mas los segundos redondeados a un 1
+    ELSE
         promedioConexion = reg.conexiones;
     END IF;
-    
+
+
     -- Programas no iniciados
     SELECT COUNT(p.id) INTO noIniciados FROM certi_pagina p 
     WHERE p.pagina_id IS NULL 

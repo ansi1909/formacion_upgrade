@@ -17,7 +17,7 @@ begin
         INNER JOIN admin_nivel an ON au.nivel_id = an.id
         INNER JOIN admin_rol_usuario ru ON au.id = ru.usuario_id
         WHERE au.empresa_id = pempresa_id
-        AND LOWER(an.nombre) <> 'revisor'
+        AND LOWER(an.nombre) NOT LIKE 'revisor%'
         AND ru.rol_id = 2
         GROUP BY au.id,au.login;
     RETURN resultado;

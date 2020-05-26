@@ -33,7 +33,7 @@ begin
 		AND
 			  au.empresa_id = pempresa_id
 	    AND 
-	          au.login NOT LIKE 'temp%'
+	          LOWER(an.nombre) NOT LIKE 'revisor%'
 		AND   
 			  ass.usuario_id <> pusuario_id
 		GROUP BY au.login, au.nombre, au.apellido, an.nombre, au.correo_corporativo

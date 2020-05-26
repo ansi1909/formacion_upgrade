@@ -41,7 +41,7 @@ begin
                 INNER JOIN admin_nivel n ON u.nivel_id = n.id
                 LEFT JOIN admin_sesion a ON u.id = a.usuario_id
                 WHERE u.empresa_id = pempresa_id 
-                    AND LOWER(n.nombre)<>'revisor'
+                    AND LOWER(n.nombre) NOT LIKE 'revisor%'
                     AND u.id IN (SELECT ru.usuario_id FROM admin_rol_usuario ru WHERE ru.rol_id = 2) 
                 GROUP BY u.id,u.codigo,u.nombre,u.apellido,u.login,u.correo_personal,u.correo_corporativo,u.activo,u.fecha_registro,u.fecha_nacimiento,u.pais_id,n.nombre,u.campo1,u.campo2,u.campo3,u.campo4,u.clave,u.competencia
                 ORDER BY u.nombre ASC;
@@ -72,7 +72,7 @@ begin
 		    LEFT JOIN admin_sesion a ON u.id = a.usuario_id
 		    WHERE u.empresa_id = pempresa_id 
 			AND pe.activo = true
-			AND LOWER(n.nombre)<>'revisor'
+			AND LOWER(n.nombre) NOT LIKE 'revisor%'
 			AND u.id IN (SELECT ru.usuario_id FROM admin_rol_usuario ru WHERE ru.rol_id = 2) 
 		    GROUP BY u.id,u.codigo,u.nombre,u.apellido,u.login,u.correo_personal,u.correo_corporativo,u.activo,u.fecha_registro,u.fecha_nacimiento,u.pais_id,n.nombre,u.campo1
 		    ORDER BY u.nombre ASC;
@@ -137,7 +137,7 @@ begin
                     LEFT JOIN admin_sesion a ON u.id = a.usuario_id
                     WHERE u.empresa_id = pempresa_id AND pe.pagina_id = ppagina_id 
 			        AND pe.activo = true
-                    AND LOWER(n.nombre)<>'revisor'
+                    AND LOWER(n.nombre) NOT LIKE 'revisor%'
                     AND u.id IN (SELECT ru.usuario_id FROM admin_rol_usuario ru WHERE ru.rol_id = 2) 
                     GROUP BY u.id,u.codigo,u.nombre,u.apellido,u.login,u.correo_personal,u.correo_corporativo,u.activo,u.fecha_registro,u.fecha_nacimiento,u.pais_id,n.nombre,u.campo1,u.campo2,u.campo3,u.campo4
                     ORDER BY u.nombre ASC;
@@ -172,7 +172,7 @@ begin
                         (SELECT pl.usuario_id FROM certi_pagina_log pl 
                         WHERE pl.pagina_id = ppagina_id AND pl.estatus_pagina_id != 3 ) 
                     AND u.id IN (SELECT ru.usuario_id FROM admin_rol_usuario ru WHERE ru.rol_id = 2) 
-                    AND LOWER(n.nombre)<>'revisor'
+                    AND LOWER(n.nombre) NOT LIKE 'revisor%'
                 GROUP BY u.id,u.codigo,u.nombre,u.apellido,u.apellido,u.login,u.correo_personal,u.correo_corporativo,u.activo,u.fecha_registro,u.fecha_nacimiento,u.pais_id,n.nombre,u.campo1,u.campo2,u.campo3,u.campo4
                 ORDER BY u.nombre ASC;
 
@@ -227,7 +227,7 @@ begin
                     AND u.id IN 
                         (SELECT pl.usuario_id FROM certi_pagina_log pl 
                             WHERE pl.pagina_id = ppagina_id AND pl.estatus_pagina_id = 3 ) 
-                    AND LOWER(n.nombre)<>'revisor'
+                    AND LOWER(n.nombre) NOT LIKE 'revisor%'
                     AND u.id IN (SELECT ru.usuario_id FROM admin_rol_usuario ru WHERE ru.rol_id = 2) 
                 GROUP BY u.id,u.codigo,u.nombre,u.apellido,u.login,u.correo_personal,u.correo_corporativo,u.activo,u.fecha_registro,u.fecha_nacimiento,u.pais_id,n.nombre,u.campo1,u.campo2,u.campo3,u.campo4
                 ORDER BY u.nombre ASC;
@@ -263,7 +263,7 @@ begin
                     AND NOT EXISTS 
                         (SELECT * FROM certi_pagina_log pl 
                         WHERE  pl.usuario_id = u.id AND pl.pagina_id = ppagina_id ) 
-                    AND LOWER(n.nombre)<>'revisor'
+                    AND LOWER(n.nombre) NOT LIKE 'revisor%'
                     AND u.id IN (SELECT ru.usuario_id FROM admin_rol_usuario ru WHERE ru.rol_id = 2) 
                     AND u.id IN (SELECT DISTINCT(s.usuario_id) FROM admin_sesion s )
                     AND pe.pagina_id = ppagina_id
