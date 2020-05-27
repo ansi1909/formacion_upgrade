@@ -25,10 +25,8 @@ function resizeIframes(iframes) {
      }
 }
 function insertImageIntoModal(e) {
-    const screenWidth = window.innerWidth;
-    const screenHeight = window.innerHeight;
-    const imageWidth = this.width;
-    const imageHeight = this.height;
+    const isSmartphoneScreen = window.innerWidth < window.innerHeight;
+    const isHorizontalImage = this.width > this.height;
     const imageUrl = this.src;
     const modal = document.getElementById('modalShowImage');
     const imageContainer = modal.querySelector('.j-bigImage');
@@ -36,12 +34,14 @@ function insertImageIntoModal(e) {
     const existingImage = imageContainer.querySelector('img');
 
     image.src = imageUrl;
+
     if (existingImage) {
         imageContainer.removeChild(existingImage);
     }
+    
     imageContainer.appendChild(image);
 
-    if (screenWidth < screenHeight && imageWidth > imageHeight) {
+    if (isSmartphoneScreen && isHorizontalImage) {
         imageContainer.classList.add('rotate');
     } else {
         imageContainer.classList.remove('rotate');
