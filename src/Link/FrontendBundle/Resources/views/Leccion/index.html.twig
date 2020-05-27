@@ -277,7 +277,8 @@ bg-white
    const allIframes = document.querySelectorAll('.j-lesson iframe'); 
 
    $(document).ready(function() {
-      resizeImages(allImages)
+      resizeImages(allImages);
+      handleSmallImages(allImages);
       resizeIframes(allIframes);
    });
    

@@ -24,3 +24,35 @@ function resizeIframes(iframes) {
         `#iframeResize${count}`);
      }
 }
+function insertImageIntoModal(e) {
+    const screenWidth = window.innerWidth;
+    const screenHeight = window.innerHeight;
+    const imageWidth = this.width;
+    const imageHeight = this.height;
+    const imageUrl = this.src;
+    const modal = document.getElementById('modalShowImage');
+    const imageContainer = modal.querySelector('.j-bigImage');
+    const image = document.createElement('img');
+    const existingImage = imageContainer.querySelector('img');
+
+    image.src = imageUrl;
+    if (existingImage) {
+        imageContainer.removeChild(existingImage);
+    }
+    imageContainer.appendChild(image);
+
+    if (screenWidth < screenHeight && imageWidth > imageHeight) {
+        imageContainer.classList.add('rotate');
+    } else {
+        imageContainer.classList.remove('rotate');
+    }
+}
+function handleSmallImages(images) {
+    if (images) {
+        images.forEach(image => {
+            image.setAttribute('data-toggle', 'modal');
+            image.setAttribute('data-target', '#modalShowImage');
+            image.addEventListener('click', insertImageIntoModal);
+        });
+    }
+}
