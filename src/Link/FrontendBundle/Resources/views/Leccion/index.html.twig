@@ -181,14 +181,14 @@ bg-white
 {% if lecciones.muro_activo %}
 
 <div class="row justify-content-center my-6">
-   <div class="col-8 d-flex justify-content-between border-top pt-4"  id="div-botones" style="display:none">
-      <a  id="iconComments" href="" class="mr-0 links iconComments  align-items-center text-md" >
-      <i class="material-icons mr-1 ml-4 flip-hor color-light-grey">speaker_notes</i> 
+   <div class="col-12 col-sm-8 d-flex justify-content-between border-top pt-4 px-4"  id="div-botones" style="display:none">
+      <a  id="iconComments" href="" class="mr-0 links iconComments  align-items-center text-md d-flex flex-column flex-sm-row" >
+      <i class="material-icons mr-sm-1 flip-hor color-light-grey">speaker_notes</i> 
       <span id="ocultarComent" style="display: none;">{{ 'Ocultar'|trans }} </span> 
       <span id="verComent">{{ 'Ver Comentarios'|trans }}{{' ('~' '~comentarios~' )'}}</span>
       </a>
-      <a href=""  class=" iconComments links d-flex align-items-center text-md">
-      <i style="width: 30px;" class="material-icons color-light-grey">comments</i> 
+      <a href=""  class=" iconComments links d-flex align-items-center text-md d-flex flex-column flex-sm-row">
+      <i style="width: 30px;" class="material-icons mr-sm-1 color-light-grey">comments</i> 
       {{ 'Comentar'|trans }}
       </a>
    </div>
@@ -196,9 +196,9 @@ bg-white
 {% endif %}
 <!-- COMENTARIOS -->
 {# COMENTARIOS #}
-<div class="row ml-5 justify-content-center">
-   <div class="col-11" style="background-color: #F7FAFC;">
-      <div id="comments" >
+<div class="row ml justify-content-center">
+   <div class="col-12 col-sm-11" style="background-color: #F7FAFC;">
+      <div id="comments" class="px-1 px-sm-5">
          <form class="mt-4 mb-6" id="form-comment" method="POST" action="{{ path('_ajaxEnviarComentario') }}">
             <div class="form-group">
                <div class="d-flex align-items-start">
