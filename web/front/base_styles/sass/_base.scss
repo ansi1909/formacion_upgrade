@@ -193,19 +193,19 @@ body.codigoQR{
             margin-top: 20px !important;
             li{
                 .links{
-                    font-size: .625rem !important;
+                    font-size: 0.8rem !important;
                     text-align: center;
                 }
             }
         }
         .imgForm{
-            width: 5rem !important;
+            // width: rem !important;
             position: relative;
-            left: 1rem;
+            // left: 1rem;
         }
     }
     .imgForm{
-        width: calc(6rem + 5px);
+        width: 8rem;
         height: auto;
         filter: grayscale(100%);
         opacity: .5;

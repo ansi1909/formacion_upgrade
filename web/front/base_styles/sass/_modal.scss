@@ -668,20 +668,11 @@
 }
 
 %modal-s{
-    height: 32.5rem;
-    min-height: 32.5rem;
+    height: max-content;
     max-height: 36.5rem;
-    width: 32.5rem;
-    min-width: 32.5rem;
-    max-width: 36.5rem;
-    @include media-breakpoint-down(xl){
-        min-width: 26rem;
-        width: 26rem;
-        max-width: 30rem;
-        height: 20rem;
-        max-height: 30rem;
-        min-height: 20rem;
-    }   
+    width: 90vw;
+    max-width: 25rem;
+     
 }
 
 %modal-sm{
