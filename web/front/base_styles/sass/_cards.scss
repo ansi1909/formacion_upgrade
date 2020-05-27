@@ -815,10 +815,11 @@
 // Espacio colaborativo
 .table-card{
     @extend %table-card;
+    width: unset !important;
     .f-table, .f-table-lt{
         padding: calc(1rem - 4px) 2rem calc(1rem - 4px) 2rem;
         max-height: 10rem;
-        width: 62.25rem;
+        width: unset;
         .titulo_f-table{
             color: $blue;
             font-family: $primary-font;
@@ -872,6 +873,9 @@
     }
     .f-table{
         border-bottom: 1px solid $gray-300;
+        width: 100%;
+        max-width: 40rem;
+        margin: 0 auto;
     }
 }
 

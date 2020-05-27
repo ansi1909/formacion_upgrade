@@ -11,13 +11,16 @@
             height: 300px;
         }
         body {
-            margin-bottom: 300px;
+            /* margin-bottom: 300px; */
         }
         label.error, label.mensaje-error {
             color: #f00c0c;
         }
         .ui-autocomplete-loading {
             background: white url("{{ asset('img/ui-anim_basic_16x16.gif') }}") right center no-repeat;
+        }
+        .navbar .logo {
+            width: unset;
         }
         .attachments {
             background-color: #FAFAFA;
@@ -123,14 +126,14 @@
 {% endblock %}
 
 {% block header %}
-    <nav class="navbar justify-content-between py-0 fixed-top bg-white">
+    <nav class="navbar justify-content-around justify-content-sm-between py-0 fixed-top bg-white">
         <div class="logo d-sm-block d-md-block">
             <a class="navbar-brand" href="{{ path('_inicio') }}">
                 {% set img_logo = app.session.get('empresa').logo is defined ? app.session.get('empresa').logo is not null and app.session.get('empresa').logo != '' ? uploads~app.session.get('empresa').logo : asset('front/assets/img/logo_formacion_smart.png') : asset('front/assets/img/logo_formacion_smart.png') %}
                 <img class="img-fluid py-1 {{ app.session.get('empresa').tipo_logo }}" src="{{ img_logo }}" alt="logo formación smart">
             </a>
         </div>
-        <div class="wraper-title-lesson d-flex flex-column align-items-center">
+        <div class="wraper-title-lesson d-none d-sm-flex flex-column align-items-center">
             <h4 class="mt-2 mb-1 color-light-grey" >{{ 'Espacio colaborativo'|trans }}</h4>
             <h6 class="mt-0 color-light-grey" >{{ programa.nombre }}</h6>
         </div>
@@ -183,7 +186,10 @@
     <input type="hidden" id="titulo_new" name="titulo_new" value="{{ 'Crear nuevo tema'|trans }}">
     <input type="hidden" id="titulo_edit" name="titulo_edit" value="{{ 'Editar tema'|trans }}">
     <input type="hidden" id="base_upload" name="base_upload" value="">
-
+    <div class="wraper-title-lesson d-flex d-sm-none flex-column align-items-center">
+        <h4 class="mt-2 mb-1 color-light-grey" >{{ 'Espacio colaborativo'|trans }}</h4>
+        <h6 class="mt-0 color-light-grey" >{{ programa.nombre }}</h6>
+    </div>
     <section class="esp_col" id="section-form" style="display:none;">
         <div class="container-fluid">
             <div class="row margin_contenido" >
@@ -325,20 +331,20 @@
     
     <section class="esp_col" id="section-list" >
         <div class="row align-items-center justify-content-between">
-            <div class="col-4 col-lg-4 col-xl-4 col-md-4 col-sm-4 col-xs-4 text-left">
+            <div class="col-12 col-sm-5 mx-auto text-left">
                 {% if app.session.get('usuario').tutor %}
                     <button class="btn btn-primary btn-nw-tema newTopic" data="0">{{ 'Crear nuevo tema'|trans }}</button>
                 {% else %}
                     &nbsp;
                 {% endif %}
             </div>
-            <div class="col-4 col-lg-4 col-xl-4 col-md-4 col-sm-4 col-xs-4">
+            <div class="col-12 col-sm-5 mx-auto">
                 <input type="search" id="search" class="form-control" placeholder="{{ 'Ingrese lo que desea buscar'|trans }}">
                 <button type="button" class="btn-search"><span class="material-icons ic-search">search</span></button>
             </div>
         </div>
         <div class="row justify-content-center" >
-            <ul class="table-card" id="ul-foros">
+            <ul class="table-card col-10 mx-auto" id="ul-foros">
                 {% for foro in foros %}
                     <li class="f-table" id="liForo-{{ foro.id }}">
                         <div class="row justify-content-between">
@@ -379,8 +385,8 @@
                 {% else %}
                     <li id="none_foros" class="f-table">
                         <div class="row justify-content-between">
-                            <div class="col-8">
-                                <h5 class="titulo_f-table">{{ 'El tutor virtual aún no ha creado un tema de discusión'|trans }}</h5>
+                            <div class="col-12">
+                                <h5 class="titulo_f-table text-center">{{ 'El tutor virtual aún no ha creado un tema de discusión'|trans }}</h5>
                             </div>
                         </div>
                     </li>
