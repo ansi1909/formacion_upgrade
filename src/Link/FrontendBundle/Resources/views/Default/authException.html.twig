@@ -6,6 +6,12 @@
     <link rel="stylesheet" href="{{ asset('front/base_styles/css/bootstrap/bootstrap.css') }}">
     {% set css = preferencia.css is not null and preferencia.css != '' ? asset(preferencia.css) : asset('front/client_styles/formacion/css/main.css') %}
     <link rel="stylesheet" href="{{ css }}">
+    <style>
+        #main {
+            margin: 0 !important;
+            max-width: 100%;
+        }
+    </style>
 {% endblock %}
 
 {% block header %}
@@ -20,14 +26,14 @@
 {% block sidemenu %}{% endblock %}
 
 {% block body %}
-    <section class="mt-22v error_except">
-        <div class="row align-content-center">
-            <div class="col-8">
+    <section class="error_except mt-sm-5 px-sm-5 mx-auto">
+        <div class="row align-content-center flex-column-reverse flex-sm-row">
+            <div class="col-12 col-sm-6 mt-4 mt-sm-0">
                 {% if not servidor_mantenimiento %}
-                    <h3 class="titulo-error sub-line">{{ 'Error de Excepción'|trans }}</h3>
+                    <h3 class="titulo-error sub-line text-center text-sm-left">{{ 'Error de Excepción'|trans }}</h3>
                 {% endif %}
                 <h5 class="subtitulo-error">{{ mensaje.principal }}</h5>
-                <ul class="lista-error">
+                <ul class="lista-error px-0 pl-sm-2 pl-md-5">
                     {% for indicacion in mensaje.indicaciones %}
                         <li class="elem-txt-error">
                             <p class="text-error">{{ indicacion }}.</p>
@@ -35,12 +41,14 @@
                     {% endfor %}
                 </ul>
             </div>
-            <div class="col-4 text-center">
+            <div class="col-12 col-sm-6 text-center text-sm-right">
                 <img class="img-error" src="{{ asset ( imagen ) }}" alt="">
                 {% if not servidor_mantenimiento %}
                     <h3 class="titulo-error">{{ texto }}</h3>
                 {% endif %}
-                {{ continuar|raw }}
+                <div class="mr-sm-4">
+                    {{ continuar|raw }}
+                </div>    
             </div>
         </div>
     </section>
