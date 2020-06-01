@@ -122,3 +122,8 @@ Package phpoffice/phpexcel is abandoned, you should avoid using it. Use phpoffic
 
 
 19. Para la configuración del CKFinder, ajustar los valores en web/assets/vendor/ckfinder/config.php
+
+20 . Comandos para ejecutar desde consola
+   a. php bin/console link:usuarios-duplicados: debe pasarse como parametro el id de la  empresa para la cual desea realizarse la consulta ejemplo : 
+   
+   php bin/console link:usuarios-duplicados 19

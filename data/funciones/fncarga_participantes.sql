@@ -30,7 +30,7 @@ begin
             actualizados = actualizados+1;
 
             UPDATE admin_usuario SET 
-                clave = rst.clave, 
+                --clave = rst.clave, 
                 nombre = rst.nombre, 
                 apellido = rst.apellido, 
                 correo_personal = rst.correo_personal, 
