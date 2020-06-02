@@ -237,7 +237,7 @@
                             </div>
                             <br>
                             {% if prueba %}
-                                {% if pagina_empresa.puntajeAprueba or pagina_empresa.maxIntentos %}
+                                {% if pagina_empresa.pruebaActiva  %}
                                     {% set ck = 1 %}
                                 {% else %}
                                     {% set ck = 0 %}

@@ -755,8 +755,9 @@ class PaginaController extends Controller
                                     'inicio' => $pe->getFechaInicio()->format('d/m/Y'),
                                     'vencimiento' => $pe->getFechaVencimiento()->format('d/m/Y'));
 
-        }
 
+        }
+        //return new response (var_dump($asignaciones));
         return $this->render('LinkBackendBundle:Pagina:showAsignacion.html.twig', array('empresa' => $empresa,
                                                                                         'asignaciones' => $asignaciones,
                                                                                         'pagina' => $pagina,
@@ -842,8 +843,23 @@ class PaginaController extends Controller
 
             // colaborativoSubp es true activa el colaborativo para las sub paginas
             $onlyColaborativo = $colaborativoSubp ? 1 : 0;
+            //return new response (var_dump($estructura));
 
             $f->asignacionSubPaginas($pagina_empresa, $yml, $onlyDates, $onlyMuro, $onlyColaborativo);
+
+            //asginar evaluaciones 
+            $estructura = $f->obtenerEstructura($pagina_empresa->getPagina()->getId(),$yml);
+            foreach ($estructura as $pagina ) {
+                //buscar si existe prueba activa
+                 $prueba = $this->getDoctrine()->getRepository('LinkComunBundle:CertiPrueba')->findOneBy(array('pagina' => $pagina));
+                 if($prueba && $prueba->getEstatusContenido()->getId() == $yml['parameters']['estatus_contenido']['activo']){
+                    $certi_pagina_empresa = $this->getDoctrine()->getRepository('LinkComunBundle:CertiPaginaEmpresa')->findOneBy(array('pagina' => $pagina,'empresa'=>$pagina_empresa->getEmpresa()->getId()));
+                    $certi_pagina_empresa->setPruebaActiva(true);
+                    $em->persist($certi_pagina_empresa);
+                    $em->flush();
+                 }
+
+            }
 
             return $this->redirectToRoute('_showAsignacion', array('empresa_id' => $pagina_empresa->getEmpresa()->getId(),
                                                                    'pagina_id' => $pagina_empresa->getPagina() ? $pagina_empresa->getPagina()->getId() : 0));
