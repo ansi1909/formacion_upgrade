@@ -1,15 +1,12 @@
 <?php
-
 namespace Link\ComunBundle\Services;
 use Symfony\Component\DependencyInjection\Container;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\DependencyInjection\ContainerInterface;
-use Symfony\Component\HttpFoundation\Session\Session;
-use Link\ComunBundle\Entity\CertiPaginaEmpresa;
-use Link\ComunBundle\Entity\CertiPaginaLog;
-use Link\ComunBundle\Entity\AdminAlarma;
 use Symfony\Component\Translation\TranslatorInterface;
+use Symfony\Component\HttpFoundation\Session\Session;
+use Link\ComunBundle\Entity\AdminAlarma;
 use Link\ComunBundle\Entity\AdminSesion;
 use Link\ComunBundle\Entity\CertiPagina;
 use Link\ComunBundle\Entity\CertiPrueba;
@@ -28,8 +25,8 @@ use Link\ComunBundle\Entity\AdminNoticia;
 
 
 class Functions
-{ 
-  
+{
+
   protected $em;
   protected $container;
   protected $mailer;
@@ -171,7 +168,7 @@ class Functions
         break;
       }
         }
-        
+
         return $html;
 
   }
@@ -184,7 +181,7 @@ class Functions
         $patron = array (
             // Espacios, puntos y comas por guion
             //'/[\., ]+/' => ' ',
- 
+
             // Vocales
             '/\+/' => '',
             '/&agrave;/' => 'a',
@@ -192,45 +189,45 @@ class Functions
             '/&igrave;/' => 'i',
             '/&ograve;/' => 'o',
             '/&ugrave;/' => 'u',
- 
+
             '/&aacute;/' => 'a',
             '/&eacute;/' => 'e',
             '/&iacute;/' => 'i',
             '/&oacute;/' => 'o',
             '/&uacute;/' => 'u',
- 
+
             '/&acirc;/' => 'a',
             '/&ecirc;/' => 'e',
             '/&icirc;/' => 'i',
             '/&ocirc;/' => 'o',
             '/&ucirc;/' => 'u',
- 
+
             '/&atilde;/' => 'a',
             '/&etilde;/' => 'e',
             '/&itilde;/' => 'i',
             '/&otilde;/' => 'o',
             '/&utilde;/' => 'u',
- 
+
             '/&auml;/' => 'a',
             '/&euml;/' => 'e',
             '/&iuml;/' => 'i',
             '/&ouml;/' => 'o',
             '/&uuml;/' => 'u',
- 
+
             '/&auml;/' => 'a',
             '/&euml;/' => 'e',
             '/&iuml;/' => 'i',
             '/&ouml;/' => 'o',
             '/&uuml;/' => 'u',
- 
+
             // Otras letras y caracteres especiales
             '/&aring;/' => 'a',
             '/&ntilde;/' => 'n',
- 
+
             // Agregar aqui mas caracteres si es necesario
- 
+
         );
- 
+
         $text = preg_replace(array_keys($patron),array_values($patron),$text);
         return $text;
     }
@@ -259,7 +256,7 @@ class Functions
          $cn_pruebas++;
          $prueba_log = $em->getRepository('LinkComunBundle:CertiPruebaLog')->findOneBy(array('prueba'=>$prueba->getId(),'usuario'=>$usuario_id,'estado'=>$yml['parameters']['estado_prueba']['aprobado']));
          if($prueba_log != NULL){
-          $cn_aprobadas++; 
+          $cn_aprobadas++;
          }
       }
     }
@@ -270,7 +267,7 @@ class Functions
 
   public function tipoDescripcion($tipoMensaje, $muro, $author)
     {
-       
+
         $mensaje = $muro->getUsuario()->getNombre().' '.$muro->getUsuario()->getApellido().' '.$this->translator->trans('realizó una publicación en el muro de').' '.$muro->getPagina()->getNombre().'.';
 
         if($tipoMensaje == 'Respondió')
@@ -279,16 +276,16 @@ class Functions
         }
 
         return $mensaje;
-       
+
     }
 
-  //Obtiene la informacion de los tutores asignados a una empresa 
+  //Obtiene la informacion de los tutores asignados a una empresa
   public function getTutoresEmpresa($empresa_id, $yml)
   {
      $em = $this->em;
 
      $dql = "
-                 SELECT au FROM LinkComunBundle:AdminUsuario au 
+                 SELECT au FROM LinkComunBundle:AdminUsuario au
                  INNER JOIN LinkComunBundle:AdminRolUsuario ru WITH au.id = ru.usuario
                  WHERE ru.rol = :rol
                  AND au.empresa = :empresa
@@ -296,7 +293,7 @@ class Functions
                 ";
 
         $query = $em->createQuery($dql);
-        $query->setParameters(['rol' => $yml['parameters']['rol']['tutor'], 
+        $query->setParameters(['rol' => $yml['parameters']['rol']['tutor'],
                                'empresa' => $empresa_id]);
         $tutores = $query->getResult();
 
@@ -310,22 +307,22 @@ class Functions
 
         $em = $this->em;
 
-        foreach ($tutores as $tutor) 
+        foreach ($tutores as $tutor)
         {
 
             $correo = ($tutor->getCorreoCorporativo()) ? $tutor->getCorreoCorporativo() : ($tutor->getCorreoPersonal()) ? $tutor->getCorreoPersonal() : null;
 
             // El usuario debe estar dentro del nivel asignado para ver el contenido de la página
             $query = $em->createQuery('SELECT count(np.id) FROM LinkComunBundle:CertiNivelPagina np
-                                       JOIN np.paginaEmpresa pe 
-                                       WHERE pe.pagina = :pagina_id 
+                                       JOIN np.paginaEmpresa pe
+                                       WHERE pe.pagina = :pagina_id
                                        AND np.nivel = :nivel_id')
                         ->setParameters(array('pagina_id' => $categoria['programa_id'],
                                               'nivel_id' => $tutor->getNivel()->getId()));
             $nivel_asignado = $query->getSingleScalarResult();
 
             //verificar si el usuario es tutor, en caso de ser falso envia el correo al tutor
-            if($muro->getUsuario()->getId()!= $tutor->getId() && $nivel_asignado && $correo) 
+            if($muro->getUsuario()->getId()!= $tutor->getId() && $nivel_asignado && $correo)
             {
 
                 $encabezadoUsuario = 'El usuario: '.$muro->getUsuario()->getNombre().' '.$muro->getUsuario()->getApellido().', '.mb_strtolower($tipoMensaje, 'UTF-8').' lo siguiente: ';
@@ -366,7 +363,7 @@ class Functions
                     $email->setFecha(new \DateTime('now'));
                     $em->persist($email);
                     $em->flush();
-                        
+
                     //crea la notificacion para el usuario cuando el usuario que publica
                     $descripcion = $this->tipoDescripcion($tipoMensaje, $muro, $parametros_correo['datos']['usuarioPadre']);
                     $tipoAlarma = ($tipoMensaje=='Respondió') ? 'respuesta_muro' : 'aporte_muro';
@@ -379,7 +376,7 @@ class Functions
         }
 
         return 1;
-        
+
     }
 
   // Retorna el URL hasta el directorio web de la aplicación. NO incluye el slash.
@@ -390,30 +387,30 @@ class Functions
     return $url;
   }
 
-  function mb_wordwrap($str, $len = 75, $break = " ", $cut = true) 
+  function mb_wordwrap($str, $len = 75, $break = " ", $cut = true)
   {
     $len = (int) $len;
 
     if (empty($str))
-      return ""; 
+      return "";
 
     $pattern = "";
 
     if ($cut)
-      $pattern = '/([^'.preg_quote($break).']{'.$len.'})/u'; 
+      $pattern = '/([^'.preg_quote($break).']{'.$len.'})/u';
     else
       return wordwrap($str, $len, $break);
 
     return preg_replace($pattern, "\${1}".$break, $str);
   }
-  
+
   public function sendEmail($parametros)
   {
 
     $ok = 0;
 
     if ($this->container->getParameter('sendMail'))
-    { 
+    {
       $mailer = $this->container->get('swiftmailer.mailer.'.$parametros["mailer"]);
       // ->setBody($this->render($parametros['twig'], $parametros['datos']), 'text/html');
       $body = $this->templating->render($parametros['twig'],$parametros['datos']);
@@ -424,7 +421,7 @@ class Functions
               ->setBody($body, 'text/html');
           $ok = $mailer->send($message);
     }
-    
+
         return $ok;
 
   }
@@ -437,14 +434,14 @@ class Functions
   */
   public function getRolesId($roles)
   {
-  
+
     $roles_id = array();
       foreach ($roles as $rol) {
           $roles_id[] = $rol['id'];
       }
-     
+
       return $roles_id;
-  
+
   }
 
   public function obtenerIcono($extension)
@@ -481,33 +478,33 @@ class Functions
 
   function sanear_string($string)
   {
-   
+
       $string = trim($string);
-   
+
       $string = str_replace(
           array('Á', 'À', 'Â', 'Ä'),
           array('á', 'á', 'á', 'á'),
           $string
       );
-   
+
       $string = str_replace(
           array('É', 'È', 'Ê', 'Ë'),
           array('é', 'é', 'é', 'é'),
           $string
       );
-   
+
       $string = str_replace(
           array('Í', 'Ì', 'Ï', 'Î'),
           array('í', 'í', 'í', 'í'),
           $string
       );
-   
+
       $string = str_replace(
           array('Ó', 'Ò', 'Ö', 'Ô'),
           array('ó', 'ó', 'ó', 'ó'),
           $string
       );
-   
+
       $string = str_replace(
           array('Ú', 'Ù', 'Û', 'Ü'),
           array('ú', 'ú', 'ú', 'ú'),
@@ -519,14 +516,14 @@ class Functions
           array('ñ'),
           $string
       );
-       
+
       return $string;
   }
 
   // Recibe la fecha de nacimiento en formato AAAA-MM-DD. Retorna la edad.
   public function calcularEdad($fecha)
   {
-    
+
     if (!$fecha)
     {
       $edad = 'Fecha de nacimiento no especificada';
@@ -535,7 +532,7 @@ class Functions
       $datetime1 = new \DateTime($fecha);
       $datetime2 = new \DateTime("now");
       $interval = $datetime1->diff($datetime2);
-      
+
       if ($interval->format('%y') < 1){
         // Si es menos que un año, se contabiliza los meses
         if ($interval->format('%m') < 1)
@@ -576,7 +573,7 @@ class Functions
   // Retorna la fecha de vencimiento a partir de hoy
   public function vencimiento($cantidad, $tipo, $formato)
   {
-    
+
     switch ($tipo)
     {
       case 'Días':
@@ -591,7 +588,7 @@ class Functions
       default:
         $vencimiento = date($formato);
     }
-    
+
     return $vencimiento;
 
   }
@@ -602,7 +599,7 @@ class Functions
   {
 
     $days_ago = 0;
-    
+
     if ($fecha)
     {
       $datetime1 = new \DateTime($fecha);
@@ -620,7 +617,7 @@ public function porcentaje_finalizacion($fechaInicio,$fechaFin,$diasVencimiento)
     $datetime2 = new \DateTime($fechaFin);
     $interval = $datetime2->diff($datetime1);
     $diasTotales = $interval->format('%a');
-    $porcentaje = ($diasVencimiento * 100)/$diasTotales; 
+    $porcentaje = ($diasVencimiento * 100)/$diasTotales;
     return round($porcentaje,0);
   }
 
@@ -636,10 +633,10 @@ public function porcentaje_finalizacion($fechaInicio,$fechaFin,$diasVencimiento)
     $hoy = date('Y-m-d');
     $ayer = date('Y-m-d', strtotime('yesterday'));
     $time_ago = '';
-    
+
     if ($fecha)
     {
-      
+
       $datetime1 = new \DateTime($fecha);
       $datetime2 = new \DateTime(date('Y-m-d H:i:s'));
       $interval = $datetime1->diff($datetime2);
@@ -648,7 +645,7 @@ public function porcentaje_finalizacion($fechaInicio,$fechaFin,$diasVencimiento)
       {
         $time_ago = $datetime1->format('d/m/Y H:i');
       }
-      elseif ($fecha >= $ayer.' 00:00:00' && $fecha < $ayer.' 23:59:59') 
+      elseif ($fecha >= $ayer.' 00:00:00' && $fecha < $ayer.' 23:59:59')
       {
         $time_ago = $this->translator->trans('Ayer').' '.$datetime1->format('H:i');
       }
@@ -661,7 +658,7 @@ public function porcentaje_finalizacion($fechaInicio,$fechaFin,$diasVencimiento)
           $time_ago = 'Hace '.$interval->format('%i').' '.$this->translator->trans('minutos');
         }
       }
-      
+
     }
 
         return $time_ago;
@@ -677,7 +674,7 @@ public function porcentaje_finalizacion($fechaInicio,$fechaFin,$diasVencimiento)
     $inicio = $inicio_arr[2].'-'.$inicio_arr[1].'-'.$inicio_arr[0];
     $final_arr = explode("/", $final);
     $final = $final_arr[2].'-'.$final_arr[1].'-'.$final_arr[0];
-    
+
     $datetime1 = new \DateTime($inicio);
     $datetime2 = new \DateTime($final);
     $interval = $datetime1->diff($datetime2);
@@ -715,7 +712,7 @@ public function porcentaje_finalizacion($fechaInicio,$fechaFin,$diasVencimiento)
             }
               }
   }
-    
+
   return $ok;
 
   }
@@ -726,7 +723,7 @@ public function porcentaje_finalizacion($fechaInicio,$fechaFin,$diasVencimiento)
 
     $empresa_id = 0;
     $em = $this->em;
-    
+
     foreach ($roles as $rol_id)
         {
           $rol = $em->getRepository('LinkComunBundle:AdminRol')->find($rol_id);
@@ -736,7 +733,7 @@ public function porcentaje_finalizacion($fechaInicio,$fechaFin,$diasVencimiento)
             $empresa_id = $usuario->getEmpresa()->getId();
           }
         }
-    
+
     return $empresa_id;
 
   }
@@ -768,7 +765,7 @@ public function porcentaje_finalizacion($fechaInicio,$fechaFin,$diasVencimiento)
 
   // Optiene la IP del cliente
   public function get_client_ip() {
-      
+
       $ipaddress = '';
       if (getenv('HTTP_CLIENT_IP'))
           $ipaddress = getenv('HTTP_CLIENT_IP');
@@ -791,7 +788,7 @@ public function porcentaje_finalizacion($fechaInicio,$fechaFin,$diasVencimiento)
   // Indica si es alcanzable una web
   public function is_connected($web)
   {
-      $connected = @fsockopen($web, 80); 
+      $connected = @fsockopen($web, 80);
                                           //website, port  (try 80 or 443)
       if ($connected){
           $is_conn = true; //action when connected
@@ -809,7 +806,7 @@ public function porcentaje_finalizacion($fechaInicio,$fechaFin,$diasVencimiento)
 
     $em = $this->em;
     $session = new Session();
-    
+
     $admin_sesion = $em->getRepository('LinkComunBundle:AdminSesion')->find($sesion_id);
     if($admin_sesion){
       $admin_sesion->setFechaRequest(new \DateTime('now'));
@@ -820,7 +817,7 @@ public function porcentaje_finalizacion($fechaInicio,$fechaFin,$diasVencimiento)
       $session->invalidate();
           $session->clear();
     }
-    
+
 
   }
 
@@ -829,11 +826,11 @@ public function porcentaje_finalizacion($fechaInicio,$fechaFin,$diasVencimiento)
   {
 
     $paginas = array();
-        
+
         foreach ($pages as $page)
         {
 
-			
+
         	$subpaginas = $this->subPaginas($page->getId());
 
 
@@ -862,10 +859,10 @@ public function porcentaje_finalizacion($fechaInicio,$fechaFin,$diasVencimiento)
     $subpaginas = array();
     $tiene = 0;
     $return = $json ? array() : '';
-    
+
     $subpages = $em->getRepository('LinkComunBundle:CertiPagina')->findBy(array('pagina' => $pagina_id),
                                         array('orden' => 'ASC'));
-    
+
     foreach ($subpages as $subpage)
     {
       $tiene++;
@@ -880,7 +877,7 @@ public function porcentaje_finalizacion($fechaInicio,$fechaFin,$diasVencimiento)
           }
         }
         if($incluir)
-        {       
+        {
           $check = in_array($subpage->getId(), $paginas_asociadas) ? ' <span class="fa fa-check"></span>' : '';
           $return .= '<li data-jstree=\'{ "icon": "fa fa-angle-double-right" }\' p_id="'.$subpage->getId().'" p_str="'.$subpage->getCategoria()->getNombre().': '.$subpage->getNombre().'">'.$subpage->getCategoria()->getNombre().': '.$subpage->getNombre().$check;
           $subPaginas = $this->subPaginas($subpage->getId(), $paginas_asociadas);
@@ -927,14 +924,14 @@ public function porcentaje_finalizacion($fechaInicio,$fechaFin,$diasVencimiento)
     $tiene = 0;
     $return = $json ? array() : '';
 
-    $query = $em->createQuery("SELECT pe, p FROM LinkComunBundle:CertiPaginaEmpresa pe 
-                                    JOIN pe.pagina p 
-                                    WHERE pe.empresa = :empresa_id AND p.pagina = :pagina_id 
+    $query = $em->createQuery("SELECT pe, p FROM LinkComunBundle:CertiPaginaEmpresa pe
+                                    JOIN pe.pagina p
+                                    WHERE pe.empresa = :empresa_id AND p.pagina = :pagina_id
                                     ORDER BY p.orden ASC")
                     ->setParameters(array('empresa_id' => $empresa_id,
                                 'pagina_id' => $pagina_id));
         $subpages = $query->getResult();
-    
+
     foreach ($subpages as $subpage)
     {
       $tiene++;
@@ -974,6 +971,49 @@ public function porcentaje_finalizacion($fechaInicio,$fechaFin,$diasVencimiento)
     return $subpaginas;
 
   }
+ public function obtenerEstructuraJson($pagina_id){
+    $em = $this->em;
+     $query = $em->getConnection()->prepare('SELECT
+                                                    fnobtener_estructura
+                                                    (:ppagina_id) as
+                                                    resultado;');
+        $query->bindValue(':ppagina_id', $pagina_id, \PDO::PARAM_INT);
+        $query->execute();
+        $gc = $query->fetchAll();
+        return $gc[0]['resultado'];
+ }
+public function obtenerEstructuraArbol($estructura){
+    $html ='';
+    $curso_id = $estructura['padre']['id'];
+    $array_modulos = $estructura[$curso_id];
+    if (count($array_modulos)>0) {
+        foreach ($array_modulos as $modulo) {
+          $html.='<li data-jstree=\'{"icon":"fa fa-angle-double-right"}\' p_id="'.$modulo['id'].'" p_str="'.$modulo['categoria'].': '.$modulo['nombre'].'" tipo_recurso_id="'.$modulo['categoria_id'].'">'.$modulo['categoria'].': '.$modulo['nombre'].'';
+          $array_materias = $estructura[$modulo['id']];
+          if(count($array_materias)>0){
+              $html.='<ul>'; // agrupar materias
+                foreach ($array_materias as $materia) {
+                  $html.='<li data-jstree=\'{"icon":"fa fa-angle-double-right"}\' p_id="'.$materia['id'].'" p_str="'.$materia['categoria'].': '.$materia['nombre'].'" tipo_recurso_id="'.$materia['categoria_id'].'">'.$materia['categoria'].': '.$materia['nombre'].'';
+                   $array_lecciones = $estructura[$materia['id']];
+                   if(count($array_lecciones)>0){
+                      $html.='<ul>'; // agrupar lecciones
+                      foreach ($array_lecciones as $leccion) {
+                          $html.='<li data-jstree=\'{"icon":"fa fa-angle-double-right"}\' p_id="'.$leccion['id'].'" p_str="'.$leccion['categoria'].': '.$leccion['nombre'].'" tipo_recurso_id="'.$leccion['categoria_id'].'">'.$leccion['categoria'].': '.$leccion['nombre'].'';
+                      }
+                      $html.='</ul>';// fin grupo de lecciones
+                   }
+                }
+                $html.='</li>';
+              $html.='</ul>';// fin grupo de materias
+          }
+
+
+        }
+     $html.='</li>';
+    }
+
+    return $html;
+}
 
 
   // Crea o actualiza asignaciones de sub-páginas con los mismos valores de la página padre
@@ -1044,19 +1084,19 @@ public function porcentaje_finalizacion($fechaInicio,$fechaFin,$diasVencimiento)
 
   function recurse_copy($src,$dst) {
 
-      $dir = opendir($src); 
-      @mkdir($dst); 
-      
-      while(false !== ( $file = readdir($dir)) ) { 
-          if (( $file != '.' ) && ( $file != '..' )) { 
-              if ( is_dir($src . '/' . $file) ) { 
-                  $this->recurse_copy($src . '/' . $file,$dst . '/' . $file); 
-              } 
-              else { 
-                  copy($src . '/' . $file,$dst . '/' . $file); 
-              } 
-          } 
-      } 
+      $dir = opendir($src);
+      @mkdir($dst);
+
+      while(false !== ( $file = readdir($dir)) ) {
+          if (( $file != '.' ) && ( $file != '..' )) {
+              if ( is_dir($src . '/' . $file) ) {
+                  $this->recurse_copy($src . '/' . $file,$dst . '/' . $file);
+              }
+              else {
+                  copy($src . '/' . $file,$dst . '/' . $file);
+              }
+          }
+      }
       closedir($dir);
       chmod($dst,0750);
 
@@ -1102,11 +1142,11 @@ public function porcentaje_finalizacion($fechaInicio,$fechaFin,$diasVencimiento)
 
     $query = $em->createQuery('SELECT pe FROM LinkComunBundle:CertiPaginaEmpresa pe
                                    JOIN pe.pagina p
-                                   WHERE pe.empresa = :empresa 
-                                    AND p.pagina = :pagina_id 
-                                    AND p.estatusContenido = :estatus_activo 
-                                    AND pe.activo = :activo 
-                                    AND pe.fechaInicio <= :hoy 
+                                   WHERE pe.empresa = :empresa
+                                    AND p.pagina = :pagina_id
+                                    AND p.estatusContenido = :estatus_activo
+                                    AND pe.activo = :activo
+                                    AND pe.fechaInicio <= :hoy
                                    ORDER BY p.orden')
                     ->setParameters(array('empresa' => $empresa_id,
                                 'pagina_id' => $pagina_id,
@@ -1117,7 +1157,7 @@ public function porcentaje_finalizacion($fechaInicio,$fechaFin,$diasVencimiento)
 
     foreach ($subpages as $subpage)
     {
-            
+
             $orden++;
 
       $query = $em->createQuery('SELECT COUNT(p.id) FROM LinkComunBundle:CertiPrueba p
@@ -1139,11 +1179,11 @@ public function porcentaje_finalizacion($fechaInicio,$fechaFin,$diasVencimiento)
                                                   'inicio' => $subpage->getFechaInicio()->format('d/m/Y'),
                                                   'vencimiento' => $subpage->getFechaVencimiento()->format('d/m/Y'),
                                                   'subpaginas' => $this->subPaginasNivel($subpage->getPagina()->getId(), $estatus_contenido, $empresa_id));
-    
+
     }
 
     return $subpaginas;
-    
+
   }
 
   // Retorna un arreglo multidimensional con la estructura del menú lateral para la vista de las lecciones
@@ -1211,9 +1251,9 @@ public function porcentaje_finalizacion($fechaInicio,$fechaFin,$diasVencimiento)
           if ($subpagina['prelacion'])
           {
             // Se determina si el contenido estará bloqueado
-            $query = $em->createQuery('SELECT COUNT(pl.id) FROM LinkComunBundle:CertiPaginaLog pl 
-                                        WHERE pl.pagina = :pagina_id 
-                                        AND pl.usuario = :usuario_id 
+            $query = $em->createQuery('SELECT COUNT(pl.id) FROM LinkComunBundle:CertiPaginaLog pl
+                                        WHERE pl.pagina = :pagina_id
+                                        AND pl.usuario = :usuario_id
                                         AND pl.estatusPagina = :completada')
                         ->setParameters(array('pagina_id' => $subpagina['prelacion'],
                                     'usuario_id' => $usuario_id,
@@ -1229,9 +1269,9 @@ public function porcentaje_finalizacion($fechaInicio,$fechaFin,$diasVencimiento)
               $padre = $indexedPages[$indexedPages[$subpagina['id']]['padre']];
               if ($padre['prelacion'])
               {
-                $query = $em->createQuery('SELECT COUNT(pl.id) FROM LinkComunBundle:CertiPaginaLog pl 
-                                            WHERE pl.pagina = :pagina_id 
-                                            AND pl.usuario = :usuario_id 
+                $query = $em->createQuery('SELECT COUNT(pl.id) FROM LinkComunBundle:CertiPaginaLog pl
+                                            WHERE pl.pagina = :pagina_id
+                                            AND pl.usuario = :usuario_id
                                             AND pl.estatusPagina = :completada')
                             ->setParameters(array('pagina_id' => $padre['prelacion'],
                                         'usuario_id' => $usuario_id,
@@ -1255,9 +1295,9 @@ public function porcentaje_finalizacion($fechaInicio,$fechaFin,$diasVencimiento)
             }
           }
           // Se determina si el contenido ya está completado
-          $query = $em->createQuery('SELECT COUNT(pl.id) FROM LinkComunBundle:CertiPaginaLog pl 
-                                      WHERE pl.pagina = :pagina_id 
-                                      AND pl.usuario = :usuario_id 
+          $query = $em->createQuery('SELECT COUNT(pl.id) FROM LinkComunBundle:CertiPaginaLog pl
+                                      WHERE pl.pagina = :pagina_id
+                                      AND pl.usuario = :usuario_id
                                       AND pl.estatusPagina = :completada')
                       ->setParameters(array('pagina_id' => $subpagina['id'],
                                   'usuario_id' => $usuario_id,
@@ -1313,9 +1353,9 @@ public function porcentaje_finalizacion($fechaInicio,$fechaFin,$diasVencimiento)
         if ($programa['prelacion'])
         {
           // Se determina si el contenido estará bloqueado
-          $query = $em->createQuery('SELECT COUNT(pl.id) FROM LinkComunBundle:CertiPaginaLog pl 
-                                      WHERE pl.pagina = :pagina_id 
-                                      AND pl.usuario = :usuario_id 
+          $query = $em->createQuery('SELECT COUNT(pl.id) FROM LinkComunBundle:CertiPaginaLog pl
+                                      WHERE pl.pagina = :pagina_id
+                                      AND pl.usuario = :usuario_id
                                       AND pl.estatusPagina = :completada')
                       ->setParameters(array('pagina_id' => $programa['prelacion'],
                                   'usuario_id' => $usuario_id,
@@ -1338,9 +1378,9 @@ public function porcentaje_finalizacion($fechaInicio,$fechaFin,$diasVencimiento)
         }
 
         // Se determina si el contenido ya está completado
-        $query = $em->createQuery('SELECT COUNT(pl.id) FROM LinkComunBundle:CertiPaginaLog pl 
-                                    WHERE pl.pagina = :pagina_id 
-                                    AND pl.usuario = :usuario_id 
+        $query = $em->createQuery('SELECT COUNT(pl.id) FROM LinkComunBundle:CertiPaginaLog pl
+                                    WHERE pl.pagina = :pagina_id
+                                    AND pl.usuario = :usuario_id
                                     AND pl.estatusPagina = :completada')
                     ->setParameters(array('pagina_id' => $programa['id'],
                                 'usuario_id' => $usuario_id,
@@ -1418,9 +1458,9 @@ public function porcentaje_finalizacion($fechaInicio,$fechaFin,$diasVencimiento)
     if ($pagina_arr['prelacion'])
     {
       // Se determina si el contenido estará bloqueado
-      $query = $em->createQuery('SELECT COUNT(pl.id) FROM LinkComunBundle:CertiPaginaLog pl 
-                                  WHERE pl.pagina = :pagina_id 
-                                  AND pl.usuario = :usuario_id 
+      $query = $em->createQuery('SELECT COUNT(pl.id) FROM LinkComunBundle:CertiPaginaLog pl
+                                  WHERE pl.pagina = :pagina_id
+                                  AND pl.usuario = :usuario_id
                                   AND pl.estatusPagina = :completada')
                   ->setParameters(array('pagina_id' => $pagina_arr['prelacion'],
                               'usuario_id' => $usuario_id,
@@ -1458,9 +1498,9 @@ public function porcentaje_finalizacion($fechaInicio,$fechaFin,$diasVencimiento)
       if ($subpagina_arr['prelacion'])
       {
         // Se determina si el contenido estará bloqueado
-        $query = $em->createQuery('SELECT COUNT(pl.id) FROM LinkComunBundle:CertiPaginaLog pl 
-                                    WHERE pl.pagina = :pagina_id 
-                                    AND pl.usuario = :usuario_id 
+        $query = $em->createQuery('SELECT COUNT(pl.id) FROM LinkComunBundle:CertiPaginaLog pl
+                                    WHERE pl.pagina = :pagina_id
+                                    AND pl.usuario = :usuario_id
                                     AND pl.estatusPagina = :completada')
                     ->setParameters(array('pagina_id' => $subpagina_arr['prelacion'],
                                 'usuario_id' => $usuario_id,
@@ -1471,9 +1511,9 @@ public function porcentaje_finalizacion($fechaInicio,$fechaFin,$diasVencimiento)
       $subleccion['bloqueada'] = $bloqueada;
 
       // Se verifica si esta sublección ya fue vista
-      $query = $em->createQuery('SELECT COUNT(pl.id) FROM LinkComunBundle:CertiPaginaLog pl 
-                                  WHERE pl.pagina = :pagina_id 
-                                  AND pl.usuario = :usuario_id 
+      $query = $em->createQuery('SELECT COUNT(pl.id) FROM LinkComunBundle:CertiPaginaLog pl
+                                  WHERE pl.pagina = :pagina_id
+                                  AND pl.usuario = :usuario_id
                                   AND pl.estatusPagina IN (:vista)')
                   ->setParameters(array('pagina_id' => $subpagina_arr['id'],
                               'usuario_id' => $usuario_id,
@@ -1516,9 +1556,9 @@ public function porcentaje_finalizacion($fechaInicio,$fechaFin,$diasVencimiento)
         $muros = array();
 
         // Total de comentarios en este muro
-        $query = $em->createQuery('SELECT COUNT(m.id) FROM LinkComunBundle:CertiMuro m 
-                                WHERE m.pagina = :pagina_id 
-                                AND m.muro IS NULL 
+        $query = $em->createQuery('SELECT COUNT(m.id) FROM LinkComunBundle:CertiMuro m
+                                WHERE m.pagina = :pagina_id
+                                AND m.muro IS NULL
                                 AND m.empresa = :empresa_id')
                 ->setParameters(array('pagina_id' => $pagina_id,
                             'empresa_id' => $empresa_id));
@@ -1528,7 +1568,7 @@ public function porcentaje_finalizacion($fechaInicio,$fechaFin,$diasVencimiento)
         {
 
           // Total de respuestas de este comentario
-          $query = $em->createQuery('SELECT COUNT(m.id) FROM LinkComunBundle:CertiMuro m 
+          $query = $em->createQuery('SELECT COUNT(m.id) FROM LinkComunBundle:CertiMuro m
                                   WHERE m.muro = :muro_id')
                   ->setParameter('muro_id', $muro->getId());
       $total_respuestas = $query->getSingleScalarResult();
@@ -1555,7 +1595,7 @@ public function porcentaje_finalizacion($fechaInicio,$fechaFin,$diasVencimiento)
 
     $em = $this->em;
 
-    // Búsqueda inicial de todos los 
+    // Búsqueda inicial de todos los
     $qb = $em->createQueryBuilder();
         $qb->select('m')
            ->from('LinkComunBundle:CertiMuro', 'm')
@@ -1585,13 +1625,13 @@ public function porcentaje_finalizacion($fechaInicio,$fechaFin,$diasVencimiento)
           {
 
             $muro = $em->getRepository('LinkComunBundle:CertiMuro')->find($muro_id);
-            
+
             // Total de respuestas de este comentario
-            $query = $em->createQuery('SELECT COUNT(m.id) FROM LinkComunBundle:CertiMuro m 
+            $query = $em->createQuery('SELECT COUNT(m.id) FROM LinkComunBundle:CertiMuro m
                                     WHERE m.muro = :muro_id')
                     ->setParameter('muro_id', $muro->getId());
         $total_respuestas = $query->getSingleScalarResult();
-            
+
             $muros[] = array('id' => $muro->getId(),
                    'mensaje' => $muro->getMensaje(),
                    'usuario' => $muro->getUsuario()->getId() == $usuario_id ? $this->translator->trans('Yo') : $muro->getUsuario()->getNombre().' '.$muro->getUsuario()->getApellido(),
@@ -1610,9 +1650,9 @@ public function porcentaje_finalizacion($fechaInicio,$fechaFin,$diasVencimiento)
         }
 
         // Total de comentarios en este muro
-        $query = $em->createQuery('SELECT COUNT(m.id) FROM LinkComunBundle:CertiMuro m 
-                                WHERE m.pagina = :pagina_id 
-                                AND m.muro IS NULL 
+        $query = $em->createQuery('SELECT COUNT(m.id) FROM LinkComunBundle:CertiMuro m
+                                WHERE m.pagina = :pagina_id
+                                AND m.muro IS NULL
                                 AND m.empresa = :empresa_id')
                 ->setParameters(array('pagina_id' => $pagina_id,
                             'empresa_id' => $empresa_id));
@@ -1638,7 +1678,7 @@ public function porcentaje_finalizacion($fechaInicio,$fechaFin,$diasVencimiento)
            ->setParameter('muro_id', $muro_id);
         $query = $qb->getQuery();
         $submuros_bd = $query->getResult();
-      
+
       $submuros = array();
       foreach ($submuros_bd as $submuro)
       {
@@ -1664,9 +1704,9 @@ public function porcentaje_finalizacion($fechaInicio,$fechaFin,$diasVencimiento)
     foreach ($pagina['subpaginas'] as $subpagina)
     {
 
-      $query = $em->createQuery('SELECT COUNT(pl.id) FROM LinkComunBundle:CertiPaginaLog pl 
-                                  WHERE pl.pagina = :pagina_id 
-                                  AND pl.usuario = :usuario_id 
+      $query = $em->createQuery('SELECT COUNT(pl.id) FROM LinkComunBundle:CertiPaginaLog pl
+                                  WHERE pl.pagina = :pagina_id
+                                  AND pl.usuario = :usuario_id
                                   AND pl.estatusPagina = :completada')
                   ->setParameters(array('pagina_id' => $subpagina['id'],
                               'usuario_id' => $usuario_id,
@@ -1872,11 +1912,11 @@ public function porcentaje_finalizacion($fechaInicio,$fechaFin,$diasVencimiento)
         if ($indexedPages[$pagina_padre_id]['tiene_evaluacion'])
         {
           $avance_prueba = 0;
-          $query = $em->createQuery("SELECT pl FROM LinkComunBundle:CertiPruebaLog pl 
-                                          JOIN pl.prueba p 
-                                          WHERE pl.usuario = :usuario_id 
-                                          AND p.pagina = :pagina_id 
-                                          AND pl.estado != :estado 
+          $query = $em->createQuery("SELECT pl FROM LinkComunBundle:CertiPruebaLog pl
+                                          JOIN pl.prueba p
+                                          WHERE pl.usuario = :usuario_id
+                                          AND p.pagina = :pagina_id
+                                          AND pl.estado != :estado
                                           ORDER BY pl.id DESC")
                           ->setParameters(array('usuario_id' => $usuario_id,
                                       'pagina_id' => $pagina_padre_id,
@@ -1963,7 +2003,7 @@ public function porcentaje_finalizacion($fechaInicio,$fechaFin,$diasVencimiento)
     // función para retornar todos los ids de las sugpaginas de una programa
     public function hijas($subpagina, $hijas=array())
   {
-    foreach ($subpagina as $sub) 
+    foreach ($subpagina as $sub)
     {
       $hijas[] = $sub['id'];
       if ($sub['subpaginas'])
@@ -1993,7 +2033,7 @@ public function porcentaje_finalizacion($fechaInicio,$fechaFin,$diasVencimiento)
                     </div>
                     <div class="comm-footer d-flex justify-content-between align-items-center">
                         <a href="#" class="mr-0 text-sm color-light-grey like" data="'.$muro['id'].'">
-                            
+
                         </a>
                         <a href="#" class="links text-right  reply_comment" id="href_reply_'.$muro['id'].'" data="'.$muro['id'].'">'.$this->translator->trans('Responder').'</a>
                     </div>
@@ -2009,8 +2049,8 @@ public function porcentaje_finalizacion($fechaInicio,$fechaFin,$diasVencimiento)
         {
             $html .= '<input type="hidden" id="'.$prefix.'_more_answers-'.$muro['id'].'" name="'.$prefix.'_more_answers-'.$muro['id'].'" value="0">
                       <a href="#" class="btn btn-primary btn-sm  text-center mx-auto more_answers" data="'.$muro['id'].'">'.$this->translator->trans('Ver más respuestas').'</a>';
-        }                   
-                        
+        }
+
         $html .= '</div>
                 </div>';
 
@@ -2037,7 +2077,7 @@ public function porcentaje_finalizacion($fechaInicio,$fechaFin,$diasVencimiento)
                     </div>
                     <div class="comm-footer d-flex justify-content-between align-items-center">
                         <a href="#" class="mr-0 text-sm color-light-grey like" data="'.$submuro['id'].'">
-                            
+
                         </a>
                     </div>
                 </div>';
@@ -2075,7 +2115,7 @@ public function porcentaje_finalizacion($fechaInicio,$fechaFin,$diasVencimiento)
 
     $em = $this->em;
 
-    $query = $em->createQuery('SELECT u FROM LinkComunBundle:AdminUsuario u 
+    $query = $em->createQuery('SELECT u FROM LinkComunBundle:AdminUsuario u
                   WHERE LOWER(u.login) = :login AND u.clave = :clave')
                     ->setParameters(array('login' => strtolower($datos['login']),
                                 'clave' => $datos['clave']));
@@ -2090,7 +2130,7 @@ public function porcentaje_finalizacion($fechaInicio,$fechaFin,$diasVencimiento)
         {
             $error = $this->translator->trans('Usuario o clave incorrecta.');
         }
-        else {            
+        else {
             if (!$usuario->getActivo()) //validamos que el usuario este activo
             {
                 $error = $this->translator->trans('Usuario inactivo. Contacte al administrador del sistema.');
@@ -2123,7 +2163,7 @@ public function porcentaje_finalizacion($fechaInicio,$fechaFin,$diasVencimiento)
                             $query = $em->createQuery('SELECT ru FROM LinkComunBundle:AdminRolUsuario ru WHERE ru.usuario = :usuario_id')
                                         ->setParameter('usuario_id', $usuario->getId());
                             $roles_usuario_db = $query->getResult();
-                            
+
                             foreach ($roles_usuario_db as $rol_usuario)
                             {
                                 // Verifico si el rol está dentro de los roles de backend
@@ -2168,7 +2208,7 @@ public function porcentaje_finalizacion($fechaInicio,$fechaFin,$diasVencimiento)
                                     }
                                 }
 
-                                if ($is_active) 
+                                if ($is_active)
                                 {
                                     $error = $this->translator->trans('Este usuario tiene una sesión activa. Espera 5 minutos e intenta ingresar de nuevo.');
                                 }
@@ -2178,18 +2218,18 @@ public function porcentaje_finalizacion($fechaInicio,$fechaFin,$diasVencimiento)
                                     $query = $em->createQuery('SELECT np FROM LinkComunBundle:CertiNivelPagina np
                                                                JOIN np.paginaEmpresa pe
                                                                JOIN pe.pagina p
-                                                               WHERE pe.empresa = :empresa 
-                                                                AND p.pagina IS NULL 
-                                                                AND np.nivel = :nivel_usuario 
-                                                                AND pe.activo = :activo 
-                                                                AND pe.fechaInicio <= :hoy 
+                                                               WHERE pe.empresa = :empresa
+                                                                AND p.pagina IS NULL
+                                                                AND np.nivel = :nivel_usuario
+                                                                AND pe.activo = :activo
+                                                                AND pe.fechaInicio <= :hoy
                                                                ORDER BY p.orden')
                                                 ->setParameters(array('empresa' => $datos['empresa']['id'],
                                                                       'nivel_usuario' => $usuario->getNivel()->getId(),
                                                                       'activo' => true,
                                                                       'hoy' => date('Y-m-d')));
                                     $paginas_bd = $query->getResult();
-                                    
+
                                     if (!$paginas_bd)  //validamos que la empresa tenga paginas activas
                                     {
                                         $error = $this->translator->trans('No hay Programas disponibles para la empresa. Contacte al administrador del sistema.');
@@ -2208,7 +2248,7 @@ public function porcentaje_finalizacion($fechaInicio,$fechaFin,$diasVencimiento)
                                                               'foto' => $usuario->getFoto(),
                                                               'participante' => $participante,
                                                               'tutor' => $tutor);
-                                        
+
                                         // Estructura de páginas
                                         $paginas = array();
                                         $orden = 0;
@@ -2295,11 +2335,11 @@ public function porcentaje_finalizacion($fechaInicio,$fechaFin,$diasVencimiento)
 
                     }
                 }
-                
-            }
-        }         
 
-        return array("error" => $error, 
+            }
+        }
+
+        return array("error" => $error,
                "exito" => $exito);
 
     }
@@ -2309,16 +2349,16 @@ public function porcentaje_finalizacion($fechaInicio,$fechaFin,$diasVencimiento)
 
     $em = $this->em;
     $subpaginas = array();
-    
+
     foreach ($subpaginas_ids as $subpage)
     {
 
       $cantidad_intentos = 0;
       $nota = 0;
-      
+
       $query = $em->createQuery('SELECT pl.nota as nota FROM LinkComunBundle:CertiPruebaLog pl
                                      JOIN pl.prueba p
-                                     WHERE p.pagina = :pagina 
+                                     WHERE p.pagina = :pagina
                                      and pl.estado = :estado
                                      and pl.usuario = :usuario')
                       ->setParameters(array('usuario' => $usuario_id,
@@ -2337,14 +2377,14 @@ public function porcentaje_finalizacion($fechaInicio,$fechaFin,$diasVencimiento)
 
         $query = $em->createQuery('SELECT count(pl.id) FROM LinkComunBundle:CertiPruebaLog pl
                                        JOIN pl.prueba p
-                                       WHERE p.pagina = :pagina 
+                                       WHERE p.pagina = :pagina
                                        and pl.usuario = :usuario')
                         ->setParameters(array('usuario' => $usuario_id,
                                   'pagina' => $subpage));
             $cantidad_intentos = $query->getSingleScalarResult();
       }
           $pagina = $em->getRepository('LinkComunBundle:CertiPagina')->find($subpage);
-      
+
       if($nota > 0)
       {
             $subpaginas[$subpage] = array('id' => $subpage,
@@ -2357,7 +2397,7 @@ public function porcentaje_finalizacion($fechaInicio,$fechaFin,$diasVencimiento)
     }
 
     return $subpaginas;
-    
+
   }
 
   public function iniciarSesionAdmin($datos)
@@ -2369,7 +2409,7 @@ public function porcentaje_finalizacion($fechaInicio,$fechaFin,$diasVencimiento)
 
     $em = $this->em;
 
-    $query = $em->createQuery('SELECT u FROM LinkComunBundle:AdminUsuario u 
+    $query = $em->createQuery('SELECT u FROM LinkComunBundle:AdminUsuario u
                   WHERE LOWER(u.login) = :login AND u.clave = :clave')
                     ->setParameters(array('login' => strtolower($datos['login']),
                                 'clave' => $datos['clave']));
@@ -2440,14 +2480,14 @@ public function porcentaje_finalizacion($fechaInicio,$fechaFin,$diasVencimiento)
                     $roles_bk[] = $datos['yml']['rol']['tutor'];
                     $roles_ok = 0;
                     $administrador = false;
-                    
+
                     $query = $em->createQuery('SELECT ru FROM LinkComunBundle:AdminRolUsuario ru WHERE ru.usuario = :usuario_id')
                                 ->setParameter('usuario_id', $usuario->getId());
                     $roles_usuario_db = $query->getResult();
-                    
+
                     foreach ($roles_usuario_db as $rol_usuario)
                     {
-                        
+
                         // Verifico si el rol está dentro de los roles de backend
                         if ($rol_usuario->getRol()->getBackend())
                         {
@@ -2458,22 +2498,22 @@ public function porcentaje_finalizacion($fechaInicio,$fechaFin,$diasVencimiento)
                         {
                             $administrador = true;
                         }
-                        
+
                         $roles_usuario[] = $rol_usuario->getRol()->getId();
-                        
+
                     }
-                    
+
                     if (!$roles_ok)
                     {
                         $error = $this->translator->trans('Los roles que tiene el usuario no son permitidos para ingresar a la aplicación.');
                     }
                     else {
-                        
-                        $query = $em->createQuery('SELECT COUNT(p.id) FROM LinkComunBundle:AdminPermiso p JOIN p.aplicacion a 
+
+                        $query = $em->createQuery('SELECT COUNT(p.id) FROM LinkComunBundle:AdminPermiso p JOIN p.aplicacion a
                                              WHERE p.rol IN (:roles) AND a.activo = :activo AND a.aplicacion IS NULL')
                                 ->setParameters(array('roles' => $roles_usuario,
                                                   'activo' => true));
-                        
+
                         if (!$query->getSingleScalarResult())
                         {
                             $error = $this->translator->trans('Usted no tiene aplicaciones asignadas para su rol.');
@@ -2489,9 +2529,9 @@ public function porcentaje_finalizacion($fechaInicio,$fechaFin,$diasVencimiento)
                                                   'roles' => $roles_usuario);
 
                             // Opciones del menu
-                            $query = $em->createQuery("SELECT p FROM LinkComunBundle:AdminPermiso p JOIN p.aplicacion a 
-                                                        WHERE p.rol IN (:rol_id) 
-                                                        AND a.activo = :activo 
+                            $query = $em->createQuery("SELECT p FROM LinkComunBundle:AdminPermiso p JOIN p.aplicacion a
+                                                        WHERE p.rol IN (:rol_id)
+                                                        AND a.activo = :activo
                                                         AND a.aplicacion IS NULL
                                                         ORDER BY a.orden ASC")
                                         ->setParameters(array('rol_id' => $roles_usuario,
@@ -2500,7 +2540,7 @@ public function porcentaje_finalizacion($fechaInicio,$fechaFin,$diasVencimiento)
 
                             $permisos_id = array();
                             $menu = array();
-                            
+
                             foreach ($permisos as $permiso)
                             {
 
@@ -2511,9 +2551,9 @@ public function porcentaje_finalizacion($fechaInicio,$fechaFin,$diasVencimiento)
 
                                     $submenu = array();
 
-                                    $query = $em->createQuery("SELECT p FROM LinkComunBundle:AdminPermiso p JOIN p.aplicacion a 
-                                                                WHERE p.rol IN (:rol_id) 
-                                                                AND a.activo = :activo 
+                                    $query = $em->createQuery("SELECT p FROM LinkComunBundle:AdminPermiso p JOIN p.aplicacion a
+                                                                WHERE p.rol IN (:rol_id)
+                                                                AND a.activo = :activo
                                                                 AND a.aplicacion = :app_id
                                                                 ORDER BY a.orden ASC")
                                                 ->setParameters(array('rol_id' => $roles_usuario,
@@ -2534,9 +2574,9 @@ public function porcentaje_finalizacion($fechaInicio,$fechaFin,$diasVencimiento)
                                                                'nombre' => $subpermiso->getAplicacion()->getNombre(),
                                                                'icono' => $subpermiso->getAplicacion()->getIcono(),
                                                                'url_existente' => $subpermiso->getAplicacion()->getUrl() ? 1 : 0);
-                                        }                                        
+                                        }
                                     }
-                                                                        
+
                                     $menu[] = array('id' => $permiso->getAplicacion()->getId(),
                                                     'url' => $permiso->getAplicacion()->getUrl(),
                                                     'nombre' => $permiso->getAplicacion()->getNombre(),
@@ -2667,7 +2707,7 @@ public function porcentaje_finalizacion($fechaInicio,$fechaFin,$diasVencimiento)
                                    'likes' => $this->likes($social_colaborativo, $foro_hijo->getId(), $usuario['id']),
                                    'delete_link' => $delete_link,
                                    'respuestas' => $foros_nietos);
-            
+
         }
 
         return $foros_hijos;
@@ -2715,14 +2755,14 @@ public function porcentaje_finalizacion($fechaInicio,$fechaFin,$diasVencimiento)
   }
 
   /*function delete_folder($dir) {
-    if (is_dir($dir)) 
+    if (is_dir($dir))
     {
         $objects = opendir($dir);
-        foreach ($objects as $object) 
+        foreach ($objects as $object)
         {
             if ($object != "." && $object != "..")
             {
-              if (filetype($dir."/".$object) == "dir") 
+              if (filetype($dir."/".$object) == "dir")
               {
                 $this->delete_folder($dir."/".$object);
               }
@@ -2739,17 +2779,17 @@ public function porcentaje_finalizacion($fechaInicio,$fechaFin,$diasVencimiento)
   function delete_folder($directory, $delete_parent = null)
     {
       $files = glob($directory . '/{,.}[!.,!..]*',GLOB_MARK|GLOB_BRACE);
-      foreach ($files as $file) 
+      foreach ($files as $file)
       {
-          if (is_dir($file)) 
+          if (is_dir($file))
           {
             $this->delete_folder($file, 1);
-          } 
+          }
           else {
             unlink($file);
           }
       }
-      if ($delete_parent) 
+      if ($delete_parent)
       {
           rmdir($directory);
       }
@@ -2883,10 +2923,10 @@ public function porcentaje_finalizacion($fechaInicio,$fechaFin,$diasVencimiento)
     $em = $this->em;
     $pagina_evaluacion_id = 0;
 
-    $query = $em->createQuery("SELECT pl FROM LinkComunBundle:CertiPruebaLog pl 
-                                    JOIN pl.prueba p 
-                                    WHERE pl.usuario = :usuario_id 
-                                    AND p.pagina = :pagina_id 
+    $query = $em->createQuery("SELECT pl FROM LinkComunBundle:CertiPruebaLog pl
+                                    JOIN pl.prueba p
+                                    WHERE pl.usuario = :usuario_id
+                                    AND p.pagina = :pagina_id
                                     ORDER BY pl.id DESC")
                     ->setParameters(array('usuario_id' => $usuario_id,
                                           'pagina_id' => $pagina_id));
@@ -2903,15 +2943,15 @@ public function porcentaje_finalizacion($fechaInicio,$fechaFin,$diasVencimiento)
                     break;
                 case $yml['parameters']['estado_prueba']['reprobado']:
                     // Cantidad de intentos
-                    $query = $em->createQuery("SELECT COUNT(pl.id) FROM LinkComunBundle:CertiPruebaLog pl 
-                                                JOIN pl.prueba p 
-                                                WHERE pl.usuario = :usuario_id 
+                    $query = $em->createQuery("SELECT COUNT(pl.id) FROM LinkComunBundle:CertiPruebaLog pl
+                                                JOIN pl.prueba p
+                                                WHERE pl.usuario = :usuario_id
                                                 AND p.pagina = :pagina_id")
                                 ->setParameters(array('usuario_id' => $usuario_id,
                                                       'pagina_id' => $pagina_id));
                     $intentos = $query->getSingleScalarResult();
-                    $query = $em->createQuery("SELECT pe FROM LinkComunBundle:CertiPaginaEmpresa pe 
-                                                WHERE pe.empresa = :empresa_id 
+                    $query = $em->createQuery("SELECT pe FROM LinkComunBundle:CertiPaginaEmpresa pe
+                                                WHERE pe.empresa = :empresa_id
                                                 AND pe.pagina = :pagina_id")
                                 ->setParameters(array('empresa_id' => $empresa_id,
                                                       'pagina_id' => $pagina_id));
@@ -2926,8 +2966,8 @@ public function porcentaje_finalizacion($fechaInicio,$fechaFin,$diasVencimiento)
         }
         else {
             // Se verifica si la página tiene creada una evaluación
-            $query = $em->createQuery("SELECT COUNT(p.id) FROM LinkComunBundle:CertiPrueba p 
-                                        WHERE p.pagina = :pagina_id 
+            $query = $em->createQuery("SELECT COUNT(p.id) FROM LinkComunBundle:CertiPrueba p
+                                        WHERE p.pagina = :pagina_id
                                         AND p.estatusContenido = :activo")
                         ->setParameters(array('activo' => $yml['parameters']['estatus_contenido']['activo'],
                                               'pagina_id' => $pagina_id));
@@ -2937,7 +2977,7 @@ public function porcentaje_finalizacion($fechaInicio,$fechaFin,$diasVencimiento)
                 $pagina_evaluacion_id = $pagina_id;
             }
         }
-        
+
         return $pagina_evaluacion_id;
 
   }
@@ -2949,10 +2989,10 @@ public function porcentaje_finalizacion($fechaInicio,$fechaFin,$diasVencimiento)
     $em = $this->em;
     $orden = 0;
     $paginas_ordenadas = array();
-    
+
     $subpages = $em->getRepository('LinkComunBundle:CertiPagina')->findBy(array('pagina' => $pagina_empresa->getPagina()->getId()),
                                         array('orden' => 'ASC'));
-    
+
     foreach ($subpages as $subpage)
     {
 
@@ -2972,7 +3012,7 @@ public function porcentaje_finalizacion($fechaInicio,$fechaFin,$diasVencimiento)
                                            'pagina_empresa_id' => $subpagina_empresa->getId(),
                                            'nombre' => $subpage->getCategoria()->getNombre().' '.$subpage->getNombre(),
                                            'subpaginas' => $this->reordenarSubAsignaciones($subpagina_empresa));
-                
+
             }
 
     }
@@ -2987,10 +3027,10 @@ public function porcentaje_finalizacion($fechaInicio,$fechaFin,$diasVencimiento)
 
     $em = $this->em;
 
-    $query = $em->createQuery('SELECT COUNT(pe.id) FROM LinkComunBundle:CertiPaginaEmpresa pe 
+    $query = $em->createQuery('SELECT COUNT(pe.id) FROM LinkComunBundle:CertiPaginaEmpresa pe
                                 WHERE pe.pagina = :pagina_id')
                 ->setParameter('pagina_id', $pagina_id);
-    
+
     return $query->getSingleScalarResult();
 
   }
@@ -3074,12 +3114,12 @@ public function porcentaje_finalizacion($fechaInicio,$fechaFin,$diasVencimiento)
     // Orden para el nuevo registro
     if ($pagina->getPagina())
     {
-      $query = $em->createQuery('SELECT MAX(p.orden) FROM LinkComunBundle:CertiPagina p 
+      $query = $em->createQuery('SELECT MAX(p.orden) FROM LinkComunBundle:CertiPagina p
                                       WHERE p.pagina = :pagina_id')
             ->setParameter('pagina_id', $pagina->getPagina()->getId());
     }
     else {
-      $query = $em->createQuery('SELECT MAX(p.orden) FROM LinkComunBundle:CertiPagina p 
+      $query = $em->createQuery('SELECT MAX(p.orden) FROM LinkComunBundle:CertiPagina p
                                       WHERE p.pagina IS NULL');
     }
         $orden = $query->getSingleScalarResult();
@@ -3124,7 +3164,7 @@ public function porcentaje_finalizacion($fechaInicio,$fechaFin,$diasVencimiento)
     $c = 0;
 
     $usuario = $em->getRepository('LinkComunBundle:AdminUsuario')->find($usuario_id);
-    
+
     $paginas = $em->getRepository('LinkComunBundle:CertiPagina')->findBy(array('pagina' => $pagina_id),
                                                                              array('orden' => 'ASC'));
 
@@ -3133,7 +3173,7 @@ public function porcentaje_finalizacion($fechaInicio,$fechaFin,$diasVencimiento)
 
       $pagina_padre = $em->getRepository('LinkComunBundle:CertiPagina')->find($pagina_padre_id);
 
-      $query = $em->createQuery('SELECT MAX(p.orden) FROM LinkComunBundle:CertiPagina p 
+      $query = $em->createQuery('SELECT MAX(p.orden) FROM LinkComunBundle:CertiPagina p
                                       WHERE p.pagina = :pagina_id')
             ->setParameter('pagina_id', $pagina_padre_id);
       $orden = $query->getSingleScalarResult();
@@ -3162,7 +3202,7 @@ public function porcentaje_finalizacion($fechaInicio,$fechaFin,$diasVencimiento)
           if($evaluacion == 1){
               $c += $this->duplicarPrueba($pagina->getId(), $new_pagina->getId(), $usuario_id);
           }
-          
+
 
           // Duplicar sub-páginas
           $c += $this->duplicarSubPaginas($pagina->getId(), $new_pagina->getId(), $usuario_id, $evaluacion);
@@ -3205,9 +3245,9 @@ public function porcentaje_finalizacion($fechaInicio,$fechaFin,$diasVencimiento)
           // Preguntas
           $par_preguntas = array(); // $par_preguntas[$pregunta_id] = $new_pregunta_id
           $orden = 0;
-          $query = $em->createQuery("SELECT p FROM LinkComunBundle:CertiPregunta p 
-                                      WHERE p.prueba = :prueba_id 
-                                      AND p.pregunta IS NULL 
+          $query = $em->createQuery("SELECT p FROM LinkComunBundle:CertiPregunta p
+                                      WHERE p.prueba = :prueba_id
+                                      AND p.pregunta IS NULL
                                       ORDER BY p.orden ASC")
                       ->setParameter('prueba_id', $prueba->getId());
           $preguntas = $query->getResult();
@@ -3284,8 +3324,8 @@ public function porcentaje_finalizacion($fechaInicio,$fechaFin,$diasVencimiento)
           }
 
           // Preguntas/Opciones y de Asociación
-          $query = $em->createQuery("SELECT p FROM LinkComunBundle:CertiPregunta p 
-                                      WHERE p.prueba = :prueba_id 
+          $query = $em->createQuery("SELECT p FROM LinkComunBundle:CertiPregunta p
+                                      WHERE p.prueba = :prueba_id
                                       ORDER BY p.orden ASC")
                       ->setParameter('prueba_id', $prueba->getId());
           $preguntas = $query->getResult();
@@ -3313,7 +3353,7 @@ public function porcentaje_finalizacion($fechaInicio,$fechaFin,$diasVencimiento)
             {
 
               $new_pregunta = $em->getRepository('LinkComunBundle:CertiPregunta')->find($par_preguntas[$pa->getPregunta()->getId()]);
-              
+
               $preguntas_asociadas = explode(",", $pa->getPreguntas());
               $new_preguntas_asociadas = array();
               foreach ($preguntas_asociadas as $pregunta_asociada)
@@ -3341,7 +3381,7 @@ public function porcentaje_finalizacion($fechaInicio,$fechaFin,$diasVencimiento)
             }
 
           }
-    
+
     }
 
     return $c;
@@ -3386,7 +3426,7 @@ public function porcentaje_finalizacion($fechaInicio,$fechaFin,$diasVencimiento)
             if ($pagina_empresa->getFechaVencimiento()->format('Y-m-d') < date('Y-m-d'))
             {
               $vencido = true;
-              
+
             }
             elseif ($pagina_empresa->getPagina()->getPagina()) {
               // Verificación de programa vencido del padre
@@ -3424,7 +3464,7 @@ public function porcentaje_finalizacion($fechaInicio,$fechaFin,$diasVencimiento)
 
         $em = $this->em;
         $certificado = false;
-            
+
         //consultamos el certificado por pagina
         $certificado_pagina = $em->getRepository('LinkComunBundle:CertiCertificado')->findOneBy(array('empresa' => $empresa_id,
                                                                                                       'tipoCertificado' => $tipo_certificado['pagina'],
@@ -3446,7 +3486,7 @@ public function porcentaje_finalizacion($fechaInicio,$fechaFin,$diasVencimiento)
 
             }
             else {
-                
+
                 //consultamos el certificado por empresa     'entidadId' => 0
                 $certificado_empresas = $em->getRepository('LinkComunBundle:CertiCertificado')->findOneBy(array('empresa' => $empresa_id,
                                                                                                                 'tipoCertificado' => $tipo_certificado['empresa']));
@@ -3501,13 +3541,13 @@ public function porcentaje_finalizacion($fechaInicio,$fechaFin,$diasVencimiento)
 
         // buscando las últimas 3 interacciones del usuario donde la página no esté completada
         $query = $em->createQuery('SELECT pl FROM LinkComunBundle:CertiPaginaLog pl
-                                    JOIN pl.pagina p 
-                                    JOIN LinkComunBundle:CertiPaginaEmpresa pe 
+                                    JOIN pl.pagina p
+                                    JOIN LinkComunBundle:CertiPaginaEmpresa pe
                                     WHERE pl.usuario = :usuario_id
                                         AND pl.estatusPagina != :completada
-                                        AND p.pagina IS NULL 
-                                        AND pe.pagina = p.id 
-                                        AND pe.activo = :activo 
+                                        AND p.pagina IS NULL
+                                        AND pe.pagina = p.id
+                                        AND pe.activo = :activo
                                     ORDER BY pl.id DESC')
                     ->setParameters(array('usuario_id' => $usuario_id,
                                           'completada' => $yml['parameters']['estatus_pagina']['completada'],
@@ -3516,18 +3556,18 @@ public function porcentaje_finalizacion($fechaInicio,$fechaFin,$diasVencimiento)
 
         $actividad_reciente = array();
         $reciente = 0;
-        
-        foreach ($actividadreciente_padre as $arp) 
+
+        foreach ($actividadreciente_padre as $arp)
         {
 
             if ($reciente == 3)
             {
                 break;
             }
-            
-            if (array_key_exists($arp->getPagina()->getId(), $paginas_sesion) && !array_key_exists($arp->getPagina()->getId(), $actividad_reciente)) 
+
+            if (array_key_exists($arp->getPagina()->getId(), $paginas_sesion) && !array_key_exists($arp->getPagina()->getId(), $actividad_reciente))
             {
-                
+
                 $reciente++;
                 $ar = array();
                 $pagina_sesion = $paginas_sesion[$arp->getPagina()->getId()];
@@ -3550,7 +3590,7 @@ public function porcentaje_finalizacion($fechaInicio,$fechaFin,$diasVencimiento)
 
                 if ($pagina_empresa->getEmpresa()->getZonaHoraria()) {
                     $timeZone = 1;
-                    $zonaHoraria = $pagina_empresa->getEmpresa()->getZonaHoraria()->getNombre();  
+                    $zonaHoraria = $pagina_empresa->getEmpresa()->getZonaHoraria()->getNombre();
                 }
 
                 if($timeZone){
@@ -3584,12 +3624,12 @@ public function porcentaje_finalizacion($fechaInicio,$fechaFin,$diasVencimiento)
 
 
                 $titulo_padre = $arp->getPagina()->getNombre();
-               
-     
+
+
                 if (count($subpaginas_ids))
                 {
 
-                    $query = $em->createQuery('SELECT pl FROM LinkComunBundle:CertiPaginaLog pl 
+                    $query = $em->createQuery('SELECT pl FROM LinkComunBundle:CertiPaginaLog pl
                                                 WHERE pl.usuario = :usuario_id
                                                     AND pl.estatusPagina != :completada
                                                     AND pl.pagina IN (:hijas)
@@ -3608,7 +3648,7 @@ public function porcentaje_finalizacion($fechaInicio,$fechaFin,$diasVencimiento)
                     $id =  $ar[0]->getPagina()->getId();
                     $titulo_hijo = $ar[0]->getPagina()->getNombre();
                     $categoria = $ar[0]->getPagina()->getCategoria()->getNombre();
-                    
+
                     if ($ar[0]->getEstatusPagina()->getId() == $yml['parameters']['estatus_pagina']['en_evaluacion'])
                     {
                         $avanzar = 2;
@@ -3627,7 +3667,7 @@ public function porcentaje_finalizacion($fechaInicio,$fechaFin,$diasVencimiento)
                     $id = 0;
                     $titulo_hijo = '';
                     $categoria = $arp->getPagina()->getCategoria()->getNombre();
-                    
+
                     // buscando registros de la pagina para validar si esta en evaluación
                     $pagina_log = $em->getRepository('LinkComunBundle:CertiPaginaLog')->findOneBy(array('usuario' => $usuario_id,
                                                                                                         'pagina' => $padre_id));
@@ -3673,9 +3713,9 @@ public function porcentaje_finalizacion($fechaInicio,$fechaFin,$diasVencimiento)
     public function searchMail($mail,$empresa_id,$usuario_id=0){
         //usuario_id = 0 cuando no se que quiere comprobar los datos de correo para un usuario en especifico
         $em = $this->em;
-        $query = $em->createQuery('SELECT COUNT(u.id) FROM LinkComunBundle:AdminUsuario u 
+        $query = $em->createQuery('SELECT COUNT(u.id) FROM LinkComunBundle:AdminUsuario u
                                     WHERE (u.correoCorporativo =:mail OR u.correoPersonal=:mail)
-                                    AND u.empresa =:empresa_id 
+                                    AND u.empresa =:empresa_id
                                     AND u.id !=:usuario_id')
                 ->setParameters(['mail'=> $mail,'empresa_id'=>$empresa_id,'usuario_id'=>$usuario_id]);
         $result = $query->getSingleScalarResult();
@@ -3730,7 +3770,7 @@ public function porcentaje_finalizacion($fechaInicio,$fechaFin,$diasVencimiento)
                         'document_name' => $document_name,
                         'document_size' => $document_size);
         return $return;
-        
+
     }
 
     public function converDate($date,$initialTimeZone,$finalTimeZone,$reportDate=true){
@@ -3742,7 +3782,7 @@ public function porcentaje_finalizacion($fechaInicio,$fechaFin,$diasVencimiento)
         $return = ($reportDate)? (object)array('fecha'=>$date[0],'hora'=>$date[1].$date[2]):(object)array('fecha'=>$date[0],'hora'=>$date[1]);
         return $return;
     }
-    
+
     public function clearNameTimeZone($timeZone,$pais,$yml){
         if ($timeZone!=$yml['parameters']['time_zone']['utc']) {
             $nameArray = explode($yml['parameters']['time_zone']['name_separator'],$timeZone);
@@ -3752,7 +3792,7 @@ public function porcentaje_finalizacion($fechaInicio,$fechaFin,$diasVencimiento)
         }else{
             return $timeZone.'.';
         }
-       
+
     }
 
     public function classFinaliza($porcentaje){
@@ -3778,9 +3818,9 @@ public function porcentaje_finalizacion($fechaInicio,$fechaFin,$diasVencimiento)
 
       $categoria = $pagina->getCategoria();
       return array(
-        'categoria' => $categoria->getNombre(), 
+        'categoria' => $categoria->getNombre(),
         'nombre' => $pagina->getNombre(),
-        'programa_id' => $pagina->getId() 
+        'programa_id' => $pagina->getId()
       );
 
     }
@@ -3811,7 +3851,7 @@ public function porcentaje_finalizacion($fechaInicio,$fechaFin,$diasVencimiento)
                     $resultado = $gc[0]['resultado'];
 
 
-      return $resultado;           
+      return $resultado;
     }
 
 
@@ -3820,8 +3860,8 @@ public function porcentaje_finalizacion($fechaInicio,$fechaFin,$diasVencimiento)
     $padres = array($pagina_id);
     $retorno = array();
     $em = $this->em;
-   
-    
+
+
     while (count($padres)>0) {
         $padresTemp = array();
         foreach ($padres as $padre) {
