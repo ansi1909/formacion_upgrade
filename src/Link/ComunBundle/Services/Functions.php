@@ -917,10 +917,22 @@ public function porcentaje_finalizacion($fechaInicio,$fechaFin,$diasVencimiento)
     return $subpaginas;
 
   }
+public function obtenerCursos(){
+  $em = $this->em;
+  $query = $em->getConnection()->prepare('SELECT
+                                                fnobtener_cursos(:re) as
+                                                resultado; fetch all from re;');
+        $re = 're';
+        $query->bindValue(':re', $re, \PDO::PARAM_STR);
+        $query->execute();
+        $rs = $query->fetchAll();
+        return $rs;
+}
 
-   public function obtenerEstructuraJson($pagina_id){
+
+public function obtenerEstructuraJson($pagina_id){
     $em = $this->em;
-     $query = $em->getConnection()->prepare('SELECT
+    $query = $em->getConnection()->prepare('SELECT
                                                     fnobtener_estructura
                                                     (:ppagina_id) as
                                                     resultado;');

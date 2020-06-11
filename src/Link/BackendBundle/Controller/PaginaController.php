@@ -42,57 +42,9 @@ class PaginaController extends Controller
         }
 
         $f->setRequest($session->get('sesion_id'));
-
         $em = $this->getDoctrine()->getManager();
+        $paginas = $f->obtenerCursos();
 
-        $query = $em->createQuery("SELECT p.id as id,
-                                          p.orden as orden,
-                                          p.nombre as nombre,
-                                          cc.id as categoria_id,
-                                          p.fechaModificacion as fecha_modificacion,
-                                          cec.id as estatus_id,
-                                          cc.nombre as categoria,
-                                          cec.nombre as estatus,
-                                          COUNT(pr.id) as prueba,
-                                          COUNT(pe.id) as empresa,
-                                          COUNT(gp.id) as grupo,
-                                          COUNT(pl.id) as log,
-                                          COUNT(cf.id) as foro,
-                                          COUNT(cm.id) as muro,
-                                          COUNT(cp.id) as hijos
-                                    FROM LinkComunBundle:CertiPagina p
-                                    INNER JOIN LinkComunBundle:CertiCategoria cc WITH cc.id = p.categoria
-                                    INNER JOIN LinkComunBundle:CertiEstatusContenido cec WITH cec.id = p.estatusContenido
-                                    LEFT JOIN LinkComunBundle:CertiPrueba pr WITH pr.pagina = p.id
-                                    LEFT JOIN LinkComunBundle:CertiPaginaEmpresa pe WITH pe.pagina = p.id
-                                    LEFT JOIN LinkComunBundle:CertiGrupoPagina gp WITH gp.pagina = p.id
-                                    LEFT JOIN LinkComunBundle:CertiPaginaLog pl WITH pl.pagina = p.id
-                                    LEFT JOIN LinkComunBundle:CertiMuro cm WITH cm.pagina = p.id
-                                    LEFT  JOIN LinkComunBundle:CertiForo cf WITH cf.pagina = p.id
-                                    LEFT JOIN LinkComunBundle:CertiPagina cp WITH cp.pagina = p.id
-                                    WHERE p.pagina IS NULL
-                                    GROUP BY p.id,p.nombre,cc.id,p.fechaModificacion,cec.id,cc.nombre,cec.nombre
-                                    ORDER BY p.orden ASC
-
-                                    ");
-        $pages = $query->getResult();
-        $paginas = array();
-        foreach ($pages as $page) {
-            //$array = json_decode($f->obtenerEstructuraJson($page->getId()),TRUE);
-            //$pagina = $array['padre'];
-            array_push($paginas,array(
-                'id'=> $page['id'],//$pagina['id'] ,
-                'orden'=>$page['orden'], //$pagina['orden'],
-                'nombre'=> $page['nombre'],//$pagina['nombre'],
-                'categoria'=> $page['categoria'], //$pagina['categoria'],
-                'modificacion'=> '22-22-22',//$pagina['modificado'],
-                'status'=> 'Activo',
-                'delete_disabled'=> 'disabled',//$pagina['delete_disabled'],
-                'mover'=> 0,//$pagina['mover'],
-                'subpaginas'=> array('tiene'=> 0,'return'=> array())
-            ));
-        }
-       // return new response(var_dump($paginas));
         return $this->render('LinkBackendBundle:Pagina:index.html.twig', array('paginas' =>$paginas));
 
     }

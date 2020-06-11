@@ -14,6 +14,13 @@
     <tbody>
         {% for pagina in paginas %}
             {% set eo = cycle(['odd', 'even'], loop.index) %}
+            {% set  delete_disabled  = pagina.prueba+pagina.empresa+pagina.log+pagina.foro+pagina.muro+pagina.subpaginas %}
+            {% if delete_disabled != 0 %}
+                 {% set disabled = 'disabled' %}
+            {% else %}
+                 {% set disabled = '' %}
+            {% endif %}
+
             <tr class="{{ eo }}">
                 <td class="columorden">{{ pagina.orden }}</td>
                 <td>{{ pagina.id }}</td>
@@ -22,22 +29,18 @@
                 <td>{{ pagina.modificacion }}</td>
                 <td>{{ pagina.status }}</td>
                 <td>
-                    {% if pagina.subpaginas.tiene > 0 %}
-                        <div class="tree">
-                            <ul data-jstree='{ "opened" : true }'>
-                                {{ pagina.subpaginas.return|raw }}
-                            </ul>
-                        </div>
+                    {% if pagina.subpaginas > 0 %}
+                       {{ 'Hola' }}
                     {% else %}
                         {{ 'No tiene sub-páginas'|trans }}
                     {% endif %}
                 </td>
                 <td class="center">
                     <a href="{{ path('_pagina', { 'pagina_id': pagina.id }) }}" title="{{ 'Configurar página'|trans }}" class="btn btn-link btn-sm"><span class="fa fa-gears"></span></a>
-                    {% if pagina.mover < 1 %}
+                    {% if pagina.empresa < 1 %}
                         <a href="{{ path('_moverPagina', { 'pagina_id': pagina.id }) }}" title="{{ 'Mover página'|trans }}" class="btn btn-link btn-sm"><span class="fa fa-arrows-h"></span></a>
-                    {% endif %}                    
-                    <a href="#" title="{{ 'Eliminar'|trans }}" class="btn btn-link btn-sm {% if pagina.delete_disabled == '' %}delete{% endif %} {{ pagina.delete_disabled }}" data="{{ pagina.id }}"><span class="fa fa-trash"></span></a>
+                    {% endif %}
+                    <a href="#" title="{{ 'Eliminar'|trans }}" class="btn btn-link btn-sm {% if delete_disabled == 0 %}delete{% endif %} {{ disabled }}" data="{{ pagina.id }}"><span class="fa fa-trash"></span></a>
                     <a href="#" title="{{ 'Duplicar página y sub-páginas'|trans }}" class="btn btn-link btn-sm duplicate" data-toggle="modal" data-target="#formModal" data="{{ pagina.id }}"><span class="fa fa-copy"></span></a>
                 </td>
             </tr>
