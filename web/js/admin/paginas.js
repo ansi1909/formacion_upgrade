@@ -151,6 +151,8 @@ function observe()
     $('.view').unbind().click(function(e) {
         e.preventDefault();
         var pagina_id = $(this).attr('data');
+        $("#view"+pagina_id).hide();
+        $("#pagina-loader"+pagina_id).show();
         $.ajax({
            type:"POST",
            url: $('#url_estructura').val(),
@@ -158,11 +160,11 @@ function observe()
            data: { pagina_id: pagina_id },
            dataType: "json",
            success: function(data){
-
                 enableSubmit();
-                console.log(data.html);
+                 $("#view"+pagina_id).show();
+                 $("#pagina-loader"+pagina_id).hide();
                  $('.tree').jstree();
-                $('#lista-estruct-modal').append(data.html);
+                $('#lista-estruct-modal').html(data.html);
 
                 $('#modalEstructura').modal("show");
            },

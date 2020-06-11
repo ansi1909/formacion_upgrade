@@ -30,7 +30,8 @@
                 <td>{{ pagina.status }}</td>
                 <td>
                     {% if pagina.subpaginas > 0 %}
-                        <a href="#" title="{{ 'Ver'|trans }}" class="btn btn-link btn-sm view" data="{{ pagina.id }}"><span class="fa fa-eye"></span></a>
+                        <a href="#" title="{{ 'Ver'|trans }}" class="btn btn-link btn-sm view" id="{{'view'~pagina.id}}" data="{{ pagina.id }}"><span class="fa fa-eye"></span></a>
+                        <img id="{{'pagina-loader'~pagina.id}}" class="img-loader descargable" src="{{ asset('img/ui-anim_basic_16x16.gif') }}" style="display: none">
                     {% else %}
                         {{ 'No tiene sub-páginas'|trans }}
                     {% endif %}

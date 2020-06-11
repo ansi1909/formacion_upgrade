@@ -52,7 +52,7 @@ class PaginaController extends Controller
         $f = $this->get('funciones');
         $pagina_id = $request->get('pagina_id');
         $array = json_decode($f->obtenerEstructuraJson($pagina_id),true);
-        $html = $f->obtenerEstructuraArbol($array);
+        $html = $f->obtenerEstructuraHtml($array);
         $return = json_encode(['html' => $html]);
         return new Response($return, 200, array('Content-Type' => 'application/json'));
     }

@@ -937,6 +937,30 @@ public function obtenerEstructuraJson($pagina_id){
         $gc = $query->fetchAll();
         return $gc[0]['resultado'];
  }
+
+ public function obtenerEstructuraHtml($estructura){
+   $html = '';
+   $pagina = $estructura['padre'];
+     $html .='<div class="col-sm-16 col-md-16 col-md-lg-16 modal-text modal-programa"><span class="fa fa-angle-right"></span>&nbsp;&nbsp;'.$pagina['categoria'].' :  '.$pagina['nombre'].'
+    </div>';
+    $modulos = $estructura[$pagina['id']];
+    foreach ($modulos as $modulo) {
+           $materias = $estructura[$modulo['id']];
+           $html .='<div class="col-sm-16 col-md-16 col-md-lg-16 modal-text modal-modulo"><span class="fa fa-angle-right"></span>&nbsp;&nbsp;'.$modulo['categoria'].' :  '.$modulo['nombre'].'
+            </div>';
+            foreach ($materias as $key => $materia) {
+              $lecciones = $estructura[$materia['id']];
+               $html .='<div class="col-sm-16 col-md-16 col-md-lg-16 modal-text modal-materia"><span class="fa fa-angle-right"></span>&nbsp;&nbsp;'.$materia['categoria'].' :  '.$materia['nombre'].'
+               </div>';
+               foreach ($lecciones as $leccion ) {
+                  $html .='<div class="col-sm-16 col-md-16 col-md-lg-16 modal-text modal-leccion"><span class="fa fa-angle-right"></span>&nbsp;&nbsp;'.$leccion['categoria'].' :  '.$leccion['nombre'].'
+                  </div>';
+               }
+            }
+    }
+
+   return $html;
+ }
 public function obtenerEstructuraArbol($estructura){
     $html ='';
     $curso_id = $estructura['padre']['id'];
