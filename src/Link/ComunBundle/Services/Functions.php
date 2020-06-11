@@ -919,14 +919,10 @@ public function porcentaje_finalizacion($fechaInicio,$fechaFin,$diasVencimiento)
   }
 public function obtenerCursos(){
   $em = $this->em;
-  $query = $em->getConnection()->prepare('SELECT
-                                                fnobtener_cursos(:re) as
-                                                resultado; fetch all from re;');
-        $re = 're';
-        $query->bindValue(':re', $re, \PDO::PARAM_STR);
-        $query->execute();
-        $rs = $query->fetchAll();
-        return $rs;
+  $query = $em->getConnection()->prepare('SELECT * FROM view_cursos');
+  $query->execute();
+  $rs = $query->fetchAll();
+  return $rs;
 }
 
 
