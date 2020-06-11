@@ -1,12 +1,15 @@
 <?php
+
 namespace Link\ComunBundle\Services;
 use Symfony\Component\DependencyInjection\Container;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\DependencyInjection\ContainerInterface;
-use Symfony\Component\Translation\TranslatorInterface;
 use Symfony\Component\HttpFoundation\Session\Session;
+use Link\ComunBundle\Entity\CertiPaginaEmpresa;
+use Link\ComunBundle\Entity\CertiPaginaLog;
 use Link\ComunBundle\Entity\AdminAlarma;
+use Symfony\Component\Translation\TranslatorInterface;
 use Link\ComunBundle\Entity\AdminSesion;
 use Link\ComunBundle\Entity\CertiPagina;
 use Link\ComunBundle\Entity\CertiPrueba;
@@ -831,7 +834,7 @@ public function porcentaje_finalizacion($fechaInicio,$fechaFin,$diasVencimiento)
         {
 
 
-        	$subpaginas = $this->subPaginas($page->getId());
+          $subpaginas = $this->subPaginas($page->getId());
 
 
             $paginas[] = array('id' => $page->getId(),
@@ -915,6 +918,50 @@ public function porcentaje_finalizacion($fechaInicio,$fechaFin,$diasVencimiento)
 
   }
 
+   public function obtenerEstructuraJson($pagina_id){
+    $em = $this->em;
+     $query = $em->getConnection()->prepare('SELECT
+                                                    fnobtener_estructura
+                                                    (:ppagina_id) as
+                                                    resultado;');
+        $query->bindValue(':ppagina_id', $pagina_id, \PDO::PARAM_INT);
+        $query->execute();
+        $gc = $query->fetchAll();
+        return $gc[0]['resultado'];
+ }
+public function obtenerEstructuraArbol($estructura){
+    $html ='';
+    $curso_id = $estructura['padre']['id'];
+    $array_modulos = $estructura[$curso_id];
+    if (count($array_modulos)>0) {
+        foreach ($array_modulos as $modulo) {
+          $html.='<li data-jstree=\'{"icon":"fa fa-angle-double-right"}\' p_id="'.$modulo['id'].'" p_str="'.$modulo['categoria'].': '.$modulo['nombre'].'" tipo_recurso_id="'.$modulo['categoria_id'].'">'.$modulo['categoria'].': '.$modulo['nombre'].'';
+          $array_materias = $estructura[$modulo['id']];
+          if(count($array_materias)>0){
+              $html.='<ul>'; // agrupar materias
+                foreach ($array_materias as $materia) {
+                  $html.='<li data-jstree=\'{"icon":"fa fa-angle-double-right"}\' p_id="'.$materia['id'].'" p_str="'.$materia['categoria'].': '.$materia['nombre'].'" tipo_recurso_id="'.$materia['categoria_id'].'">'.$materia['categoria'].': '.$materia['nombre'].'';
+                   $array_lecciones = $estructura[$materia['id']];
+                   if(count($array_lecciones)>0){
+                      $html.='<ul>'; // agrupar lecciones
+                      foreach ($array_lecciones as $leccion) {
+                          $html.='<li data-jstree=\'{"icon":"fa fa-angle-double-right"}\' p_id="'.$leccion['id'].'" p_str="'.$leccion['categoria'].': '.$leccion['nombre'].'" tipo_recurso_id="'.$leccion['categoria_id'].'">'.$leccion['categoria'].': '.$leccion['nombre'].'';
+                      }
+                      $html.='</ul>';// fin grupo de lecciones
+                   }
+                }
+                $html.='</li>';
+              $html.='</ul>';// fin grupo de materias
+          }
+
+
+        }
+     $html.='</li>';
+    }
+
+    return $html;
+}
+
   // Retorna un arreglo multidimensional de las subpaginas asignadas a una empresa dada pagina_id, empresa_id
   public function subPaginasEmpresa($pagina_id, $empresa_id, $json = 0)
   {
@@ -971,49 +1018,6 @@ public function porcentaje_finalizacion($fechaInicio,$fechaFin,$diasVencimiento)
     return $subpaginas;
 
   }
- public function obtenerEstructuraJson($pagina_id){
-    $em = $this->em;
-     $query = $em->getConnection()->prepare('SELECT
-                                                    fnobtener_estructura
-                                                    (:ppagina_id) as
-                                                    resultado;');
-        $query->bindValue(':ppagina_id', $pagina_id, \PDO::PARAM_INT);
-        $query->execute();
-        $gc = $query->fetchAll();
-        return $gc[0]['resultado'];
- }
-public function obtenerEstructuraArbol($estructura){
-    $html ='';
-    $curso_id = $estructura['padre']['id'];
-    $array_modulos = $estructura[$curso_id];
-    if (count($array_modulos)>0) {
-        foreach ($array_modulos as $modulo) {
-          $html.='<li data-jstree=\'{"icon":"fa fa-angle-double-right"}\' p_id="'.$modulo['id'].'" p_str="'.$modulo['categoria'].': '.$modulo['nombre'].'" tipo_recurso_id="'.$modulo['categoria_id'].'">'.$modulo['categoria'].': '.$modulo['nombre'].'';
-          $array_materias = $estructura[$modulo['id']];
-          if(count($array_materias)>0){
-              $html.='<ul>'; // agrupar materias
-                foreach ($array_materias as $materia) {
-                  $html.='<li data-jstree=\'{"icon":"fa fa-angle-double-right"}\' p_id="'.$materia['id'].'" p_str="'.$materia['categoria'].': '.$materia['nombre'].'" tipo_recurso_id="'.$materia['categoria_id'].'">'.$materia['categoria'].': '.$materia['nombre'].'';
-                   $array_lecciones = $estructura[$materia['id']];
-                   if(count($array_lecciones)>0){
-                      $html.='<ul>'; // agrupar lecciones
-                      foreach ($array_lecciones as $leccion) {
-                          $html.='<li data-jstree=\'{"icon":"fa fa-angle-double-right"}\' p_id="'.$leccion['id'].'" p_str="'.$leccion['categoria'].': '.$leccion['nombre'].'" tipo_recurso_id="'.$leccion['categoria_id'].'">'.$leccion['categoria'].': '.$leccion['nombre'].'';
-                      }
-                      $html.='</ul>';// fin grupo de lecciones
-                   }
-                }
-                $html.='</li>';
-              $html.='</ul>';// fin grupo de materias
-          }
-
-
-        }
-     $html.='</li>';
-    }
-
-    return $html;
-}
 
 
   // Crea o actualiza asignaciones de sub-páginas con los mismos valores de la página padre
