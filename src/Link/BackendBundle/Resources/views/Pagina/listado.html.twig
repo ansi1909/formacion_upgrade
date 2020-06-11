@@ -30,7 +30,7 @@
                 <td>{{ pagina.status }}</td>
                 <td>
                     {% if pagina.subpaginas > 0 %}
-                       {{ 'Hola' }}
+                        <a href="#" title="{{ 'Ver'|trans }}" class="btn btn-link btn-sm view" data="{{ pagina.id }}"><span class="fa fa-eye"></span></a>
                     {% else %}
                         {{ 'No tiene sub-páginas'|trans }}
                     {% endif %}

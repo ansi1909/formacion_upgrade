@@ -58,6 +58,12 @@ _ajaxAccesoPagina:
     requirements:
         _method: POST
 
+_ajaxObtenerEstructura:
+    path:     /ajaxObtenerEstructura
+    defaults: { _controller: LinkBackendBundle:Pagina:ajaxObtenerEstructura }
+    requirements:
+        _method: POST
+
 _asignarSubpaginas:
     path:     /asignarSubpaginas/{empresa_id}/{pagina_padre_id}
     defaults: { _controller: LinkBackendBundle:Pagina:asignarSubpaginas }

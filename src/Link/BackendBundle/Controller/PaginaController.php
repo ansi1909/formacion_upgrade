@@ -42,11 +42,19 @@ class PaginaController extends Controller
         }
 
         $f->setRequest($session->get('sesion_id'));
-        $em = $this->getDoctrine()->getManager();
         $paginas = $f->obtenerCursos();
 
         return $this->render('LinkBackendBundle:Pagina:index.html.twig', array('paginas' =>$paginas));
 
+    }
+
+    public function ajaxObtenerEstructuraAction(Request $request){
+        $f = $this->get('funciones');
+        $pagina_id = $request->get('pagina_id');
+        $array = json_decode($f->obtenerEstructuraJson($pagina_id),true);
+        $html = $f->obtenerEstructuraArbol($array);
+        $return = json_encode(['html' => $html]);
+        return new Response($return, 200, array('Content-Type' => 'application/json'));
     }
     public function paginaAction($pagina_id)
     {

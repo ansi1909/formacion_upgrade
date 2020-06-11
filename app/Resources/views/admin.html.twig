@@ -10,22 +10,22 @@
             <link rel="stylesheet" href="{{ asset('assets/css/main/reset.css') }}">
             <link rel="stylesheet" href="{{ asset('assets/css/main/style_main.css') }}">
             <link rel="stylesheet" href="{{ asset('assets/css/main/style_select.css') }}">
-            
+
             {# Fontawesome iconos CSS #}
             <link rel="stylesheet" href="{{ asset('assets/vendor/font-awesome-4.7.0/css/font-awesome.min.css') }}" type="text/css">
-            
+
             {# Bootstrap CSS #}
             <link rel="stylesheet" href="{{ asset('assets/vendor/bootstrap4alpha/css/bootstrap.css') }}" type="text/css">
             <link rel="stylesheet" href="{{ asset('assets/vendor/bootstrap-selectv-12/dist/css/bootstrap-select.css') }}">
-            
+
             {# DataTables Responsive CSS #}
             <link rel="stylesheet" href="{{ asset('assets/vendor/datatables/css/dataTables.bootstrap4.css') }}">
             <link rel="stylesheet" href="{{ asset('assets/vendor/datatables/css/responsive.dataTables.min.css') }}">
-            
-            
+
+
             {# Adminux CSS #}
             <link rel="stylesheet" href="{{ asset('assets/css/light_adminux.css') }}">
-            
+
             {# Sweetalert CSS #}
             <link rel="stylesheet" href="{{ asset('assets/vendor/sweetalert/dist/sweetalert2.min.css') }}">
 
@@ -93,10 +93,10 @@
                             <button class="btn-link btn userprofile bttn_user"  data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 <span class="userpic">
                                     {% set img = app.session.get('usuario').foto ? uploads~app.session.get('usuario').foto : asset('img/1034.png') %}
-                                    <img src="{{ img }}" alt="Usuario"></span> 
+                                    <img src="{{ img }}" alt="Usuario"></span>
                                     <span class="text">{{ app.session.get('usuario').nombre }}</span>
                             </button>
-                            <div class="dropdown-menu"> 
+                            <div class="dropdown-menu">
                                 <a class="dropdown-item" href="#"><span class="fa fa-user"> &nbsp;Perfil</span></a>
                                 <a class="dropdown-item" href="#"><span class="fa fa-pie-chart"> Estadísticas</span></a>
                                 <div class="dropdown-divider"></div>
@@ -124,7 +124,7 @@
                         </span>
                         <span class="media-body info_user">
                             <span class="mt-0 mb-1 us1">{{ app.session.get('usuario').nombre }}</span>
-                            <span class="us1">{{ app.session.get('usuario').apellido }}</span>    
+                            <span class="us1">{{ app.session.get('usuario').apellido }}</span>
                         </span>
                     </button>
                     <div class="dropdown-menu">
@@ -148,7 +148,7 @@
                         <li class="nav-item">
                             <a href="{{ menu.url_existente ? path(menu.url, { 'app_id': menu.id }) : '#'~loop.index }}" class="{% if menu.submenu|length > 0 %}menudropdown {% endif %}nav-link">
                                 {% if menu.submenu|length > 0 %}
-                                        <span class="fa {{ menu.icono }}"></span> {{ menu.nombre }} <i class="fa fa-chevron-circle-down"></i> 
+                                        <span class="fa {{ menu.icono }}"></span> {{ menu.nombre }} <i class="fa fa-chevron-circle-down"></i>
                                 {% else %}
                                     <i class="fa {{ menu.icono }}"></i> {{ menu.nombre }}
                                 {% endif %}
@@ -163,7 +163,7 @@
                                             <a href="{{ submenu.url_existente ? path(submenu.url, { 'app_id': submenu.id }) : '#'~loop.index }}" class="nav-link"><i class="fa {{ submenu.icono }}"></i> {{ submenu.nombre }}</a>
                                         </li>
                                         {% set ultimosub = submenu.id %}
-                                    {% endif %}     
+                                    {% endif %}
                                     {% endfor %}
                                 </ul>
                             {% endif %}
@@ -175,10 +175,10 @@
         {# fin sidebar del area de trabajo #}
         <div class="wrapper-content">
             <div class="container">
-                {% block body %}{% endblock %}   
+                {% block body %}{% endblock %}
             </div>
         </div>
-        
+
         {# Modal #}
         <div class="modal dark_bg fade" id="formModal" tabindex="-1" role="dialog" aria-labelledby="formModal" aria-hidden="true">
             <div class="modal-dialog" role="document">
@@ -206,7 +206,7 @@
                             &nbsp;
                         </div>
                         <div class="col-sm-12">
-                            <div class="alert alert-danger" role="alert"> 
+                            <div class="alert alert-danger" role="alert">
                                 <strong>{{ 'Error en el servidor'|trans }}!</strong> <span id="alert-error">{{ 'Ha ocurrido un error en el servidor. Contacte al administrador del sistema.'|trans }}.</span>
                             </div>
                         </div>
@@ -214,7 +214,7 @@
                             &nbsp;
                         </div>
                     </div>
-                    
+
                     <div class="modal-footer">
                         <button type="button" class="bttn__cancel" data-dismiss="modal" id="cancelar"><span class="text__cancel">{{ 'Cancelar'|trans }}</span><span class="fa fa-times"></span></button>
                         <button type="button" class="bttn__save" id="guardar"><span class="text__save">{{ 'Guardar'|trans }}</span><span class="fa fa-save"></span></button>
@@ -234,7 +234,7 @@
                             <button type="button" class="close" data-dismiss="modal" aria-label="Close"> <span aria-hidden="true">&times;</span> </button>
                         </div>
                         <div class="modal-body" id ="listOfFiles">
-                            
+
                         </div>
                     {% endblock %}
                     <div class="row" id="div-alert" style="display:none;">
@@ -242,7 +242,7 @@
                             &nbsp;
                         </div>
                         <div class="col-sm-12">
-                            <div class="alert alert-danger" role="alert"> 
+                            <div class="alert alert-danger" role="alert">
                                 <strong>{{ 'Error en el servidor'|trans }}!</strong> <span id="alert-error">{{ 'Ha ocurrido un error en el servidor. Contacte al administrador del sistema.'|trans }}.</span>
                             </div>
                         </div>
@@ -250,9 +250,9 @@
                             &nbsp;
                         </div>
                     </div>
-                    
+
                     <div class="modal-footer">
-                        
+
                     </div>
                 </div>
             </div>
@@ -272,11 +272,32 @@
                                 &nbsp;
                             </div>
                             <div class="col-sm-12">
-                                <div class="alert alert-danger" role="alert"> 
+                                <div class="alert alert-danger" role="alert">
                                     <strong>{{ 'Error en el servidor'|trans }}!</strong> <span id="alert-error-detail">{{ 'Ha ocurrido un error en el servidor. Contacte al administrador del sistema.'|trans }}.</span>
                                 </div>
                             </div>
                             <div class="col-sm-2">
+                                &nbsp;
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+         <div class="modal dark_bg fade" id="modalEstructura" tabindex="-1" role="dialog" aria-labelledby="detailModal" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header" style="background: linear-gradient(to right, #0084db 0%, #00558D 100%); color: #fff;">
+                        <h5 class="modal-title" id="formModalLabel">{{ 'Estructura de la pagina'|trans }}</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"> <span aria-hidden="true">&times;</span> </button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row" id="div-alert-detail" style="">
+                            <div class="col-sm-16 tree" id="lista-estruct-modal">
+
+                            </div>
+                            <div class="col-sm-16">
                                 &nbsp;
                             </div>
                         </div>
@@ -290,19 +311,19 @@
             <script src="{{ asset('assets/js/jquery-2.1.1.min.js') }}" type="text/javascript"></script>
             <script src="{{ asset('assets/vendor/bootstrap4alpha/js/tether.min.js') }}"></script>
             <script src="{{ asset('assets/vendor/bootstrap4alpha/js/bootstrap.min.js') }}" type="text/javascript"></script>
-            
-            {# IE10 viewport hack for Surface/desktop Windows 8 bug #} 
+
+            {# IE10 viewport hack for Surface/desktop Windows 8 bug #}
             <script src="{{ asset('assets/js/ie10-viewport-bug-workaround.js') }}"></script>
 
             {# Video y Podcast #}
             <script src="{{ asset('front/js/plugins/video.js/video.min.js') }}"></script>
 
-            
+
             {# DataTables JavaScript #}
             <script src="{{ asset('assets/vendor/datatables/js/jquery.dataTables.min.js') }}"></script>
             <script src="{{ asset('assets/vendor/datatables/js/dataTables.bootstrap4.js') }}"></script>
             <script src="{{ asset('assets/vendor/datatables/js/dataTables.responsive.min.js') }}"></script>
-            
+
             {# Notify #}
             <script type="text/javascript" src="{{ asset('assets/vendor/bootstrap-notify/bootstrap-notify.min.js') }}"></script>
 
@@ -321,7 +342,7 @@
             <script src="{{ asset('js/admin/reportes/participantDetail.js') }}" type="text/javascript"></script>
 
             <script type="text/javascript">
-                
+
                 function sweetAlertDelete(id, entity, preg_opt=0)
                 {
                     swal({
@@ -374,7 +395,7 @@
 
                 function activarTimeout(){
                     var timerId = setTimeout(function()
-                    { 
+                    {
                         swal({
                               title: "{{'Aviso de cierre de sesión'|trans }}",
                               text: "{{'No se ha registrado ninguna actividad... Se cerrará su sesión en los próximos 5 segundos'|trans}}",
@@ -386,7 +407,7 @@
                               if (result.dismiss === 'timer') {
                                 console.log('I was closed by the timer')
                               }
-                            })  
+                            })
                         setTimeout(function()
                             {
                                 window.location=($('#url_logout').val());
@@ -472,8 +493,8 @@
                             oPaginate: {
                                 sFirst: "<<",
                                 sPrevious: "<",
-                                sNext: ">", 
-                                sLast: ">>" 
+                                sNext: ">",
+                                sLast: ">>"
                             },
                             "oAria": {
                                 "sSortAscending":  ": {{ 'Activar para ordenar la columna de manera ascendente'|trans }}",
@@ -516,8 +537,8 @@
                             oPaginate: {
                                 sFirst: "<<",
                                 sPrevious: "<",
-                                sNext: ">", 
-                                sLast: ">>" 
+                                sNext: ">",
+                                sLast: ">>"
                             },
                             "oAria": {
                                 "sSortAscending":  ": {{ 'Activar para ordenar la columna de manera ascendente'|trans }}",
