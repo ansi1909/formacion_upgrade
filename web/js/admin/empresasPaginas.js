@@ -11,7 +11,7 @@ $(document).ready(function() {
 function observe()
 {
 
-	$('#tbody-pages tr').each(function(){
+/*	$('#tbody-pages tr').each(function(){
 		var tr = $(this).attr('id');
 		if (!(typeof tr === 'undefined' || tr === null)){
 			var tr_arr = tr.split('tr-');
@@ -19,7 +19,7 @@ function observe()
 			//treePaginas(pagina_empresa_id);
 		}
 	});
-
+*/
 	$('.cb_activo').unbind('click');
 	$('.cb_activo').click(function(){
 		var checked = $(this).is(':checked') ? 1 : 0;
