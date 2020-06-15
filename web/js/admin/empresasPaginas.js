@@ -16,7 +16,7 @@ function observe()
 		if (!(typeof tr === 'undefined' || tr === null)){
 			var tr_arr = tr.split('tr-');
 			var pagina_empresa_id = tr_arr[1];
-			treePaginas(pagina_empresa_id);
+			//treePaginas(pagina_empresa_id);
 		}
 	});
 
@@ -93,6 +93,7 @@ function afterPaginate()
 			data: { empresa_id: empresa_id },
 			dataType: "json",
 			success: function(data) {
+				console.log(data.html);
 				$('.load1').hide();
 				$('#pages').html(data.html);
 				$('#empresaTitle').html(data.empresa);

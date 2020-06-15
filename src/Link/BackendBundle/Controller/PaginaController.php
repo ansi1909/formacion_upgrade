@@ -490,7 +490,7 @@ class PaginaController extends Controller
                         ->setParameter('pagina_id', $pe->getPagina()->getId());
             $tiene_subpaginas = $query->getSingleScalarResult();
             $html .= '<tr id="tr-'.$pe->getId().'">
-                        <td id="td-'.$pe->getId().'">&nbsp;</td>
+                        <td id="td-'.$pe->getId().'">'.$pe->getPagina()->getNombre().'</td>
                         <td>'.$pe->getFechaVencimiento()->format('d/m/Y').'</td>
                         <td class="center">
                             <div class="can-toggle demo-rebrand-2 small">
@@ -663,7 +663,6 @@ class PaginaController extends Controller
 
                 $paginas[] = array('id' => $page->getId(),
                                    'nombre' => $page->getNombre(),
-                                   'subpaginas' => $f->subPaginas($page->getId()),
                                    'asignada' => $pagina_empresa ? 1 : 0,
                                    'activar' => $pagina_empresa ? $pagina_empresa->getActivo() ? true : false : true,
                                    'acceso' => $pagina_empresa ? $pagina_empresa->getAcceso() ? true : false : true);
@@ -749,7 +748,6 @@ class PaginaController extends Controller
                                     'pagina_id' => $pe->getPagina()->getId(),
                                     'pagina' => $pe->getPagina()->getCategoria()->getNombre().': '.$pe->getPagina()->getNombre(),
                                     'prelacion' => $pe->getPrelacion() ? $this->get('translator')->trans('Prelada por').': '.$pe->getPrelacion()->getNombre() : 0,
-                                    'estructura' => $f->subPaginasEmpresa($pe->getPagina()->getId(), $pe->getEmpresa()->getId(), 0),
                                     'permisos' => $permisos,
                                     'inicio' => $pe->getFechaInicio()->format('d/m/Y'),
                                     'vencimiento' => $pe->getFechaVencimiento()->format('d/m/Y'));
@@ -1034,7 +1032,6 @@ class PaginaController extends Controller
 
                 $paginas[] = array('id' => $page->getId(),
                                    'nombre' => $page->getNombre(),
-                                   'subpaginas' => $f->subPaginas($page->getId()),
                                    'asignada' => $pagina_empresa ? 1 : 0,
                                    'activar' => $pagina_empresa ? $pagina_empresa->getActivo() ? true : false : true,
                                    'acceso' => $pagina_empresa ? $pagina_empresa->getAcceso() ? true : false : true);
