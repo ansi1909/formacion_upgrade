@@ -937,62 +937,66 @@ public function obtenerEstructuraJson($pagina_id){
         $gc = $query->fetchAll();
         return $gc[0]['resultado'];
  }
-
- public function obtenerEstructuraHtml($estructura){
-   $html = '';
-   $pagina = $estructura['padre'];
-     $html .='<div class="col-sm-16 col-md-16 col-md-lg-16 modal-text modal-programa"><span class="fa fa-angle-right"></span>&nbsp;&nbsp;'.$pagina['categoria'].' :  '.$pagina['nombre'].'
-    </div>';
-    $modulos = $estructura[$pagina['id']];
-    foreach ($modulos as $modulo) {
-           $materias = $estructura[$modulo['id']];
-           $html .='<div class="col-sm-16 col-md-16 col-md-lg-16 modal-text modal-modulo"><span class="fa fa-angle-right"></span>&nbsp;&nbsp;'.$modulo['categoria'].' :  '.$modulo['nombre'].'
-            </div>';
-            foreach ($materias as $key => $materia) {
-              $lecciones = $estructura[$materia['id']];
-               $html .='<div class="col-sm-16 col-md-16 col-md-lg-16 modal-text modal-materia"><span class="fa fa-angle-right"></span>&nbsp;&nbsp;'.$materia['categoria'].' :  '.$materia['nombre'].'
-               </div>';
-               foreach ($lecciones as $leccion ) {
-                  $html .='<div class="col-sm-16 col-md-16 col-md-lg-16 modal-text modal-leccion"><span class="fa fa-angle-right"></span>&nbsp;&nbsp;'.$leccion['categoria'].' :  '.$leccion['nombre'].'
-                  </div>';
-               }
-            }
-    }
-
-   return $html;
- }
-public function obtenerEstructuraArbol($estructura){
-    $html ='';
-    $curso_id = $estructura['padre']['id'];
-    $array_modulos = $estructura[$curso_id];
-    if (count($array_modulos)>0) {
-        foreach ($array_modulos as $modulo) {
-          $html.='<li data-jstree=\'{"icon":"fa fa-angle-double-right"}\' p_id="'.$modulo['id'].'" p_str="'.$modulo['categoria'].': '.$modulo['nombre'].'" tipo_recurso_id="'.$modulo['categoria_id'].'">'.$modulo['categoria'].': '.$modulo['nombre'].'';
-          $array_materias = $estructura[$modulo['id']];
-          if(count($array_materias)>0){
-              $html.='<ul>'; // agrupar materias
-                foreach ($array_materias as $materia) {
-                  $html.='<li data-jstree=\'{"icon":"fa fa-angle-double-right"}\' p_id="'.$materia['id'].'" p_str="'.$materia['categoria'].': '.$materia['nombre'].'" tipo_recurso_id="'.$materia['categoria_id'].'">'.$materia['categoria'].': '.$materia['nombre'].'';
-                   $array_lecciones = $estructura[$materia['id']];
-                   if(count($array_lecciones)>0){
-                      $html.='<ul>'; // agrupar lecciones
-                      foreach ($array_lecciones as $leccion) {
-                          $html.='<li data-jstree=\'{"icon":"fa fa-angle-double-right"}\' p_id="'.$leccion['id'].'" p_str="'.$leccion['categoria'].': '.$leccion['nombre'].'" tipo_recurso_id="'.$leccion['categoria_id'].'">'.$leccion['categoria'].': '.$leccion['nombre'].'';
-                      }
-                      $html.='</ul>';// fin grupo de lecciones
-                   }
-                }
-                $html.='</li>';
-              $html.='</ul>';// fin grupo de materias
+ public function estructuraSubpaginasHtml($padre_id,$estructura,$html,$yml,$padding){
+        $padding++;
+        $subpaginas = $estructura[$padre_id];
+        foreach ($subpaginas as $subpagina) {
+           $html .='<div class="col-sm-16 col-md-16 col-md-lg-16 modal-text padding-'.$padding.'"><span class="fa fa-angle-right"></span>&nbsp;&nbsp;'.$subpagina['categoria'].' :  '.$subpagina['nombre'].'
+           </div>';
+          if ($subpagina['categoria_id'] != $yml['parameters']['categoria']['leccion'] && isset($estructura[$subpagina['id']])) {
+              $html = $this->estructuraSubpaginasHtml($subpagina['id'],$estructura,$html,$yml,$padding);
           }
-
-
         }
-     $html.='</li>';
-    }
-
     return $html;
 }
+
+ public function obtenerEstructuraHtml($estructura,$yml){
+   $html = '';
+   $padding = 1;
+   if(isset($estructura['padre'])){
+      $padre = $estructura['padre'];
+      $html .='<div class="col-sm-16 col-md-16 col-md-lg-16 modal-text padding-'.$padding.'"><span class="fa fa-angle-right"></span>&nbsp;&nbsp;'.$padre['categoria'].' :  '.$padre['nombre'].'
+      </div>';
+      if (isset($estructura[$padre['id']]) && $padre['categoria_id'] != $yml['parameters']['categoria']['leccion']) {
+        $html = $this->estructuraSubpaginasHtml($padre['id'],$estructura,$html,$yml,$padding);
+      }
+    }
+   return $html;
+ }
+
+
+// public function obtenerEstructuraArbol($estructura){
+//     $html ='';
+//     $curso_id = $estructura['padre']['id'];
+//     $array_modulos = $estructura[$curso_id];
+//     if (count($array_modulos)>0) {
+//         foreach ($array_modulos as $modulo) {
+//           $html.='<li data-jstree=\'{"icon":"fa fa-angle-double-right"}\' p_id="'.$modulo['id'].'" p_str="'.$modulo['categoria'].': '.$modulo['nombre'].'" tipo_recurso_id="'.$modulo['categoria_id'].'">'.$modulo['categoria'].': '.$modulo['nombre'].'';
+//           $array_materias = $estructura[$modulo['id']];
+//           if(count($array_materias)>0){
+//               $html.='<ul>'; // agrupar materias
+//                 foreach ($array_materias as $materia) {
+//                   $html.='<li data-jstree=\'{"icon":"fa fa-angle-double-right"}\' p_id="'.$materia['id'].'" p_str="'.$materia['categoria'].': '.$materia['nombre'].'" tipo_recurso_id="'.$materia['categoria_id'].'">'.$materia['categoria'].': '.$materia['nombre'].'';
+//                    $array_lecciones = $estructura[$materia['id']];
+//                    if(count($array_lecciones)>0){
+//                       $html.='<ul>'; // agrupar lecciones
+//                       foreach ($array_lecciones as $leccion) {
+//                           $html.='<li data-jstree=\'{"icon":"fa fa-angle-double-right"}\' p_id="'.$leccion['id'].'" p_str="'.$leccion['categoria'].': '.$leccion['nombre'].'" tipo_recurso_id="'.$leccion['categoria_id'].'">'.$leccion['categoria'].': '.$leccion['nombre'].'';
+//                       }
+//                       $html.='</ul>';// fin grupo de lecciones
+//                    }
+//                 }
+//                 $html.='</li>';
+//               $html.='</ul>';// fin grupo de materias
+//           }
+
+
+//         }
+//      $html.='</li>';
+//     }
+
+//     return $html;
+// }
 
   // Retorna un arreglo multidimensional de las subpaginas asignadas a una empresa dada pagina_id, empresa_id
   public function subPaginasEmpresa($pagina_id, $empresa_id, $json = 0)

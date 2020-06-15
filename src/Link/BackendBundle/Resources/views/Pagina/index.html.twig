@@ -8,28 +8,11 @@
         .modal-dialog {
             max-width: 60%;
         }
-        .modal-text{
-            font-size: 20px;
-            color: #212630;
-        }
-        .modal-programa{
-            padding-left: 2rem;
-        }
-        .modal-modulo{
-            padding-left: 4rem;
-        }
-        .modal-materia{
-            padding-left: 6rem;
-        }
-        .modal-leccion{
-            padding-left: 8rem;
-        }
     </style>
 {% endblock %}
 
 {% block body %}
 <input type="hidden" id="url_edit" name="url_edit" value="{{ path('_ajaxGetPage') }}">
-<input type="hidden" id="url_estructura" name="url_estructura" value="{{ path('_ajaxObtenerEstructura') }}">
 <input type="hidden" id="url_tree" name="url_tree" value="{{ path('_ajaxTreePaginas') }}">
 <input type="hidden" id="url_list" name="url_list" value="{{ path('_paginas',{ 'app_id': app.session.get('app_id') }) }}">
 <br>
@@ -92,7 +75,7 @@
         <div class="card-block">
             <div class="container">
                 <div class="row justify-content-between">
-                    <div class="col-sm-16 col-md-16 col-lg-16 col-xl-16 pnl__tree" id="tree_paginas">
+                    <div class="col-sm-16 col-md-16 col-lg-16 col-xl-16 pnl__tree" >
                         &nbsp;
                     </div>
                 </div>

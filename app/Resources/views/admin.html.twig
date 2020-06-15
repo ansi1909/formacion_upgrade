@@ -43,11 +43,28 @@
                     max-width: 1200px;
                     margin: 30px auto;
                 }
+                .modal-text{
+                    font-size: 20px;
+                    color: #212630;
+                }
+                .padding-1{
+                    padding-left: 2rem;
+                }
+                .padding-2{
+                    padding-left: 4rem;
+                }
+                .padding-3{
+                    padding-left: 6rem;
+                }
+                .padding-4{
+                    padding-left: 8rem;
+                }
             </style>
 
         {% endblock %}
     </head>
     <body class="rounded">
+        <input type="hidden" id="url_estructura" name="url_estructura" value="{{ path('_ajaxObtenerEstructura') }}">
         <input type="hidden" id="url_delete" name="url_delete" value="{{ path('_ajaxDelete') }}">
         <input type="hidden" id="url_active" name="url_active" value="{{ path('_ajaxActive') }}">
         <input type="hidden" id="url_order" name="url_order" value="{{ path('_ajaxOrder') }}">

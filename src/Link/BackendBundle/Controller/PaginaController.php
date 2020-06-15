@@ -50,9 +50,10 @@ class PaginaController extends Controller
 
     public function ajaxObtenerEstructuraAction(Request $request){
         $f = $this->get('funciones');
+        $yml = Yaml::parse(file_get_contents($this->get('kernel')->getRootDir().'/config/parametros.yml'));
         $pagina_id = $request->get('pagina_id');
         $array = json_decode($f->obtenerEstructuraJson($pagina_id),true);
-        $html = $f->obtenerEstructuraHtml($array);
+        $html = $f->obtenerEstructuraHtml($array,$yml);
         $return = json_encode(['html' => $html]);
         return new Response($return, 200, array('Content-Type' => 'application/json'));
     }

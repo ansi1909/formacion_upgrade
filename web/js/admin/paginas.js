@@ -121,17 +121,17 @@ $(document).ready(function() {
 
 });
 
-function treePaginas(pagina_id)
-{
-    $('#tree_paginas').jstree({
-        'core' : {
-            'data' : {
-                "url" : $('#url_tree').val()+'/'+pagina_id,
-                "dataType" : "json"
-            }
-        }
-    });
-}
+// function treePaginas(pagina_id)
+// {
+//     $('#tree_paginas').jstree({
+//         'core' : {
+//             'data' : {
+//                 "url" : $('#url_tree').val()+'/'+pagina_id,
+//                 "dataType" : "json"
+//             }
+//         }
+//     });
+// }
 
 function afterPaginate(){
     observe();
