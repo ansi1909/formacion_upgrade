@@ -74,6 +74,8 @@
 	- funciones/fnasignar_subpaginas.sql
 	- funciones/fncorreos_noentregados.sql
 	- funciones/fnalarmas_participantes.sql
+	- vistas/vista_cursos.sql
+
 
 
 	OJO: El archivo reserialize_tables.sql se importará solo cuando se haya corrido el comando de symfony:
@@ -87,16 +89,16 @@
 	max_file_uploads = 20
 
 13. Para debugg se puede setear las siguientes variables en php.ini
-	xdebug.var_display_max_depth = -1 
+	xdebug.var_display_max_depth = -1
 	xdebug.var_display_max_children = -1
 	xdebug.var_display_max_data = -1
 
 14. URL backend: http://localhost/formacion2.0/web/app_dev.php/admin/
 
-15. Al subir al server configurar variable 
+15. Al subir al server configurar variable
 		auto_generate_proxy_classes: "%kernel.debug%"
 	en config.yml, actualmente está en false porque estamos trabajando en entorno windows
-	
+
 16. En el php.ini setear allow_url_fopen = On
 
 17. Instalación del compilador de SASS en Windows:
@@ -124,6 +126,7 @@ Package phpoffice/phpexcel is abandoned, you should avoid using it. Use phpoffic
 19. Para la configuración del CKFinder, ajustar los valores en web/assets/vendor/ckfinder/config.php
 
 20 . Comandos para ejecutar desde consola
-   a. php bin/console link:usuarios-duplicados: debe pasarse como parametro el id de la  empresa para la cual desea realizarse la consulta ejemplo : 
-   
+   a. php bin/console link:usuarios-duplicados: debe pasarse como parametro el id de la  empresa para la cual desea realizarse la consulta ejemplo :
+   --Ejemplo:
    php bin/console link:usuarios-duplicados 19
+
