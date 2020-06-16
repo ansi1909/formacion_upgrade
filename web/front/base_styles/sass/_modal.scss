@@ -205,11 +205,18 @@
 
 //Modal cerrar evaluacion
 .modalCEval{
-    @extend %modal-sm;
+    // @extend %modal-sm;
+    width: 90vw;
+    max-width: 25rem;
+    height: 27rem;
     @extend %modal;
     -webkit-animation: bounce .5s ease-in 1 forwards;
     /*-moz-animation-name: bounce;*/
     animation: bounce .5s ease-in 1 forwards;
+
+    .btn_close_modal {
+        right: 0 !important;
+    }
     .textModalCs{
         font-size: calc(1rem + 9px);
         font-family: $primary-font;
@@ -227,11 +234,11 @@
         background: linear-gradient(to left, $yellow 0%, $yellow 100%);
         @include media-breakpoint-down(xs){
             position: relative;
-            left: -1.5rem;
+            // left: -1.5rem;
         }
         @include media-breakpoint-down(xxs){
             font-size: .9rem;
-            left: -1.75rem;
+            // left: -1.75rem;
         }
         &:hover{
             background: linear-gradient(to right, $yellow 0%, $yellow 100%);
@@ -640,6 +647,51 @@
         font-weight: $font-weight-normal;
     }
 }
+
+//Mostrar imagen
+
+.modalShowImage {
+    .bigImageContainer {
+        width: 90vw;
+        max-width: 40rem;
+        height: 95vh;
+        .bigImage {
+            position: relative;
+
+            &.rotate {
+                width: 100%;
+                height: 89vh;
+                img {
+                    width: 89vh;
+                    transform: rotate(90deg);
+                }
+
+                .closeModal {
+                    top: -2%;
+                    right: 2%;
+                }
+            }
+            img {
+                width: 100%;
+            }
+            .closeModal {
+                position: absolute;
+                right: -2%;
+                top: -5%;
+                z-index: 10;
+                border-radius: 50%;
+                background-color: #fff;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                width: 2rem;
+                height: 2rem;
+                box-shadow: 0px 0px 10px rgba(0,0,0,0.5);
+            }
+        }
+
+    }
+}
 //Extend
 
 %modal-sl{
@@ -661,27 +713,18 @@
 }
 
 %modal-s{
-    height: 32.5rem;
-    min-height: 32.5rem;
+    height: max-content;
     max-height: 36.5rem;
-    width: 32.5rem;
-    min-width: 32.5rem;
-    max-width: 36.5rem;
-    @include media-breakpoint-down(xl){
-        min-width: 26rem;
-        width: 26rem;
-        max-width: 30rem;
-        height: 20rem;
-        max-height: 30rem;
-        min-height: 20rem;
-    }   
+    width: 90vw;
+    max-width: 25rem;
+     
 }
 
 %modal-sm{
-    height: 33.5rem;
+    height: 28.5rem;
     width: 33.5rem;
     @include media-breakpoint-down(xl){
-        height: 25.5rem;
+        height: 28.5rem;
         width: 30.5rem;
     }
     @include media-breakpoint-down(xs){
@@ -695,64 +738,67 @@
 }
 
 %modal-xs{
-    height: 25rem;
-    width: 33.5rem;
-    @include media-breakpoint-down(xl){
-        height: 19rem;
-        width: 30.5rem;
-    }
-    @include media-breakpoint-down(xs){
-        height: 30rem;
-        width: 20rem;
-    }
-    @include media-breakpoint-down(xxs){
-        height: 30rem;
-        width: 17rem;
-    }
+    height: max-content;
+    width: 90vw;
+    max-width: 30rem;
+    // @include media-breakpoint-down(xl){
+    //     height: 19rem;
+    //     width: 30.5rem;
+    // }
+    // @include media-breakpoint-down(xs){
+    //     height: 30rem;
+    //     width: 20rem;
+    // }
+    // @include media-breakpoint-down(xxs){
+    //     height: 30rem;
+    //     width: 17rem;
+    // }
 }
 
 %modal-m{
-    height: 40rem;
-    width: 33.5rem;
-    @include media-breakpoint-down(xl){
-        height: 36rem;
-        width: 30.5rem;
-    }
-    @include media-breakpoint-only(xs){
-        height: 33rem;
-        width: 19.5rem;
-        &::-webkit-scrollbar {
-            width: .7rem;
-        }
-        &::-webkit-scrollbar-track {
-        }
-        &::-webkit-scrollbar-thumb {
-            background-color: $gray-400;
-        }
-    }
+    height: max-content;
+    width: 90%;
+    max-width: 40rem;
+    // @include media-breakpoint-down(xl){
+    //     height: 36rem;
+    //     width: 30.5rem;
+    // }
+    // @include media-breakpoint-only(xs){
+    //     height: 33rem;
+    //     width: 19.5rem;
+    //     &::-webkit-scrollbar {
+    //         width: .7rem;
+    //     }
+    //     &::-webkit-scrollbar-track {
+    //     }
+    //     &::-webkit-scrollbar-thumb {
+    //         background-color: $gray-400;
+    //     }
+    // }
 }
 
 %modal{
-    margin: 8rem auto !important;
+    margin: 2rem auto 0 auto;
     border-radius: 1rem;
     background: $gray-100;
     @include media-breakpoint-down(xl){
-        margin: calc(2rem - 4px) auto !important;
+        // margin: calc(2rem - 4px) auto !important;
     }
     @include media-breakpoint-down(xs){
-        margin: 5rem auto !important;
+        // margin: 5rem auto !important;
     }
-    @include media-breakpoint-down(xxs){
-        margin: calc(2rem + 4px) auto !important;
-    }
+    // @include media-breakpoint-down(xxs){
+    //     margin: calc(2rem + 4px) auto !important;
+    // }
     .btn_close_modal{
         position: relative;
-        top: 1.3125rem;
+        z-index: 10;
+        // top: 1.3125rem;
         right: 0;
         border: 0;
         background: transparent;
         @include media-breakpoint-down(xs){
-            right: -1rem;
+            // right: -1rem;
         }
         .ic-close-white{
             height: 1.5rem;

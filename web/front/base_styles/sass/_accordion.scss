@@ -45,7 +45,8 @@
     }
     .enun_faqs{
         width: 100%;
-        display: block;
+        display: flex;
+        align-items: center;
         cursor: pointer;
         color: $gray-700;
         font-weight: $font-weight-easy-medium;
@@ -62,9 +63,12 @@
             position: absolute;
             right: calc(1rem - 1px);
             content: " ";
-            top: calc(3rem - 4px);
+            // top: calc(3rem - 4px);
             transform: rotate(-45deg);
             @include transition(all, 0.2s, ease-in-out);
+        }
+        .faq_subtitle {
+            width: 80%;
         }
         .num{
             margin-right: calc(1rem + 4px);
@@ -76,6 +80,8 @@
         color: $gray-700;
         text-align: justify;
         font-family: $primary-font;
+        overflow-wrap: break-word;
+        word-wrap: break-word;
     }
 }
 

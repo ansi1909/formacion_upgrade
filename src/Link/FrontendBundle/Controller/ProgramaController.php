@@ -73,14 +73,14 @@ class ProgramaController extends Controller
                 {
                     $tiene_evaluacion = 1;
                 }
-                $lis_mods .= '<div class="card-hrz card-mod">';
+                $lis_mods .= '<div class="card-hrz card-mod d-flex flex-column flex-md-row">';
                 $lis_mods .= '<div class="card-mod-num  mr-xl-3 d-flex justify-content-center align-items-center px-3 py-3 px-md-6 py-md-6">';
                 $lis_mods .= '<h1>'.$contador.'</h1>';
                 $lis_mods .= '</div>';
-                $lis_mods .= '<div class="wraper d-flex flex-wrap flex-row justify-content-center">';
+                $lis_mods .= '<div class="wraper d-flex flex-column flex-md-row justify-content-center">';
                 $lis_mods .= ' <div class="card-hrz-body ">';
                 $lis_mods .= '<h4 class="title-grey my-3 font-weight-normal ">'.$subpagina['nombre'].'</h4>';
-                $lis_mods .= ' <div class="card-mod-less text-sm color-light-grey">';
+                $lis_mods .= ' <div class="card-mod-less text-md color-light-grey">';
 
                 $datos_log = $this->getDoctrine()->getRepository('LinkComunBundle:CertiPaginaLog')->findOneBy(array('usuario' => $session->get('usuario')['id'],
                                                                                                                     'pagina' => $subpagina['id']));
@@ -186,7 +186,7 @@ class ProgramaController extends Controller
                                 
                                 $titulo_leccion = '<a href="'.$enlace.'" class="color-light-grey" >
                                                      <li class="my-1" >
-                                                        <span class="d-flex">'.$sub_subpagina['nombre'].'</span>
+                                                        <span class="d-flex list-text">'.$sub_subpagina['nombre'].'</span>
                                                          <i class="material-icons d-flex icVc " title="'.$icono['tooltit'].'" data-toggle="tooltip" data-placement="bottom">'.$icono['nombre'].'</i>
                                                      </li>
                                                   <a/>';
@@ -227,7 +227,7 @@ class ProgramaController extends Controller
                     $evaluacion_programa = $programa_id;
                 }
 
-                $lis_mods .= '<div class="progress mt-4 mb-3">';
+                $lis_mods .= '<div class="progress mt-4 mb-3 mt-md-2">';
                 $lis_mods .= '<div class="progress-bar" role="progressbar" style="width: '.$porcentaje.'%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>';
                 $lis_mods .= '</div>';
                 $lis_mods .= '</div>';
@@ -241,13 +241,13 @@ class ProgramaController extends Controller
                     {
                         // aprobado y con acceso de seguir viendo
                         $boton_continuar = '<a href="'. $this->generateUrl('_lecciones', array('programa_id' => $programa_id, 'subpagina_id' => 0)).'" class="btn btn-sm btn-primary mt-3 btnAp px-4"> Ver </a>';
-                        $div_class1 = 'card-hrz-right d-flex flex-column justify-content-top mx-3 pb-1';
-                        $div_class2 = 'percent text-center mt-3';
+                        $div_class1 = 'card-hrz-right d-flex flex-column justify-content-top mx-3 pb-1 align-item align-items-center';
+                        $div_class2 = 'percent text-center mt-1';
                         $span_class = 'count mt-0 text-xs color-light-grey';
                     }
                     else {
                         $boton_continuar = '';
-                        $div_class1 = 'card-hrz-right d-flex flex-column justify-content-top mx-4 pb-1';
+                        $div_class1 = 'card-hrz-right d-flex flex-column justify-content-top mx-4 pb-1 align-items-center';
                         $div_class2 = 'percent text-center mt-5';
                         $span_class = 'count mt-0 mb-2 text-xs color-light-grey';                        
                     }
@@ -267,20 +267,20 @@ class ProgramaController extends Controller
                 }
                 else {
 
-                    $lis_mods .= '<div class="card-hrz-right d-flex flex-column  justify-content-end mx-4 pb-1">';
-                    $lis_mods .= '<div class="percent text-center mt-3">';
+                    $lis_mods .= '<div class="card-hrz-right d-flex flex-column  justify-content-center align-items-center mx-4 pb-1">';
+                    $lis_mods .= '<div class="percent text-center mt-1">';
                     $lis_mods .= '<h2 class="color-light-grey mb-0 pb-0"> '.$porcentaje.'% </h2>';
                     $lis_mods .= '</div>';
                     if($avanzar == 2)
                     {
-                        $lis_mods .= '<a href="'. $this->generateUrl('_test', array('pagina_id' => $evaluacion_pagina, 'programa_id' => $evaluacion_programa)).'" class="btn btn-sm '.$clase.' mt-6 mb-4"> '.$boton.' </a>';
+                        $lis_mods .= '<a href="'. $this->generateUrl('_test', array('pagina_id' => $evaluacion_pagina, 'programa_id' => $evaluacion_programa)).'" class="btn btn-sm '.$clase.' mt-2 mb-4"> '.$boton.' </a>';
                     }
                     elseif($avanzar == 1)
                     {
                         $lis_mods .= '<a href="'. $this->generateUrl('_lecciones', array('programa_id' => $programa_id, 'subpagina_id' => $next_pagina)).'" class="btn btn-sm '.$clase.' mt-6 mb-4"> '.$boton.' </a>';
                     }
                     else{
-                        $lis_mods .= '<a href="#" class="btn btn-sm disabled '.$clase.' mt-6 mb-4"> '.$boton.' </a>';
+                        $lis_mods .= '<a href="#" class="btn btn-sm disabled '.$clase.' mt-2 mb-4"> '.$boton.' </a>';
                     }
                     
                     $lis_mods .= '</div>';

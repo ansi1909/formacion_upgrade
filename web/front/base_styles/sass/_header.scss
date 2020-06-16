@@ -12,13 +12,17 @@
 }
 
 .eval_header{
-    height: 6rem !important; 
+    height: 10rem !important; 
     padding: 1rem !important;
     position: absolute;
+
+    @include media-breakpoint-up(md){
+        height: 6rem !important;
+    }
     .exit_eval {
         cursor: pointer;
         position: relative;
-        top: .4rem;
+        // top: .4rem;
     }
     
     .txt_eval_header {
@@ -27,12 +31,7 @@
         font-size: .875rem;
         line-height: $font-size-base;
         text-align: left;
-        @include media-breakpoint-down(sm){
-            display: none;
-        }
-        @include media-breakpoint-down(xs){
-            display: none;
-        }
+        
     }
 
     .titulo_eval {
@@ -46,18 +45,18 @@
         color: $gray-800;
         @include media-breakpoint-only(sm){
             position: relative;
-            top: .5rem;
-            left: -8%;
+            // top: .5rem;
+            // left: -8%;
         }
         @include media-breakpoint-only(xs){
             font-size: $p-font-size;
-            position: relative;
-            top: 1.25rem;
+            // position: relative;
+            // top: 1.25rem;
         }
         @include media-breakpoint-only(xxs){
             font-size: $p-font-size;
-            position: relative;
-            top: -1rem;
+            // position: relative;
+            // top: -1rem;
         }
     }
 
@@ -66,26 +65,26 @@
         font-family: $primary-font;
         font-size: $font-size-base;
         line-height: 1rem;
-        padding-top: 1rem;
+        padding-top: 0.5rem;
         max-width: 55rem;
         text-align: center;
         @include media-breakpoint-only(sm){
             padding-top: 0rem;
             position: relative;
-            top: 1rem;
-            left: -8%;
+            // top: 1rem;
+            // left: -8%;
         }
         @include media-breakpoint-only(xs){
             font-size: $font-size-xs;
             padding-top: 0rem;
             position: relative;
-            top: 1rem;
+            // top: 1rem;
         }
         @include media-breakpoint-down(xxs){
             font-size: $font-size-xs;
             padding-top: 0rem;
             position: relative;
-            top: -1rem;
+            // top: -1rem;
         }
     }
     @include media-breakpoint-down(sm){
@@ -94,8 +93,8 @@
                 width: 7rem;
                 height: auto;
                 position: absolute;
-                top: 1.5rem;
-                right: 1.5rem;
+                // top: 1.5rem;
+                // right: 1.5rem;
             }
         }
     }
@@ -106,9 +105,9 @@
                 width: 6rem;
                 height: auto;
                 position: absolute;
-                top: .5rem;
-                transform: translate(-50%);
-                left: 50%;
+                // top: .5rem;
+                // transform: translate(-50%);
+                // left: 50%;
             }
         }
     }
