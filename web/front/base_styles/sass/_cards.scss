@@ -192,7 +192,8 @@
     transition: .5s;
     height: auto;
     @include media-breakpoint-down(xs) {
-        display: block;
+        // display: block;
+        flex-direction: column;
     }
     .alertTimeGood{
         background: $green;
@@ -281,9 +282,9 @@
         // position: absolute;
         // top: 0;
         width: 25%;
-        height: auto;
+        height: 100%;
         @include media-breakpoint-down(sm) {
-            width: 25%;
+            width: 35%;
         }
         @include media-breakpoint-down(xs) {
             width: 100%;
@@ -298,8 +299,11 @@
     padding: .5rem 1rem;
     @include media-breakpoint-down(sm) {
         .text-sm{
-            font-size: .725rem;
+            font-size: .9rem;
         }
+    }
+    h4 {
+        text-align: center;
     }
     h5 {
         font-weight: $font-weight-normal;
@@ -344,28 +348,37 @@
 }
 .card-mod {
     max-height: 100%;
-    max-width: 100%;
-    flex-wrap: wrap;
+    width: 100%;
+    max-width: 50rem;
     word-wrap: normal;
-
+    overflow: hidden;
+    @include media-breakpoint-up(sm) { 
+        width: 80%;
+    }
+    @include media-breakpoint-up(lg) {
+        width: 100%;
+    }
     .card-mod-num {
         height: auto;
+        width: 100%;
         background-color: $lightblue;
         color: $bluedarkest;
         font-size: 68px;
-        border-bottom-left-radius: 1rem;
-        border-top-left-radius: 1rem;
         flex: 1;
-        @include media-breakpoint-down(lg) {
-            border-bottom-left-radius:0;
-            border-top-right-radius: 1rem;
-            margin-right: 0;
+        @include media-breakpoint-up(md) {
+            width: 25%;
         }
+        
     }
 
+    .wraper {
+        width: 100%;
+        @include media-breakpoint-up(md) {
+            width: 75%;
+        }
+    }
     .card-mod-less {
         flex: 1;
-        max-height: 7.5rem;
         overflow-x: hidden;
         overflow-y: auto;
         &::-webkit-scrollbar {
@@ -381,7 +394,11 @@
             outline: 1px solid $gray-100;
             border-radius: 1rem;
         }
+        .list-text {
+            width: 84%;
+        }
         .icVc{
+            width: 10%;
             float: right;
             position: relative;
             top: -1rem;
@@ -398,7 +415,7 @@
         width: 500px;
 
         @include media-breakpoint-down(sm) {
-            width: 300px;
+            width: 100%;
         }
     }
 
@@ -439,18 +456,13 @@
 //Card profile
 .card-datos{
     position: relative;
-    top: -2rem;
-    left: 0;
     background: $gray-200;
     border-radius: 1rem;
-    padding: calc(7rem - 6px) calc(2rem + 3px) calc(4rem - 4px) calc(2rem + 3px);
     .pic-img{
         height: calc(1rem * 10);
         width: calc(1rem * 10);
         position: relative;
         overflow: hidden;
-        left:5rem;
-        top: 0;
         padding: 0;
         border-radius: 50rem;
         @include media-breakpoint-down(md) {
@@ -518,11 +530,9 @@
         font-weight: $font-weight-normal-hard;
         line-height: calc(3rem - 6px);
         position: relative;
-        left: calc(-1 * calc(2rem + 4px));
         color: $black-300;
         @include media-breakpoint-down(sm){
             font-size: $h3-font-size;
-            left: calc(-1 * calc (1rem + 8px));
         }
     }
     .numExp{
@@ -805,10 +815,11 @@
 // Espacio colaborativo
 .table-card{
     @extend %table-card;
+    width: unset !important;
     .f-table, .f-table-lt{
         padding: calc(1rem - 4px) 2rem calc(1rem - 4px) 2rem;
         max-height: 10rem;
-        width: 62.25rem;
+        width: unset;
         .titulo_f-table{
             color: $blue;
             font-family: $primary-font;
@@ -862,6 +873,9 @@
     }
     .f-table{
         border-bottom: 1px solid $gray-300;
+        width: 100%;
+        max-width: 40rem;
+        margin: 0 auto;
     }
 }
 
@@ -1070,6 +1084,51 @@
     }
 }
 
+//Tutoriales
+.contTutorial {
+    .cards-tutorial-container {
+        width: 100% !important;
+        max-width: 50rem;
+        padding: 5% 0!important;
+        .tutorial-element {
+            width: 17rem;
+            height: 22rem;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-evenly;
+            align-items: center;
+            @include media-breakpoint-down(xxs) {
+                width: 15rem;
+            }
+            &>a {
+                display: block;
+                width: 100%;
+                height: 100%;
+    
+                .card-anuncio {
+                    width: 100%;
+                    height: 100%;
+                    margin-bottom: 0;
+                    .card_header {
+                        height: 9rem;
+                        .card_img {
+                            width: 100%;
+                            height: 100%
+                        }
+                        .card_body {
+                            height: 5.5rem
+                        }
+                        .card_footer {
+                            .separador {
+                                width: 100%;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
 //Constancia Notas
 
 //Extend

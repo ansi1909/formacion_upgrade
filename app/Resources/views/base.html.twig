@@ -89,7 +89,7 @@
                                                              c0.7,0,1.4-0.2,2-0.4l51.3-24.4c1.2-0.6,2-1.7,2-2.8C289.7,212.3,288.9,211.2,287.7,210.6z M238.4,232.2v-37.5l39.3,18.7
                                                              L238.4,232.2z"/>
                                                 </svg>
-                                                <p class="tituloApps">{{ 'Tutoriales'|trans }}</p>
+                                                <p class="tituloApps text-center">{{ 'Tutoriales'|trans }}</p>
                                             </div>
                                         </a>
                                     </div>
@@ -112,7 +112,7 @@
                                                                  L346.6,214.6z M346.6,214.6"/>
                                                     </g>
                                                 </svg>
-                                                <p class="tituloApps">{{ 'Preguntas frecuentes'|trans }}</p>
+                                                <p class="tituloApps text-center">{{ 'Preguntas frecuentes'|trans }}</p>
                                             </div>
                                         </a>
                                     </div>
@@ -133,7 +133,7 @@
                                                              c0,6.9-5.4,12.5-12,12.5s-12-5.6-12-12.5s5.4-12.5,12-12.5S266,395.6,266,402.5z M264.2,402.5c0,5.8-4.5,10.5-10.1,10.5
                                                              s-10.1-4.7-10.1-10.5s4.5-10.5,10.1-10.5S264.2,396.7,264.2,402.5z"/>
                                                 </svg>
-                                                <p class="tituloApps">{{ 'Soporte virtual'|trans }}</p>
+                                                <p class="tituloApps text-center">{{ 'Soporte virtual'|trans }}</p>
                                             </div>
                                         </a>
                                     </div>
@@ -196,11 +196,11 @@
                 
                 <footer class="container footer">
                     <div class="row justify-content-between align-items-center">
-                        <div class="col-3 col-lg-3 col-xl-3 col-md-3 col-sm-3 col-xs-3 text-center">
+                        <div class="col-12 col-sm-4 col-md-5 text-center text-sm-left">
                             <img src="{{ asset('front/assets/img/formacion2.0_smart.svg') }}" class="imgForm" alt="">
                         </div>
                         
-                        <div class="col-3 col-lg-3 col-xl-3 col-md-3 col-sm-3 col-xs-3">
+                        <div class="col-12 col-sm-4 col-md-3 text-center text-sm-left">
                             <ul class="ayudaForm">
                                 <li>
                                     <a href="https://www.formacion2puntocero.com" class="links" target="_blank">Formación Smart Web Site</a>
@@ -210,7 +210,7 @@
                                 </li>
                             </ul>
                         </div>
-                        <div class="col-3 col-lg-3 col-xl-3 col-md-3 col-sm-3 col-xs-3">
+                        <div class="col-12 col-sm-4 col-md-3 text-center text-sm-left">
                             <ul class="ayudaForm">
                                 <li>
                                     <a href="" data-toggle="modal" data-target="#modalSv" class="links abrir_modal_soporte">{{ 'Reportar un problema'|trans }}</a>
@@ -222,7 +222,7 @@
                         </div>
                     </div>
                     <div class="row justify-content-center align-items-center">
-                        <div class="col-8 col-lg-8 col-xl-8 col-md-8 col-sm-8 col-xs-8 text-center">
+                        <div class="col-8 mt-2 text-center ">
                             <span class="cpyR">Copyright &copy; {{ "now"|date("Y") }}&nbsp;&nbsp;Formación Smart {{ 'Todos los derechos reservados'|trans }}</span>
                         </div>
                     </div>
@@ -235,9 +235,9 @@
         </div>
 
         <!-- Modal Cerrar Sesion-->
-        <div class="modal modalCerrarSesion" id="modalCs" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-            <div class="container-fluid">
-                <div class="row mt-6 justify-content-center align-items-center">
+        <div class="modal modalCerrarSesion px-0" id="modalCs" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="container-fluid my-4">
+                <div class="row justify-content-center align-items-center">
                     <div class="col-8 col-md-8 col-sm-8 col-xs-8 col-lg-8 col-xl-8 text-center">
                         <h4 class="titulo">{{ '¿Estás segur@ de que deseas cerrar la sesión?'|trans }}</h4>
                     </div>
@@ -330,6 +330,15 @@
             </div>
         </div>
 
+        <!-- Modal Mostrar imagen grande-->
+        <div class="modal modalShowImage pb-4 px-0" id="modalShowImage" tabindex="-1" role="dialog" aria-labelledby="showImage" aria-hidden="true">
+            <div class="bigImageContainer mx-auto d-flex justify-content-center align-items-center"> 
+                
+                <div class="bigImage j-bigImage d-flex justify-content-center align-items-center">
+                    <a href="#" class="closeModal" data-dismiss="modal"><span class="material-icons ic-close-white text-gray" aria-hidden="true">close</span></a>
+                </div>
+            </div>
+        </div>
         {% block javascripts %}
             <script src="{{ asset('front/js/jquery-3.3.1.min.js') }}"></script>
             <script src="{{ asset('jq/jquery-ui.js') }}" charset="utf-8"></script>
