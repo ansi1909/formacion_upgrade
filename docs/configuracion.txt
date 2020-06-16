@@ -75,8 +75,7 @@
 	- funciones/fncorreos_noentregados.sql
 	- funciones/fnalarmas_participantes.sql
 	- vistas/vista_cursos.sql
-
-
+	- vistas/vista_pruebas.sql
 
 	OJO: El archivo reserialize_tables.sql se importará solo cuando se haya corrido el comando de symfony:
 		 php bin/console doctrine:schema:update --force

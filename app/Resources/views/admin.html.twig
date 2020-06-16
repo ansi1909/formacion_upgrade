@@ -65,6 +65,7 @@
     </head>
     <body class="rounded">
         <input type="hidden" id="url_estructura" name="url_estructura" value="{{ path('_ajaxObtenerEstructura') }}">
+        <input type="hidden" id="url_preguntas" name="url_preguntas" value="{{ path('_ajaxObtenerPreguntas') }}">
         <input type="hidden" id="url_delete" name="url_delete" value="{{ path('_ajaxDelete') }}">
         <input type="hidden" id="url_active" name="url_active" value="{{ path('_ajaxActive') }}">
         <input type="hidden" id="url_order" name="url_order" value="{{ path('_ajaxOrder') }}">
@@ -322,6 +323,28 @@
                 </div>
             </div>
         </div>
+
+         <div class="modal dark_bg fade" id="modalPreguntas" tabindex="-1" role="dialog" aria-labelledby="detailModal" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header" style="background: linear-gradient(to right, #0084db 0%, #00558D 100%); color: #fff;">
+                        <h5 class="modal-title" id="formPreguntaLabel"></h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"> <span aria-hidden="true">&times;</span> </button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row" id="div-alert-detail" style="">
+                            <div class="col-sm-16 col-md-16 col-lg-16 " id="lista-preguntas" >
+
+                            </div>
+                            <div class="col-sm-16">
+                                &nbsp;
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
 
         {% block javascripts %}
             {# Jquery, Tether and Bootstrap JS. #}
