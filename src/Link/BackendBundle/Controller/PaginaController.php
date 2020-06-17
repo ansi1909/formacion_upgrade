@@ -852,6 +852,8 @@ class PaginaController extends Controller
                  if($prueba && $prueba->getEstatusContenido()->getId() == $yml['parameters']['estatus_contenido']['activo']){
                     $certi_pagina_empresa = $this->getDoctrine()->getRepository('LinkComunBundle:CertiPaginaEmpresa')->findOneBy(array('pagina' => $pagina,'empresa'=>$pagina_empresa->getEmpresa()->getId()));
                     $certi_pagina_empresa->setPruebaActiva(true);
+                    $certi_pagina_empresa->setPuntajeAprueba((int)$yml['parameters']['evaluaciones']['puntaje_minimo']);
+                    $certi_pagina_empresa->setMaxIntentos($yml['parameters']['evaluaciones']['intentos']);
                     $em->persist($certi_pagina_empresa);
                     $em->flush();
                  }
