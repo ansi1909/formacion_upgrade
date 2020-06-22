@@ -14,21 +14,20 @@ class UsuarioController extends Controller
 {
     public function indexAction($app_id, Request $request)
     {
-
-    	$session = new Session();
+        $session = new Session();
         $f = $this->get('funciones');
-        
+
         if (!$session->get('ini') || $f->sesionBloqueda($session->get('sesion_id')))
         {
             return $this->redirectToRoute('_loginAdmin');
         }
         else {
 
-        	$session->set('app_id', $app_id);
-        	if (!$f->accesoRoles($session->get('usuario')['roles'], $session->get('app_id')))
-        	{
-        		return $this->redirectToRoute('_authException');
-        	}
+            $session->set('app_id', $app_id);
+            if (!$f->accesoRoles($session->get('usuario')['roles'], $session->get('app_id')))
+            {
+                return $this->redirectToRoute('_authException');
+            }
         }
         $f->setRequest($session->get('sesion_id'));
 
@@ -36,7 +35,7 @@ class UsuarioController extends Controller
         $values = Yaml::parse(file_get_contents($this->get('kernel')->getRootDir().'/config/parametros.yml'));
         $niveles = array();
         $empresa_asignada = $f->rolEmpresa($session->get('usuario')['id'], $session->get('usuario')['roles'], $values);
-
+        $parameters = array();
         if ($request->getMethod() == 'POST')
         {
             $rol_id = $request->request->get('rol_id');
@@ -54,109 +53,73 @@ class UsuarioController extends Controller
             $apellido = '';
             $login = '';
         }
+        $query_base = 'SELECT * FROM view_usuarios_roles';
+        $query_final = 'SELECT * FROM view_usuarios_roles';
+        $where = ' WHERE ';
+        $and = ' AND ';
 
-        $qb = $em->createQueryBuilder();
-        $qb->select('u')
-           ->from('LinkComunBundle:AdminUsuario', 'u');
-        
+        if ($rol_id){
+           $rol =  $em->getRepository('LinkComunBundle:AdminRol')->find($rol_id);
+           $rol = explode(" ",$rol->getNombre());
+           $rol = 'rol_'.strtolower($rol[0]);
+           $query_final.= ($query_final==$query_base)?  $where."$rol <> 0":$and."$rol <> 0";
+        }
         if ($empresa_id)
         {
-
-            $qb->andWhere('u.empresa = :empresa_id');
-            $parametros['empresa_id'] = $empresa_id;
-
-            // Niveles de esta empresa
-            $niveles = $this->getDoctrine()->getRepository('LinkComunBundle:AdminNivel')->findBy(array('empresa' => $empresa_id),
-                                                                                                 array('nombre' => 'ASC'));
-
+           $query_final.= ($query_final==$query_base)?  $where."empresa_id = $empresa_id":$and."empresa_id = $empresa_id";
         }
-
         if ($nivel_id)
         {
-            $qb->andWhere('u.nivel = :nivel_id');
-            $parametros['nivel_id'] = $nivel_id;
+            $query_final.= ($query_final==$query_base)?  $where."nivel_id = $nivel_id":$and."nivel_id = $nivel_id";
         }
-
         if ($nombre != ''){
-            $qb->andWhere('LOWER(u.nombre) LIKE :nombre');
-            $parametros['nombre'] = '%'.$nombre.'%';
+            $query_final.= ($query_final==$query_base)?  $where."nombre ILIKE '".$nombre."%')":$and." nombre  ILIKE '".$nombre."%'";
         }
-
-        if ($apellido != ''){
-            $qb->andWhere('LOWER(u.apellido) LIKE :apellido');
-            $parametros['apellido'] = '%'.$apellido.'%';
-        }
-
-        if ($login != ''){
-            $qb->andWhere('LOWER(u.login) LIKE :login');
-            $parametros['login'] = '%'.$login.'%';
-        }
-        
-        $qb->orderBy('u.nombre', 'ASC')
-           ->orderBy('u.apellido', 'ASC');
-        
-        if ($empresa_id || $nivel_id || $nombre || $apellido || $login)
+       if ($apellido != ''){
+             $query_final.= ($query_final==$query_base)?  $where."apellido ILIKE '".$apellido."%')":$and." apellido  ILIKE '".$apellido."%'";
+       }
+       if ($login != ''){
+            $query_final.= ($query_final==$query_base)?  $where."login ILIKE '".$login."%')":$and." login  ILIKE '".$login."%'";
+       }
+       $query = $em->getConnection()->prepare($query_final);
+       $query->execute();
+       $usuarios_db = $query->fetchAll();
+       $usuarios = array();
+       $roles_viewSql = array('rol_administrador','rol_participante','rol_tutor','rol_reporte','rol_empresa');
+       foreach ($usuarios_db as $usuario)
         {
-            $qb->setParameters($parametros);
-        }
-        
-        $query = $qb->getQuery();
-        $usuarios_db = $query->getResult();
-
-        $usuarios = array();
-        $incluir = 0;
-        
-        foreach ($usuarios_db as $usuario)
-        {
-
-            // Filtro por rol
-            if ($rol_id)
-            {
-                $query = $em->createQuery('SELECT COUNT(ru.id) FROM LinkComunBundle:AdminRolUsuario ru 
-                                            WHERE ru.usuario = :usuario_id AND ru.rol = :rol_id')
-                            ->setParameters(array('usuario_id' => $usuario->getId(),
-                                                  'rol_id' => $rol_id));
-                $incluir = $query->getSingleScalarResult();
-
-            }
-            else {
-                $incluir = 1;
+            $roles_usuario = array();
+            foreach ($roles_viewSql as $rol_vista) {
+                if ($usuario[$rol_vista]) {
+                    array_push($roles_usuario,$values['parameters']['rol_convertir'][$rol_vista]);
+                }
             }
 
-            if ($incluir)
-            {
-
-                // Roles asignados
-                $query = $em->createQuery('SELECT ru FROM LinkComunBundle:AdminRolUsuario ru 
-                                            WHERE ru.usuario = :usuario_id')
-                            ->setParameter('usuario_id', $usuario->getId());
-                $roles_usuario = $query->getResult();
-
-                $usuarios[] = array('id' => $usuario->getId(),
-                                    'nombre' => $usuario->getNombre(),
-                                    'apellido' => $usuario->getApellido(),
-                                    'login' => $usuario->getLogin(),
-                                    'activo' => $usuario->getActivo(),
-                                    'empresa' => $usuario->getEmpresa() ? $usuario->getEmpresa()->getNombre() : '',
-                                    'nivel' => $usuario->getNivel() ? $usuario->getNivel()->getNombre() : '',
-                                    'roles' => $roles_usuario,
-                                    'delete_disabled' => $f->linkEliminar($usuario->getId(), 'AdminUsuario'));
-
-            }
+            $usuarios[] = array('id' => $usuario['id'],
+                                'nombre' => $usuario['nombre'],
+                                'apellido' => $usuario['apellido'],
+                                'login' => $usuario['login'],
+                                'activo' => $usuario['activo'],
+                                'empresa' => $usuario['empresa'] ? $usuario['empresa'] : '',
+                                'nivel' => $usuario['nivel'] ?  $usuario['nivel'] : '',
+                                'roles' => $roles_usuario,
+                                'delete_disabled' => $f->linkEliminar($usuario['id'],'AdminUsuario'));
 
         }
 
-        if ($empresa_asignada && !$session->get('administrador')) 
+
+
+        if ($empresa_asignada && !$session->get('administrador'))
         {
 
             // Select de roles
-            $query = $em->createQuery('SELECT r FROM LinkComunBundle:AdminRol r 
+            $query = $em->createQuery('SELECT r FROM LinkComunBundle:AdminRol r
                                         WHERE r.id != :administrador')
                         ->setParameter('administrador', $values['parameters']['rol']['administrador']);
             $roles = $query->getResult();
 
             // Select de empresas
-            $query = $em->createQuery('SELECT e FROM LinkComunBundle:AdminEmpresa e 
+            $query = $em->createQuery('SELECT e FROM LinkComunBundle:AdminEmpresa e
                                         WHERE e.id = :empresa_asignada')
                         ->setParameter('empresa_asignada', $empresa_asignada);
             $empresas = $query->getResult();
@@ -167,7 +130,7 @@ class UsuarioController extends Controller
         }
 
         return $this->render('LinkBackendBundle:Usuario:index.html.twig', array('usuarios' => $usuarios,
-        																	    'roles' => $roles,
+                                                                                'roles' => $roles,
                                                                                 'rol_id' => $rol_id,
                                                                                 'empresas' => $empresas,
                                                                                 'empresa_id' => $empresa_id,
@@ -186,7 +149,7 @@ class UsuarioController extends Controller
 
         $session = new Session();
         $f = $this->get('funciones');
-      
+
         if (!$session->get('ini') || $f->sesionBloqueda($session->get('sesion_id')))
         {
             return $this->redirectToRoute('_loginAdmin');
@@ -207,7 +170,7 @@ class UsuarioController extends Controller
 
         $pais = $this->getDoctrine()->getRepository('LinkComunBundle:AdminPais')->findOneById2($session->get('code'));
 
-        if ($usuario_id) 
+        if ($usuario_id)
         {
             $usuario = $em->getRepository('LinkComunBundle:AdminUsuario')->find($usuario_id);
             $roles_usuario = $em->getRepository('LinkComunBundle:AdminRolUsuario')->findByUsuario($usuario_id);
@@ -269,14 +232,14 @@ class UsuarioController extends Controller
             $qb->andWhere('r.id != :administrador');
             $parametros['administrador'] = $yml['parameters']['rol']['administrador'];
         }
-        
+
         $qb->orderBy('r.nombre', 'ASC');
-        
+
         if ($empresa_asignada)
         {
             $qb->setParameters($parametros);
         }
-        
+
         $query = $qb->getQuery();
         $roles = $query->getResult();
 
@@ -294,7 +257,7 @@ class UsuarioController extends Controller
             $roles_empresa[] = $rol_empresa->getId();
         }
         $roles_empresa_str = implode(",", $roles_empresa);
-       
+
 
         if ($request->getMethod() == 'POST')
         {
@@ -344,7 +307,7 @@ class UsuarioController extends Controller
             else {
                 $usuario->setFechaNacimiento(null);
             }
-            
+
             $query = $em->getConnection()->prepare("SELECT MAX(CAST(codigo AS INTEGER)) FROM admin_usuario where empresa_id = ".$empresa_id." AND codigo ~ '^\d+$'");
             $query->execute();
             $r = $query->fetchAll();
@@ -402,7 +365,7 @@ class UsuarioController extends Controller
             return $this->redirectToRoute('_showUsuario', array('usuario_id' => $usuario->getId()));
 
         }
-        
+
         return $this->render('LinkBackendBundle:Usuario:usuario.html.twig', array('usuario' => $usuario,
                                                                                   'paises' => $paises,
                                                                                   'empresas' => $empresas,
@@ -418,7 +381,7 @@ class UsuarioController extends Controller
 
         $session = new Session();
         $f = $this->get('funciones');
-      
+
         if (!$session->get('ini') || $f->sesionBloqueda($session->get('sesion_id')))
         {
             return $this->redirectToRoute('_loginAdmin');
@@ -441,7 +404,7 @@ class UsuarioController extends Controller
         {
             $roles_asignados[] = $ru->getRol()->getId();
         }
-        
+
         // Lista de roles
         $qb = $em->createQueryBuilder();
         $qb->select('r')
@@ -451,14 +414,14 @@ class UsuarioController extends Controller
             $qb->andWhere('r.id != :administrador');
             $parametros['administrador'] = $yml['parameters']['rol']['administrador'];
         }
-        
+
         $qb->orderBy('r.nombre', 'ASC');
-        
+
         if ($usuario->getEmpresa() && !$session->get('administrador'))
         {
             $qb->setParameters($parametros);
         }
-        
+
         $query = $qb->getQuery();
         $roles = $query->getResult();
 
@@ -470,21 +433,21 @@ class UsuarioController extends Controller
 
     public function ajaxValidLoginAction(Request $request)
     {
-        
+
         $em = $this->getDoctrine()->getManager();
-        
+
         $login = strtolower($request->request->get('login'));
-        
-        $query = $em->createQuery('SELECT COUNT(u.id) FROM LinkComunBundle:AdminUsuario u 
+
+        $query = $em->createQuery('SELECT COUNT(u.id) FROM LinkComunBundle:AdminUsuario u
                                     WHERE u.login = :login')
                     ->setParameter('login', $login);
         $ok = $query->getSingleScalarResult();
-                    
+
         $return = array('ok' => $ok);
 
         $return = json_encode($return);
         return new Response($return, 200, array('Content-Type' => 'application/json'));
-        
+
     }
 
     public function ajaxValidQueryAction(Request $request)
@@ -500,7 +463,7 @@ class UsuarioController extends Controller
         $uid = ($usuario_id != 0)? $usuario_id:0;
         //validar si existe el login cuando se agrega un nuevo usuario
         if ($usuario_id == 0 ) {
-             $query = $em->createQuery('SELECT COUNT(u.id) FROM LinkComunBundle:AdminUsuario u 
+             $query = $em->createQuery('SELECT COUNT(u.id) FROM LinkComunBundle:AdminUsuario u
                                     WHERE u.login = :login')
                     ->setParameter('login', $login);
              $lg = $query->getSingleScalarResult();
@@ -514,7 +477,7 @@ class UsuarioController extends Controller
             if($cc!=0){
               $html .= '<li> -'.$this->get('translator')->trans('El correo corporativo ya existe para la empresa seleccionada').'.</li>';
             }
-        }  
+        }
         if($correo_personal!=''){
             $cp = $f->searchMail($correo_personal,$empresa_id,$uid);
             if($cp!=0){
@@ -523,17 +486,17 @@ class UsuarioController extends Controller
         }
         $return = json_encode(array('html' => $html));
         return new Response($return, 200, array('Content-Type' => 'application/json'));
-        
+
     }
 
 
     public function participantesAction($app_id, Request $request)
     {
-        
+
         $session = new Session();
         $f = $this->get('funciones');
         $em = $this->getDoctrine()->getManager();
-        
+
         if (!$session->get('ini') || $f->sesionBloqueda($session->get('sesion_id')))
         {
             return $this->redirectToRoute('_loginAdmin');
@@ -550,16 +513,16 @@ class UsuarioController extends Controller
 
         $usuario_empresa = 0;
         $empresas = array();
-        $usuario = $this->getDoctrine()->getRepository('LinkComunBundle:AdminUsuario')->find($session->get('usuario')['id']); 
+        $usuario = $this->getDoctrine()->getRepository('LinkComunBundle:AdminUsuario')->find($session->get('usuario')['id']);
 
         if ($usuario->getEmpresa()) {
-            $usuario_empresa = 1; 
+            $usuario_empresa = 1;
         }
         else {
-            $query = $em->createQuery('SELECT e FROM LinkComunBundle:AdminEmpresa e 
+            $query = $em->createQuery('SELECT e FROM LinkComunBundle:AdminEmpresa e
                                         ORDER BY e.nombre ASC');
             $empresas = $query->getResult();
-        } 
+        }
 
         return $this->render('LinkBackendBundle:Usuario:participantes.html.twig', array('empresas' => $empresas,
                                                                                         'usuario_empresa' => $usuario_empresa,
@@ -594,7 +557,7 @@ class UsuarioController extends Controller
         $qb->setParameters($parametros);
         $query = $qb->getQuery();
         $rus = $query->getResult();
-        
+
         $html = '<table class="table" id="dt">
                     <thead class="sty__title">
                         <tr>
@@ -605,7 +568,7 @@ class UsuarioController extends Controller
                         </tr>
                     </thead>
                     <tbody>';
-        
+
         foreach ($rus as $ru)
         {
             $delete_disabled = $f->linkEliminar($ru->getUsuario()->getId(), 'AdminUsuario');
@@ -623,9 +586,9 @@ class UsuarioController extends Controller
 
         $html .= '</tbody>
                 </table>';
-        
+
         $return = array('html' => $html);
- 
+
         $return = json_encode($return);
         return new Response($return, 200, array('Content-Type' => 'application/json'));
 
@@ -635,7 +598,7 @@ class UsuarioController extends Controller
 
         $session = new Session();
         $f = $this->get('funciones');
-      
+
         if (!$session->get('ini') || $f->sesionBloqueda($session->get('sesion_id')))
         {
             return $this->redirectToRoute('_loginAdmin');
@@ -651,10 +614,10 @@ class UsuarioController extends Controller
         $em = $this->getDoctrine()->getManager();
         $yml = Yaml::parse(file_get_contents($this->get('kernel')->getRootDir().'/config/parametros.yml'));
         $empresa_asignada = $f->rolEmpresa($session->get('usuario')['id'], $session->get('usuario')['roles'], $yml);
-        
+
         $pais = $this->getDoctrine()->getRepository('LinkComunBundle:AdminPais')->findOneById2($session->get('code'));
 
-        if ($usuario_id) 
+        if ($usuario_id)
         {
             $usuario = $em->getRepository('LinkComunBundle:AdminUsuario')->find($usuario_id);
         }
@@ -714,7 +677,7 @@ class UsuarioController extends Controller
             $nivel_id = $request->request->get('nivel_id');
             $campo3 = $request->request->get('campo3');
             $campo4 = $request->request->get('campo4');
-            
+
             $pais = $pais_id ? $this->getDoctrine()->getRepository('LinkComunBundle:AdminPais')->find($pais_id) : null;
             $empresa = $this->getDoctrine()->getRepository('LinkComunBundle:AdminEmpresa')->find($empresa_id);
             $nivel = $this->getDoctrine()->getRepository('LinkComunBundle:AdminNivel')->find($nivel_id);
@@ -764,7 +727,7 @@ class UsuarioController extends Controller
             $usuario->setNivel($nivel);
             $em->persist($usuario);
             $em->flush();
-            
+
             $rol_asignado = $this->getDoctrine()->getRepository('LinkComunBundle:AdminRolUsuario')->findOneBy(array('rol' => $yml['parameters']['rol']['participante'],
                                                                                                                     'usuario' => $usuario->getId()));
 
@@ -784,7 +747,7 @@ class UsuarioController extends Controller
             return $this->redirectToRoute('_showParticipante', array('usuario_id' => $usuario->getId()));
 
         }
-        
+
         return $this->render('LinkBackendBundle:Usuario:nuevoParticipante.html.twig', array('usuario' => $usuario,
                                                                                             'paises' => $paises,
                                                                                             'empresas' => $empresas,
@@ -798,7 +761,7 @@ class UsuarioController extends Controller
 
         $session = new Session();
         $f = $this->get('funciones');
-      
+
         if (!$session->get('ini') || $f->sesionBloqueda($session->get('sesion_id')))
         {
             return $this->redirectToRoute('_loginAdmin');
@@ -820,7 +783,7 @@ class UsuarioController extends Controller
 
     public function uploadParticipantesAction(Request $request)
     {
-        
+
         $session = new Session();
         $f = $this->get('funciones');
 
@@ -836,7 +799,7 @@ class UsuarioController extends Controller
             }
         }
         $f->setRequest($session->get('sesion_id'));
-        
+
         $em = $this->getDoctrine()->getManager();
         $yml = Yaml::parse(file_get_contents($this->get('kernel')->getRootDir().'/config/parametros.yml'));
         $empresa_asignada = $f->rolEmpresa($session->get('usuario')['id'], $session->get('usuario')['roles'], $yml);
@@ -845,12 +808,12 @@ class UsuarioController extends Controller
         $empresa_id = 0;
 
         // Estructura de los errores
-        /* 
+        /*
             array('general' => $error_msg,
                   'particulares' => array('linea' => array('columna' => $error_msg)))
         */
         $errores = array();
-        
+
         // Lista de empresas
         $qb = $em->createQueryBuilder();
         $qb->select('e')
@@ -873,33 +836,33 @@ class UsuarioController extends Controller
             $empresa_id = $request->request->get('empresa_id');
             $file = $request->request->get('file');
             $fileWithPath = $this->container->getParameter('folders')['dir_uploads'].$file;
-            
-            if(!file_exists($fileWithPath)) 
+
+            if(!file_exists($fileWithPath))
             {
                 $errores['general'] = $this->get('translator')->trans('El archivo').' '.$fileWithPath.' '.$this->get('translator')->trans('no existe');
-            } 
+            }
             else {
-                
+
                 $objPHPExcel = \PHPExcel_IOFactory::load($fileWithPath);
-              
+
                 // Se obtienen las hojas, el nombre de las hojas y se pone activa la primera hoja
                 $total_sheets = $objPHPExcel->getSheetCount();
                 $allSheetName = $objPHPExcel->getSheetNames();
                 $objWorksheet = $objPHPExcel->setActiveSheetIndex(0);
-              
+
                 // Se obtiene el número máximo de filas y columnas
                 $highestRow = $objWorksheet->getHighestRow();
                 $highestColumn = $objWorksheet->getHighestColumn();
                 $highestColumnIndex = \PHPExcel_Cell::columnIndexFromString($highestColumn);
 
                 //return new Response($highestRow);
-              
+
                 if ($highestRow < 1)
                 {
                     $errores['general'] = $this->get('translator')->trans('El archivo debe tener al menos una fila con datos').'.';
                 }
                 else {
-					
+
 
                     //Se recorre toda la hoja excel desde la fila 2
                     $hay_data = 0;
@@ -907,11 +870,11 @@ class UsuarioController extends Controller
                     $codigos = array(); // No pueden existir códigos repetidos
                     $logins = array(); // No pueden existir logins repetidos
                     $correos = array(); // No pueden existir correos repetidos
-                    for ($row=2; $row<=$highestRow; ++$row) 
+                    for ($row=2; $row<=$highestRow; ++$row)
                     {
 
-                    
-					   $filas_analizadas++;
+
+                       $filas_analizadas++;
 
                         // Código del empleado
                         $col = 0;
@@ -929,7 +892,7 @@ class UsuarioController extends Controller
                                 $codigos[] = $codigo;
                             }
                         }
-                        
+
                         // Login
                         $col++;
                         $col_name = 'B';
@@ -1010,7 +973,7 @@ class UsuarioController extends Controller
                             }
                         }
 
-                        // Contraseña   
+                        // Contraseña
                         $col++;
                         $col_name = 'F';
                         $cell = $objWorksheet->getCellByColumnAndRow($col, $row);
@@ -1028,32 +991,32 @@ class UsuarioController extends Controller
                         $col_name = 'G';
                         $cell = $objWorksheet->getCellByColumnAndRow($col, $row);
                         $correo = trim($cell->getValue());
-						//print_r($correo);exit();   
+                        //print_r($correo);exit();
                         if ($correo)
                         {
                             $hay_data++;
-							//print_r(filter_var($correo,FILTER_VALIDATE_EMAIL));exit();   
-							if ( filter_var($correo,FILTER_VALIDATE_EMAIL))
-							{
-								 if (in_array($correo, $correos))
+                            //print_r(filter_var($correo,FILTER_VALIDATE_EMAIL));exit();
+                            if ( filter_var($correo,FILTER_VALIDATE_EMAIL))
+                            {
+                                 if (in_array($correo, $correos))
                                 {
                                     $particulares[$this->get('translator')->trans('Línea').' '.$row][$this->get('translator')->trans('Columna').' '.$col_name] = $this->get('translator')->trans('Correo electrónico repetido').'.';
                                 }
                                 else {
                                     $correos[] = $correo;
                                 }
-							}else
-							{
-								$particulares[$this->get('translator')->trans('Línea').' '.$row][$this->get('translator')->trans('Columna').' '.$col_name] = $this->get('translator')->trans('Formato de correo inválido').'.';
-							}
-							
-							
+                            }else
+                            {
+                                $particulares[$this->get('translator')->trans('Línea').' '.$row][$this->get('translator')->trans('Columna').' '.$col_name] = $this->get('translator')->trans('Formato de correo inválido').'.';
+                            }
+
+
                             // if (!filter_var($correo,FILTER_VALIDATE_EMAIL))
                             // {
                                 // $particulares[$this->get('translator')->trans('Línea').' '.$row][$this->get('translator')->trans('Columna').' '.$col_name] = $this->get('translator')->trans('Formato de correo inválido').'.';
                             // }
                             // else {
-								
+
                                 // if (in_array($correo, $correos))
                                 // {
                                     // $particulares[$this->get('translator')->trans('Línea').' '.$row][$this->get('translator')->trans('Columna').' '.$col_name] = $this->get('translator')->trans('Correo electrónico repetido').'.';
@@ -1098,7 +1061,7 @@ class UsuarioController extends Controller
                         if ($pais)
                         {
                             $hay_data++;
-                            $query = $em->createQuery('SELECT COUNT(p.id) FROM LinkComunBundle:AdminPais p 
+                            $query = $em->createQuery('SELECT COUNT(p.id) FROM LinkComunBundle:AdminPais p
                                                         WHERE LOWER(TRIM(p.nombre)) = LOWER(:pais)')
                                         ->setParameter('pais', $pais);
                             $existe_pais = $query->getSingleScalarResult();
@@ -1119,7 +1082,7 @@ class UsuarioController extends Controller
                         if ($nivel)
                         {
                             $hay_data++;
-                            $query = $em->createQuery('SELECT COUNT(n.id) FROM LinkComunBundle:AdminNivel n 
+                            $query = $em->createQuery('SELECT COUNT(n.id) FROM LinkComunBundle:AdminNivel n
                                                         WHERE LOWER(TRIM(n.nombre)) = LOWER(:nivel) AND n.empresa = :empresa_id')
                                         ->setParameters(array('nivel' => $nivel,
                                                               'empresa_id' => $empresa_id));
@@ -1130,7 +1093,7 @@ class UsuarioController extends Controller
                             }
                         }
                         else {
-                            $query = $em->createQuery('SELECT COUNT(n.id) FROM LinkComunBundle:AdminNivel n 
+                            $query = $em->createQuery('SELECT COUNT(n.id) FROM LinkComunBundle:AdminNivel n
                                                         WHERE n.empresa = :empresa_id')
                                         ->setParameter('empresa_id', $empresa_id);
                             $existe_nivel = $query->getSingleScalarResult();
@@ -1163,7 +1126,7 @@ class UsuarioController extends Controller
                             }
                         }
 
-                        /*if (array_key_exists($this->get('translator')->trans('Línea').' '.$row, $particulares)) 
+                        /*if (array_key_exists($this->get('translator')->trans('Línea').' '.$row, $particulares))
                         {
                             // Si existen errores en esta fila, se anexan al conjunto del arreglo de errores
                         }*/
@@ -1184,7 +1147,7 @@ class UsuarioController extends Controller
             }
 
             //return new Response(var_dump($errores));
-            
+
         }
 
         return $this->render('LinkBackendBundle:Usuario:uploadParticipantes.html.twig', array('empresas' => $empresas,
@@ -1200,7 +1163,7 @@ class UsuarioController extends Controller
 
         $session = new Session();
         $f = $this->get('funciones');
-      
+
         if (!$session->get('ini') || $f->sesionBloqueda($session->get('sesion_id')))
         {
             return $this->redirectToRoute('_loginAdmin');
@@ -1228,12 +1191,12 @@ class UsuarioController extends Controller
         $max = $r[0]['max'] != '' ? $r[0]['max'] : 0;
 
         $objPHPExcel = \PHPExcel_IOFactory::load($fileWithPath);
-              
+
         // Se obtienen las hojas, el nombre de las hojas y se pone activa la primera hoja
         $total_sheets = $objPHPExcel->getSheetCount();
         $allSheetName = $objPHPExcel->getSheetNames();
         $objWorksheet = $objPHPExcel->setActiveSheetIndex(0);
-      
+
         // Se obtiene el número máximo de filas y columnas
         $highestRow = $objWorksheet->getHighestRow();
         $highestColumn = $objWorksheet->getHighestColumn();
@@ -1250,7 +1213,7 @@ class UsuarioController extends Controller
                        ->setCategory("Archivo temporal");
         $phpExcelObject->setActiveSheetIndex(0);
 
-        for ($row=2; $row<=$highestRow; ++$row) 
+        for ($row=2; $row<=$highestRow; ++$row)
         {
 
             $r = $row-1; // Se empieza desde la fila 1 el archivo CSV
@@ -1267,7 +1230,7 @@ class UsuarioController extends Controller
                 $codigo = $max;
             }
             $phpExcelObject->setActiveSheetIndex(0)->setCellValue($col_name.$r, $codigo);
-            
+
             // Login
             $col++;
             $col_name = 'B';
@@ -1297,7 +1260,7 @@ class UsuarioController extends Controller
             $fecha_registro = $f->formatDate($fecha_registro);
             $phpExcelObject->setActiveSheetIndex(0)->setCellValue($col_name.$r, $fecha_registro);
 
-            // Contraseña   
+            // Contraseña
             $col++;
             $col_name = 'F';
             $cell = $objWorksheet->getCellByColumnAndRow($col, $row);
@@ -1324,7 +1287,7 @@ class UsuarioController extends Controller
             $col_name = 'I';
             $cell = $objWorksheet->getCellByColumnAndRow($col, $row);
             $pais = trim($cell->getValue());
-            $query = $em->createQuery('SELECT p FROM LinkComunBundle:AdminPais p 
+            $query = $em->createQuery('SELECT p FROM LinkComunBundle:AdminPais p
                                         WHERE LOWER(TRIM(p.nombre)) = LOWER(:pais)')
                         ->setParameter('pais', $pais);
             $paises = $query->getResult();
@@ -1365,15 +1328,15 @@ class UsuarioController extends Controller
             $nivel = trim($cell->getValue());
             if ($nivel)
             {
-                $query = $em->createQuery('SELECT n FROM LinkComunBundle:AdminNivel n 
+                $query = $em->createQuery('SELECT n FROM LinkComunBundle:AdminNivel n
                                             WHERE LOWER(TRIM(n.nombre)) = LOWER(:nivel) AND n.empresa = :empresa_id')
                             ->setParameters(array('nivel' => $nivel,
                                                   'empresa_id' => $empresa_id));
                 $niveles = $query->getResult();
                 if (!$niveles)
                 {
-                    $query = $em->createQuery('SELECT n FROM LinkComunBundle:AdminNivel n 
-                                                WHERE n.empresa = :empresa_id 
+                    $query = $em->createQuery('SELECT n FROM LinkComunBundle:AdminNivel n
+                                                WHERE n.empresa = :empresa_id
                                                 ORDER BY n.id ASC')
                                 ->setParameter('empresa_id', $empresa_id);
                     $niveles = $query->getResult();
@@ -1381,8 +1344,8 @@ class UsuarioController extends Controller
                 $nivel_id = $niveles[0]->getId();
             }
             else {
-                $query = $em->createQuery('SELECT n FROM LinkComunBundle:AdminNivel n 
-                                            WHERE n.empresa = :empresa_id 
+                $query = $em->createQuery('SELECT n FROM LinkComunBundle:AdminNivel n
+                                            WHERE n.empresa = :empresa_id
                                             ORDER BY n.id ASC')
                             ->setParameter('empresa_id', $empresa_id);
                 $niveles = $query->getResult();
@@ -1415,7 +1378,7 @@ class UsuarioController extends Controller
         //$csv = $this->container->getParameter('folders')['dir_uploads'].'recursos/participantes/'.$transaccion.'.csv';
         $csv = $this->container->getParameter('folders')['tmp'].$transaccion.'.csv';
         $writer->save($csv);
-        
+
         if (file_exists($csv))
         {
 
@@ -1439,7 +1402,7 @@ class UsuarioController extends Controller
 
             // La respuesta viene formada por Inserts__Updates
             $r_arr = explode("__", $r[0]['resultado']);
-            
+
             $return = array('inserts' => $r_arr[0],
                             'updates' => $r_arr[1]);
 
@@ -1447,7 +1410,7 @@ class UsuarioController extends Controller
             unlink($csv);
 
         }
-            
+
         return $this->render('LinkBackendBundle:Usuario:procesarParticipantes.html.twig', array('empresa' => $empresa,
                                                                                                 'return' => $return));
 
