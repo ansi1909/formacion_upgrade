@@ -73,13 +73,13 @@ class UsuarioController extends Controller
             $query_final.= ($query_final==$query_base)?  $where."nivel_id = $nivel_id":$and."nivel_id = $nivel_id";
         }
         if ($nombre != ''){
-        $query_final.= ($query_final==$query_base)?  $where."nombre ILIKE '".$nombre."%')":$and." nombre  ILIKE '".$nombre."%'";
-       }
+            $query_final.= ($query_final==$query_base)?  $where."nombre ILIKE '".$nombre."%')":$and." nombre  ILIKE '".$nombre."%'";
+        }
        if ($apellido != ''){
              $query_final.= ($query_final==$query_base)?  $where."apellido ILIKE '".$apellido."%')":$and." apellido  ILIKE '".$apellido."%'";
        }
        if ($login != ''){
-        $query_final.= ($query_final==$query_base)?  $where."login ILIKE '".$login."%')":$and." login  ILIKE '".$login."%'";
+            $query_final.= ($query_final==$query_base)?  $where."login ILIKE '".$login."%')":$and." login  ILIKE '".$login."%'";
        }
        $query = $em->getConnection()->prepare($query_final);
        $query->execute();
