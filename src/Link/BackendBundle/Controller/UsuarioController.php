@@ -14,8 +14,7 @@ class UsuarioController extends Controller
 {
     public function indexAction($app_id, Request $request)
     {
-
-    	$session = new Session();
+        $session = new Session();
         $f = $this->get('funciones');
 
         if (!$session->get('ini') || $f->sesionBloqueda($session->get('sesion_id')))
@@ -24,11 +23,11 @@ class UsuarioController extends Controller
         }
         else {
 
-        	$session->set('app_id', $app_id);
-        	if (!$f->accesoRoles($session->get('usuario')['roles'], $session->get('app_id')))
-        	{
-        		return $this->redirectToRoute('_authException');
-        	}
+            $session->set('app_id', $app_id);
+            if (!$f->accesoRoles($session->get('usuario')['roles'], $session->get('app_id')))
+            {
+                return $this->redirectToRoute('_authException');
+            }
         }
         $f->setRequest($session->get('sesion_id'));
 
@@ -36,7 +35,7 @@ class UsuarioController extends Controller
         $values = Yaml::parse(file_get_contents($this->get('kernel')->getRootDir().'/config/parametros.yml'));
         $niveles = array();
         $empresa_asignada = $f->rolEmpresa($session->get('usuario')['id'], $session->get('usuario')['roles'], $values);
-
+        $parameters = array();
         if ($request->getMethod() == 'POST')
         {
             $rol_id = $request->request->get('rol_id');
@@ -54,96 +53,61 @@ class UsuarioController extends Controller
             $apellido = '';
             $login = '';
         }
+        $query_base = 'SELECT * FROM view_usuarios_roles';
+        $query_final = 'SELECT * FROM view_usuarios_roles';
+        $where = ' WHERE ';
+        $and = ' AND ';
 
-        $qb = $em->createQueryBuilder();
-        $qb->select('u')
-           ->from('LinkComunBundle:AdminUsuario', 'u');
-
+        if ($rol_id){
+           $rol =  $em->getRepository('LinkComunBundle:AdminRol')->find($rol_id);
+           $rol = explode(" ",$rol->getNombre());
+           $rol = 'rol_'.strtolower($rol[0]);
+           $query_final.= ($query_final==$query_base)?  $where."$rol <> 0":$and."$rol <> 0";
+        }
         if ($empresa_id)
         {
-
-            $qb->andWhere('u.empresa = :empresa_id');
-            $parametros['empresa_id'] = $empresa_id;
-
-            // Niveles de esta empresa
-            $niveles = $this->getDoctrine()->getRepository('LinkComunBundle:AdminNivel')->findBy(array('empresa' => $empresa_id),
-                                                                                                 array('nombre' => 'ASC'));
-
+           $query_final.= ($query_final==$query_base)?  $where."empresa_id = $empresa_id":$and."empresa_id = $empresa_id";
         }
-
         if ($nivel_id)
         {
-            $qb->andWhere('u.nivel = :nivel_id');
-            $parametros['nivel_id'] = $nivel_id;
+            $query_final.= ($query_final==$query_base)?  $where."nivel_id = $nivel_id":$and."nivel_id = $nivel_id";
         }
-
         if ($nombre != ''){
-            $qb->andWhere('LOWER(u.nombre) LIKE :nombre');
-            $parametros['nombre'] = '%'.$nombre.'%';
-        }
-
-        if ($apellido != ''){
-            $qb->andWhere('LOWER(u.apellido) LIKE :apellido');
-            $parametros['apellido'] = '%'.$apellido.'%';
-        }
-
-        if ($login != ''){
-            $qb->andWhere('LOWER(u.login) LIKE :login');
-            $parametros['login'] = '%'.$login.'%';
-        }
-
-        $qb->orderBy('u.nombre', 'ASC')
-           ->orderBy('u.apellido', 'ASC');
-
-        if ($empresa_id || $nivel_id || $nombre || $apellido || $login)
+        $query_final.= ($query_final==$query_base)?  $where."nombre ILIKE '".$nombre."%')":$and." nombre  ILIKE '".$nombre."%'";
+       }
+       if ($apellido != ''){
+             $query_final.= ($query_final==$query_base)?  $where."apellido ILIKE '".$apellido."%')":$and." apellido  ILIKE '".$apellido."%'";
+       }
+       if ($login != ''){
+        $query_final.= ($query_final==$query_base)?  $where."login ILIKE '".$login."%')":$and." login  ILIKE '".$login."%'";
+       }
+       $query = $em->getConnection()->prepare($query_final);
+       $query->execute();
+       $usuarios_db = $query->fetchAll();
+       $usuarios = array();
+       $roles_viewSql = array('rol_administrador','rol_participante','rol_tutor','rol_reporte','rol_empresa');
+       foreach ($usuarios_db as $usuario)
         {
-            $qb->setParameters($parametros);
+            $roles_usuario = array();
+            foreach ($roles_viewSql as $rol_vista) {
+                if ($usuario[$rol_vista]) {
+                    array_push($roles_usuario,$values['parameters']['rol_convertir'][$rol_vista]);
+                }
+            }
+
+            $usuarios[] = array('id' => $usuario['id'],
+                                'nombre' => $usuario['nombre'],
+                                'apellido' => $usuario['apellido'],
+                                'login' => $usuario['login'],
+                                'activo' => $usuario['activo'],
+                                'empresa' => $usuario['empresa'] ? $usuario['empresa'] : '',
+                                'nivel' => $usuario['nivel'] ?  $usuario['nivel'] : '',
+                                'roles' => $roles_usuario,
+                                'delete_disabled' => $f->linkEliminar($usuario['id'],'AdminUsuario'));
+
         }
 
-        $query = $qb->getQuery();
-        $usuarios_db = $query->getResult();
 
-        $usuarios = array();
-        $incluir = 0;
-
-        foreach ($usuarios_db as $usuario)
-        {
-
-            // Filtro por rol
-            if ($rol_id)
-            {
-                $query = $em->createQuery('SELECT COUNT(ru.id) FROM LinkComunBundle:AdminRolUsuario ru
-                                            WHERE ru.usuario = :usuario_id AND ru.rol = :rol_id')
-                            ->setParameters(array('usuario_id' => $usuario->getId(),
-                                                  'rol_id' => $rol_id));
-                $incluir = $query->getSingleScalarResult();
-
-            }
-            else {
-                $incluir = 1;
-            }
-
-            if ($incluir)
-            {
-
-                // Roles asignados
-                $query = $em->createQuery('SELECT ru FROM LinkComunBundle:AdminRolUsuario ru
-                                            WHERE ru.usuario = :usuario_id')
-                            ->setParameter('usuario_id', $usuario->getId());
-                $roles_usuario = $query->getResult();
-
-                $usuarios[] = array('id' => $usuario->getId(),
-                                    'nombre' => $usuario->getNombre(),
-                                    'apellido' => $usuario->getApellido(),
-                                    'login' => $usuario->getLogin(),
-                                    'activo' => $usuario->getActivo(),
-                                    'empresa' => $usuario->getEmpresa() ? $usuario->getEmpresa()->getNombre() : '',
-                                    'nivel' => $usuario->getNivel() ? $usuario->getNivel()->getNombre() : '',
-                                    'roles' => $roles_usuario,
-                                    'delete_disabled' => $f->linkEliminar($usuario->getId(), 'AdminUsuario'));
-            }
-
-        }
 
         if ($empresa_asignada && !$session->get('administrador'))
         {
@@ -164,8 +128,9 @@ class UsuarioController extends Controller
             $roles = $this->getDoctrine()->getRepository('LinkComunBundle:AdminRol')->findAll();
             $empresas = $this->getDoctrine()->getRepository('LinkComunBundle:AdminEmpresa')->findAll();
         }
+
         return $this->render('LinkBackendBundle:Usuario:index.html.twig', array('usuarios' => $usuarios,
-        																	    'roles' => $roles,
+                                                                                'roles' => $roles,
                                                                                 'rol_id' => $rol_id,
                                                                                 'empresas' => $empresas,
                                                                                 'empresa_id' => $empresa_id,
@@ -909,7 +874,7 @@ class UsuarioController extends Controller
                     {
 
 
-					   $filas_analizadas++;
+                       $filas_analizadas++;
 
                         // Código del empleado
                         $col = 0;
@@ -1026,24 +991,24 @@ class UsuarioController extends Controller
                         $col_name = 'G';
                         $cell = $objWorksheet->getCellByColumnAndRow($col, $row);
                         $correo = trim($cell->getValue());
-						//print_r($correo);exit();
+                        //print_r($correo);exit();
                         if ($correo)
                         {
                             $hay_data++;
-							//print_r(filter_var($correo,FILTER_VALIDATE_EMAIL));exit();
-							if ( filter_var($correo,FILTER_VALIDATE_EMAIL))
-							{
-								 if (in_array($correo, $correos))
+                            //print_r(filter_var($correo,FILTER_VALIDATE_EMAIL));exit();
+                            if ( filter_var($correo,FILTER_VALIDATE_EMAIL))
+                            {
+                                 if (in_array($correo, $correos))
                                 {
                                     $particulares[$this->get('translator')->trans('Línea').' '.$row][$this->get('translator')->trans('Columna').' '.$col_name] = $this->get('translator')->trans('Correo electrónico repetido').'.';
                                 }
                                 else {
                                     $correos[] = $correo;
                                 }
-							}else
-							{
-								$particulares[$this->get('translator')->trans('Línea').' '.$row][$this->get('translator')->trans('Columna').' '.$col_name] = $this->get('translator')->trans('Formato de correo inválido').'.';
-							}
+                            }else
+                            {
+                                $particulares[$this->get('translator')->trans('Línea').' '.$row][$this->get('translator')->trans('Columna').' '.$col_name] = $this->get('translator')->trans('Formato de correo inválido').'.';
+                            }
 
 
                             // if (!filter_var($correo,FILTER_VALIDATE_EMAIL))
