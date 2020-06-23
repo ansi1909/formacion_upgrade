@@ -197,12 +197,26 @@
 <div class="modal-body">
     <form id="form" name="form" action="{{ path( '_ajaxDuplicatePage')}}" method="POST">
         <input type="hidden" id="pagina_id" name="pagina_id" value="">
-        <div class="form-group">
-            <label for="recipient-name" class="form-control-label">{{ 'Nombre para esta página'|trans }}:</label>
-            <input type="text" class="form-control form_sty_modal" id="nombre" name="nombre" value="">
-            <span class="fa fa-cube"></span>
+        <div class="row" style="width: 90%;margin-left: 1rem;">
+            <div class="col-sm-12 col-md-12 col-lg-12  form-group" >
+                <label for="recipient-name" class="form-control-label">{{ 'Nombre para esta página'|trans }}:</label>
+                <input type="text" class="form-control form_sty_modal" id="nombre" name="nombre" value="">
+            </div>
+            <div class="col-sm-4 col-md-4 col-lg-4  form-group" >
+                <label for="recipient-name" class="form-control-label">{{ 'Duplicar evaluación'|trans }}:</label>
+                <div class="can-toggle demo-rebrand-2 small">
+                    <input id="duplica_evaluacion" name="duplica_evaluacion" type="checkbox">
+                    <label for="duplica_evaluacion">
+                        <div class="can-toggle__switch" data-checked="{{ 'Si'|trans }}" data-unchecked="No"></div>
+                    </label>
+                    </div>
+            </div>
         </div>
     </form>
+    <div class="row" style="width: 90%;margin-left: 1rem;">
+            <img id="{{'duplicate-loader'}}" class="img-loader descargable" src="{{ asset('img/ui-anim_basic_16x16.gif') }}" style="display: none">
+    </div>
+
     <div class="alert alert-success" role="alert" id="alert-success" style="display:none;">
         <strong>{{ 'Bien hecho'|trans }}!</strong> {{ 'Cantidad de registros creados'|trans }}: <span id="inserts"></span>.
     </div>

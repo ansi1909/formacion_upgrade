@@ -41,7 +41,7 @@
 
 {% block formModal %}
 <div class="modal-header" style="background: linear-gradient(to right, #0084db 0%, #00558D 100%); color: #fff;">
-    <h5 class="modal-title" id="exampleModalLongTitle">{{ 'Duplicar página y sub-páginas'|trans }}</h5>
+    <h5 class="modal-title" id="exampleModalLongTitle">{{ 'Duplicar página y sub-páginas 1'|trans }}</h5>
     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
         <span aria-hidden="true" style="color: #fff;">&times;</span>
     </button>
@@ -65,6 +65,9 @@
             </div>
         </div>
     </form>
+    <div class="row" style="width: 90%;margin-left: 1rem;">
+            <img id="{{'duplicate-loader'}}" class="img-loader descargable" src="{{ asset('img/ui-anim_basic_16x16.gif') }}" style="display: none">
+    </div>
     <div class="alert alert-success" role="alert" id="alert-success" style="display:none;">
         <strong>{{ 'Bien hecho'|trans }}!</strong> {{ 'Cantidad de registros creados'|trans }}: <span id="inserts"></span>.
     </div>
