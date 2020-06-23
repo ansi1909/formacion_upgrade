@@ -58,6 +58,8 @@ $(document).ready(function() {
     });
 
     $('#guardar').click(function(){
+        disableSubmit();
+        $('#duplicate-loader').show();
         $('#form').submit();
         return false;
     });
@@ -82,9 +84,9 @@ $(document).ready(function() {
                     success: function(data) {
                         $('.form-control').val('');
                         $('#inserts').html(data.inserts);
-                        treePaginas(data.id);
+                        $('#duplicate-loader').hide();
+                        //enableSubmit();
                         initModalShow();
-
                         // manual complete, reenable form ASAP
                         $('#form').safeform('complete');
                         return false; // revent real submit
