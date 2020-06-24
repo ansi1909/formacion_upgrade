@@ -26,12 +26,12 @@ a{
 }
 
 .imgLogin{
+    max-width: 20rem;
     @include media-breakpoint-down(xs){
         width: 13rem;
         margin: 1.5rem auto !important;
         position: relative;
         left: 0;
-        transform: translateX(-25%);
     }
 }
 
@@ -42,30 +42,24 @@ a{
             margin: 1rem auto !important;
             position: relative;
             left: 0;
-            transform: translateX(-32.5%);
         }
         .userLogin, .pwdLogin{
             width: 15rem;
             position: relative;
             left: 0;
-            transform: translateX(-45%);
         }
         .checkLogin{
-            width: 15rem;
             margin: 0 auto !important;
             position: relative;
             left: 0;
-            transform: translateX(-45%);
         }
         .btnLogin{
-            transform: translateX(-45%);
             margin: 1rem auto !important;
         }
         .recupLogin{
             width: 15rem;
             margin: 1rem auto !important;
             white-space: nowrap;
-            transform: translateX(-40%);
         }
     }
 }

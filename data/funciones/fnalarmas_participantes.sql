@@ -13,7 +13,6 @@ BEGIN
 		 WHERE u.empresa_id = pempresa_id AND pe.pagina_id = pgrupo_id 
 		 AND pe.activo = true
 		 AND u.activo = true
-		 AND u.login NOT LIKE 'temp%'
 		 AND u.id IN (SELECT ru.usuario_id FROM admin_rol_usuario ru WHERE ru.rol_id = prolin_id) 
 		 AND u.id NOT IN (SELECT ru.usuario_id FROM admin_rol_usuario ru WHERE ru.rol_id = prolex_id) 
 		 AND u.id <> pusuario_id

@@ -446,7 +446,16 @@ class ReportesJTController extends Controller
                 foreach ($listado as $participante)
                 {
                     $fecha = $fun->converDate($participante['fecha_registro'],$yml['parameters']['time_zone']['default'],$timeZoneEmpresa);
-
+                    if ($participante['correo_corporativo']!='') {
+                        $correo = $participante['correo_corporativo'];
+                    }else{
+                        if ($participante['correo_personal']!='') {
+                            $correo = $participante['correo_personal'];
+                        }
+                        else{
+                            $correo = '';
+                        }
+                    }
                     $acceso = $participante['activo']? 'Sí' : 'No';
                     // Datos de las columnas del reporte
                     $objWorksheet->setCellValue('A'.$row, $participante['codigo']);
@@ -455,7 +464,7 @@ class ReportesJTController extends Controller
                     $objWorksheet->setCellValue('D'.$row, $participante['apellido']);
                     $objWorksheet->setCellValue('E'.$row, $fecha->fecha);
                     $objWorksheet->setCellValue('F'.$row, $fecha->hora);
-                    $objWorksheet->setCellValue('G'.$row, $participante['correo_corporativo']);
+                    $objWorksheet->setCellValue('G'.$row, $correo);
                     $objWorksheet->setCellValue('H'.$row, $acceso);
                     $objWorksheet->setCellValue('I'.$row, $participante['pais']);
                     $objWorksheet->setCellValue('J'.$row, $participante['nivel']);

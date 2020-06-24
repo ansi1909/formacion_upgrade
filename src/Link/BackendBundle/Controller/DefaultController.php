@@ -26,79 +26,59 @@ class DefaultController extends Controller
         $f->setRequest($session->get('sesion_id'));
 
       	$usuario = $em->getRepository('LinkComunBundle:AdminUsuario')->find($session->get('usuario')['id']);
-            
+
         if($session->get('administrador') == 'true' || !$usuario->getEmpresa())
         {
 
-            $query = $em->createQuery('SELECT e FROM LinkComunBundle:AdminEmpresa e
-                                      ORDER BY e.nombre ASC');
+            $query = $em->createQuery('SELECT e.id as id,
+                                              e.nombre as nombre,
+                                              e.activo as activa,
+                                              COUNT(u.id) as usuarios
+                                        FROM LinkComunBundle:AdminEmpresa e
+                                        LEFT JOIN LinkComunBundle:AdminUsuario u WITH u.empresa = e.id
+                                        GROUP BY e.id
+                                        ORDER BY e.nombre ASC');
             $empresas_db = $query->getResult();
             $empresasA = array();
             $empresasI = array();
-            $empresas_a = 0;
-            $empresas_i = 0;
-            
+
             foreach($empresas_db as $empresa)
             {
+                if($empresa['activa']){
+                    $empresasA[] = array(
+                        'id'=>$empresa['id'],
+                        'nombre'=>$empresa['nombre'],
+                        'usuarios'=>$empresa['usuarios']
+                    );
+                }else{
 
-                $programas = '';
-                $tiene = 0;
+                    $programas = '';
+                    $query = $em->createQuery('SELECT pe FROM LinkComunBundle:CertiPaginaEmpresa pe
+                                               JOIN pe.pagina p
+                                               WHERE pe.empresa = :empresa_id
+                                               AND p.pagina IS NULL')
+                                ->setParameter('empresa_id', $empresa['id']);
+                    $paginas_db = $query->getResult();
 
-                $query = $em->createQuery('SELECT COUNT(u.id) FROM LinkComunBundle:AdminUsuario u 
-                                           WHERE u.empresa = :empresa_id')
-                            ->setParameter('empresa_id', $empresa->getId());
-                $usuarios = $query->getSingleScalarResult();
-
-                $query = $em->createQuery('SELECT pe FROM LinkComunBundle:CertiPaginaEmpresa pe
-                                           JOIN pe.pagina p
-                                           WHERE pe.empresa = :empresa_id
-                                           AND p.pagina IS NULL')
-                            ->setParameter('empresa_id', $empresa->getId());
-                $paginas_db = $query->getResult();
-
-                foreach ($paginas_db as $pagina)
-                {
-                    $tiene++;
-                    $programas .= '<li data-jstree=\'{ "icon": "fa fa-angle-double-right" }\' p_id="'.$pagina->getPagina()->getId().'" p_str="'.$pagina->getPagina()->getCategoria()->getNombre().': '.$pagina->getPagina()->getNombre().'">'.$pagina->getPagina()->getCategoria()->getNombre().': '.$pagina->getPagina()->getNombre();
-                    $subpaginas = $f->subPaginasEmpresa($pagina->getPagina()->getId(), $empresa->getId());     
-                    if ($subpaginas['tiene'] > 0)
+                    foreach ($paginas_db as $pagina)
                     {
-                        $programas .= '<ul>';
-                        $programas .= $subpaginas['return'];
-                        $programas .= '</ul>';
+                        $programas .= '<li data-jstree=\'{ "icon": "fa fa-angle-double-right" }\' p_id="'.$pagina->getPagina()->getId().'" p_str="'.$pagina->getPagina()->getCategoria()->getNombre().': '.$pagina->getPagina()->getNombre().'">'.$pagina->getPagina()->getCategoria()->getNombre().': '.$pagina->getPagina()->getNombre();
+                        $programas .= '</li>';
                     }
-                    $programas .= '</li>'; 
-                }
-                
-                if ($empresa->getActivo() == 'true') 
-                {
-
-                    $empresas_a++;
-
-                    $empresasA[] = array('id' => $empresa->getId(),
-                                         'nombre' => $empresa->getNombre(),
-                                         'usuarios' => $usuarios,
-                                         'programas' => $programas,
-                                         'tiene' => $tiene);
-
-                }
-                else  {
-                    
-                    $empresas_i++;
-
-                    $empresasI[]=array('nombre' => $empresa->getNombre(),
-                                       'usuarios' => $usuarios,
-                                       'programas' => $programas,
-                                       'tiene' => $tiene);
-
+                    $empresasI[] = array(
+                     'id'=>$empresa['id'],
+                     'nombre'=>$empresa['nombre'],
+                     'usuarios'=>$empresa['usuarios'],
+                     'programas'=>$programas
+                 );
                 }
 
             }
 
 
-            $response = $this->render('LinkBackendBundle:Default:index.html.twig', array('empresast' => $empresas_a + $empresas_i,
-                                                                                         'activas' => $empresas_a,
-                                                                                         'inactivas' => $empresas_i,
+            $response = $this->render('LinkBackendBundle:Default:index.html.twig', array('empresast' => count($empresasA) + count($empresasI),
+                                                                                         'activas' => count($empresasA),
+                                                                                         'inactivas' => count($empresasI),
                                                                                          'empresasA' => $empresasA,
                                                                                          'empresasI' => $empresasI,
                                                                                          'usuario' => $usuario));
@@ -142,7 +122,7 @@ class DefaultController extends Controller
             $r = $query->fetchAll();
 
             foreach($r as $re)
-            {   
+            {
                 $paginas[] = array('pagina' => $re['nombre'],
                                    'fecha_i' => $re['fecha_inicio'],
                                    'fecha_f' => $re['fecha_vencimiento'],
@@ -186,7 +166,7 @@ class DefaultController extends Controller
         $query->execute();
         $r = $query->fetchAll();
 
-        foreach ($r as $re) 
+        foreach ($r as $re)
         {
             if ($re['logueado'] > 0) {
                 $usuarios_activos++;
@@ -194,7 +174,7 @@ class DefaultController extends Controller
                 $usuarios_inactivos++;
             }
         }
-        $usuarios_registrados = $usuarios_activos + $usuarios_inactivos;  
+        $usuarios_registrados = $usuarios_activos + $usuarios_inactivos;
 
         $html = '<table class="table">
                     <thead class="sty__title">
@@ -227,7 +207,7 @@ class DefaultController extends Controller
                     </tr>
                 </thead>
                 <tbody>';
-                
+
         $query = $em->getConnection()->prepare('SELECT
                                                 fnreporte_general(:re, :pempresa_id) as
                                                 resultado; fetch all from re;');
@@ -236,9 +216,9 @@ class DefaultController extends Controller
         $query->bindValue(':pempresa_id', $empresa_id, \PDO::PARAM_INT);
         $query->execute();
         $r = $query->fetchAll();
-                  
+
         foreach ($r as $re)
-        {  
+        {
             $html .= '<tr>
                         <td >'. $re['nombre'] .'</td>
                         <td >'. $re['fecha_inicio'] .'</td>
@@ -301,9 +281,9 @@ class DefaultController extends Controller
 
     public function ajaxActiveAction(Request $request)
     {
-        
+
         $em = $this->getDoctrine()->getManager();
-        
+
         $id = $request->request->get('id');
         $entity = $request->request->get('entity');
         $checked = $request->request->get('checked');
@@ -312,19 +292,19 @@ class DefaultController extends Controller
         $object->setActivo($checked ? true : false);
         $em->persist($object);
         $em->flush();
-                    
+
         $return = array('id' => $object->getId());
 
         $return = json_encode($return);
         return new Response($return, 200, array('Content-Type' => 'application/json'));
-        
+
     }
 
     public function ajaxOrderAction(Request $request)
     {
-        
+
         $em = $this->getDoctrine()->getManager();
-        
+
         $id = $request->request->get('id');
         $entity = $request->request->get('entity');
         $orden = $request->request->get('orden');
@@ -333,12 +313,12 @@ class DefaultController extends Controller
         $object->setOrden($orden);
         $em->persist($object);
         $em->flush();
-                    
+
         $return = array('id' => $object->getId());
 
         $return = json_encode($return);
         return new Response($return, 200, array('Content-Type' => 'application/json'));
-        
+
     }
 
     public function loginAction(Request $request)
@@ -356,12 +336,12 @@ class DefaultController extends Controller
         {
             $usuario = $em->getRepository('LinkComunBundle:AdminUsuario')->findOneBy(array('id' => $_COOKIE["id_usuario"],
                                                                                            'cookies' => $_COOKIE["marca_aleatoria_usuario"] ) );
-            
+
             if($usuario)
             {
                 $recordar_datos=1;
                 $login = $usuario->getLogin();
-                $clave = $usuario->getClave(); 
+                $clave = $usuario->getClave();
                 $verificacion=1;
             }
             else {
@@ -389,16 +369,16 @@ class DefaultController extends Controller
             else {
                 if($iniciarSesion['error']==true)
                 {
-                    $response = $this->render('LinkBackendBundle:Default:login.html.twig', array('error' => $iniciarSesion['error'] )); 
+                    $response = $this->render('LinkBackendBundle:Default:login.html.twig', array('error' => $iniciarSesion['error'] ));
                     return $response;
                 }
-            }                    
+            }
         }
         else {
-            $response = $this->render('LinkBackendBundle:Default:login.html.twig', array('error' => $error )); 
+            $response = $this->render('LinkBackendBundle:Default:login.html.twig', array('error' => $error ));
             return $response;
         }
-            
+
     }
 
     public function ajaxQRAction(Request $request)
@@ -415,11 +395,11 @@ class DefaultController extends Controller
         \PHPQRCode\QRcode::png($contenido, $dir_uploads."recursos/qr/".$nombre, 'H', $size, 4);
 
         $ruta ='<img src="'.$uploads.'recursos/qr/'.$nombre.'">';
-        
+
         $return = array('ruta' =>$ruta);
         $return = json_encode($return);
         return new Response($return, 200, array('Content-Type' => 'application/json'));
-        
+
     }
 
     public function reordenarAsignacionAction($empresa_id, Request $request)
@@ -434,8 +414,8 @@ class DefaultController extends Controller
 
         $query = $em->createQuery('SELECT pe FROM LinkComunBundle:CertiPaginaEmpresa pe
                                    JOIN pe.pagina p
-                                   WHERE pe.empresa = :empresa_id 
-                                    AND p.pagina IS NULL 
+                                   WHERE pe.empresa = :empresa_id
+                                    AND p.pagina IS NULL
                                     ORDER BY p.orden')
                     ->setParameter('empresa_id', $empresa_id);
         $pes = $query->getResult();
@@ -471,7 +451,7 @@ class DefaultController extends Controller
 
        $listado = $rs->usuariosConectados($empresa_id, $session->get('usuario')['id']);
        $usuariosConectados = count($listado);
-      
+
        $html = '<table class="table data_table">
                     <thead class="sty__title">
                         <tr>
@@ -491,9 +471,9 @@ class DefaultController extends Controller
                         <td>'.$registro['nivel'].'</td>
                     </tr>';
         }
-        
+
         $html .= '</tbody>
-                </table>'; 
+                </table>';
 
         $return = array('conectados' => $usuariosConectados, 'html' => $html);
 

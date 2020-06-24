@@ -103,7 +103,7 @@ function initModalShow()
 {
     $('#form').hide();
     $('#alert-success').show();
-    $('#detail').show();
+    //$('#detail').show();
     $('#aceptar').show();
     $('#guardar').hide();
     $('#cancelar').hide();
@@ -132,6 +132,8 @@ function disableSubmit()
 {
     $('#guardar').hide();
     $('#guardar').prop('disabled', true);
+    $('#cancelar').hide();
+    $('#cancelar').prop('disabled', true);
     //$('.form-control').prop('disabled', true);
 }
 
@@ -142,11 +144,11 @@ function getImgFromCanvas(canvas)
     var w = canvas.width;
     var h = canvas.height;
     var backgroundColor = '#FFFFFF';
-    
+
     //get the current ImageData for the canvas.
     var context = canvas.getContext("2d");
     var data_img = context.getImageData(0, 0, w, h);
-    
+
     //store the current globalCompositeOperation
     var compositeOperation = context.globalCompositeOperation;
 
@@ -165,7 +167,7 @@ function getImgFromCanvas(canvas)
     context.clearRect (0,0,w,h);
 
     //restore it with original / cached ImageData
-    context.putImageData(data_img, 0,0);        
+    context.putImageData(data_img, 0,0);
 
     //reset the globalCompositeOperation to what it was
     context.globalCompositeOperation = compositeOperation;

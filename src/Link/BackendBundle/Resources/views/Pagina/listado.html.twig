@@ -1,4 +1,4 @@
-<table class="table" id="dt">
+<table class="table" id="dt" >
     <thead class="sty__title">
         <tr>
             <th class="hd__title">{{ 'Orden'|trans }}</th>
@@ -12,8 +12,25 @@
         </tr>
     </thead>
     <tbody>
+
         {% for pagina in paginas %}
+            {% if pagina.delete_disabled is defined %}
+                 {% set delete_disabled = pagina.delete_disabled %}
+            {% else %}
+                 {% set delete_disabled = pagina.prueba + pagina.empresa + pagina.log + pagina.muro + pagina.subpaginas %}
+            {% endif %}
+            {% if pagina.subpaginas.tiene is defined %}
+                {% set subpaginas = pagina.subpaginas.tiene %}
+            {% else %}
+                {% set subpaginas = pagina.subpaginas %}
+            {% endif %}
+            {% if  pagina.mover is defined %}
+                 {% set mover =  pagina.mover %}
+            {% else %}
+                 {% set mover = pagina.empresa %}
+            {% endif %}
             {% set eo = cycle(['odd', 'even'], loop.index) %}
+
             <tr class="{{ eo }}">
                 <td class="columorden">{{ pagina.orden }}</td>
                 <td>{{ pagina.id }}</td>
@@ -22,22 +39,19 @@
                 <td>{{ pagina.modificacion }}</td>
                 <td>{{ pagina.status }}</td>
                 <td>
-                    {% if pagina.subpaginas.tiene > 0 %}
-                        <div class="tree">
-                            <ul data-jstree='{ "opened" : true }'>
-                                {{ pagina.subpaginas.return|raw }}
-                            </ul>
-                        </div>
+                    {% if subpaginas > 0 %}
+                        <a href="#" title="{{ 'Ver'|trans }}" class="btn btn-link btn-sm view" id="{{'view'~pagina.id}}" data="{{ pagina.id }}"><span class="fa fa-eye"></span></a>
+                        <img id="{{'pagina-loader'~pagina.id}}" class="img-loader descargable" src="{{ asset('img/ui-anim_basic_16x16.gif') }}" style="display: none">
                     {% else %}
                         {{ 'No tiene sub-páginas'|trans }}
                     {% endif %}
                 </td>
                 <td class="center">
                     <a href="{{ path('_pagina', { 'pagina_id': pagina.id }) }}" title="{{ 'Configurar página'|trans }}" class="btn btn-link btn-sm"><span class="fa fa-gears"></span></a>
-                    {% if pagina.mover < 1 %}
+                    {% if mover < 1 %}
                         <a href="{{ path('_moverPagina', { 'pagina_id': pagina.id }) }}" title="{{ 'Mover página'|trans }}" class="btn btn-link btn-sm"><span class="fa fa-arrows-h"></span></a>
-                    {% endif %}                    
-                    <a href="#" title="{{ 'Eliminar'|trans }}" class="btn btn-link btn-sm {% if pagina.delete_disabled == '' %}delete{% endif %} {{ pagina.delete_disabled }}" data="{{ pagina.id }}"><span class="fa fa-trash"></span></a>
+                    {% endif %}
+                    <a href="#" title="{{ 'Eliminar'|trans }}" class="btn btn-link btn-sm {% if delete_disabled == '' %}delete{% endif %} {{ delete_disabled }}" data="{{ pagina.id }}"><span class="fa fa-trash"></span></a>
                     <a href="#" title="{{ 'Duplicar página y sub-páginas'|trans }}" class="btn btn-link btn-sm duplicate" data-toggle="modal" data-target="#formModal" data="{{ pagina.id }}"><span class="fa fa-copy"></span></a>
                 </td>
             </tr>

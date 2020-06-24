@@ -30,10 +30,11 @@ BEGIN
         IF reg.enviado = false THEN 
             FOR rst IN 
                 SELECT u.id as id, u.login as login, u.clave as clave, u.nombre as nombre, u.apellido as apellido, u.correo_personal as correo_personal, u.correo_corporativo as correo_corporativo 
-                FROM admin_usuario u 
+                FROM admin_usuario u
+                INNER JOIN admin_nivel n ON n.id = u.id 
                 WHERE u.activo = true 
                     AND u.empresa_id = reg.empresa_id 
-                    AND u.login NOT LIKE 'temp%'
+                    AND LOWER(n.nombre) NOT LIKE 'revisor%'
                 ORDER BY u.id ASC LOOP
                 str = reg.id || '__' || rst.id || '__' || rst.login || '__' || rst.clave || '__' || rst.nombre || '__' || rst.apellido || '__' || CASE WHEN rst.correo_corporativo Is Null OR rst.correo_corporativo = '' THEN rst.correo_personal ELSE rst.correo_corporativo END || '__' || reg.asunto || '__' || reg.mensaje || '__' || reg.empresa_id;
                 arr = '{}';
@@ -52,7 +53,6 @@ BEGIN
                 FROM admin_usuario u 
                 WHERE u.activo = true 
                     AND u.empresa_id = reg.empresa_id 
-                    AND u.login NOT LIKE 'temp%'
                     AND u.nivel_id = reg.entidad_id 
                 ORDER BY u.id ASC LOOP
                 str = reg.id || '__' || rst.id || '__' || rst.login || '__' || rst.clave || '__' || rst.nombre || '__' || rst.apellido || '__' || CASE WHEN rst.correo_corporativo Is Null OR rst.correo_corporativo = '' THEN rst.correo_personal ELSE rst.correo_corporativo END || '__' || reg.asunto || '__' || reg.mensaje || '__' || reg.empresa_id;
@@ -79,7 +79,7 @@ BEGIN
                     INNER JOIN admin_nivel n ON u.nivel_id = n.id 
                     WHERE u.empresa_id = reg.empresa_id 
                         AND u.activo = true 
-                        AND u.login NOT LIKE 'temp%' 
+                        AND LOWER(n.nombre) NOT LIKE 'revisor%'
                         AND u.id IN (SELECT ru.usuario_id FROM admin_rol_usuario ru WHERE ru.rol_id = 2) 
                         AND u.nivel_id IN 
                             (SELECT np.nivel_id FROM certi_nivel_pagina np WHERE np.pagina_empresa_id IN 
@@ -107,10 +107,12 @@ BEGIN
         FOR rst IN 
             SELECT np.id as np_id, u.id as id, u.login as login, u.clave as clave, u.nombre as nombre, u.apellido as apellido, u.correo_personal as correo_personal, u.correo_corporativo as correo_corporativo  
             FROM admin_usuario u, admin_notificacion_programada np 
+            INNER JOIN admin_nivel n ON n.id = u.id
             WHERE np.grupo_id = reg.id 
                 AND np.entidad_id = u.id 
                 AND np.enviado = false 
                 AND u.activo = true 
+                AND LOWER(n.nombre) NOT LIKE 'revisor%'
                 AND u.id IN (SELECT ru.usuario_id FROM admin_rol_usuario ru WHERE ru.rol_id = 2) 
             ORDER BY u.id ASC LOOP
             str = rst.np_id || '__' || rst.id || '__' || rst.login || '__' || rst.clave || '__' || rst.nombre || '__' || rst.apellido || '__' || CASE WHEN rst.correo_corporativo Is Null OR rst.correo_corporativo = '' THEN rst.correo_personal ELSE rst.correo_corporativo END || '__' || reg.asunto || '__' || reg.mensaje || '__' || reg.empresa_id;
@@ -127,9 +129,10 @@ BEGIN
             FOR rst IN 
                 SELECT u.id as id, u.login as login, u.clave as clave, u.nombre as nombre, u.apellido as apellido, u.correo_personal as correo_personal, u.correo_corporativo as correo_corporativo  
                 FROM admin_usuario u 
+                INNER JOIN admin_nivel n ON n.id = u.id
                 WHERE u.activo = true 
                     AND u.empresa_id = reg.empresa_id 
-                    AND u.login NOT LIKE 'temp%'
+                    AND LOWER(n.nombre) NOT LIKE 'revisor%'
                     AND u.id IN (SELECT ru.usuario_id FROM admin_rol_usuario ru WHERE ru.rol_id = 2) 
                     AND u.id NOT IN (SELECT DISTINCT(s.usuario_id) FROM admin_sesion s) 
                 ORDER BY u.id ASC LOOP
@@ -151,7 +154,7 @@ BEGIN
                 INNER JOIN admin_nivel n ON u.nivel_id = n.id 
                 WHERE u.empresa_id = reg.empresa_id 
                     AND u.activo = true 
-                    AND u.login NOT LIKE 'temp%'
+                    AND LOWER(n.nombre) NOT LIKE 'revisor%'
                     AND u.id IN (SELECT ru.usuario_id FROM admin_rol_usuario ru WHERE ru.rol_id = 2) 
                     AND u.nivel_id IN 
                         (SELECT np.nivel_id FROM certi_nivel_pagina np WHERE np.pagina_empresa_id IN 
@@ -189,7 +192,7 @@ BEGIN
                     INNER JOIN admin_nivel n ON u.nivel_id = n.id 
                     WHERE u.empresa_id = reg.empresa_id 
                         AND u.activo = true 
-                        AND u.login NOT LIKE 'temp%' 
+                        AND LOWER(n.nombre) NOT LIKE 'revisor%'
                         AND u.id IN (SELECT ru.usuario_id FROM admin_rol_usuario ru WHERE ru.rol_id = 2) 
                         AND u.nivel_id IN 
                             (SELECT np.nivel_id FROM certi_nivel_pagina np WHERE np.pagina_empresa_id IN 
@@ -229,7 +232,7 @@ BEGIN
                     INNER JOIN admin_nivel n ON u.nivel_id = n.id 
                     WHERE u.empresa_id = reg.empresa_id 
                         AND u.activo = true 
-                        AND u.login NOT LIKE 'temp%' 
+                        AND LOWER(n.nombre) NOT LIKE 'revisor%' 
                         AND u.id IN (SELECT ru.usuario_id FROM admin_rol_usuario ru WHERE ru.rol_id = 2) 
                         AND u.nivel_id IN 
                             (SELECT np.nivel_id FROM certi_nivel_pagina np WHERE np.pagina_empresa_id IN 

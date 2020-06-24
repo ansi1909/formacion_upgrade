@@ -13,30 +13,32 @@
                     <h3 class="titulo_faqs">Tutoriales</h3>
                 </div>
             </div>
-            <div class="contTutorial">
-                <ul class=" contTutorial cards-section container d-flex justify-content-between justify-content-sm-center flex-wrap mt-3 table-card " id="ul-foros" style="width: 100%">
-               
-                    {% for tutorial in tutoriales %}
-                        <li class="col-3 col-md-6 col-sm-6 col-xl-3 col-lg-3" id="">
-                            <a href="{{ path('_detalleTutoriales')~'/'~tutorial.id }}">
-                                <div class="card-anuncio">
-                                    <div class="card_header">
-                                        <img src="{{directorio~tutorial.id~'/'~tutorial.imagen}}" alt="" class="card_img">
-                                    </div>
-                                    <div class="card_body">
-                                        <h5 class="titulo_anuncio">{{tutorial.nombre}}</h5>
-                                    </div>
-                                    <div class="card_footer">
-                                        <hr class="separador">
-                                        <div class="col-12 col-md-12 col-sm-12 col-xl-12 col-lg-12 text-right">
-                                            <span class="fecha_anuncio">{{ tutorial.fecha|date('d/m/Y') }}</span>
+            <div class="row"> 
+                <div class="contTutorial col-12 px-0">
+                    <ul class=" cards-section container d-flex justify-content-evenly  flex-wrap mt-3 table-card cards-tutorial-container py-2" id="ul-foros">
+                
+                        {% for tutorial in tutoriales %}
+                            <li class="tutorial-element" id="">
+                                <a href="{{ path('_detalleTutoriales')~'/'~tutorial.id }}">
+                                    <div class="card-anuncio">
+                                        <div class="card_header">
+                                            <img src="{{directorio~tutorial.id~'/'~tutorial.imagen}}" alt="" class="card_img">
+                                        </div>
+                                        <div class="card_body">
+                                            <h5 class="titulo_anuncio">{{tutorial.nombre}}</h5>
+                                        </div>
+                                        <div class="card_footer">
+                                            <hr class="separador">
+                                            <div class="col-12 col-md-12 col-sm-12 col-xl-12 col-lg-12 text-right">
+                                                <span class="fecha_anuncio">{{ tutorial.fecha|date('d/m/Y') }}</span>
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
-                            </a>
-                        </li>
-                   {% endfor %}
-                </ul>
+                                </a>
+                            </li>
+                    {% endfor %}
+                    </ul>
+                </div>
             </div>
         </div>
             

@@ -27,7 +27,7 @@
                         <thead class="sty__title">
                             <tr>
                                 <th class="hd__title">{{ 'Página'|trans }}</th>
-                                <th class="hd__title">{{ 'Estructura'|trans }}</th>
+                                <th class="hd__title">{{ 'Categoría '|trans }}</th>
                                 <th class="hd__title">{{ 'Asignar'|trans }}</th>
                                 <th class="hd__title">{{ 'Activar'|trans }}</th>
                                 <th class="hd__title">{{ 'Dar acceso'|trans }}</th>
@@ -38,17 +38,7 @@
                                 {% set eo = cycle(['odd', 'even'], loop.index) %}
                                 <tr class="{{ eo }}">
                                     <td>{{ pagina.nombre }}</td>
-                                    <td>
-                                        {% if pagina.subpaginas.tiene > 0 %}
-                                            <div class="tree">
-                                                <ul data-jstree='{ "opened" : true }'>
-                                                    {{ pagina.subpaginas.return|raw }}
-                                                </ul>
-                                            </div>
-                                        {% else %}
-                                            {{ 'No tiene sub-páginas'|trans }}
-                                        {% endif %}
-                                    </td>
+                                    <td>{{ pagina.categoria }}</td>
                                     <td>
                                         {% if pagina.asignada %}
                                             {{ 'Asignada'|trans }}

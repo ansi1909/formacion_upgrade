@@ -5,6 +5,12 @@ parameters:
         tutor: 3
         reporte: 4
         empresa: 5
+    rol_convertir:
+        rol_administrador: 'Administrador'
+        rol_participante: 'Participante'
+        rol_tutor: 'Tutor Virtual'
+        rol_reporte: 'Reporte'
+        rol_empresa: 'Empresa'
     tipo_pregunta:
         simple: 1
         multiple: 2
@@ -126,11 +132,14 @@ parameters:
         alarma_tutor: 0
         alarma_participantes: 1
     espacio_colaborativo:
-        alarma_tutor: 0 
+        alarma_tutor: 0
         alarma_participantes: 0
     limite_correos_notificaciones:
         cron: 350
         controlador: 100
+    evaluaciones:
+        puntaje_minimo: 75
+        intentos: 100
 
 
-        
+

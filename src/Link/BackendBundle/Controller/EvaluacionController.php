@@ -31,7 +31,7 @@ class EvaluacionController extends Controller
 
     	$session = new Session();
         $f = $this->get('funciones');
-        
+
         if (!$session->get('ini') || $f->sesionBloqueda($session->get('sesion_id')))
         {
             return $this->redirectToRoute('_loginAdmin');
@@ -45,47 +45,37 @@ class EvaluacionController extends Controller
         	}
         }
         $f->setRequest($session->get('sesion_id'));
+        $pruebas = $f->obtenerPruebas();
 
-        $em = $this->getDoctrine()->getManager();
-        $pruebas_bd = $em->getRepository('LinkComunBundle:CertiPrueba')->findAll();
-
-        $pruebas = array();
-
-        foreach ($pruebas_bd as $p)
-        {
-
-            $preguntas = array();
-
-            $query = $em->createQuery("SELECT p FROM LinkComunBundle:CertiPregunta p 
-                                        WHERE p.prueba = :prueba_id AND p.pregunta IS NULL
-                                        ORDER BY p.orden ASC")
-                        ->setParameter('prueba_id', $p->getId());
-            $preguntas_bd = $query->getResult();
-
-            foreach ($preguntas_bd as $q)
-            {
-                $preguntas[] = $q->getEnunciado();
-            }
-
-            $pruebas[] = array('id' => $p->getId(),
-                               'nombre' => $p->getNombre(),
-                               'pagina' => $p->getPagina()->getCategoria()->getNombre().': '.$p->getPagina()->getNombre(),
-                               'preguntas' => $preguntas,
-                               'status' => $p->getEstatusContenido()->getNombre(),
-                               'modificacion' => $p->getFechaModificacion()->format('d/m/Y H:i a'),
-                               'delete_disabled' => $f->linkEliminar($p->getId(), 'CertiPrueba'));
-
-        }
 
         return $this->render('LinkBackendBundle:Evaluacion:index.html.twig', array('pruebas' => $pruebas));
 
+    }
+
+    public function ajaxObtenerPreguntasAction(Request $request){
+        $f = $this->get('funciones');
+        $em = $this->getDoctrine()->getManager();
+        $html='';
+        $yml = Yaml::parse(file_get_contents($this->get('kernel')->getRootDir().'/config/parametros.yml'));
+        $prueba_id = $request->get('prueba_id');
+        $preguntas = $em->getRepository('LinkComunBundle:CertiPregunta')->findBy(array('prueba'=>$prueba_id));
+        $item = 1;
+        $evaluacion = $em->getRepository('LinkComunBundle:CertiPrueba')->find($prueba_id);
+        $titulo = explode("|",$evaluacion->getNombre());
+        foreach ($preguntas as $pregunta) {
+            $html .='<div class="col-sm-16 col-md-16 col-md-lg-16 modal-text  margin-1">&nbsp;'."$item) ".$pregunta->getEnunciado().'
+            </div>';
+            $item++;
+        }
+        $return = json_encode(['html' => $html,'evaluacion'=>$titulo[1]]);
+        return new Response($return, 200, array('Content-Type' => 'application/json'));
     }
 
     public function editAction($prueba_id, Request $request){
 
         $session = new Session();
         $f = $this->get('funciones');
-      
+
         if (!$session->get('ini') || $f->sesionBloqueda($session->get('sesion_id')))
         {
             return $this->redirectToRoute('_loginAdmin');
@@ -102,8 +92,8 @@ class EvaluacionController extends Controller
         $pagina_evaluada = 0;
         $pagina_id = '';
         $pagina_str = '';
-        
-        if ($prueba_id) 
+
+        if ($prueba_id)
         {
             $prueba = $em->getRepository('LinkComunBundle:CertiPrueba')->find($prueba_id);
         }
@@ -133,7 +123,7 @@ class EvaluacionController extends Controller
             ->getForm();
 
         $form->handleRequest($request);
-       
+
         if ($request->getMethod() == 'POST')
         {
 
@@ -146,7 +136,7 @@ class EvaluacionController extends Controller
                ->from('LinkComunBundle:CertiPrueba', 'p')
                ->where('p.pagina = :pagina_id');
             $parametros['pagina_id'] = $pagina_id;
-            
+
             if ($prueba_id)
             {
                 $qb->andWhere('p.id != :prueba_id');
@@ -166,7 +156,7 @@ class EvaluacionController extends Controller
                 $em->persist($prueba);
                 $em->flush();
 
-                $query = $em->createQuery('SELECT COUNT(p.id) FROM LinkComunBundle:CertiPregunta p 
+                $query = $em->createQuery('SELECT COUNT(p.id) FROM LinkComunBundle:CertiPregunta p
                                             WHERE p.prueba = :prueba_id')
                             ->setParameter('prueba_id', $prueba->getId());
                 $hay_preguntas = $query->getSingleScalarResult();
@@ -183,7 +173,7 @@ class EvaluacionController extends Controller
                 }
 
             }
-            
+
         }
 
         // Páginas y sub-páginas
@@ -191,7 +181,7 @@ class EvaluacionController extends Controller
         $tiene = 0;
         $str = '';
 
-        $query = $em->createQuery("SELECT p FROM LinkComunBundle:CertiPagina p 
+        $query = $em->createQuery("SELECT p FROM LinkComunBundle:CertiPagina p
                                     WHERE p.pagina IS NULL
                                     ORDER BY p.id ASC");
         $pages = $query->getResult();
@@ -199,7 +189,7 @@ class EvaluacionController extends Controller
         // Páginas que ya tienen asociadas sus evaluaciones
         $paginas_asociadas = array();
 
-        $query = $em->createQuery("SELECT p FROM LinkComunBundle:CertiPrueba p 
+        $query = $em->createQuery("SELECT p FROM LinkComunBundle:CertiPrueba p
                                     WHERE p.id != :prueba_id")
                     ->setParameter('prueba_id', $prueba->getId() ? $prueba->getId() : 0);
         $tests = $query->getResult();
@@ -240,7 +230,7 @@ class EvaluacionController extends Controller
 
         $session = new Session();
         $f = $this->get('funciones');
-      
+
         if (!$session->get('ini') || $f->sesionBloqueda($session->get('sesion_id')))
         {
             return $this->redirectToRoute('_loginAdmin');
@@ -256,8 +246,8 @@ class EvaluacionController extends Controller
         $em = $this->getDoctrine()->getManager();
 
         $prueba = $em->getRepository('LinkComunBundle:CertiPrueba')->find($prueba_id);
-        
-        if ($pregunta_id) 
+
+        if ($pregunta_id)
         {
             $pregunta = $em->getRepository('LinkComunBundle:CertiPregunta')->find($pregunta_id);
         }
@@ -267,8 +257,8 @@ class EvaluacionController extends Controller
             $pregunta->setFechaCreacion(new \DateTime('now'));
 
             // Establecer el orden, último por defecto
-            $query = $em->createQuery("SELECT p FROM LinkComunBundle:CertiPregunta p 
-                                        WHERE p.pregunta IS NULL AND p.prueba = :prueba_id 
+            $query = $em->createQuery("SELECT p FROM LinkComunBundle:CertiPregunta p
+                                        WHERE p.pregunta IS NULL AND p.prueba = :prueba_id
                                         ORDER BY p.orden DESC")
                         ->setParameter('prueba_id', $prueba->getId());
             $preguntas = $query->getResult();
@@ -316,7 +306,7 @@ class EvaluacionController extends Controller
             ->getForm();
 
         $form->handleRequest($request);
-       
+
         if ($request->getMethod() == 'POST')
         {
 
@@ -326,7 +316,7 @@ class EvaluacionController extends Controller
             return $this->redirectToRoute('_opciones', array('pregunta_id' => $pregunta->getId(),
                                                              'cantidad' => $cantidad,
                                                              'total' => $prueba->getCantidadPreguntas()));
-            
+
         }
 
         return $this->render('LinkBackendBundle:Evaluacion:editPregunta.html.twig', array('form' => $form->createView(),
@@ -341,7 +331,7 @@ class EvaluacionController extends Controller
 
         $session = new Session();
         $f = $this->get('funciones');
-      
+
         if (!$session->get('ini') || $f->sesionBloqueda($session->get('sesion_id')))
         {
             return $this->redirectToRoute('_loginAdmin');
@@ -360,16 +350,16 @@ class EvaluacionController extends Controller
         $pregunta_simple = $values['parameters']['tipo_pregunta']['simple'];
         $es_asociacion = 0;
         $opciones = array();
-        
+
         $pregunta = $em->getRepository('LinkComunBundle:CertiPregunta')->find($pregunta_id);
         $es_simple = $pregunta->getTipoPregunta()->getId() == $pregunta_simple ? 1 : 0;
 
         if ($pregunta->getTipoPregunta()->getId() != $pregunta_asociacion)
         {
 
-            $query = $em->createQuery("SELECT po, o FROM LinkComunBundle:CertiPreguntaOpcion po 
-                                        JOIN po.opcion o 
-                                        WHERE po.pregunta = :pregunta_id AND o.prueba = :prueba_id 
+            $query = $em->createQuery("SELECT po, o FROM LinkComunBundle:CertiPreguntaOpcion po
+                                        JOIN po.opcion o
+                                        WHERE po.pregunta = :pregunta_id AND o.prueba = :prueba_id
                                         ORDER BY o.id ASC")
                         ->setParameters(array('pregunta_id' => $pregunta_id,
                                               'prueba_id' => $pregunta->getPrueba()->getId()));
@@ -377,7 +367,7 @@ class EvaluacionController extends Controller
 
             foreach ($opciones_bd as $po)
             {
-                $query = $em->createQuery('SELECT COUNT(r.id) FROM LinkComunBundle:CertiRespuesta r 
+                $query = $em->createQuery('SELECT COUNT(r.id) FROM LinkComunBundle:CertiRespuesta r
                                             WHERE r.opcion = :opcion_id')
                             ->setParameter('opcion_id', $po->getOpcion()->getId());
                 $hay_respuesta = $query->getSingleScalarResult();
@@ -391,7 +381,7 @@ class EvaluacionController extends Controller
 
         }
         else {
-            
+
             $es_asociacion = 1;
             $opciones = array();
 
@@ -402,11 +392,11 @@ class EvaluacionController extends Controller
 
                 $preguntas_asociadas = explode(",", $asociacion->getPreguntas());
 
-                $query = $em->createQuery("SELECT po, o, p FROM LinkComunBundle:CertiPreguntaOpcion po 
-                                            JOIN po.opcion o JOIN po.pregunta p 
-                                            WHERE po.pregunta IN (:preguntas_id) 
-                                            AND o.prueba = :prueba_id 
-                                            AND p.pregunta = :pregunta_id 
+                $query = $em->createQuery("SELECT po, o, p FROM LinkComunBundle:CertiPreguntaOpcion po
+                                            JOIN po.opcion o JOIN po.pregunta p
+                                            WHERE po.pregunta IN (:preguntas_id)
+                                            AND o.prueba = :prueba_id
+                                            AND p.pregunta = :pregunta_id
                                             ORDER BY po.id ASC")
                             ->setParameters(array('preguntas_id' => $preguntas_asociadas,
                                                   'prueba_id' => $pregunta->getPrueba()->getId(),
@@ -415,11 +405,11 @@ class EvaluacionController extends Controller
 
                 foreach ($opciones_bd as $po)
                 {
-                    $query = $em->createQuery('SELECT COUNT(r.id) FROM LinkComunBundle:CertiRespuesta r 
+                    $query = $em->createQuery('SELECT COUNT(r.id) FROM LinkComunBundle:CertiRespuesta r
                                                 WHERE r.opcion = :opcion_id')
                                 ->setParameter('opcion_id', $po->getOpcion()->getId());
                     $hay_respuesta_opcion = $query->getSingleScalarResult();
-                    $query = $em->createQuery('SELECT COUNT(r.id) FROM LinkComunBundle:CertiRespuesta r 
+                    $query = $em->createQuery('SELECT COUNT(r.id) FROM LinkComunBundle:CertiRespuesta r
                                                 WHERE r.pregunta = :pregunta_id')
                                 ->setParameter('pregunta_id', $po->getPregunta()->getId());
                     $hay_respuesta_pregunta = $query->getSingleScalarResult();
@@ -447,11 +437,11 @@ class EvaluacionController extends Controller
 
     public function ajaxEditOpcionAction(Request $request)
     {
-        
+
         $em = $this->getDoctrine()->getManager();
         $pregunta_opcion_id = $request->query->get('pregunta_opcion_id');
         $uploads = $this->container->getParameter('folders')['uploads'];
-        
+
         $pregunta_opcion = $this->getDoctrine()->getRepository('LinkComunBundle:CertiPreguntaOpcion')->find($pregunta_opcion_id);
 
         $return = array('descripcion' => $pregunta_opcion->getOpcion()->getDescripcion(),
@@ -464,14 +454,14 @@ class EvaluacionController extends Controller
 
         $return = json_encode($return);
         return new Response($return, 200, array('Content-Type' => 'application/json'));
-        
+
     }
 
     public function ajaxCorrectaAction(Request $request)
     {
-        
+
         $em = $this->getDoctrine()->getManager();
-        
+
         $pregunta_opcion_id = $request->request->get('pregunta_opcion_id');
         $checked = $request->request->get('checked');
 
@@ -488,21 +478,21 @@ class EvaluacionController extends Controller
                 $em->flush();
             }
         }
-        
+
         $pregunta_opcion->setCorrecta($checked ? true : false);
         $em->persist($pregunta_opcion);
         $em->flush();
-                    
+
         $return = array('id' => $pregunta_opcion->getId());
 
         $return = json_encode($return);
         return new Response($return, 200, array('Content-Type' => 'application/json'));
-        
+
     }
 
     public function ajaxUpdateOpcionAction(Request $request)
     {
-        
+
         $session = new Session();
         $em = $this->getDoctrine()->getManager();
         $f = $this->get('funciones');
@@ -510,7 +500,7 @@ class EvaluacionController extends Controller
         $tipo_elemento_imagen = $values['parameters']['tipo_elemento']['imagen'];
         $uploads = $this->container->getParameter('folders')['uploads'];
         $pregunta_simple = $values['parameters']['tipo_pregunta']['simple'];
-        
+
         $pregunta_opcion_id = $request->request->get('pregunta_opcion_id');
         $prueba_id = $request->request->get('prueba_id');
         $pregunta_id = $request->request->get('pregunta_id');
@@ -624,7 +614,7 @@ class EvaluacionController extends Controller
         if (!$es_asociacion)
         {
 
-            $query = $em->createQuery('SELECT COUNT(r.id) FROM LinkComunBundle:CertiRespuesta r 
+            $query = $em->createQuery('SELECT COUNT(r.id) FROM LinkComunBundle:CertiRespuesta r
                                         WHERE r.opcion = :opcion_id')
                         ->setParameter('opcion_id', $pregunta_opcion->getOpcion()->getId());
             $hay_respuesta = $query->getSingleScalarResult();
@@ -662,11 +652,11 @@ class EvaluacionController extends Controller
         }
         else {
 
-            $query = $em->createQuery('SELECT COUNT(r.id) FROM LinkComunBundle:CertiRespuesta r 
+            $query = $em->createQuery('SELECT COUNT(r.id) FROM LinkComunBundle:CertiRespuesta r
                                         WHERE r.opcion = :opcion_id')
                         ->setParameter('opcion_id', $pregunta_opcion->getOpcion()->getId());
             $hay_respuesta_opcion = $query->getSingleScalarResult();
-            $query = $em->createQuery('SELECT COUNT(r.id) FROM LinkComunBundle:CertiRespuesta r 
+            $query = $em->createQuery('SELECT COUNT(r.id) FROM LinkComunBundle:CertiRespuesta r
                                         WHERE r.pregunta = :pregunta_id')
                         ->setParameter('pregunta_id', $pregunta_opcion->getPregunta()->getId());
             $hay_respuesta_pregunta = $query->getSingleScalarResult();
@@ -710,14 +700,14 @@ class EvaluacionController extends Controller
         }
 
         $html .= $pregunta_opcion_id ? '' : '</tr>';
-                    
+
         $return = array('html' => $html,
                         'checked' => $checked,
                         'id' => $pregunta_opcion->getId());
 
         $return = json_encode($return);
         return new Response($return, 200, array('Content-Type' => 'application/json'));
-        
+
     }
 
     public function ajaxDeleteOpcionAction(Request $request)
@@ -776,7 +766,7 @@ class EvaluacionController extends Controller
             }
 
         }
-        
+
         // PreguntaOpcion
         $em->remove($pregunta_opcion);
         $em->flush();
@@ -804,7 +794,7 @@ class EvaluacionController extends Controller
 
         $session = new Session();
         $f = $this->get('funciones');
-        
+
         if (!$session->get('ini') || $f->sesionBloqueda($session->get('sesion_id')))
         {
             return $this->redirectToRoute('_loginAdmin');
@@ -823,8 +813,8 @@ class EvaluacionController extends Controller
         $em = $this->getDoctrine()->getManager();
         $prueba = $em->getRepository('LinkComunBundle:CertiPrueba')->find($prueba_id);
 
-        $query = $em->createQuery("SELECT p FROM LinkComunBundle:CertiPregunta p 
-                                    WHERE p.prueba = :prueba_id AND p.pregunta IS NULL 
+        $query = $em->createQuery("SELECT p FROM LinkComunBundle:CertiPregunta p
+                                    WHERE p.prueba = :prueba_id AND p.pregunta IS NULL
                                     ORDER BY p.orden ASC")
                     ->setParameter('prueba_id', $prueba_id);
         $preguntas_bd = $query->getResult();
@@ -839,9 +829,9 @@ class EvaluacionController extends Controller
 
             if ($p->getTipoPregunta()->getid() != $pregunta_asociacion)
             {
-                $query = $em->createQuery("SELECT po, o FROM LinkComunBundle:CertiPreguntaOpcion po 
-                                            JOIN po.opcion o 
-                                            WHERE po.pregunta = :pregunta_id AND o.prueba = :prueba_id 
+                $query = $em->createQuery("SELECT po, o FROM LinkComunBundle:CertiPreguntaOpcion po
+                                            JOIN po.opcion o
+                                            WHERE po.pregunta = :pregunta_id AND o.prueba = :prueba_id
                                             ORDER BY o.id ASC")
                             ->setParameters(array('pregunta_id' => $p->getId(),
                                                   'prueba_id' => $prueba->getId()));
@@ -857,7 +847,7 @@ class EvaluacionController extends Controller
                 }
             }
             else {
-                
+
                 $correcta++;
                 $asociacion = $em->getRepository('LinkComunBundle:CertiPreguntaAsociacion')->findOneByPregunta($p->getId());
 
@@ -866,11 +856,11 @@ class EvaluacionController extends Controller
 
                     $preguntas_asociadas = explode(",", $asociacion->getPreguntas());
 
-                    $query = $em->createQuery("SELECT po, o, p FROM LinkComunBundle:CertiPreguntaOpcion po 
-                                                JOIN po.opcion o JOIN po.pregunta p 
-                                                WHERE po.pregunta IN (:preguntas_id) 
-                                                AND o.prueba = :prueba_id 
-                                                AND p.pregunta = :pregunta_id 
+                    $query = $em->createQuery("SELECT po, o, p FROM LinkComunBundle:CertiPreguntaOpcion po
+                                                JOIN po.opcion o JOIN po.pregunta p
+                                                WHERE po.pregunta IN (:preguntas_id)
+                                                AND o.prueba = :prueba_id
+                                                AND p.pregunta = :pregunta_id
                                                 ORDER BY po.id ASC")
                                 ->setParameters(array('preguntas_id' => $preguntas_asociadas,
                                                       'prueba_id' => $prueba->getId(),

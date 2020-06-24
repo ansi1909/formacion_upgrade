@@ -340,32 +340,33 @@ class CertificadoController extends Controller
 							        	{
 							        		$valor = 20;
 							        		$guion = '';
-							        	}
-							        	else {
-								        	if ($programa['categoria'] == $values['parameters']['categoria']['materia'])
-								        	{
-								        		$valor = 30;
-								        		$guion = '+ ';
-								        	}
-								        	else {
-								        		if ($programa['categoria'] == $values['parameters']['categoria']['leccion'])
-								        		{
-								        			$valor = 40;
-								        			$guion = '- ';
-								        		}
-								        	}
-								        }
-										$puntaje = $puntaje+$programa['nota'];
+							        		$puntaje = $puntaje+$programa['nota'];
 
-										if($programa['nota'] != 0)
-										{
-											$indice = $indice+1;
-											$nota = $programa['nota'];
-										}
-	        							$html .= "<tr ".$style.">
-							               			<td style='padding-left:".$valor."px;'>".$guion.$programa['nombre']."</td>
-									               	<td class='center'>".round($nota,2)."</td>
-									            </tr>";
+											if($programa['nota'] != 0)
+											{
+												$indice = $indice+1;
+												$nota = $programa['nota'];
+											}
+		        							$html .= "<tr ".$style.">
+								               			<td style='padding-left:".$valor."px;'>".$guion.$programa['nombre']."</td>
+										               	<td class='center'>".round($nota,2)."</td>
+										            </tr>";
+							        	}
+							        	// else {
+								        // 	if ($programa['categoria'] == $values['parameters']['categoria']['materia'])
+								        // 	{
+								        // 		$valor = 30;
+								        // 		$guion = '+ ';
+								        // 	}
+								        // 	else {
+								        // 		if ($programa['categoria'] == $values['parameters']['categoria']['leccion'])
+								        // 		{
+								        // 			$valor = 40;
+								        // 			$guion = '- ';
+								        // 		}
+								        // 	}
+								        // }
+
 									}
 									if ($indice > 0)
 									{

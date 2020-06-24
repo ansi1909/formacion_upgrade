@@ -3,6 +3,21 @@
 {% block stylesheets %}
     {{ parent() }}
     <link rel="stylesheet" href="{{ asset('assets/vendor/jstree/dist/themes/default/style.min.css') }}" type="text/css">
+    <style>
+        .dataTables_wrapper .dataTable td, .dataTables_wrapper .dataTable th {
+            padding: 10px 13px 40px 13px;
+            line-height: 22px;
+            align-content: center;
+        }
+        .center{
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .margin-1{
+            margin: 1rem 0rem 0rem 0rem;
+        }
+    </style>
 {% endblock %}
 
 
@@ -37,29 +52,26 @@
                     </thead>
                     <tbody>
                         {% for prueba in pruebas %}
+                            {% set delete_disabled = prueba.preguntas+prueba.opciones+prueba.logs > 0 ? 'disabled':'' %}
+                            {% set nombre = prueba.nombre|split('|') %}
                             {% set eo = cycle(['odd', 'even'], loop.index) %}
                             <tr class="{{ eo }}">
-                                <td>{{ prueba.nombre }}</td>
+                                <td>{{ nombre[0] }}<BR>{{nombre[1]}}</td>
                                 <td>{{ prueba.pagina }}</td>
-                                <td>
+                                <td class="center">
                                     {% if prueba.preguntas|length > 0 %}
-                                        <div class="tree">
-                                            <ul data-jstree='{ "opened" : true }'>
-                                                {% for pregunta in prueba.preguntas %}
-                                                    <li data-jstree='{ "icon": "fa fa-angle-double-right" }'>{{ pregunta }}</li>
-                                                {% endfor %}
-                                            </ul>
-                                        </div>
+                                        <a href="#" title="{{ 'Ver'|trans }}" class="btn btn-link btn-sm view" id="{{'view'~prueba.id}}" data="{{ prueba.id }}"><span class="fa fa-eye"></span></a>
+                                        <img id="{{'prueba-loader'~prueba.id}}" class="img-loader descargable" src="{{ asset('img/ui-anim_basic_16x16.gif') }}" style="display: none">
                                     {% else %}
                                         {{ 'Aún no se han creado las preguntas'|trans }}
                                     {% endif %}
                                 </td>
-                                <td>{{ prueba.status }}</td>
-                                <td>{{ prueba.modificacion }}</td>
+                                <td>{{ prueba.estatus }}</td>
+                                <td>{{ prueba.modificacion|date("d/m/Y H:i:s") }}</td>
                                 <td class="center">
                                     <a href="{{ path('_editEvaluacion', { 'prueba_id': prueba.id }) }}" title="{{ 'Editar evaluación'|trans }}" class="btn btn-link btn-sm"><span class="fa fa-pencil"></span></a>
                                     <a href="{{ path('_preguntas', { 'prueba_id': prueba.id }) }}" title="{{ 'Configurar evaluación'|trans }}" class="btn btn-link btn-sm"><span class="fa fa-gears"></span></a>
-                                    <a href="#" title="{{ 'Eliminar'|trans }}" class="btn btn-link btn-sm {% if prueba.delete_disabled == '' %}delete{% endif %} {{ prueba.delete_disabled }}" data="{{ prueba.id }}"><span class="fa fa-trash"></span></a>
+                                    <a href="#" title="{{ 'Eliminar'|trans }}" class="btn btn-link btn-sm {% if delete_disabled == '' %}delete{% endif %} {{ delete_disabled }}" data="{{ prueba.id }}"><span class="fa fa-trash"></span></a>
                                 </td>
                             </tr>
                         {% endfor %}

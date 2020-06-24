@@ -18,11 +18,12 @@ begin
     FOR i IN 0..6 LOOP
 
     SELECT COUNT(s.id) INTO c FROM admin_sesion s INNER JOIN admin_usuario u ON s.usuario_id = u.id 
-        WHERE u.empresa_id = pempresa_id 
+            INNER JOIN admin_nivel an ON an.id = u.nivel_id
+            WHERE u.empresa_id = pempresa_id 
             AND u.id IN (SELECT ru.usuario_id FROM admin_rol_usuario ru WHERE ru.rol_id = 2) 
             AND CAST(fecha_ingreso AS TIME) BETWEEN phora1 and phora2 
             AND fecha_ingreso BETWEEN pdesde AND phasta 
-            AND u.login NOT LIKE 'temp%'
+            AND LOWER(an.nombre) NOT LIKE 'revisor%'
             AND date_part('dow', fecha_ingreso) = i;
 
     If i = 0 Then 

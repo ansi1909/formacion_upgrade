@@ -11,15 +11,15 @@ $(document).ready(function() {
 function observe()
 {
 
-	$('#tbody-pages tr').each(function(){
+/*	$('#tbody-pages tr').each(function(){
 		var tr = $(this).attr('id');
 		if (!(typeof tr === 'undefined' || tr === null)){
 			var tr_arr = tr.split('tr-');
 			var pagina_empresa_id = tr_arr[1];
-			treePaginas(pagina_empresa_id);
+			//treePaginas(pagina_empresa_id);
 		}
 	});
-
+*/
 	$('.cb_activo').unbind('click');
 	$('.cb_activo').click(function(){
 		var checked = $(this).is(':checked') ? 1 : 0;
@@ -93,6 +93,7 @@ function afterPaginate()
 			data: { empresa_id: empresa_id },
 			dataType: "json",
 			success: function(data) {
+				console.log(data.html);
 				$('.load1').hide();
 				$('#pages').html(data.html);
 				$('#empresaTitle').html(data.empresa);

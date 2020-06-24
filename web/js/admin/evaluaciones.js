@@ -26,8 +26,8 @@ $(document).ready(function() {
             oPaginate: {
                 sFirst: "<<",
                 sPrevious: "<",
-                sNext: ">", 
-                sLast: ">>" 
+                sNext: ">",
+                sLast: ">>"
             },
             "oAria": {
                 "sSortAscending":  ": Activar para ordenar la columna de manera ascendente",
@@ -37,13 +37,37 @@ $(document).ready(function() {
     } );
 
 
-  
+
 
 
 });
 
 function observe(){
-	$('.tree').jstree();
+    $('.view').unbind().click(function(e) {
+        e.preventDefault();
+        var prueba_id = $(this).attr('data');
+        $("#view"+prueba_id).hide();
+        $("#prueba-loader"+prueba_id).show();
+        $.ajax({
+           type:"POST",
+           url: $('#url_preguntas').val(),
+           async: true,
+           data: { prueba_id: prueba_id },
+           dataType: "json",
+           success: function(data){
+                enableSubmit();
+                $("#view"+prueba_id).show();
+                $("#prueba-loader"+prueba_id).hide()
+                $("#formPreguntaLabel").text(data.evaluacion);
+                $('#lista-preguntas').html(data.html);
+                $('#modalPreguntas').modal("show");
+           },
+           error: function(){
+                $('#alert-error').html($('#error_msg-edit').val());
+                $('#div-alert').show();
+           }
+        });
+    });
 
 	$('.delete').click(function(){
 		var prueba_id = $(this).attr('data');

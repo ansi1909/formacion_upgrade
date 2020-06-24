@@ -22,47 +22,46 @@ class PaginaController extends Controller
 {
     public function indexAction($app_id)
     {
-        
-    	$session = new Session();
+
+        $session = new Session();
         $f = $this->get('funciones');
-        
+
         if (!$session->get('ini') || $f->sesionBloqueda($session->get('sesion_id')))
-        {   
-            
+        {
+
             return $this->redirectToRoute('_loginAdmin');
         }
         else {
 
-        	$session->set('app_id', $app_id);
-        	if (!$f->accesoRoles($session->get('usuario')['roles'], $session->get('app_id')))
-        	{
-                
-        		return $this->redirectToRoute('_authException');
-        	}
+            $session->set('app_id', $app_id);
+            if (!$f->accesoRoles($session->get('usuario')['roles'], $session->get('app_id')))
+            {
+
+                return $this->redirectToRoute('_authException');
+            }
         }
-        
+
         $f->setRequest($session->get('sesion_id'));
+        $paginas = $f->obtenerCursos();
 
-        $em = $this->getDoctrine()->getManager();
-
-        $query = $em->createQuery("SELECT p FROM LinkComunBundle:CertiPagina p 
-                                    WHERE p.pagina IS NULL
-                                    ORDER BY p.orden ASC");
-        $pages = $query->getResult();
-        
-
-        $paginas = $f->paginas($pages);
-        
-
-        return $this->render('LinkBackendBundle:Pagina:index.html.twig', array('paginas' => $paginas));
+        return $this->render('LinkBackendBundle:Pagina:index.html.twig', array('paginas' =>$paginas));
 
     }
 
+    public function ajaxObtenerEstructuraAction(Request $request){
+        $f = $this->get('funciones');
+        $yml = Yaml::parse(file_get_contents($this->get('kernel')->getRootDir().'/config/parametros.yml'));
+        $pagina_id = $request->get('pagina_id');
+        $array = json_decode($f->obtenerEstructuraJson($pagina_id),true);
+        $html = $f->obtenerEstructuraHtml($array,$yml);
+        $return = json_encode(['html' => $html]);
+        return new Response($return, 200, array('Content-Type' => 'application/json'));
+    }
     public function paginaAction($pagina_id)
     {
         $session = new Session();
         $f = $this->get('funciones');
-      
+
         if (!$session->get('ini') || $f->sesionBloqueda($session->get('sesion_id')))
         {
             return $this->redirectToRoute('_loginAdmin');
@@ -90,7 +89,7 @@ class PaginaController extends Controller
 
         $session = new Session();
         $f = $this->get('funciones');
-      
+
         if (!$session->get('ini') || $f->sesionBloqueda($session->get('sesion_id')))
         {
             return $this->redirectToRoute('_loginAdmin');
@@ -104,8 +103,8 @@ class PaginaController extends Controller
         $f->setRequest($session->get('sesion_id'));
 
         $em = $this->getDoctrine()->getManager();
-        
-        if ($pagina_id) 
+
+        if ($pagina_id)
         {
             $pagina = $em->getRepository('LinkComunBundle:CertiPagina')->find($pagina_id);
         }
@@ -119,7 +118,7 @@ class PaginaController extends Controller
             $qb->select('p')
                ->from('LinkComunBundle:CertiPagina', 'p')
                ->orderBy('p.orden', 'DESC');
-            
+
             if ($pagina_padre_id)
             {
                 $qb->andWhere('p.pagina = :pagina_id')
@@ -131,7 +130,7 @@ class PaginaController extends Controller
 
             $query = $qb->getQuery();
             $paginas = $query->getResult();
-            
+
             if ($paginas)
             {
                 $orden = $paginas[0]->getOrden()+1;
@@ -200,7 +199,7 @@ class PaginaController extends Controller
         }
 
         $form->handleRequest($request);
-       
+
         if ($request->getMethod() == 'POST')
         {
 
@@ -220,9 +219,9 @@ class PaginaController extends Controller
             else {
                 return $this->redirectToRoute('_pagina', array('pagina_id' => $pagina_padre_id ? $pagina_padre_id : $pagina->getId()));
             }
-            
+
         }
-        
+
         return $this->render('LinkBackendBundle:Pagina:edit.html.twig', array('form' => $form->createView(),
                                                                               'pagina' => $pagina,
                                                                               'cantidad' => $cantidad,
@@ -234,7 +233,7 @@ class PaginaController extends Controller
 
         $session = new Session();
         $f = $this->get('funciones');
-      
+
         if (!$session->get('ini') || $f->sesionBloqueda($session->get('sesion_id')))
         {
             return $this->redirectToRoute('_loginAdmin');
@@ -248,7 +247,7 @@ class PaginaController extends Controller
         $f->setRequest($session->get('sesion_id'));
 
         $em = $this->getDoctrine()->getManager();
-        
+
         $pagina = new CertiPagina();
         $pagina->setFechaCreacion(new \DateTime('now'));
 
@@ -264,7 +263,7 @@ class PaginaController extends Controller
            ->orderBy('p.orden', 'DESC');
         $query = $qb->getQuery();
         $paginas = $query->getResult();
-        
+
         if ($paginas)
         {
             $orden = $paginas[0]->getOrden()+1;
@@ -301,7 +300,7 @@ class PaginaController extends Controller
             ->getForm();
 
         $form->handleRequest($request);
-       
+
         if ($request->getMethod() == 'POST')
         {
 
@@ -326,12 +325,12 @@ class PaginaController extends Controller
             else {
                 return $this->redirectToRoute('_pagina', array('pagina_id' => $pagina->getId()));
             }
-            
+
         }
 
         $categorias = $em->getRepository('LinkComunBundle:CertiCategoria')->findAll();
         $status = $em->getRepository('LinkComunBundle:CertiEstatusContenido')->findAll();
-        
+
         return $this->render('LinkBackendBundle:Pagina:new.html.twig', array('form' => $form->createView(),
                                                                              'categorias' => $categorias,
                                                                              'status' => $status,
@@ -343,19 +342,19 @@ class PaginaController extends Controller
     {
         $em = $this->getDoctrine()->getManager();
         $pagina_id = $request->query->get('pagina_id');
-        
+
         $pagina = $this->getDoctrine()->getRepository('LinkComunBundle:CertiPagina')->find($pagina_id);
-        
+
         $return = array('nombre' => $pagina->getNombre().' ('.$this->get('translator')->trans('Copia').')');
-        
+
         $return = json_encode($return);
         return new Response($return, 200, array('Content-Type' => 'application/json'));
-        
+
     }
 
     public function ajaxTreePaginasAction($pagina_id, Request $request)
     {
-        
+
         $em = $this->getDoctrine()->getManager();
         $f = $this->get('funciones');
 
@@ -381,12 +380,12 @@ class PaginaController extends Controller
 
         $return = json_encode($return);
         return new Response($return, 200, array('Content-Type' => 'application/json'));
-        
+
     }
 
     public function ajaxDuplicatePageAction(Request $request)
     {
-        
+
         $session = new Session();
         $em = $this->getDoctrine()->getManager();
         $f = $this->get('funciones');
@@ -398,7 +397,7 @@ class PaginaController extends Controller
 
 
         $return = $f->duplicarPagina($pagina_id, $nombre, $session->get('usuario')['id'],$evaluacion);
-        
+
         /*$return = array('id' => $r_arr[1],
                         'inserts' => $r_arr[0]);*/
 
@@ -412,7 +411,7 @@ class PaginaController extends Controller
 
         $session = new Session();
         $f = $this->get('funciones');
-        
+
         if (!$session->get('ini') || $f->sesionBloqueda($session->get('sesion_id')))
         {
             return $this->redirectToRoute('_loginAdmin');
@@ -430,14 +429,14 @@ class PaginaController extends Controller
         $em = $this->getDoctrine()->getManager();
 
         $empresas = array();
-        
-        // Todas las empresas 
+
+        // Todas las empresas
         $empresas_bd = $this->getDoctrine()->getRepository('LinkComunBundle:AdminEmpresa')->findAll();
 
         foreach ($empresas_bd as $empresa)
         {
 
-            $query = $em->createQuery('SELECT COUNT(pe.id) FROM LinkComunBundle:CertiPaginaEmpresa pe 
+            $query = $em->createQuery('SELECT COUNT(pe.id) FROM LinkComunBundle:CertiPaginaEmpresa pe
                                         WHERE pe.empresa = :empresa_id')
                         ->setParameter('empresa_id', $empresa->getId());
             $tiene_paginas = $query->getSingleScalarResult();
@@ -455,16 +454,16 @@ class PaginaController extends Controller
 
     public function ajaxPaginasEmpresaAction(Request $request)
     {
-        
+
         $em = $this->getDoctrine()->getManager();
         $f = $this->get('funciones');
         $empresa_id = $request->query->get('empresa_id');
 
         $empresa = $this->getDoctrine()->getRepository('LinkComunBundle:AdminEmpresa')->find($empresa_id);
-        
-        $query = $em->createQuery("SELECT pe, p FROM LinkComunBundle:CertiPaginaEmpresa pe 
-                                    JOIN pe.pagina p 
-                                    WHERE pe.empresa = :empresa_id AND p.pagina IS NULL 
+
+        $query = $em->createQuery("SELECT pe, p FROM LinkComunBundle:CertiPaginaEmpresa pe
+                                    JOIN pe.pagina p
+                                    WHERE pe.empresa = :empresa_id AND p.pagina IS NULL
                                     ORDER BY p.orden ASC")
                     ->setParameter('empresa_id', $empresa_id);
         $pes = $query->getResult();
@@ -486,12 +485,12 @@ class PaginaController extends Controller
             $activo = $pe->getActivo() ? 'checked' : '';
             $acceso = $pe->getAcceso() ? 'checked' : '';
             // Se verifica la página tiene sub-páginas
-            $query = $em->createQuery('SELECT COUNT(p.id) FROM LinkComunBundle:CertiPagina p 
+            $query = $em->createQuery('SELECT COUNT(p.id) FROM LinkComunBundle:CertiPagina p
                                         WHERE p.pagina = :pagina_id')
                         ->setParameter('pagina_id', $pe->getPagina()->getId());
             $tiene_subpaginas = $query->getSingleScalarResult();
             $html .= '<tr id="tr-'.$pe->getId().'">
-                        <td id="td-'.$pe->getId().'">&nbsp;</td>
+                        <td id="td-'.$pe->getId().'">'.$pe->getPagina()->getCategoria()->getNombre().': '.$pe->getPagina()->getNombre().'</td>
                         <td>'.$pe->getFechaVencimiento()->format('d/m/Y').'</td>
                         <td class="center">
                             <div class="can-toggle demo-rebrand-2 small">
@@ -527,12 +526,12 @@ class PaginaController extends Controller
 
         $return = json_encode($return);
         return new Response($return, 200, array('Content-Type' => 'application/json'));
-        
+
     }
 
     public function ajaxTreePaginasEmpresaAction($pagina_empresa_id, Request $request)
     {
-        
+
         $em = $this->getDoctrine()->getManager();
         $f = $this->get('funciones');
 
@@ -557,7 +556,7 @@ class PaginaController extends Controller
 
         $return = json_encode($return);
         return new Response($return, 200, array('Content-Type' => 'application/json'));
-        
+
     }
 
     public function empresaPaginasAction($empresa_id, Request $request)
@@ -565,7 +564,7 @@ class PaginaController extends Controller
 
         $session = new Session();
         $f = $this->get('funciones');
-        
+
         if (!$session->get('ini') || $f->sesionBloqueda($session->get('sesion_id')))
         {
             return $this->redirectToRoute('_loginAdmin');
@@ -586,7 +585,7 @@ class PaginaController extends Controller
 
         if ($request->getMethod() == 'POST')
         {
-            
+
             // Se guardan las páginas seleccionadas
             $asignaciones = $request->request->get('asignar') ? $request->request->get('asignar') : array();
             $activaciones = $request->request->get('activar') ? $request->request->get('activar') : array();
@@ -639,7 +638,7 @@ class PaginaController extends Controller
                 }
 
             }
-            
+
             return $this->redirectToRoute('_showAsignacion', array('empresa_id' => $empresa_id,
                                                                    'pagina_id' => 0));
 
@@ -650,8 +649,8 @@ class PaginaController extends Controller
             $i = 0;
 
             // Todas las páginas padres activas
-            $query = $em->createQuery("SELECT p FROM LinkComunBundle:CertiPagina p 
-                                        WHERE p.pagina IS NULL AND p.estatusContenido = :activo 
+            $query = $em->createQuery("SELECT p FROM LinkComunBundle:CertiPagina p
+                                        WHERE p.pagina IS NULL AND p.estatusContenido = :activo
                                         ORDER BY p.orden ASC")
                         ->setParameter('activo', $yml['parameters']['estatus_contenido']['activo']);
             $pages = $query->getResult();
@@ -664,8 +663,8 @@ class PaginaController extends Controller
 
                 $paginas[] = array('id' => $page->getId(),
                                    'nombre' => $page->getNombre(),
-                                   'subpaginas' => $f->subPaginas($page->getId()),
                                    'asignada' => $pagina_empresa ? 1 : 0,
+                                   'categoria'=> $page->getCategoria()->getNombre(),
                                    'activar' => $pagina_empresa ? $pagina_empresa->getActivo() ? true : false : true,
                                    'acceso' => $pagina_empresa ? $pagina_empresa->getAcceso() ? true : false : true);
 
@@ -683,7 +682,7 @@ class PaginaController extends Controller
 
         $session = new Session();
         $f = $this->get('funciones');
-        
+
         if (!$session->get('ini') || $f->sesionBloqueda($session->get('sesion_id')))
         {
             return $this->redirectToRoute('_loginAdmin');
@@ -750,13 +749,13 @@ class PaginaController extends Controller
                                     'pagina_id' => $pe->getPagina()->getId(),
                                     'pagina' => $pe->getPagina()->getCategoria()->getNombre().': '.$pe->getPagina()->getNombre(),
                                     'prelacion' => $pe->getPrelacion() ? $this->get('translator')->trans('Prelada por').': '.$pe->getPrelacion()->getNombre() : 0,
-                                    'estructura' => $f->subPaginasEmpresa($pe->getPagina()->getId(), $pe->getEmpresa()->getId(), 0),
                                     'permisos' => $permisos,
                                     'inicio' => $pe->getFechaInicio()->format('d/m/Y'),
                                     'vencimiento' => $pe->getFechaVencimiento()->format('d/m/Y'));
 
-        }
 
+        }
+        //return new response (var_dump($asignaciones));
         return $this->render('LinkBackendBundle:Pagina:showAsignacion.html.twig', array('empresa' => $empresa,
                                                                                         'asignaciones' => $asignaciones,
                                                                                         'pagina' => $pagina,
@@ -769,7 +768,7 @@ class PaginaController extends Controller
 
         $session = new Session();
         $f = $this->get('funciones');
-        
+
         if (!$session->get('ini') || $f->sesionBloqueda($session->get('sesion_id')))
         {
             return $this->redirectToRoute('_loginAdmin');
@@ -785,7 +784,7 @@ class PaginaController extends Controller
 
         $em = $this->getDoctrine()->getManager();
         $yml = Yaml::parse(file_get_contents($this->get('kernel')->getRootDir().'/config/parametros.yml'));
-        
+
         $pagina_empresa = $this->getDoctrine()->getRepository('LinkComunBundle:CertiPaginaEmpresa')->find($pagina_empresa_id);
 
         if ($request->getMethod() == 'POST')
@@ -842,12 +841,29 @@ class PaginaController extends Controller
 
             // colaborativoSubp es true activa el colaborativo para las sub paginas
             $onlyColaborativo = $colaborativoSubp ? 1 : 0;
+            //return new response (var_dump($estructura));
 
             $f->asignacionSubPaginas($pagina_empresa, $yml, $onlyDates, $onlyMuro, $onlyColaborativo);
 
+            //asginar evaluaciones
+            $estructura = $f->obtenerEstructura($pagina_empresa->getPagina()->getId(),$yml);
+            foreach ($estructura as $pagina ) {
+                //buscar si existe prueba activa
+                 $prueba = $this->getDoctrine()->getRepository('LinkComunBundle:CertiPrueba')->findOneBy(array('pagina' => $pagina));
+                 if($prueba && $prueba->getEstatusContenido()->getId() == $yml['parameters']['estatus_contenido']['activo']){
+                    $certi_pagina_empresa = $this->getDoctrine()->getRepository('LinkComunBundle:CertiPaginaEmpresa')->findOneBy(array('pagina' => $pagina,'empresa'=>$pagina_empresa->getEmpresa()->getId()));
+                    $certi_pagina_empresa->setPruebaActiva(true);
+                    $certi_pagina_empresa->setPuntajeAprueba((int)$yml['parameters']['evaluaciones']['puntaje_minimo']);
+                    $certi_pagina_empresa->setMaxIntentos($yml['parameters']['evaluaciones']['intentos']);
+                    $em->persist($certi_pagina_empresa);
+                    $em->flush();
+                 }
+
+            }
+
             return $this->redirectToRoute('_showAsignacion', array('empresa_id' => $pagina_empresa->getEmpresa()->getId(),
                                                                    'pagina_id' => $pagina_empresa->getPagina() ? $pagina_empresa->getPagina()->getId() : 0));
-            
+
         }
 
         // Prueba activa
@@ -898,9 +914,9 @@ class PaginaController extends Controller
 
     public function ajaxAccesoPaginaAction(Request $request)
     {
-        
+
         $em = $this->getDoctrine()->getManager();
-        
+
         $pagina_empresa_id = $request->request->get('pagina_empresa_id');
         $checked = $request->request->get('checked');
 
@@ -908,12 +924,12 @@ class PaginaController extends Controller
         $pagina_empresa->setAcceso($checked ? true : false);
         $em->persist($pagina_empresa);
         $em->flush();
-                    
+
         $return = array('id' => $pagina_empresa->getId());
 
         $return = json_encode($return);
         return new Response($return, 200, array('Content-Type' => 'application/json'));
-        
+
     }
 
     public function asignarSubpaginasAction($empresa_id, $pagina_padre_id, Request $request)
@@ -921,7 +937,7 @@ class PaginaController extends Controller
 
         $session = new Session();
         $f = $this->get('funciones');
-        
+
         if (!$session->get('ini') || $f->sesionBloqueda($session->get('sesion_id')))
         {
             return $this->redirectToRoute('_loginAdmin');
@@ -943,7 +959,7 @@ class PaginaController extends Controller
 
         if ($request->getMethod() == 'POST')
         {
-            
+
             // Se guardan las páginas seleccionadas
             $asignaciones = $request->request->get('asignar') ? $request->request->get('asignar') : array();
             $activaciones = $request->request->get('activar') ? $request->request->get('activar') : array();
@@ -993,7 +1009,7 @@ class PaginaController extends Controller
                 }
 
             }
-            
+
             return $this->redirectToRoute('_showAsignacion', array('empresa_id' => $empresa_id,
                                                                    'pagina_id' => $pagina_padre_id));
 
@@ -1004,8 +1020,8 @@ class PaginaController extends Controller
             $i = 0;
 
             // Todas las sub-páginas activas
-            $query = $em->createQuery("SELECT p FROM LinkComunBundle:CertiPagina p 
-                                        WHERE p.pagina = :pagina_id AND p.estatusContenido = :activo 
+            $query = $em->createQuery("SELECT p FROM LinkComunBundle:CertiPagina p
+                                        WHERE p.pagina = :pagina_id AND p.estatusContenido = :activo
                                         ORDER BY p.orden ASC")
                         ->setParameters(array('activo' => $yml['parameters']['estatus_contenido']['activo'],
                                               'pagina_id' => $pagina_padre_id));
@@ -1019,7 +1035,6 @@ class PaginaController extends Controller
 
                 $paginas[] = array('id' => $page->getId(),
                                    'nombre' => $page->getNombre(),
-                                   'subpaginas' => $f->subPaginas($page->getId()),
                                    'asignada' => $pagina_empresa ? 1 : 0,
                                    'activar' => $pagina_empresa ? $pagina_empresa->getActivo() ? true : false : true,
                                    'acceso' => $pagina_empresa ? $pagina_empresa->getAcceso() ? true : false : true);
@@ -1038,7 +1053,7 @@ class PaginaController extends Controller
     {
         $session = new Session();
         $f = $this->get('funciones');
-      
+
         if (!$session->get('ini') || $f->sesionBloqueda($session->get('sesion_id')))
         {
             return $this->redirectToRoute('_loginAdmin');
@@ -1052,7 +1067,7 @@ class PaginaController extends Controller
         $f->setRequest($session->get('sesion_id'));
 
         $em = $this->getDoctrine()->getManager();
-        
+
         $pagina = $em->getRepository('LinkComunBundle:CertiPagina')->find($pagina_id);
 
         if ($request->getMethod() == 'POST')
@@ -1064,16 +1079,16 @@ class PaginaController extends Controller
             // Reordenar su anterior grupo
             if ($pagina->getPagina())
             {
-                $query = $em->createQuery("SELECT p FROM LinkComunBundle:CertiPagina p 
-                                            WHERE p.pagina = :pagina_id 
+                $query = $em->createQuery("SELECT p FROM LinkComunBundle:CertiPagina p
+                                            WHERE p.pagina = :pagina_id
                                             AND p.id != :id
                                             ORDER BY p.orden ASC")
                             ->setParameters(array('pagina_id' => $pagina->getPagina()->getId(),
                                                   'id' => $pagina_id));
             }
             else {
-                $query = $em->createQuery("SELECT p FROM LinkComunBundle:CertiPagina p 
-                                            WHERE p.pagina IS NULL 
+                $query = $em->createQuery("SELECT p FROM LinkComunBundle:CertiPagina p
+                                            WHERE p.pagina IS NULL
                                             AND p.id != :id
                                             ORDER BY  p.orden ASC")
                             ->setParameter('id', $pagina_id);
@@ -1090,7 +1105,7 @@ class PaginaController extends Controller
             }
 
             // Quedará de último en el orden
-            $query = $em->createQuery('SELECT MAX(p.orden) FROM LinkComunBundle:CertiPagina p 
+            $query = $em->createQuery('SELECT MAX(p.orden) FROM LinkComunBundle:CertiPagina p
                                         WHERE p.pagina = :pagina_id')
                         ->setParameter('pagina_id', $pagina_padre_id);
             $orden = $query->getSingleScalarResult();
@@ -1147,7 +1162,7 @@ class PaginaController extends Controller
         $session = new Session();
         $f = $this->get('funciones');
         $em = $this->getDoctrine()->getManager();
-      
+
         if (!$session->get('ini') || $f->sesionBloqueda($session->get('sesion_id')))
         {
             return $this->redirectToRoute('_loginAdmin');
@@ -1162,7 +1177,7 @@ class PaginaController extends Controller
 
         $programa = $em->getRepository('LinkComunBundle:CertiPagina')->find($programa_id);
         $paginas_asociadas[] = $pagina_id;
-        
+
         $str = '<li data-jstree=\'{ "icon": "fa fa-angle-double-right" }\' p_id="'.$programa->getId().'" p_str="'.$programa->getCategoria()->getNombre().': '.$programa->getNombre().'">'.$programa->getCategoria()->getNombre().': '.$programa->getNombre();
         $subPaginas = $f->subPaginas($programa->getId(), $paginas_asociadas);
         if ($subPaginas['tiene'] > 0)
@@ -1175,6 +1190,6 @@ class PaginaController extends Controller
 
         return $this->render('LinkBackendBundle:Pagina:paginaMovida.html.twig', array('pagina_str' => $str));
 
-    }    
+    }
 
 }

@@ -15,19 +15,17 @@ begin
     IF ptipo_destino_id = 1 THEN
         SELECT COUNT(*) INTO c 
         FROM admin_usuario u 
+        INNER JOIN admin_nivel n ON n.id = u.nivel_id
         WHERE u.activo = true 
             AND u.empresa_id = pempresa_id 
-            AND u.login NOT LIKE 'temp%';
-
+            AND LOWER(n.nombre) NOT LIKE 'revisor%';
     -- En caso de ser una programacion dirigida a los participantes de un nivel especifico
     ELSIF ptipo_destino_id = 2 THEN
         SELECT COUNT(*) INTO c 
         FROM admin_usuario u 
         WHERE u.activo = true 
             AND u.empresa_id = pempresa_id 
-            AND u.nivel_id = pentidad_id 
-            AND u.login NOT LIKE 'temp%';
-
+            AND u.nivel_id = pentidad_id;
     -- En caso de ser una programacion dirigida a los participantes del(de los) programa(s)
     ELSIF ptipo_destino_id = 3 THEN
         SELECT COUNT(u.id) INTO c 
@@ -35,7 +33,7 @@ begin
         INNER JOIN admin_nivel n ON u.nivel_id = n.id 
         WHERE u.empresa_id = pempresa_id 
             AND u.activo = true 
-            AND u.login NOT LIKE 'temp%' 
+            AND LOWER(n.nombre) NOT LIKE 'revisor%' 
             AND u.id IN (SELECT ru.usuario_id FROM admin_rol_usuario ru WHERE ru.rol_id = 2) 
             AND u.nivel_id IN 
                 (SELECT np.nivel_id FROM certi_nivel_pagina np WHERE np.pagina_empresa_id IN 
@@ -56,8 +54,9 @@ begin
     ELSIF ptipo_destino_id = 5 THEN
         SELECT COUNT(u.id) INTO c 
         FROM admin_usuario u 
+        INNER JOIN admin_nivel n ON n.id = u.nivel_id
         WHERE u.activo = true 
-            AND u.login NOT LIKE 'temp%'
+            AND LOWER(n.nombre) NOT LIKE 'revisor%'
             AND u.empresa_id = pempresa_id 
             AND u.id IN (SELECT ru.usuario_id FROM admin_rol_usuario ru WHERE ru.rol_id = 2) 
             AND u.id NOT IN (SELECT DISTINCT(s.usuario_id) FROM admin_sesion s);
@@ -69,7 +68,7 @@ begin
         INNER JOIN admin_nivel n ON u.nivel_id = n.id 
         WHERE u.empresa_id = pempresa_id 
             AND u.activo = true 
-            AND u.login NOT LIKE 'temp%'
+            AND LOWER(n.nombre) NOT LIKE 'revisor%'
             AND u.id IN (SELECT ru.usuario_id FROM admin_rol_usuario ru WHERE ru.rol_id = 2) 
             AND u.nivel_id IN 
                 (SELECT np.nivel_id FROM certi_nivel_pagina np WHERE np.pagina_empresa_id IN 
@@ -89,7 +88,7 @@ begin
         INNER JOIN admin_nivel n ON u.nivel_id = n.id 
         WHERE u.empresa_id = pempresa_id 
             AND u.activo = true 
-            AND u.login NOT LIKE 'temp%' 
+            AND LOWER(n.nombre) NOT LIKE 'revisor%'
             AND u.id IN (SELECT ru.usuario_id FROM admin_rol_usuario ru WHERE ru.rol_id = 2) 
             AND u.nivel_id IN 
                 (SELECT np.nivel_id FROM certi_nivel_pagina np WHERE np.pagina_empresa_id IN 
@@ -109,7 +108,7 @@ begin
         INNER JOIN admin_nivel n ON u.nivel_id = n.id 
         WHERE u.empresa_id = pempresa_id 
             AND u.activo = true 
-            AND u.login NOT LIKE 'temp%' 
+            AND LOWER(n.nombre) NOT LIKE 'revisor%'
             AND u.id IN (SELECT ru.usuario_id FROM admin_rol_usuario ru WHERE ru.rol_id = 2) 
             AND u.nivel_id IN 
                 (SELECT np.nivel_id FROM certi_nivel_pagina np WHERE np.pagina_empresa_id IN 

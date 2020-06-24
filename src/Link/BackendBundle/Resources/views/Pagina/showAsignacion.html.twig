@@ -36,7 +36,6 @@
                     <thead class="sty__title">
                         <tr>
                             <th class="hd__title">{{ 'Página'|trans }}</th>
-                            <th class="hd__title">{{ 'Estructura'|trans }}</th>
                             <th class="hd__title">{{ 'Permisos'|trans }}</th>
                             <th class="hd__title">{{ 'Inicio'|trans }}</th>
                             <th class="hd__title">{{ 'Vencimiento'|trans }}</th>
@@ -51,17 +50,6 @@
                                     {{ asignacion.pagina }}
                                     {% if asignacion.prelacion %}
                                         <br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<small class="text-muted">{{ asignacion.prelacion }}</small>
-                                    {% endif %}
-                                </td>
-                                <td>
-                                    {% if asignacion.estructura.tiene > 0 %}
-                                        <div class="tree">
-                                            <ul data-jstree='{ "opened" : true }'>
-                                                {{ asignacion.estructura.return|raw }}
-                                            </ul>
-                                        </div>
-                                    {% else %}
-                                        {{ 'No tiene sub-páginas'|trans }}
                                     {% endif %}
                                 </td>
                                 <td>

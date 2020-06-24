@@ -7,7 +7,7 @@ $p = strrpos($b, "web");
 $b2 = substr($b, 0, $p);
 $file = $b2.'app/config/parameters.yml';
 $fp = fopen($file, 'r');
-
+//
 $host="127.0.0.1";
 $port="5432";
 
@@ -102,9 +102,11 @@ else {
     //obtener pruebas
     $notas = 0;
     $promedio = 0;
+    $cm = 0;
     
     foreach ($estructura as $pag_id) {
-    	$prueba = "select cp.id from certi_prueba cp
+    	$prueba = "select cp.id as id , p.categoria_id as categoria from certi_prueba cp
+    			   inner join certi_pagina p on (p.id=cp.pagina_id)
     			   where cp.pagina_id=".$pag_id."
     			   and cp.estatus_contenido_id=".$estatus_contenido_id."";
         $resul = pg_query($connect,$prueba);
@@ -118,12 +120,16 @@ else {
             $resul = pg_query($connect,$prueba_log);
             while($prueba_log_resul = pg_fetch_array($resul,NULL,PGSQL_ASSOC)){
               $cn_aprobadas++;
-              $notas = $notas+$prueba_log_resul['nota'];
+              if($prueba["categoria"] == 2 ){
+              	$notas = $notas+$prueba_log_resul['nota'];
+              	$cm++;
+              }
+              
             }
         }
     }
     if ($cn_pruebas >0 &&($cn_pruebas == $cn_aprobadas) ) {
-    	$promedio = $notas / $cn_pruebas;
+    	$promedio = $notas / $cm;
     	$promedio = round($promedio,2);
     }
 	
