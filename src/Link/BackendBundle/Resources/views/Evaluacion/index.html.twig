@@ -53,10 +53,9 @@
                     <tbody>
                         {% for prueba in pruebas %}
                             {% set delete_disabled = prueba.preguntas+prueba.opciones+prueba.logs > 0 ? 'disabled':'' %}
-                            {% set nombre = prueba.nombre|split('|') %}
                             {% set eo = cycle(['odd', 'even'], loop.index) %}
                             <tr class="{{ eo }}">
-                                <td>{{ nombre[0] }}<BR>{{nombre[1]}}</td>
+                                <td>{{ prueba.nombre }}</td>
                                 <td>{{ prueba.pagina }}</td>
                                 <td class="center">
                                     {% if prueba.preguntas|length > 0 %}
