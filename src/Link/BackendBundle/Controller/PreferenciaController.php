@@ -253,7 +253,7 @@ class PreferenciaController extends Controller
             }
 
             // Se crea el directorio para los activos de la empresa
-            $f->subDirEmpresa($empresa_id, $this->container->getParameter('folders'));
+            //$f->subDirEmpresa($empresa_id, $this->container->getParameter('folders'));
 
             $new_file = $this->container->getParameter('folders')['dir_project'].'web/front/client_styles/'.$empresa_id.'/sass/_variables_color.scss';
             $fp = fopen($new_file, "w+");
