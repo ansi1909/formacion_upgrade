@@ -97,7 +97,7 @@ bg-white
    <div  name="button" class="btn-lessons" id="btnLessLeft"><i class="material-icons">keyboard_arrow_left</i></div>
    <div  name="button" class="btn-lessons" id="btnLessRight"><i class="material-icons">keyboard_arrow_right</i></div>
    <div class=" nav-less-container text-center lesson-nav py-0 mb-1 mt-0" id="NavLess">
-      <ul class="nav nav-tabs" id="navlesson" role="tablist">
+      <ul class="nav nav-tabs justify-content-center" id="navlesson" role="tablist">
          {% for subpagina in lecciones.subpaginas %}
          <input type="hidden" style="width: 5%;" id="muroActivo{{ subpagina.id }}" name="muroActivo{{ subpagina.id }}" value="{{ subpagina.muro_activo ? '1' : '0' }}">
          {% set vista = subpagina.vista ? ' circle-less-vista' : '' %}
