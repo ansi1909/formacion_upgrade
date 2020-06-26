@@ -40,13 +40,13 @@ class UsersDuplicateCommand extends ContainerAwareCommand
 
         foreach ($usuarios as $usuario) {
             $nombre =  explode('@', strtolower($usuario->getLogin()));
-            $nombre = $nombre[0];
+            $nombre = strtolower($nombre[0]);
 
             if(!in_array($nombre,$verificados)){
                 array_push($verificados,$nombre);
-                $query = $em->createQuery('SELECT u FROM LinkComunBundle:AdminUsuario u 
-                                           WHERE u.login LIKE :term 
-                                           AND u.empresa = :empresa_id 
+                $query = $em->createQuery('SELECT u FROM LinkComunBundle:AdminUsuario u
+                                           WHERE LOWER(u.login) LIKE :term
+                                           AND u.empresa = :empresa_id
                                            AND u.activo = TRUE')
                             ->setParameters(array( 'term' => $nombre.'%', 'empresa_id' => $empresa_id));
                 $usuarios2 = $query->getResult();
@@ -70,6 +70,6 @@ class UsersDuplicateCommand extends ContainerAwareCommand
         $output->writeln('Cantidad de usuarios activos: '.count($usuarios).', Usuarios sospechosos: '.$cs );
 
 
-        
+
     }
 }
