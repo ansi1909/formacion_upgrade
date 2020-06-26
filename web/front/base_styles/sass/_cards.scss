@@ -604,7 +604,8 @@
     width: 15.25rem;
     border-radius: 1rem;
     background: $white;
-    box-shadow: 4px 4px 10px 0px rgba(92,98,102,0.32);
+    // box-shadow: 4px 4px 10px 0px rgba(92,98,102,0.32);
+    box-shadow: 0px 0px 10px 0px rgba(92, 98, 102, 0.4);
     cursor: pointer;
     margin-bottom: calc(3rem + 1px);
     &:hover{

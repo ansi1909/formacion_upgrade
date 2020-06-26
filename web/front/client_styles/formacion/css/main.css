@@ -561,6 +561,9 @@ body.codigoQR {
           text-align: center; }
       .footer .imgForm {
         position: relative; } }
+  .footer .footer-wrapper {
+    width: 75%;
+    margin: 0 auto; }
   .footer .imgForm {
     width: 8rem;
     height: auto;
@@ -758,6 +761,9 @@ a:focus, a:active, a:target, a:checked {
     width: 15rem;
     margin: 1rem auto !important;
     white-space: nowrap; } }
+
+.userLogin, .pwdLogin {
+  max-width: 18rem; }
 
 .modal-recuperacion .titulo {
   margin-top: calc(-1*calc(2rem - 7px)); }
@@ -2979,7 +2985,7 @@ p.up {
   width: 15.25rem;
   border-radius: 1rem;
   background: #fff;
-  box-shadow: 4px 4px 10px 0px rgba(92, 98, 102, 0.32);
+  box-shadow: 0px 0px 10px 0px rgba(92, 98, 102, 0.4);
   cursor: pointer;
   margin-bottom: calc(3rem + 1px); }
   .card-anuncio:hover .card_footer .fecha_anuncio {
@@ -3809,9 +3815,9 @@ p.up {
       .num{
          @extend %number;
           .unidad{
-              color: $blue;	
-              font-family: $primary-font;	
-              font-size: $h4-font-size;	
+              color: $blue;
+              font-family: $primary-font;
+              font-size: $h4-font-size;
               line-height: calc(2rem - 4px);
               margin-left: calc(1rem - 8px);
           }
@@ -4477,7 +4483,7 @@ p.up {
         background-color: rgba(58, 58, 58, .5);
         opacity: 0;
         padding: 1rem 0;
-        border-radius: 0 0 .7rem .7rem; 
+        border-radius: 0 0 .7rem .7rem;
         text-transform: uppercase;
         transition: all .2s ease;
         @include media-breakpoint-down(xl){
@@ -4540,7 +4546,7 @@ p.up {
             border-color: transparent transparent $white transparent;
         }
     }
-    
+
     .radarDouble{
         border-radius: calc(3rem + 2px);
         background-color: rgba(255, 255, 255, .2);
