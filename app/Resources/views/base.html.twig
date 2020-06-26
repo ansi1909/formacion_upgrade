@@ -195,13 +195,13 @@
                 {% endblock %}
                 
                 <footer class="container footer">
-                    <div class="row justify-content-between align-items-center">
-                        <div class="col-12 col-sm-4 col-md-5 text-center text-sm-left">
+                    <div class="row d-flex flex-column flex-md-row justify-content-between align-items-center footer-wrapper">
+                        <div class="">
                             <img src="{{ asset('front/assets/img/formacion2.0_smart.svg') }}" class="imgForm" alt="">
                         </div>
                         
-                        <div class="col-12 col-sm-4 col-md-3 text-center text-sm-left">
-                            <ul class="ayudaForm">
+                        <div class="">
+                            <ul class="ayudaForm p-0 text-center">
                                 <li>
                                     <a href="https://www.formacion2puntocero.com" class="links" target="_blank">Formación Smart Web Site</a>
                                 </li>
@@ -210,8 +210,8 @@
                                 </li>
                             </ul>
                         </div>
-                        <div class="col-12 col-sm-4 col-md-3 text-center text-sm-left">
-                            <ul class="ayudaForm">
+                        <div class="">
+                            <ul class="ayudaForm p-0 text-center">
                                 <li>
                                     <a href="" data-toggle="modal" data-target="#modalSv" class="links abrir_modal_soporte">{{ 'Reportar un problema'|trans }}</a>
                                 </li>
