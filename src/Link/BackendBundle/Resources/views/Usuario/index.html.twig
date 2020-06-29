@@ -168,7 +168,6 @@
                                 </td>
                                 <td class="center">
                                     <a href="{{ path('_usuario', { 'usuario_id': usuario.id }) }}" class="btn btn-link btn-sm"><span class="fa fa-pencil"></span></a>
-                                    <a href="#" class="btn btn-link btn-sm {% if usuario.delete_disabled == '' %}delete{% endif %} {{ usuario.delete_disabled }}" data="{{ usuario.id }}"><span class="fa fa-trash"></span></a>
                                 </td>
                             </tr>
                         {% endfor %}
