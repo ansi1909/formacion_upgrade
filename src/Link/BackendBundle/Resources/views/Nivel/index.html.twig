@@ -46,7 +46,7 @@
                                             <button class="btn btn-secondary dropdown-toggle add_style" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{{ 'Acción'|trans }}</button>
                                             <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                                                 <a class="dropdown-item" href="{{ path('_niveles', { 'empresa_id': empresa.id }) }}">{{ 'Configurar'|trans }}</a>
-                                                <a class="dropdown-item new" data-toggle="modal" data-target="#formModal" data="{{ empresa.id }}" empresa="{{ empresa.nombre }}" href="#">{{ 'Nuevo nivel'|trans }}</a>
+                                               {# <a class="dropdown-item new" data-toggle="modal" data-target="#formModal" data="{{ empresa.id }}" empresa="{{ empresa.nombre }}" href="#">{{ 'Nuevo nivel'|trans }}</a> #}
                                                 <a class="dropdown-item" href="{{ path('_uploadNiveles', { 'empresa_id': empresa.id }) }}">{{ 'Subir Archivo de Niveles'|trans }}</a>
                                             </div>
                                         </div>
@@ -57,7 +57,7 @@
                             </tr>
                       {% endfor %}
                     </tbody>
-                </table>                 
+                </table>
             </div>
         </div>
     </div>
@@ -112,7 +112,7 @@
 
         $('#guardar').click(function(){
             var valid = $("#form").valid();
-            if (!valid) 
+            if (!valid)
             {
                 notify($('#div-error').html());
             }
@@ -121,7 +121,7 @@
                 // // Validar que la fecha de vencimiento sea mayor que la fecha de inicio
                 // var fi_arr = $('#fechaInicio').val().split('/');
                 // var fv_arr = $('#fechaFin').val().split('/');
-                
+
                 // var date1 = new Date(fi_arr[2], fi_arr[1], fi_arr[0]);
                 // var date2 = new Date(fv_arr[2], fv_arr[1], fv_arr[0]);
 
@@ -145,10 +145,10 @@
                     minlength: 3
                 },
                 'fechaInicio': {
-                    required: true
+                    required: false
                 },
                 'fechaFin': {
-                    required: true
+                    required: false
                 }
             },
             messages: {
@@ -165,6 +165,6 @@
             }
         });
 
-        
+
     </script>
 {% endblock %}
