@@ -1,8 +1,9 @@
 function resizeImages(images) {
     let imageWidth = '';
     if (images) {
+        
         images.forEach(image => {
-            imageWidth = image.offsetWidth;
+            imageWidth = Number(image.style.width.replace('px', ''));
             image.style.width = '100%';
             image.style.maxWidth = imageWidth == 0 ? '820px' : imageWidth + 'px';
             image.style.height = 'auto';

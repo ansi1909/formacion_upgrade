@@ -15,7 +15,6 @@
     {% block body %}
                 <style type="text/css" >
                     .botonTut{
-                        margin-left: 310px;
                         margin-top: 10px;
                     }
                     .descargaTut{
@@ -67,7 +66,7 @@
                                     </div>
                                 </div>
                                 <div class="row">
-                                    <div class="col-lg-2 col-xl-2 col-md-2 col-sm-2 col-xs-2 col-2 text-right botonTut">
+                                    <div class="col-12 botonTut">
                                         {% if tutorial.pdf %}
                                          <a href="{{path('_descargarPdf')~'/'~tutorial.id}}">
                                             <button type="button" class="btn btn-primary bttnDownl " id="{{tutorial.id}}"><i class="material-icons" >cloud_download</i></button>

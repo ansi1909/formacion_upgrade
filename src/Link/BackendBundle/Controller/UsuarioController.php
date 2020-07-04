@@ -102,8 +102,7 @@ class UsuarioController extends Controller
                                 'activo' => $usuario['activo'],
                                 'empresa' => $usuario['empresa'] ? $usuario['empresa'] : '',
                                 'nivel' => $usuario['nivel'] ?  $usuario['nivel'] : '',
-                                'roles' => $roles_usuario,
-                                'delete_disabled' => $f->linkEliminar($usuario['id'],'AdminUsuario'));
+                                'roles' => $roles_usuario);
 
         }
 
