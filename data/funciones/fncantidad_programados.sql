@@ -37,6 +37,7 @@ begin
         WHERE u.empresa_id = pempresa_id
             AND u.activo = true
             AND LOWER(n.nombre) NOT LIKE 'revisor%'
+            AND n.fecha_fin >= pfecha_hoy
             AND u.id IN (SELECT ru.usuario_id FROM admin_rol_usuario ru WHERE ru.rol_id = 2)
             AND u.nivel_id IN
                 (SELECT np.nivel_id FROM certi_nivel_pagina np WHERE np.pagina_empresa_id IN
@@ -60,6 +61,7 @@ begin
         INNER JOIN admin_nivel n ON n.id = u.nivel_id
         WHERE u.activo = true
             AND LOWER(n.nombre) NOT LIKE 'revisor%'
+            AND n.fecha_fin >= pfecha_hoy
             AND u.empresa_id = pempresa_id
             AND u.id IN (SELECT ru.usuario_id FROM admin_rol_usuario ru WHERE ru.rol_id = 2)
             AND u.id NOT IN (SELECT DISTINCT(s.usuario_id) FROM admin_sesion s);
@@ -72,6 +74,7 @@ begin
         WHERE u.empresa_id = pempresa_id
             AND u.activo = true
             AND LOWER(n.nombre) NOT LIKE 'revisor%'
+            AND n.fecha_fin >= pfecha_hoy
             AND u.id IN (SELECT ru.usuario_id FROM admin_rol_usuario ru WHERE ru.rol_id = 2)
             AND u.nivel_id IN
                 (SELECT np.nivel_id FROM certi_nivel_pagina np WHERE np.pagina_empresa_id IN
@@ -92,6 +95,7 @@ begin
         WHERE u.empresa_id = pempresa_id
             AND u.activo = true
             AND LOWER(n.nombre) NOT LIKE 'revisor%'
+            AND n.fecha_fin >= pfecha_hoy
             AND u.id IN (SELECT ru.usuario_id FROM admin_rol_usuario ru WHERE ru.rol_id = 2)
             AND u.nivel_id IN
                 (SELECT np.nivel_id FROM certi_nivel_pagina np WHERE np.pagina_empresa_id IN
@@ -112,6 +116,7 @@ begin
         WHERE u.empresa_id = pempresa_id
             AND u.activo = true
             AND LOWER(n.nombre) NOT LIKE 'revisor%'
+            AND n.fecha_fin >= pfecha_hoy
             AND u.id IN (SELECT ru.usuario_id FROM admin_rol_usuario ru WHERE ru.rol_id = 2)
             AND u.nivel_id IN
                 (SELECT np.nivel_id FROM certi_nivel_pagina np WHERE np.pagina_empresa_id IN
