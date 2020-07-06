@@ -44,7 +44,7 @@ twig:
     globals:
         minlenght_bienvenida: 5
         root_path: %kernel.root_dir%
-        uploads: 'https://www.formacionsmart.com/uploads/'
+        uploads: 'https://develop.formacion2puntocero.com/uploads/'
         sesion_time: 6000000
         sesion_front_time: 6000000
         remaining_time: 10
@@ -75,8 +75,8 @@ doctrine:
         #path:     "%database_path%"
 
     orm:
-        #auto_generate_proxy_classes: "%kernel.debug%"
-        auto_generate_proxy_classes: false
+        auto_generate_proxy_classes: "%kernel.debug%"
+        #auto_generate_proxy_classes: false
         naming_strategy: doctrine.orm.naming_strategy.underscore
         auto_mapping: true
 
