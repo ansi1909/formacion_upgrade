@@ -32,6 +32,14 @@ BEGIN
         tmp_padre:= '{}'::int[];
         SELECT array_length(paginas_padre, 1) INTO len;
    END LOOP;--While
+   --- recorrer el array desde el ultimo elemento al primero para eliminar prelaciones
+   SELECT array_length(estructura, 1) INTO len;
+   WHILE len> 0 LOOP
+       FOR pagina_empresa IN SELECT * FROM certi_pagina_empresa AS pe WHERE pe.prelacion = estructura[len] LOOP
+          update certi_pagina_empresa SET prelacion=NULL where id = pagina_empresa.id;
+        END LOOP;
+      len := len -1;
+   END LOOP;
    --- recorrer array de estructua para proceder a eliminar paginas
    --- El recorrido inicia del ultimo elemento (lecciones) hasta el primer elemento (programa/cursos)
    SELECT array_length(estructura, 1) INTO len;
@@ -50,7 +58,7 @@ BEGIN
         ----- ELiminar asignacion a empresas y niveles  ---------------------------
         FOR pagina_empresa IN SELECT * FROM certi_pagina_empresa AS pe WHERE pe.pagina_id = estructura[len] LOOP
         	delete from certi_nivel_pagina where pagina_empresa_id = pagina_empresa.id;
-            delete from certi_pagina_empresa where id = pagina_empresa.id;
+          delete from certi_pagina_empresa where id = pagina_empresa.id;
         END LOOP;
         ---- Eliminar pruebas-----
         SELECT * INTO prueba FROM certi_prueba WHERE pagina_id = estructura[len];
