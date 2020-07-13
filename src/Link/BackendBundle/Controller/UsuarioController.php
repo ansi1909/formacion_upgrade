@@ -99,6 +99,7 @@ class UsuarioController extends Controller
                                 'nombre' => $usuario['nombre'],
                                 'apellido' => $usuario['apellido'],
                                 'login' => $usuario['login'],
+                                'password' => $usuario['clave'],
                                 'activo' => $usuario['activo'],
                                 'empresa' => $usuario['empresa'] ? $usuario['empresa'] : '',
                                 'nivel' => $usuario['nivel'] ?  $usuario['nivel'] : '',
@@ -564,6 +565,8 @@ class UsuarioController extends Controller
                             <th class="hd__title">'.$this->get('translator')->trans('Nombre').'</th>
                             <th class="hd__title">'.$this->get('translator')->trans('Apellido').'</th>
                             <th class="hd__title">'.$this->get('translator')->trans('Nivel').'</th>
+                            <th class="hd__title">'.$this->get('translator')->trans('Login').'</th>
+                            <th class="hd__title">'.$this->get('translator')->trans('Password').'</th>
                             <th class="hd__title">'.$this->get('translator')->trans('Acciones').'</th>
                         </tr>
                     </thead>
@@ -577,6 +580,8 @@ class UsuarioController extends Controller
                         <td>'.$ru->getUsuario()->getNombre().'</td>
                         <td>'.$ru->getUsuario()->getApellido().'</td>
                         <td>'.$ru->getUsuario()->getNivel()->getNombre().'</td>
+                        <td>'.$ru->getUsuario()->getLogin().'</td>
+                        <td>'.$ru->getUsuario()->getClave().'</td>
                         <td class="center">
                             <a href="'.$this->generateUrl('_nuevoParticipante', array('usuario_id' => $ru->getUsuario()->getId())).'" class="btn btn-link btn-sm"><span class="fa fa-pencil"></span></a>
                             <a href="#" class="btn btn-link btn-sm '.$delete.' '.$delete_disabled.'" data="'.$ru->getUsuario()->getId().'"><span class="fa fa-trash"></span></a>
