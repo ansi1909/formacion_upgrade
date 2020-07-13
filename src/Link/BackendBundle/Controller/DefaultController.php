@@ -33,10 +33,12 @@ class DefaultController extends Controller
             $query = $em->createQuery('SELECT e.id as id,
                                               e.nombre as nombre,
                                               e.activo as activa,
+                                              p.id as pais,
                                               COUNT(u.id) as usuarios
                                         FROM LinkComunBundle:AdminEmpresa e
+                                         JOIN LinkComunBundle:AdminPais p WITH p.id = e.pais
                                         LEFT JOIN LinkComunBundle:AdminUsuario u WITH u.empresa = e.id
-                                        GROUP BY e.id
+                                        GROUP BY e.id, p.id
                                         ORDER BY e.nombre ASC');
             $empresas_db = $query->getResult();
             $empresasA = array();
@@ -69,17 +71,32 @@ class DefaultController extends Controller
                      'id'=>$empresa['id'],
                      'nombre'=>$empresa['nombre'],
                      'usuarios'=>$empresa['usuarios'],
+                     'pais'=>$empresa['pais'],
                      'programas'=>$programas
                  );
                 }
 
+            }
+            $paises = array();
+            $query = $em->createQuery('SELECT p.id as id, p.nombre as nombre FROM LinkComunBundle:AdminEmpresa e
+                                    JOIN e.pais p
+                                    WHERE e.activo = :activo
+                                    GROUP BY p.id')
+                         ->setParameter('activo', 'TRUE');
+            $paises_db = $query->getResult();
+
+            //return new response(count($paises_db));
+            foreach ($paises_db as $pais)
+            {
+                $paises[] = array('id' => $pais['id'],
+                                  'nombre' => $pais['nombre']);
             }
 
 
             $response = $this->render('LinkBackendBundle:Default:index.html.twig', array('empresast' => count($empresasA) + count($empresasI),
                                                                                          'activas' => count($empresasA),
                                                                                          'inactivas' => count($empresasI),
-                                                                                         'empresasA' => $empresasA,
+                                                                                         'paises' => $paises,
                                                                                          'empresasI' => $empresasI,
                                                                                          'usuario' => $usuario));
 
@@ -143,6 +160,30 @@ class DefaultController extends Controller
             return $response;
 
         }
+
+    }
+
+    public function ajaxEmpresasAction(Request $request)
+    {
+        $em = $this->getDoctrine()->getManager();
+
+        $pais_id = $request->query->get('pais_id');
+        $query = $em->createQuery('SELECT e FROM LinkComunBundle:AdminEmpresa e
+                                    WHERE e.activo = TRUE
+                                    AND e.pais = :pais_id')
+                    ->setParameter('pais_id', $pais_id);
+        $empresas_db = $query->getResult();
+
+        $empresas = array();
+        $html='<option value="0"></option>';
+        foreach ($empresas_db as $empresa)
+        {
+            $html.='<option value="'.$empresa->getId().'" >'.$empresa->getNombre().'</option>';
+            
+        }
+
+        $return = json_encode($html);
+        return new Response($return,200,array('Content-Type' => 'application/json'));
 
     }
 
