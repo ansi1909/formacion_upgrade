@@ -74,6 +74,7 @@
 	- funciones/fnasignar_subpaginas.sql
 	- funciones/fncorreos_noentregados.sql
 	- funciones/fnalarmas_participantes.sql
+	- funciones/fneliminar_prueba.sql
 	- vistas/view_cursos.sql
 	- vistas/view_pruebas.sql
 	- vistas/view_usuarios_roles.sql
@@ -129,4 +130,28 @@ Package phpoffice/phpexcel is abandoned, you should avoid using it. Use phpoffic
    a. php bin/console link:usuarios-duplicados: debe pasarse como parametro el id de la  empresa para la cual desea realizarse la consulta ejemplo :
    --Ejemplo:
    php bin/console link:usuarios-duplicados 19
+
+21 . Funciones para mantenimiento y limpieza de la base de datos :
+     fneliminar_prueba.sql: Se ejecuta diractemente en la consola del
+     motor de base de datos de la siguiente manera:
+     SELECT * from fneliminar_pagina(pagina_id);
+     sonde pagina_id es el id del curso/pagina que se desea eliminar, Esta funcion elimina todo rastro de dicha pagina de las tablas:
+     - certi_pagina_log
+     - certi_grupo_pagina
+     - certi_muro
+     - certi_foro
+     - certi_foro_archivo
+     - certi_nivel_pagina
+     - certi_pagina_empresa
+     - certi_prueba
+     - certi_pregunta_asociacion
+     - certi_pregunta_opcion
+     - certi_respuesta
+     - certi_prueba_log
+     - certi_pregunta
+     - certi_opcion
+     - certi_pagina
+
+     NOTA: esta funcion debe ejecutarse con mucha precaucion ya que es capaz de eliminar a un curso/pgrograma completamente de las tablas
+
 
