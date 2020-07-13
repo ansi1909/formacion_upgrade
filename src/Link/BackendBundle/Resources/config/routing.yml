@@ -38,6 +38,12 @@ _ajaxProgramasDashboard:
     requirements:
         method: GET
 
+_ajaxEmpresasDashboard:
+    path:     /ajaxEmpresasDashboard
+    defaults: { _controller: LinkBackendBundle:Default:ajaxEmpresas }
+    requirements:
+        method: GET
+
 roles:
     resource: "@LinkBackendBundle/Resources/config/routing/roles.yml"
     prefix: /rol

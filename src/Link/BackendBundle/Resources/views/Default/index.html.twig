@@ -15,6 +15,7 @@
     <br><br>
     {% if rol == 'true' %}
         <input type="hidden" id="url_ajaxProgramasDash" name="url_ajaxProgramasDash" value="{{ path('_ajaxProgramasDashboard') }}">
+        <input type="hidden" id="url_ajaxEmpresasDash" name="url_ajaxEmpresasDash" value="{{ path('_ajaxEmpresasDashboard') }}">
         <input type="hidden" id="ver_conectados" name="ver_conectados" value="0">
         <div class="admin_dash" >
             <div class="row">
@@ -66,14 +67,26 @@
                         </div>
                         <div class="card-block">
                             <div class="card-block">
+                                <label for="texto" class="col-sm-7 col-md-7 col-lg-7 offset-sm-4 offset-md-4 offset-lg-4">{{'País' | trans}}</label>
+                                <div class="row">
+                                    <div class="col-sm-7 col-md-7 col-lg-7 offset-sm-4 offset-md-4 offset-lg-4">
+                                        <select class="form_sty_sel form-control" style="border-radius: 5px" id="pais_id" name="pais_id">
+                                            <option value="0"></option>
+                                            {% for pais in paises %}
+                                                <option value="{{ pais.id }}" >{{ pais.nombre }}</option>
+                                            {% endfor %}
+                                        </select>
+                                        <span class="fa fa-industry"></span>
+                                        <span class="bttn_d"><img src="{{ asset('img/down-arrowbck.png') }}"></span>
+                                    </div>
+                                </div>
+                                <br>
                                 <label for="texto" class="col-sm-7 col-md-7 col-lg-7 offset-sm-4 offset-md-4 offset-lg-4">{{'Empresa' | trans}}</label>
                                 <div class="row">
                                     <div class="col-sm-7 col-md-7 col-lg-7 offset-sm-4 offset-md-4 offset-lg-4">
                                         <select class="form_sty_sel form-control" style="border-radius: 5px" id="empresa_id" name="empresa_id">
                                             <option value="0"></option>
-                                            {% for empresa in empresasA %}
-                                                <option value="{{ empresa.id }}" >{{ empresa.nombre }}</option>
-                                            {% endfor %}
+                                            
                                         </select>
                                         <span class="fa fa-industry"></span>
                                         <span class="bttn_d"><img src="{{ asset('img/down-arrowbck.png') }}"></span>
@@ -102,6 +115,7 @@
                                     <tr>
                                         <th class="hd__title text-center">{{ 'Empresas'|trans }}</th>
                                         <th class="hd__title text-center">{{ 'Prog. asociados'|trans }}</th>
+                                        <th class="hd__title text-center">{{ 'País'|trans }}</th>
                                         <th class="hd__title text-center">{{ 'Participantes registrados'|trans }}</th>
                                     </tr>
                                 </thead>
@@ -121,6 +135,7 @@
                                                     {{ 'No tiene sub-páginas'|trans }}
                                                 {% endif %}
                                             </td>
+                                            <td>{{empresa.pais}}</td>
                                             <td class="text-center"><span>{{ empresa.usuarios }} <i class="fa fa-user"></i></span></td>
                                         </tr>
                                     {% endfor %}

@@ -1,5 +1,5 @@
-NOTAS: 
-- Luego de clonar el proyecto, ejecutar los comandos en la raíz del proyecto, 
+NOTAS:
+- Luego de clonar el proyecto, ejecutar los comandos en la raíz del proyecto,
   es decir en: C:\wamp\www\formacion2.0
 - El deber ser:
 	-) Antes de iniciar el desarrollo en un ambiente nuevo, ejecutar los pasos 1, 3 y 4.
@@ -58,10 +58,10 @@ SINCRONIZACIÓN DE AMBIENTE DE PROD
 
 SOLVENTAR CONFLICTOS CON ARCHIVOS QUE DEBEN ESTAR EN .gitignore
 
-cualquier archivo que queramos ignorar debe incluirse en el archivo .gitignore, si en algún momento 
+cualquier archivo que queramos ignorar debe incluirse en el archivo .gitignore, si en algún momento
 de homologar los ambientes llegamos a tener conflictos con estos procedemos de la siguente manera:
 
-1.- git rm --cached nombre_archivo o ruta_archivo : con este comando 
+1.- git rm --cached nombre_archivo o ruta_archivo : con este comando
 significa que el archivo se eliminará de su repositorio, pero permanecerá en su directorio de trabajo como un archivo ignorado.
 2.- git commit
 3.- git push

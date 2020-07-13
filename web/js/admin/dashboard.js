@@ -23,6 +23,27 @@ $(document).ready(function() {
             }
         });
      });
+
+     $('#pais_id').change(function(){
+        var pais_id = $(this).val();
+        $('#listado_programas_empresa').hide();
+        $.ajax({
+            type: "GET",
+            url: $('#url_ajaxEmpresasDash').val(),
+            async: true,
+            data: { pais_id: pais_id },
+            dataType: "json",
+            success: function(data) {
+
+                $('#empresa_id').html(data);
+                
+            },
+            error: function(){
+                $('#active-error').html($('#error_msg-filter').val());
+                $('#div-active-alert').show();
+            }
+        });
+     });
     
     /*circular progress sidebar home page */   
      $('.progress_profile').circleProgress({ 
