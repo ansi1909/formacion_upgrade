@@ -1,5 +1,5 @@
-NOTAS: 
-- Luego de clonar el proyecto, ejecutar los comandos en la raíz del proyecto, 
+NOTAS:
+- Luego de clonar el proyecto, ejecutar los comandos en la raíz del proyecto,
   es decir en: C:\wamp\www\formacion2.0
 - El deber ser:
 	-) Antes de iniciar el desarrollo en un ambiente nuevo, ejecutar los pasos 1, 3 y 4.

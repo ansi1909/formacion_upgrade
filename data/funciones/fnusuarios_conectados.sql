@@ -10,40 +10,40 @@ CREATE OR REPLACE FUNCTION fnusuarios_conectados(
 )
   RETURNS refcursor AS
 $BODY$
-   
+
 begin
 
-    OPEN resultado FOR 
-		SELECT 
+    OPEN resultado FOR
+		SELECT
 			  au.nombre AS nombre,
 			  au.apellido AS apellido,
 			  au.login AS login,
 			  au.correo_corporativo AS correo,
 			  an.nombre  AS nivel
-		FROM 
+		FROM
 			  admin_usuario au
-		INNER JOIN 
+		INNER JOIN
 			  admin_sesion ass
 		ON au.id = ass.usuario_id
-		INNER JOIN 
+		INNER JOIN
 			  admin_nivel an
 		ON an.id = au.nivel_id
-		WHERE	
+		WHERE
 			  ass.disponible IS TRUE
 		AND
 			  au.empresa_id = pempresa_id
-	    AND 
-	          LOWER(an.nombre) NOT LIKE 'revisor%'
-		AND   
+	    AND
+	         ( LOWER(an.nombre) NOT LIKE 'revisor%' AND LOWER(an.nombre) NOT LIKE 'tutor%' )
+		AND
 			  ass.usuario_id <> pusuario_id
 		GROUP BY au.login, au.nombre, au.apellido, an.nombre, au.correo_corporativo
 		ORDER BY au.login DESC;
-    
+
     RETURN resultado;
 
 end;
 $BODY$
   LANGUAGE plpgsql VOLATILE
 
-  
+
    --select * from fnusuarios_conectados('re', 2, 24) as resultado; fetch all from re;

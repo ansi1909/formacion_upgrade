@@ -3,6 +3,8 @@
 body {
     background-color: $gray-150;
     overflow-x: hidden;
+    overflow-y: auto !important; //EVITA QUE BOOTSTRAP QUITE EL SCROLL CUANDO SE VE UN MODAL
+    padding-right: 0 !important; //EVITA QUE BOOTSTRAP AGREGUE PADDING AL ABRIR UN MODAL
     &::-webkit-scrollbar {
         width: calc(1rem - 8px);
     }

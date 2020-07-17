@@ -1,10 +1,11 @@
 --Tipos de errores considerados
---0A: correo --El correo se encuentra en la tabla admin correo pero esta asociado a una notficacion inexistente 
+--0A: correo --El correo se encuentra en la tabla admin correo pero esta asociado a una notficacion inexistente
 --0B: correo --El correo no se encuentra en la tabla admin_correo
 
-CREATE FUNCTION fncorreos_noentregados(pcorreos TEXT) RETURNS TEXT AS $$
+CREATE OR REPLACE FUNCTION fncorreos_noentregados(pcorreos TEXT) RETURNS TEXT AS $$
 DECLARE
    admin_correo_db RECORD;
+   correo_fallido RECORD;
    notificacion_programada admin_notificacion_programada%ROWTYPE;
    notificaciones_id INTEGER[]:='{}'::int[];
    correos_buzon TEXT[];
@@ -15,7 +16,7 @@ DECLARE
    cantidad_mensajes_correo INTEGER;
    cantidad_notificaciones_id INTEGER:=0;
    cantidad_correos_fallidos INTEGER:=0;
-   indice_mensaje INTEGER:=1;--para obtener el primer mensaje del correo 
+   indice_mensaje INTEGER:=1;--para obtener el primer mensaje del correo
    mensajes TEXT:='SUCCES';
 BEGIN
 	--Obtener los correos fallidos
@@ -33,18 +34,21 @@ BEGIN
 				SELECT * INTO notificacion_programada FROM admin_notificacion_programada AS np
 				WHERE np.id = admin_correo_db.entidad_id;
 				IF notificacion_programada.id IS NOT NULL THEN
-					INSERT INTO admin_correo_fallido(correo,usuario_id,entidad_id,fecha,reenviado,mensaje)
-					VALUES(admin_correo_db.correo,admin_correo_db.usuario_id,notificacion_programada.id,admin_correo_db.fecha,FALSE,mensajes_correo[indice_mensaje]);
-					cantidad_correos_fallidos := cantidad_correos_fallidos + 1;
-					--DELETE FROM admin_correo WHERE id=admin_correo_db.id;
-					IF NOT ARRAY[notificacion_programada.id]<@notificaciones_id THEN
-						notificaciones_id := notificaciones_id||ARRAY[notificacion_programada.id];
+					SELECT * INTO correo_fallido FROM admin_correo_fallido WHERE correo = admin_correo_db.correo AND usuario_id = admin_correo_db.usuario_id AND entidad_id = notificacion_programada.id;
+					IF correo_fallido.id IS NULL THEN
+						INSERT INTO admin_correo_fallido(correo,usuario_id,entidad_id,fecha,reenviado,mensaje)
+						VALUES(admin_correo_db.correo,admin_correo_db.usuario_id,notificacion_programada.id,admin_correo_db.fecha,FALSE,mensajes_correo[indice_mensaje]);
+						cantidad_correos_fallidos := cantidad_correos_fallidos + 1;
+						--DELETE FROM admin_correo WHERE id=admin_correo_db.id;
+						IF NOT ARRAY[notificacion_programada.id]<@notificaciones_id THEN
+							notificaciones_id := notificaciones_id||ARRAY[notificacion_programada.id];
+						END IF;
 					END IF;
 				ELSE
 					IF mensajes = '' THEN
 						mensajes := mensajes||'No esta asociado a una notificacion valida: '||correo_mensajes[1];
 				    ELSE
-						mensajes := mensajes||'/'||'No esta asociado a una notificacion valida: '||correo_mensajes[1]; 
+						mensajes := mensajes||'/'||'No esta asociado a una notificacion valida: '||correo_mensajes[1];
 					END IF;
 				END IF;
 			ELSE
@@ -63,7 +67,7 @@ BEGIN
 				UPDATE admin_notificacion_programada SET enviado = TRUE WHERE id = notificaciones_id[i];
 			END LOOP; --loop actualizacion
 		END IF;
-	
+
 	RETURN cantidad_notificaciones_id||' - '||cantidad_correos_fallidos||' - '||mensajes;
 	-- cantidad de notificaciones actualizadas - cantidad de correos fallidos insertados - mensajes de error o exito
 END;

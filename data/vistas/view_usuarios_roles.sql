@@ -4,6 +4,7 @@ CREATE VIEW view_usuarios_roles as(
     u.nombre as nombre,
     u.apellido as apellido,
     u.login as login,
+    u.clave as clave,
     u.activo as activo,
     e.id as empresa_id,
     e.nombre as empresa,
