@@ -765,7 +765,7 @@ a:focus, a:active, a:target, a:checked {
     white-space: nowrap; } }
 
 .userLogin, .pwdLogin {
-  max-width: 18rem; }
+  width: 18rem; }
 
 .modal-recuperacion .titulo {
   margin-top: calc(-1*calc(2rem - 7px)); }
