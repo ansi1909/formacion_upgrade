@@ -67,7 +67,7 @@ class EvaluacionController extends Controller
             </div>';
             $item++;
         }
-        $return = json_encode(['html' => $html,'evaluacion'=>$evaluacion->getNombre());
+        $return = json_encode(['html' => $html,'evaluacion'=>$evaluacion->getNombre()]);
         return new Response($return, 200, array('Content-Type' => 'application/json'));
     }
 
