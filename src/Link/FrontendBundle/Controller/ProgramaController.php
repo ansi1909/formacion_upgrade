@@ -54,11 +54,11 @@ class ProgramaController extends Controller
         $pagina = $this->getDoctrine()->getRepository('LinkComunBundle:CertiPagina')->find($programa_id);
 
         $pagina_sesion = $session->get('paginas')[$programa_id];
-        
+
         $lis_mods = '';
         $tiene_evaluacion = 0;
 
-        if (count($pagina_sesion['subpaginas'])) 
+        if (count($pagina_sesion['subpaginas']))
         {
 
             $modulos = 1;
@@ -104,9 +104,9 @@ class ProgramaController extends Controller
 
                 if ($subpagina['prelacion'])
                 {
-                    $query = $em->createQuery('SELECT COUNT(pl.id) FROM LinkComunBundle:CertiPaginaLog pl 
-                                               WHERE pl.pagina = :pagina_id 
-                                               AND pl.usuario = :usuario_id 
+                    $query = $em->createQuery('SELECT COUNT(pl.id) FROM LinkComunBundle:CertiPaginaLog pl
+                                               WHERE pl.pagina = :pagina_id
+                                               AND pl.usuario = :usuario_id
                                                AND pl.estatusPagina = :completada')
                                 ->setParameters(array('pagina_id' => $subpagina['prelacion'],
                                                       'usuario_id' => $session->get('usuario')['id'],
@@ -131,7 +131,7 @@ class ProgramaController extends Controller
                     $evaluacion_pagina = $subpagina['id'];
                     $evaluacion_programa = $programa_id;
                 }
-                
+
                 if (count($subpagina['subpaginas']))
                 {
 
@@ -148,9 +148,9 @@ class ProgramaController extends Controller
                         if ($sub_subpagina['acceso'])
                         {
 
-                            $query = $em->createQuery('SELECT COUNT(pl.id) FROM LinkComunBundle:CertiPaginaLog pl 
-                                                       WHERE pl.pagina = :pagina_id 
-                                                       AND pl.usuario = :usuario_id 
+                            $query = $em->createQuery('SELECT COUNT(pl.id) FROM LinkComunBundle:CertiPaginaLog pl
+                                                       WHERE pl.pagina = :pagina_id
+                                                       AND pl.usuario = :usuario_id
                                                        AND pl.estatusPagina = :completada')
                                         ->setParameters(array('pagina_id' => $sub_subpagina['id'],
                                                               'usuario_id' => $session->get('usuario')['id'],
@@ -170,10 +170,10 @@ class ProgramaController extends Controller
                                 }
                             }
 
-                            //validando si la leccion se vio inicio 
-                            if ($statusPaginaId != 0) 
+                            //validando si la leccion se vio inicio
+                            if ($statusPaginaId != 0)
                             {
-                                
+
                                 $enlace = $this->generateUrl('_lecciones', array('programa_id' => $programa_id)).'/'.$sub_subpagina['id'];
                                 // seleccionando el icono que debe mostrarse
                                 if ($statusPaginaId == $yml['parameters']['estatus_pagina']['completada']) {
@@ -183,7 +183,7 @@ class ProgramaController extends Controller
                                      $icono = ['nombre' => 'visibility', 'tooltit' => $this->get('translator')->trans('Volver al contenido')];
                                 }
 
-                                
+
                                 $titulo_leccion = '<a href="'.$enlace.'" class="color-light-grey" >
                                                      <li class="my-1" >
                                                         <span class="d-flex list-text">'.$sub_subpagina['nombre'].'</span>
@@ -203,20 +203,20 @@ class ProgramaController extends Controller
                                 $evaluacion_pagina = $sub_subpagina['id'];
                                 $evaluacion_programa = $programa_id;
                             }
-                           
+
                             $lis_mods .= $titulo_leccion;
-                            
+
                         }
                     }
 
                     $lis_mods .= '</ol>';
                     $lis_mods .= '</div>';
-                    
+
                 }
                 else {
                     $lis_mods .= '</div>';
                 }
-                
+
                 // buscando registros de la pagina principal para validar si esta en evaluación
                 $datos_log_pag = $this->getDoctrine()->getRepository('LinkComunBundle:CertiPaginaLog')->findOneBy(array('usuario' => $session->get('usuario')['id'],
                                                                                                                         'pagina' => $programa_id));
@@ -249,7 +249,7 @@ class ProgramaController extends Controller
                         $boton_continuar = '';
                         $div_class1 = 'card-hrz-right d-flex flex-column justify-content-top mx-4 pb-1 align-items-center';
                         $div_class2 = 'percent text-center mt-5';
-                        $span_class = 'count mt-0 mb-2 text-xs color-light-grey';                        
+                        $span_class = 'count mt-0 mb-2 text-xs color-light-grey';
                     }
                     $score = $tiene_evaluacion ? $this->get('translator')->trans('Calificación') : '';
                     $lis_mods .= '<div class="'.$div_class1.'">';
@@ -263,7 +263,7 @@ class ProgramaController extends Controller
                     $lis_mods .= '</div>';
                     $lis_mods .= $boton_continuar;
                     $lis_mods .= '</div>';
-                    
+
                 }
                 else {
 
@@ -282,7 +282,7 @@ class ProgramaController extends Controller
                     else{
                         $lis_mods .= '<a href="#" class="btn btn-sm disabled '.$clase.' mt-2 mb-4"> '.$boton.' </a>';
                     }
-                    
+
                     $lis_mods .= '</div>';
 
                 }
@@ -304,7 +304,7 @@ class ProgramaController extends Controller
         );
         $paso_actual_intro = $intro_del_usuario[0]->getPasoActual();
         $cancelar_intro = $intro_del_usuario[0]->getCancelado();
-        
+
         return $this->render('LinkFrontendBundle:Programa:index.html.twig', array('pagina' => $pagina,
                                                                                   'modulos' =>$modulos,
                                                                                   'porcentaje_avance' =>$porcentaje_avance,
@@ -314,7 +314,7 @@ class ProgramaController extends Controller
 
         $response->headers->setCookie(new Cookie('Peter', 'Griffina', time() + 36, '/'));
 
-        return $response; 
+        return $response;
 
     }
 
@@ -332,7 +332,7 @@ class ProgramaController extends Controller
         $f->setRequest($session->get('sesion_id'));
 
         $yml = Yaml::parse(file_get_contents($this->get('kernel')->getRootDir().'/config/parametros.yml'));
-        
+
         $empresa = $this->getDoctrine()->getRepository('LinkComunBundle:AdminEmpresa')->find($session->get('empresa')['id']);
 
         /********************** LÓGICA PARA LA ESTRUCTURA DE ACTIVIDADES RECIENTES *******************/
@@ -341,10 +341,10 @@ class ProgramaController extends Controller
         $actividad_reciente = $actividades_recientes['actividad_reciente'];
         $reciente = $actividades_recientes['reciente'];
 
-        
-        /********************** LÓGICA PARA LA ESTRUCTURA DE LOS PROGRAMAS FINALIZADOS *******************/        
+
+        /********************** LÓGICA PARA LA ESTRUCTURA DE LOS PROGRAMAS FINALIZADOS *******************/
         $paginas = array();
-        
+
         // Convertimos los id de las paginas de la sesion en un nuevo array
         $paginas_ids = array();
         foreach ($session->get('paginas') as $pg) {
@@ -352,8 +352,8 @@ class ProgramaController extends Controller
         }
 
         // Buscamos los programas finalizados y disponibles en la sesion
-        $query = $em->createQuery('SELECT pl FROM LinkComunBundle:CertiPaginaLog pl 
-                                    JOIN pl.pagina p 
+        $query = $em->createQuery('SELECT pl FROM LinkComunBundle:CertiPaginaLog pl
+                                    JOIN pl.pagina p
                                     WHERE pl.pagina IN (:paginas)
                                         AND pl.usuario = :usuario
                                         AND pl.estatusPagina = :completada
@@ -368,13 +368,13 @@ class ProgramaController extends Controller
 
             $completado = 1;
 
-            foreach ($pls as $pl) 
+            foreach ($pls as $pl)
             {
 
                 $pagina_empresa = $this->getDoctrine()->getRepository('LinkComunBundle:CertiPaginaEmpresa')->findOneBy(array('empresa' => $session->get('empresa')['id'],
                                                                                                                              'pagina' => $pl->getPagina()->getId()));
 
-                $modulo = $this->getDoctrine()->getRepository('LinkComunBundle:CertiPagina')->findOneBy(array('pagina' => $pagina_empresa->getPagina()->getId()));                                                                                                
+                $modulo = $this->getDoctrine()->getRepository('LinkComunBundle:CertiPagina')->findOneBy(array('pagina' => $pagina_empresa->getPagina()->getId()));
                 $prueba = $this->getDoctrine()->getRepository('LinkComunBundle:CertiPrueba')->findOneBy(array('pagina' => $modulo->getId()));
 
                 $link_enabled = $pagina_empresa->getFechaVencimiento()->format('Y-m-d') < date('Y-m-d') ? 0 : 1;
@@ -399,9 +399,9 @@ class ProgramaController extends Controller
                                    'continuar' => $continuar,
                                    'link_enabled' => $link_enabled,
                                    'prueba' => $prueba);
-                
+
             }
-            
+
         }
         else {
             $completado = 0;
@@ -414,13 +414,14 @@ class ProgramaController extends Controller
                                                                                          'activo' => $activo));
 
     }
-    
+
     public function programasAction()
     {
 
         $em = $this->getDoctrine()->getManager();
         $f = $this->get('funciones');
         $session = new Session();
+        $timeZone = 0;
 
         if (!$session->get('iniFront') || $f->sesionBloqueda($session->get('sesion_id')))
         {
@@ -429,53 +430,63 @@ class ProgramaController extends Controller
         $f->setRequest($session->get('sesion_id'));
 
         $yml = Yaml::parse(file_get_contents($this->get('kernel')->getRootDir().'/config/parametros.yml'));
-        
+        $yml2 = Yaml::parse(file_get_contents($this->get('kernel')->getRootDir().'/config/parameters.yml'));
         // Convertimos los id de las paginas de la sesion en un nuevo array
         $paginas_ids = array();
-        foreach ($session->get('paginas') as $pg) 
+        foreach ($session->get('paginas') as $pg)
         {
             $paginas_ids[] = $pg['id'];
         }
 
-        // Buscamos los grupos disponibles para el usuario por los programas disponibles en la sesión
-        $query = $em->createQuery('SELECT gp FROM LinkComunBundle:CertiGrupoPagina gp 
-                                    JOIN gp.grupo g 
-                                    WHERE g.empresa = :empresa
-                                        AND gp.pagina IN (:paginas)
-                                    ORDER BY g.orden ASC')
-                    ->setParameters(array('empresa' => $session->get('empresa')['id'],
-                                          'paginas' => $paginas_ids));
+        // // Buscamos los grupos disponibles para la empresa
+        $query = $em->createQuery('SELECT g FROM LinkComunBundle:CertiGrupo g
+                                     WHERE g.empresa = :empresa
+                                     ORDER BY g.orden ASC')
+                     ->setParameters(array('empresa' => $session->get('empresa')['id']));
         $gps = $query->getResult();
 
-        $grupos_id = array();
-        foreach ($gps as $gp)
-        {
-            if (!in_array($gp->getGrupo()->getId(), $grupos_id))
-            {
-                $grupos_id[] = $gp->getGrupo()->getId();
-            }
+        $grupos_ids = array();
+        $grupo_consulta = $this->getDoctrine()->getRepository('LinkComunBundle:CertiGrupo')->findByEmpresa($session->get('empresa')['id']);
+
+        foreach ($gps as $grupo) {
+            array_push($grupos_ids,$grupo->getId());
         }
 
         $grupos = array();
-        foreach ($grupos_id as $grupo_id)
-        {
-
-            $grupos_bd = $this->getDoctrine()->getRepository('LinkComunBundle:CertiGrupoPagina')->findByGrupo($grupo_id);
-
+        foreach ($grupos_ids as $grupo_id) {
             $paginas = array();
-
-            foreach ($grupos_bd as $grupo)
-            {
-
-                if (in_array($grupo->getPagina()->getId(), $paginas_ids))
-                {
-
-                    $nombre_grupo = $grupo->getGrupo()->getNombre();
-
-                    // Programas pertenecientes al grupo
+            $agregar = false;
+            foreach ($paginas_ids as $pagina_id) {
+                $grupo = $this->getDoctrine()->getRepository('LinkComunBundle:CertiGrupoPagina')->findOneBy(['grupo' => $grupo_id,'pagina' =>$pagina_id]);
+                if($grupo){
+                    $agregar = true;
                     $pagina_empresa = $this->getDoctrine()->getRepository('LinkComunBundle:CertiPaginaEmpresa')->findOneBy(array('empresa' => $session->get('empresa')['id'],
-                                                                                                                                 'pagina' => $grupo->getPagina()->getId()));
+                                                                                                                                  'pagina' => $pagina_id));
 
+                    $usuario = $this->getDoctrine()->getRepository('LinkComunBundle:AdminUsuario')->find($session->get('usuario')['id']);
+                    $fechaFin = $pagina_empresa->getFechaVencimiento();
+                    $fechaInicio = $pagina_empresa->getFechaInicio();
+                    if($usuario->getNivel()){
+                        if ($usuario->getNivel()->getFechaInicio() && $usuario->getNivel()->getFechaFin()) {
+                            $fechaInicio = $usuario->getNivel()->getFechaInicio();
+                            $fechaFin = $usuario->getNivel()->getFechaFin();
+                        }
+                    }
+
+                    if ($pagina_empresa->getEmpresa()->getZonaHoraria()){
+                        $timeZone = 1;
+                        $zonaHoraria = $pagina_empresa->getEmpresa()->getZonaHoraria()->getNombre();
+                    }
+
+                    if($timeZone){
+                        date_default_timezone_set($zonaHoraria);
+                    }
+
+                    $fechaActual = date('d-m-Y H:i:s');
+                    $fechaInicio = $fechaInicio->format('d-m-Y 00:00:00');
+                    $fechaFin = new \DateTime($fechaFin->format('d-m-Y 23:59:00'));
+                    $fechaFin = $fechaFin->format('d-m-Y H:i:s');
+                    $link_enabled = (strtotime($fechaActual)<strtotime($fechaFin))? 1:0;
                     $pagina_sesion = $session->get('paginas')[$grupo->getPagina()->getId()];
 
                     if (count($pagina_sesion['subpaginas']) >= 1)
@@ -486,13 +497,12 @@ class ProgramaController extends Controller
                         $tiene_subpaginas = 0;
                     }
 
-                    $link_enabled = $pagina_empresa->getFechaVencimiento()->format('Y-m-d') < date('Y-m-d') ? 0 : 1;
-
                     $pagina_log = $this->getDoctrine()->getRepository('LinkComunBundle:CertiPaginaLog')->findOneBy(array('usuario' => $session->get('usuario')['id'],
                                                                                                                          'pagina' => $grupo->getPagina()->getId()));
-                    
-                    $modulo = $this->getDoctrine()->getRepository('LinkComunBundle:CertiPagina')->findOneBy(array('pagina' => $grupo->getPagina()->getId()));                                                                                                
-                    $prueba = $this->getDoctrine()->getRepository('LinkComunBundle:CertiPrueba')->findOneBy(array('pagina' => $modulo->getId()));                                                                                                   
+
+                    $modulo = $this->getDoctrine()->getRepository('LinkComunBundle:CertiPagina')->findOneBy(array('pagina' => $grupo->getPagina()->getId()));
+                    $prueba = $this->getDoctrine()->getRepository('LinkComunBundle:CertiPrueba')->findOneBy(array('pagina' => $modulo->getId()));
+                    $notas = $f->notasDisponibles($grupo->getPagina()->getId(),$session->get('usuario')['id'],$yml);
 
                     if ($pagina_log)
                     {
@@ -517,54 +527,53 @@ class ProgramaController extends Controller
                         // sin registros - 0 = iniciar, 4 = vencido y sin haber iniciado
                         $continuar = $link_enabled ? 0 : 4;
                     }
+                    $dias = $f->timeAgo($fechaFin);
+                    $porcentaje = $f->porcentaje_finalizacion($fechaInicio,$fechaFin,$dias);
+                    $porcentaje_finalizacion = $dias;
+                    $class_finaliza = $f->classFinaliza($porcentaje);
 
-                    $porcentaje_finalizacion = $f->timeAgoPorcentaje($pagina_empresa->getFechaInicio()->format("Y/m/d"), $pagina_empresa->getFechaVencimiento()->format("Y/m/d"));
                     if ($link_enabled)
                     {
-                        if ($porcentaje_finalizacion >= 70)
-                        {
-                           $class_finaliza = 'alertTimeGood';
-                        }
-                        elseif ($porcentaje_finalizacion >= 31 && $porcentaje_finalizacion <= 69)
-                        {
-                            $class_finaliza = 'alertTimeWarning';
-                        }
-                        elseif ($porcentaje_finalizacion <= 30) 
-                        {
-                            $class_finaliza = 'alertTimeDanger';
-                        }
-                        else {
-                            $class_finaliza = '';
-                        }
+                      $nivel_vigente = true;
+                      if($dias == 0){
+                         $dias_vencimiento = $this->get('translator')->trans('Vence hoy');
+                      }else{
+                         $dias_vencimiento = $this->get('translator')->trans('Finaliza en').' '.$dias.' '.$this->get('translator')->trans('días');
+                      }
                     }
                     else {
-                        $class_finaliza = '';
+                        $nivel_vigente = false;
+                        $dias_vencimiento = $this->get('translator')->trans('Programa Vencido');
                     }
-                    
-                    $dias_vencimiento = $link_enabled ? $this->get('translator')->trans('Finaliza en').' '.$f->timeAgo($pagina_empresa->getFechaVencimiento()->format("Y/m/d")).' '.$this->get('translator')->trans('días') : $this->get('translator')->trans('Vencido');
-
+                    //agregar pagina al array de paginas para el grupo
                     $paginas[] = array('id' => $grupo->getPagina()->getId(),
                                        'nombre' => $grupo->getPagina()->getNombre(),
                                        'imagen' => $grupo->getPagina()->getFoto(),
                                        'descripcion' => $grupo->getPagina()->getDescripcion(),
+                                       'pdf' => ($grupo->getPagina()->getPdf())?$yml2['parameters']['folders']['uploads'].$grupo->getPagina()->getPdf():null,
                                        'dias_vencimiento' => $dias_vencimiento,
                                        'class_finaliza' => $class_finaliza,
                                        'tiene_subpaginas' => $tiene_subpaginas,
                                        'continuar' => $continuar,
                                        'link_enabled' => $link_enabled,
-                                       'prueba' => $prueba);
+                                       'nivel_vigente' => $nivel_vigente,
+                                       'prueba' => $prueba,
+                                       'notas' => $notas);
 
-                }
-
+                }/*if de si existe un certigrupo*/
+            } /*foreach de paginas*/
+            if($agregar){
+                $grupo = $this->getDoctrine()->getRepository('LinkComunBundle:CertiGrupo')->find($grupo_id);
+                $grupos[] = array('id' => $grupo_id,
+                                 'nombre' => $grupo->getNombre(),
+                                 'paginas' => $paginas);
             }
 
-            $grupos[] = array('id' => $grupo_id,
-                              'nombre' => $nombre_grupo,
-                              'paginas' => $paginas);
 
-        }
+        }/* foreach de grupos */
 
-        return $this->render('LinkFrontendBundle:Programa:programas.html.twig', array('grupos' => $grupos));
+
+    return $this->render('LinkFrontendBundle:Programa:programas.html.twig', array('grupos' => $grupos));
 
     }
 

@@ -162,7 +162,7 @@ Package phpoffice/phpexcel is abandoned, you should avoid using it. Use phpoffic
      Se ejecuta en la base de datos de quality y se encarga
      de copiar el programa a la base de datos de produccion.
      En el caso de los contenidos que posean video deberan cargarse
-     Manualmente, la funcion en tiempo de ejecucion muestra los id
+     Manualmente, la funcion luego de correr con exito muestra los ids
      de las paginas que poseen video en su contenido.
 
 

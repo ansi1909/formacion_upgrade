@@ -61,13 +61,13 @@ class EvaluacionController extends Controller
         $preguntas = $em->getRepository('LinkComunBundle:CertiPregunta')->findBy(array('prueba'=>$prueba_id));
         $item = 1;
         $evaluacion = $em->getRepository('LinkComunBundle:CertiPrueba')->find($prueba_id);
-        $titulo = explode("|",$evaluacion->getNombre());
+        //$titulo = explode("|",$evaluacion->getNombre());
         foreach ($preguntas as $pregunta) {
             $html .='<div class="col-sm-16 col-md-16 col-md-lg-16 modal-text  margin-1">&nbsp;'."$item) ".$pregunta->getEnunciado().'
             </div>';
             $item++;
         }
-        $return = json_encode(['html' => $html,'evaluacion'=>$titulo[1]]);
+        $return = json_encode(['html' => $html,'evaluacion'=>$evaluacion->getNombre()]);
         return new Response($return, 200, array('Content-Type' => 'application/json'));
     }
 
