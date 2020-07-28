@@ -36,3 +36,4 @@ web/error_log
 /web/jq/ResponsiveFilemanager/filemanager/error_log
 !/web/error_log
 /web/error_log
+/web/assets/vendor/ckfinder/config.php
