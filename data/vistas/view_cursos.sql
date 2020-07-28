@@ -26,6 +26,6 @@ CREATE VIEW view_cursos as(
         LEFT JOIN certi_foro cf ON cf.pagina_id = p.id
         LEFT JOIN certi_pagina cp ON cp.pagina_id = p.id
         WHERE p.pagina_id IS NULL
-        GROUP BY p.id,p.nombre,p.categoria_id,p.fecha_modificacion,p.estatus_contenido_id,cc.nombre,cec.nombre
+        GROUP BY p.id,p.nombre,p.categoria_id,p.fecha_modificacion,p.estatus_contenido_id,cc.nombre,cec.nombre,p.orden
         ORDER BY p.orden ASC
 );

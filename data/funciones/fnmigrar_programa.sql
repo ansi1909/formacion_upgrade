@@ -9,11 +9,11 @@ DECLARE
     question record;
     op_qu record;
     option_question record;
-	son record;
-	pagina_empresa record;
-	prueba certi_prueba%rowtype;
-	origin_structure int[];
-	parents int[];
+	  son record;
+	  pagina_empresa record;
+	  prueba certi_prueba%rowtype;
+	  origin_structure int[];
+	  parents int[];
     temp_parents int[];
     next_id bigint;
     new_id bigint;

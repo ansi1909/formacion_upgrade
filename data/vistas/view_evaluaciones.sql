@@ -11,6 +11,6 @@ CREATE VIEW view_pruebas as(
 	FROM certi_prueba pr
 	INNER JOIN certi_pagina p ON p.id = pr.pagina_id
 	INNER JOIN certi_estatus_contenido cc ON cc.id = p.estatus_contenido_id
-	GROUP BY pr.id,pr.nombre,p.nombre,cc.nombre
+	GROUP BY pr.id,pr.nombre,p.nombre,cc.nombre,pr.fecha_modificacion
 	ORDER BY id ASC
 );
