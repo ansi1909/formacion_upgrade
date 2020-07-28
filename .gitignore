@@ -32,3 +32,4 @@ web/error_log
 /node_modules/*
 .phpintel
 .sass-cache/
+/web/assets/vendor/ckfinder/config.php
