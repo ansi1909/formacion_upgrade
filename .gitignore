@@ -32,6 +32,7 @@ web/error_log
 /node_modules/*
 .phpintel
 .sass-cache/
+<<<<<<< HEAD
 !/web/jq/ResponsiveFilemanager/filemanager/error_log
 /web/jq/ResponsiveFilemanager/filemanager/error_log
 !/web/error_log

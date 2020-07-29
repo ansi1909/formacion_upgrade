@@ -31,6 +31,7 @@ BEGIN
             WHERE u.activo = true
                 AND u.empresa_id = reg.empresa_id
                 AND LOWER(n.nombre) NOT LIKE 'revisor%'
+                AND LOWER(n.nombre) NOT LIKE 'tutor%'
             ORDER BY u.id ASC LOOP
             str = reg.id || '__' || rst.id || '__' || rst.login || '__' || rst.clave || '__' || rst.nombre || '__' || rst.apellido || '__' || CASE WHEN rst.correo_corporativo Is Null OR rst.correo_corporativo = '' THEN rst.correo_personal ELSE rst.correo_corporativo END || '__' || reg.asunto || '__' || reg.mensaje || '__' || CASE WHEN rst.fecha_fin Is NULL THEN '1900-01-01' ELSE rst.fecha_fin END || '__' || rst.nivel_id;
             arr = '{}';
@@ -65,12 +66,13 @@ BEGIN
             ORDER BY np.id ASC LOOP
 
             FOR rst IN
-                SELECT u.id as id, u.login as login, u.clave as clave, u.nombre as nombre, u.apellido as apellido, u.correo_personal as correo_personal, u.correo_corporativo as correo_corporativo, n.fecha_fin as fecha, u.nivel_id as nivel_id
+                SELECT u.id as id, u.login as login, u.clave as clave, u.nombre as nombre, u.apellido as apellido, u.correo_personal as correo_personal, u.correo_corporativo as correo_corporativo, n.fecha_fin as fecha_fin, u.nivel_id as nivel_id
                 FROM admin_usuario u
                 INNER JOIN admin_nivel n ON u.nivel_id = n.id
                 WHERE u.empresa_id = reg.empresa_id
                     AND u.activo = true
                     AND LOWER(n.nombre) NOT LIKE 'revisor%'
+                    AND LOWER(n.nombre) NOT LIKE 'tutor%'
                     AND u.id IN (SELECT ru.usuario_id FROM admin_rol_usuario ru WHERE ru.rol_id = 2)
                     AND u.nivel_id IN
                         (SELECT np.nivel_id FROM certi_nivel_pagina np WHERE np.pagina_empresa_id IN
@@ -110,11 +112,12 @@ BEGIN
     -- En caso de ser una programacion dirigida a todos los participantes que no han ingresado a la plataforma
     ELSIF reg.tipo_destino_id = 5 THEN
         FOR rst IN
-            SELECT u.id as id, u.login as login, u.clave as clave, u.nombre as nombre, u.apellido as apellido, u.correo_personal as correo_personal, u.correo_corporativo as correo_corporativo, n.fecha_fin as fecha, u.nivel_id as nivel_id
+            SELECT u.id as id, u.login as login, u.clave as clave, u.nombre as nombre, u.apellido as apellido, u.correo_personal as correo_personal, u.correo_corporativo as correo_corporativo, n.fecha_fin as fecha_fin, u.nivel_id as nivel_id
             FROM admin_usuario u
             INNER JOIN admin_nivel n ON n.id = u.nivel_id
             WHERE u.activo = true
                 AND LOWER(n.nombre) NOT LIKE 'revisor%'
+                AND LOWER(n.nombre) NOT LIKE 'tutor%'
                 AND u.empresa_id = reg.empresa_id
                 AND u.id IN (SELECT ru.usuario_id FROM admin_rol_usuario ru WHERE ru.rol_id = 2)
                 AND u.id NOT IN (SELECT DISTINCT(s.usuario_id) FROM admin_sesion s)
@@ -129,12 +132,13 @@ BEGIN
     -- En caso de ser una programacion dirigida a todos los participantes que no han ingresado a un programa
     ELSIF reg.tipo_destino_id = 6 THEN
         FOR rst IN
-            SELECT u.id as id, u.login as login, u.clave as clave, u.nombre as nombre, u.apellido as apellido, u.correo_personal as correo_personal, u.correo_corporativo as correo_corporativo, n.fecha_fin as fecha, u.nivel_id as nivel_id
+            SELECT u.id as id, u.login as login, u.clave as clave, u.nombre as nombre, u.apellido as apellido, u.correo_personal as correo_personal, u.correo_corporativo as correo_corporativo, n.fecha_fin as fecha_fin, u.nivel_id as nivel_id
             FROM admin_usuario u
             INNER JOIN admin_nivel n ON u.nivel_id = n.id
             WHERE u.empresa_id = reg.empresa_id
                 AND u.activo = true
                 AND LOWER(n.nombre) NOT LIKE 'revisor%'
+                AND LOWER(n.nombre) NOT LIKE 'tutor%'
                 AND u.id IN (SELECT ru.usuario_id FROM admin_rol_usuario ru WHERE ru.rol_id = 2)
                 AND u.nivel_id IN
                     (SELECT np.nivel_id FROM certi_nivel_pagina np WHERE np.pagina_empresa_id IN
@@ -163,12 +167,13 @@ BEGIN
             ORDER BY np.id ASC LOOP
 
             FOR rst IN
-                SELECT u.id as id, u.login as login, u.clave as clave, u.nombre as nombre, u.apellido as apellido, u.correo_personal as correo_personal, u.correo_corporativo as correo_corporativo, n.fecha_fin as fecha, u.nivel_id as nivel_id
+                SELECT u.id as id, u.login as login, u.clave as clave, u.nombre as nombre, u.apellido as apellido, u.correo_personal as correo_personal, u.correo_corporativo as correo_corporativo, n.fecha_fin as fecha_fin, u.nivel_id as nivel_id
                 FROM admin_usuario u
                 INNER JOIN admin_nivel n ON u.nivel_id = n.id
                 WHERE u.empresa_id = reg.empresa_id
                     AND u.activo = true
                     AND LOWER(n.nombre) NOT LIKE 'revisor%'
+                    AND LOWER(n.nombre) NOT LIKE 'tutor%'
                     AND u.id IN (SELECT ru.usuario_id FROM admin_rol_usuario ru WHERE ru.rol_id = 2)
                     AND u.nivel_id IN
                         (SELECT np.nivel_id FROM certi_nivel_pagina np WHERE np.pagina_empresa_id IN
@@ -200,12 +205,13 @@ BEGIN
             ORDER BY np.id ASC LOOP
 
             FOR rst IN
-                SELECT u.id as id, u.login as login, u.clave as clave, u.nombre as nombre, u.apellido as apellido, u.correo_personal as correo_personal, u.correo_corporativo as correo_corporativo, n.fecha_fin as fecha, u.nivel_id as nivel_id
+                SELECT u.id as id, u.login as login, u.clave as clave, u.nombre as nombre, u.apellido as apellido, u.correo_personal as correo_personal, u.correo_corporativo as correo_corporativo, n.fecha_fin as fecha_fin, u.nivel_id as nivel_id
                 FROM admin_usuario u
                 INNER JOIN admin_nivel n ON u.nivel_id = n.id
                 WHERE u.empresa_id = reg.empresa_id
                     AND u.activo = true
                     AND LOWER(n.nombre) NOT LIKE 'revisor%'
+                    AND LOWER(n.nombre) NOT LIKE 'tutor%'
                     AND u.id IN (SELECT ru.usuario_id FROM admin_rol_usuario ru WHERE ru.rol_id = 2)
                     AND u.nivel_id IN
                         (SELECT np.nivel_id FROM certi_nivel_pagina np WHERE np.pagina_empresa_id IN

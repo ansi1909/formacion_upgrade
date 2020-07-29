@@ -2237,7 +2237,7 @@ public function obtenerEstructuraJson($pagina_id){
                                                                 AND np.nivel = :nivel_usuario
                                                                 AND pe.activo = :activo
                                                                 AND pe.fechaInicio <= :hoy
-                                                               ORDER BY p.orden')
+                                                               ORDER BY p.orden ASC')
                                                 ->setParameters(array('empresa' => $datos['empresa']['id'],
                                                                       'nivel_usuario' => $usuario->getNivel()->getId(),
                                                                       'activo' => true,

@@ -18,7 +18,6 @@ class DefaultController extends Controller
 
     public function indexAction()
     {
-
         $em = $this->getDoctrine()->getManager();
         $f = $this->get('funciones');
         $session = new Session();
@@ -43,57 +42,40 @@ class DefaultController extends Controller
         //return new Response(var_dump($actividad_reciente));
 
         /***************** LÓGICA DE PREPARACIÓN DE TABS DE GRUPOS ***************************/
-        
+
         // Convertimos los id de las paginas de la sesion en un nuevo array
         $paginas_ids = array();
-        foreach($session->get('paginas') as $pg) 
+        foreach($session->get('paginas') as $pg)
         {
             $paginas_ids[] = $pg['id'];
         }
+        // // Buscamos los grupos disponibles para la empresa
+         $query = $em->createQuery('SELECT g FROM LinkComunBundle:CertiGrupo g
+                                     WHERE g.empresa = :empresa
+                                     ORDER BY g.orden ASC')
+                     ->setParameters(array('empresa' => $session->get('empresa')['id']));
+         $gps = $query->getResult();
 
-        // Buscamos los grupos disponibles para el usuario por los programas disponibles en la sesión
-        $query = $em->createQuery('SELECT gp FROM LinkComunBundle:CertiGrupoPagina gp 
-                                    JOIN gp.grupo g 
-                                    WHERE g.empresa = :empresa
-                                        AND gp.pagina IN (:paginas)
-                                    ORDER BY g.orden ASC')
-                    ->setParameters(array('empresa' => $session->get('empresa')['id'],
-                                          'paginas' => $paginas_ids));
-        $gps = $query->getResult();
-
-        $grupos_id = array();
-        foreach ($gps as $gp)
-        {
-            if (!in_array($gp->getGrupo()->getId(), $grupos_id))
-            {
-                $grupos_id[] = $gp->getGrupo()->getId();
-            }
+        $grupos_ids = array();
+        $grupo_consulta = $this->getDoctrine()->getRepository('LinkComunBundle:CertiGrupo')->findByEmpresa($session->get('empresa')['id']);
+        foreach ($gps as $grupo) {
+            array_push($grupos_ids,$grupo->getId());
         }
-
+        //REcorrmos los grupos disponobles para a empresa
         $grupos = array();
-        foreach ($grupos_id as $grupo_id)
-        {
-
-            $grupos_bd = $this->getDoctrine()->getRepository('LinkComunBundle:CertiGrupoPagina')->findByGrupo($grupo_id);
-
+        foreach ($grupos_ids as $grupo_id) {
             $paginas = array();
-
-            foreach ($grupos_bd as $grupo)
-            {
-
-                if (in_array($grupo->getPagina()->getId(), $paginas_ids))
-                {
-
-                    $nombre_grupo = $grupo->getGrupo()->getNombre();
-
-                    // Programas pertenecientes al grupo
+            $agregar = false;
+            foreach ($paginas_ids as $pagina_id) {
+                $grupo = $this->getDoctrine()->getRepository('LinkComunBundle:CertiGrupoPagina')->findOneBy(['grupo' => $grupo_id,'pagina' =>$pagina_id]);
+                if($grupo){
+                    $agregar = true;
                     $pagina_empresa = $this->getDoctrine()->getRepository('LinkComunBundle:CertiPaginaEmpresa')->findOneBy(array('empresa' => $session->get('empresa')['id'],
-                                                                                                                                 'pagina' => $grupo->getPagina()->getId()));
+                                                                                                                                  'pagina' => $pagina_id));
 
                     $usuario = $this->getDoctrine()->getRepository('LinkComunBundle:AdminUsuario')->find($session->get('usuario')['id']);
                     $fechaFin = $pagina_empresa->getFechaVencimiento();
                     $fechaInicio = $pagina_empresa->getFechaInicio();
-
                     if($usuario->getNivel()){
                         if ($usuario->getNivel()->getFechaInicio() && $usuario->getNivel()->getFechaFin()) {
                             $fechaInicio = $usuario->getNivel()->getFechaInicio();
@@ -101,9 +83,9 @@ class DefaultController extends Controller
                         }
                     }
 
-                    if ($pagina_empresa->getEmpresa()->getZonaHoraria()) {
+                    if ($pagina_empresa->getEmpresa()->getZonaHoraria()){
                         $timeZone = 1;
-                        $zonaHoraria = $pagina_empresa->getEmpresa()->getZonaHoraria()->getNombre();  
+                        $zonaHoraria = $pagina_empresa->getEmpresa()->getZonaHoraria()->getNombre();
                     }
 
                     if($timeZone){
@@ -125,11 +107,10 @@ class DefaultController extends Controller
                         $tiene_subpaginas = 0;
                     }
 
-
                     $pagina_log = $this->getDoctrine()->getRepository('LinkComunBundle:CertiPaginaLog')->findOneBy(array('usuario' => $session->get('usuario')['id'],
                                                                                                                          'pagina' => $grupo->getPagina()->getId()));
 
-                    $modulo = $this->getDoctrine()->getRepository('LinkComunBundle:CertiPagina')->findOneBy(array('pagina' => $grupo->getPagina()->getId()));                                                                                                
+                    $modulo = $this->getDoctrine()->getRepository('LinkComunBundle:CertiPagina')->findOneBy(array('pagina' => $grupo->getPagina()->getId()));
                     $prueba = $this->getDoctrine()->getRepository('LinkComunBundle:CertiPrueba')->findOneBy(array('pagina' => $modulo->getId()));
                     $notas = $f->notasDisponibles($grupo->getPagina()->getId(),$session->get('usuario')['id'],$yml);
 
@@ -156,12 +137,11 @@ class DefaultController extends Controller
                         // sin registros - 0 = iniciar, 4 = vencido y sin haber iniciado
                         $continuar = $link_enabled ? 0 : 4;
                     }
-
                     $dias = $f->timeAgo($fechaFin);
                     $porcentaje = $f->porcentaje_finalizacion($fechaInicio,$fechaFin,$dias);
                     $porcentaje_finalizacion = $dias;
                     $class_finaliza = $f->classFinaliza($porcentaje);
-                    
+
                     if ($link_enabled)
                     {
                       $nivel_vigente = true;
@@ -175,7 +155,7 @@ class DefaultController extends Controller
                         $nivel_vigente = false;
                         $dias_vencimiento = $this->get('translator')->trans('Programa Vencido');
                     }
-
+                    //agregar pagina al array de paginas para el grupo
                     $paginas[] = array('id' => $grupo->getPagina()->getId(),
                                        'nombre' => $grupo->getPagina()->getNombre(),
                                        'imagen' => $grupo->getPagina()->getFoto(),
@@ -189,18 +169,19 @@ class DefaultController extends Controller
                                        'nivel_vigente' => $nivel_vigente,
                                        'prueba' => $prueba,
                                        'notas' => $notas);
-                    
 
-                }
-
+                }/*if de si existe un certigrupo*/
+            } /*foreach de paginas*/
+            if($agregar){
+                $grupo = $this->getDoctrine()->getRepository('LinkComunBundle:CertiGrupo')->find($grupo_id);
+                $grupos[] = array('id' => $grupo_id,
+                                 'nombre' => $grupo->getNombre(),
+                                 'paginas' => $paginas);
             }
-            
-            $grupos[] = array('id' => $grupo_id,
-                              'nombre' => $nombre_grupo,
-                              'paginas' => $paginas);
 
-        }
 
+        }/* foreach de grupos */
+        /*************************************************************************************/
          $user_id = $session->get('usuario')['id'];
          $introduccion = $em->getRepository('LinkComunBundle:AdminIntroduccion')->findByUsuario(
              array('id' => $user_id)
@@ -212,7 +193,7 @@ class DefaultController extends Controller
             $intro_nuevo->setUsuario($usuario_a_guardar);
             $intro_nuevo->setPasoActual(1);
             $intro_nuevo->setCancelado(false);
-            
+
             $em->persist($intro_nuevo);
             $em->flush();
 
@@ -220,7 +201,7 @@ class DefaultController extends Controller
              array('id' => $user_id)
             );
          }
-         
+
          $paso_actual_intro = $introduccion[0]->getPasoActual();
          $cancelar_intro = $introduccion[0]->getCancelado();
          return $this->render('LinkFrontendBundle:Default:index.html.twig', array('bienvenida' => $empresa->getBienvenida(),
@@ -238,7 +219,7 @@ class DefaultController extends Controller
 
         $pagina_id = $request->request->get('pagina_id');
         $pagina = $this->getDoctrine()->getRepository('LinkComunBundle:CertiPagina')->find($pagina_id);
-        
+
         $return = array('nombre'=>$pagina->getNombre(),'descripcion'=>$pagina->getDescripcion());
         $return = json_encode($return);
         return new Response($return, 200, array('Content-Type' => 'application/json'));
@@ -255,7 +236,7 @@ class DefaultController extends Controller
                              'favicon' => ($_COOKIE && isset($_COOKIE["favicon"])) ? $_COOKIE["favicon"] : '',
                              'plantilla' => ($_COOKIE && isset($_COOKIE["plantilla"])) ? $_COOKIE["plantilla"] : 'base.html.twig',
                              'css' => ($_COOKIE && isset($_COOKIE["css"])) ? $_COOKIE["css"] : '');
-        
+
         switch ($tipo) {
             case 'sesion':
                 $mensaje = array('principal' => $this->get('translator')->trans('Lo sentimos. Sesión expirada.'),
@@ -267,7 +248,7 @@ class DefaultController extends Controller
                 $imagen = 'front/assets/img/lock.svg';
                 $texto = $this->get('translator')->trans('Sesión expirada');
                 break;
-            
+
             case 'certificado':
                 $mensaje = array('principal' => $this->get('translator')->trans('Certificado inexistente para este contenido'),
                                  'indicaciones' => array($this->get('translator')->trans('La empresa debe cargar el modelo de certificado y asociarlo a esta página'),
@@ -338,10 +319,10 @@ class DefaultController extends Controller
 
     public function ajaxCorreoAction(Request $request)
     {
-        
+
         $em = $this->getDoctrine()->getManager();
         $session = new Session();
-        
+
         $correo = trim($request->request->get('correo'));
         $empresa_id = $request->request->get('empresa_id');
         //new response(var_dump(['empresa'=>$empresa_id]));
@@ -375,9 +356,9 @@ class DefaultController extends Controller
                         $error = $this->get('translator')->trans('El usuario no tiene empresa asignada. Contacte al administrador del sistema.');
                     }
                     else {
-                        
+
                         $empresa = $this->getDoctrine()->getRepository('LinkComunBundle:AdminEmpresa')->find($empresa_id);
-                        
+
                         if ($empresa && $usuario->getEmpresa()->getId() != $empresa->getId()) //validamos que el usuario pertenezca a la empresa
                         {
                             $error = $this->get('translator')->trans('El correo no pertenece a un Usuario de la empresa. Contacte al administrador del sistema.');
@@ -415,7 +396,7 @@ class DefaultController extends Controller
             }
         }else
         {
-                       
+
             $error = $this->get('translator')->trans('Debe ingresar el correo electrónico.');
         }
 
@@ -423,7 +404,7 @@ class DefaultController extends Controller
 
         $return = json_encode($return);
         return new Response($return, 200, array('Content-Type' => 'application/json'));
-        
+
     }
 
     public function loginAction($empresa_id, Request $request)
@@ -435,7 +416,7 @@ class DefaultController extends Controller
         {
             return $this->redirectToRoute('_authExceptionEmpresa', array('tipo' => 'mantenimiento'));
         }
-        
+
         $f = $this->get('funciones');
         $error = '';
         $verificacion = '';
@@ -448,7 +429,7 @@ class DefaultController extends Controller
 
         if ($empresa_bd)
         {
-            
+
             //se consulta la preferencia de la empresa
             $preferencia = $em->getRepository('LinkComunBundle:AdminPreferencia')->findOneByEmpresa($empresa_id);
 
@@ -503,7 +484,7 @@ class DefaultController extends Controller
                 $usuario = $em->getRepository('LinkComunBundle:AdminUsuario')->findOneBy(array('id' => $_COOKIE["id_usuario"],
                                                                                                'empresa' => $empresa_bd->getId(),
                                                                                                'cookies' => $_COOKIE["marca_aleatoria_usuario"] ) );
-                
+
                 if ($usuario)
                 {
 
@@ -526,13 +507,13 @@ class DefaultController extends Controller
 
                     $recordar_datos = 1;
                     $login = $usuario->getLogin();
-                    $clave = $usuario->getClave(); 
+                    $clave = $usuario->getClave();
                     $verificacion = 1;
-                    
+
                 }
                 else {
                     // Eliminamos las cookies almacenada
-                    setcookie('id_usuario', '', time() - 42000, '/'); 
+                    setcookie('id_usuario', '', time() - 42000, '/');
                     setcookie('marca_aleatoria_usuario', '', time() - 42000, '/');
                     //$error = $this->get('translator')->trans('La información almacenada en el navegador no es correcta, borre el historial.');
                 }
@@ -572,15 +553,15 @@ class DefaultController extends Controller
                     if ($iniciarSesion['error'] != '')
                     {
 
-                        $response = $this->render('LinkFrontendBundle:Default:'.$layout.'login.html.twig', array('empresa' => $empresa, 
+                        $response = $this->render('LinkFrontendBundle:Default:'.$layout.'login.html.twig', array('empresa' => $empresa,
                                                                                                                  'logo_login' => $logo_login,
                                                                                                                  'error' => $iniciarSesion['error']));
                         return $response;
                     }
-                }                    
+                }
             }
             else {
-                $response = $this->render('LinkFrontendBundle:Default:'.$layout.'login.html.twig', array('empresa' => $empresa, 
+                $response = $this->render('LinkFrontendBundle:Default:'.$layout.'login.html.twig', array('empresa' => $empresa,
                                                                                                          'logo_login' => $logo_login,
                                                                                                          'error' => $error));
                 return $response;
@@ -594,7 +575,7 @@ class DefaultController extends Controller
 
     public function ajaxLikeAction(Request $request)
     {
-        
+
         $session = new Session();
         $em = $this->getDoctrine()->getManager();
         $f = $this->get('funciones');
@@ -604,7 +585,7 @@ class DefaultController extends Controller
         $entidad_id = $request->request->get('entidad_id');
         $usuario_id = $request->request->get('usuario_id');
 
-        if ($social_id == $yml['parameters']['social']['muro']) 
+        if ($social_id == $yml['parameters']['social']['muro'])
         {
             $entity = 'CertiMuro';
         }
@@ -613,7 +594,7 @@ class DefaultController extends Controller
         }
 
         $entidad = $this->getDoctrine()->getRepository('LinkComunBundle:'.$entity)->find($entidad_id);
-        
+
         $pagina_log = $em->getRepository('LinkComunBundle:CertiPaginaLog')->findOneBy(array('pagina' => $entidad->getPagina()->getid(),
                                                                                             'usuario' => $entidad->getUsuario()->getId()));
 
@@ -657,7 +638,7 @@ class DefaultController extends Controller
         return new Response($return, 200, array('Content-Type' => 'application/json'));
 
     }
-        
+
     public function ajaxNotiAction(Request $request)
     {
 
@@ -666,8 +647,8 @@ class DefaultController extends Controller
         $yml = Yaml::parse(file_get_contents($this->get('kernel')->getRootDir().'/config/parametros.yml'));
 
         $query = $em->createQuery('SELECT a FROM LinkComunBundle:AdminAlarma a
-                                   WHERE a.usuario = :usuario_id 
-                                    AND a.fechaCreacion <= :hoy 
+                                   WHERE a.usuario = :usuario_id
+                                    AND a.fechaCreacion <= :hoy
                                    ORDER BY a.id DESC')
                     ->setMaxResults(10)
                     ->setParameters(array('usuario_id' => $session->get('usuario')['id'],
@@ -676,16 +657,16 @@ class DefaultController extends Controller
 
         $sonar = 0;
         $html = '';
-        
+
         foreach ($notificaciones as $notificacion)
         {
-            
+
             if ($notificacion->getTipoAlarma()->getId() == $yml['parameters']['tipo_alarma']['respuesta_muro'] || $notificacion->getTipoAlarma()->getId() == $yml['parameters']['tipo_alarma']['aporte_muro'] ) {
                 // $html .= '<a href="#" data-toggle="modal" data-target="#modalMn" class="click" data='. $notificacion->getId().'>
                 //             <input type="hidden" id="muro_id'.$notificacion->getId().'" value="'. $notificacion->getEntidadId().'">';
 
             }
-            elseif ($notificacion->getTipoAlarma()->getId() == $yml['parameters']['tipo_alarma']['espacio_colaborativo']) 
+            elseif ($notificacion->getTipoAlarma()->getId() == $yml['parameters']['tipo_alarma']['espacio_colaborativo'])
             {
                 $html .= '<a href="'.$this->generateUrl('_detalleColaborativo', array('foro_id' => $notificacion->getEntidadId())).'">';
             }
@@ -693,20 +674,20 @@ class DefaultController extends Controller
             {
                 $html .= '<a href="'.$this->generateUrl('_calendarioDeEventos', array('view' => 'basicDay', 'date' => $notificacion->getFechaCreacion()->format('Y-m-d'))).'">';
             }
-            elseif ($notificacion->getTipoAlarma()->getId() == $yml['parameters']['tipo_alarma']['aporte_espacio_colaborativo']) 
+            elseif ($notificacion->getTipoAlarma()->getId() == $yml['parameters']['tipo_alarma']['aporte_espacio_colaborativo'])
             {
                 $html .= '<a href="'.$this->generateUrl('_detalleColaborativo', array('foro_id' => $notificacion->getEntidadId())).'">';
             }
-            elseif ($notificacion->getTipoAlarma()->getId() == $yml['parameters']['tipo_alarma']['noticia'] || $notificacion->getTipoAlarma()->getId() == $yml['parameters']['tipo_alarma']['novedad']) 
+            elseif ($notificacion->getTipoAlarma()->getId() == $yml['parameters']['tipo_alarma']['noticia'] || $notificacion->getTipoAlarma()->getId() == $yml['parameters']['tipo_alarma']['novedad'])
             {
                 $html .= '<a href="'.$this->generateUrl('_noticiaDetalle', array('noticia_id' => $notificacion->getEntidadId())).'">';
             }
-            elseif ($notificacion->getTipoAlarma()->getId() == $yml['parameters']['tipo_alarma']['biblioteca']) 
+            elseif ($notificacion->getTipoAlarma()->getId() == $yml['parameters']['tipo_alarma']['biblioteca'])
             {
                 $html .= '<a href="'.$this->generateUrl('_bibliotecaDetalle', array('biblioteca_id' => $notificacion->getEntidadId())).'">';
             }
-                
-            if ($notificacion->getLeido()) 
+
+            if ($notificacion->getLeido())
             {
                     $html .= '<li class="AnunListNotify " data="'.$notificacion->getId().'">
                               <input type="hidden" id="tipo_noti'.$notificacion->getId().'" value="'.$notificacion->getTipoAlarma()->getId() .'">';
@@ -715,8 +696,8 @@ class DefaultController extends Controller
                 $sonar = 1;
                 $html .= '<li class="AnunListNotify notiSinLeer leido " data="'.$notificacion->getId().'">
                           <input type="hidden" id="tipo_noti'.$notificacion->getId().'" value="'.$notificacion->getTipoAlarma()->getId().'">';
-            }       
-            
+            }
+
             $html .= '<div class="anunNotify">
                         <span class="stickerNotify '. $notificacion->getTipoAlarma()->getCss().'"><i class="material-icons icNotify">'.$notificacion->getTipoAlarma()->getIcono().'</i></span>
                             <p class="textNotify text-justify">'. $notificacion->getDescripcion().'</p>
@@ -749,7 +730,7 @@ class DefaultController extends Controller
         $notificacion = $em->getRepository('LinkComunBundle:AdminAlarma')->find($noti_id);
 
         $notificacion->setLeido(TRUE);
-        
+
         $em->persist($notificacion);
         $em->flush();
 
@@ -762,7 +743,7 @@ class DefaultController extends Controller
 
     public function notificacionesAction(Request $request)
     {
-        
+
         $session = new Session();
         $em = $this->getDoctrine()->getManager();
         $f = $this->get('funciones');
@@ -797,7 +778,7 @@ class DefaultController extends Controller
                                       'entidad'=>$alarma->getEntidadId());
 
                 }
-                elseif ($alarma->getLeido() == FALSE) 
+                elseif ($alarma->getLeido() == FALSE)
                 {
                     $no_leidas[] = array('id'=>$alarma->getId(),
                                          'descripcion'=>$alarma->getDescripcion(),
@@ -958,5 +939,5 @@ class DefaultController extends Controller
         return new Response($return, 200, array('Content-Type' => 'application/json'));
     }
 
-    
+
 }
