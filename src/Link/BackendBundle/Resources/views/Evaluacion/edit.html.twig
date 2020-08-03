@@ -7,8 +7,29 @@
 {% endblock %}
 
 {% block body %}
-
+<style >
+       .columna{
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+       }
+       .titulo{
+        display: flex;
+        justify-content: flex-start;
+        align-items: center;
+        width: 92%;
+        margin-bottom: .2rem;
+       }
+       .select{
+        display: flex;
+        justify-content: flex-start;
+        align-items: center;
+        width: 100%;
+       }
+</style>
 <br><br>
+<input type="hidden" id="url_paginaSeleccion" name="url_paginaSeleccion" value="{{ path('_ajaxCargarPaginas') }}">
 <div class="row align-items-center justify-content-start">
     <div class="col-sm-4 col-md-4 col-lg-4">
         <a href="{{ path('_paginasEvaluacion', { 'app_id': app.session.get('app_id') })}}" class="bttn__bck2"><span class="fa fa-clipboard"></span><span class="text__bck2">{{ 'Ir al listado de evaluaciones'|trans }}</span></a>
@@ -21,7 +42,11 @@
     </div>
 </div>
 {{ form_start(form, { 'attr': { 'id': 'form', 'role': 'form' } }) }}
-<input type="hidden" id="pagina_evaluada" name="pagina_evaluada" value="{{ pagina_evaluada }}">
+{% if selects !=null %}
+    <input type="hidden" id="pagina_seleccionada" name="pagina_seleccionada" value="{{ selects.pagina_id }}">
+{% else %}
+    <input type="hidden" id="pagina_seleccionada" name="pagina_seleccionada" value="0">
+{% endif %}
 <div class="row">
 	<div class="col-sm-16">
         <div class="card">
@@ -31,7 +56,79 @@
                 </div>
             </div>
             <div class="card-block fnd__wzd">
-                <div class="row">
+                <div class="row" style="display: flex;justify-content: space-around;margin-bottom: 2rem;">
+                    <div class="col-md-5 columna"  >
+                        <div class="row titulo">
+                            <label>Curso / Programa</label>
+                        </div>
+                        <div class="row select">
+                            <div class="col-16">
+                                <select id="form_paginaPadre" name="form[paginaPadre]" class="form-control form_sty_sel" style="border-radius: 5px;">
+                                    {% for pagina in paginas %}
+                                        {% if (selects != null) and (selects.padre== pagina.id) %}
+                                            <option value="{{ pagina.id }}" data-categoria="{{ pagina.categoria.nombre }}" id="p-{{pagina.id}}" selected="true">{{ pagina.nombre }}</option>
+                                        {% else %}
+                                            <option value="{{ pagina.id }}" data-categoria="{{ pagina.categoria.nombre }}" id="p-{{pagina.id}}" >{{ pagina.nombre }}</option>
+                                        {% endif %}
+                                    {% endfor %}
+                                </select>
+                                <span class="{fa fa-list-ol"></span>
+                                <span class="bttn_d"><img src="/formacion2.0/web/img/down-arrowwht.png" alt=""></span>
+                            </div>
+
+                        </div>
+                    </div>
+                    <div class="col-md-4 columna"  >
+                        <div class="row titulo">
+                            <label>Categoría </label>
+                        </div>
+                        <div class="row select">
+                            <div class="col-16">
+                                <select id="form_categoria" name="form[categoria]" class="form-control form_sty_sel" style="border-radius: 5px;">
+                                    <option value="0" id="0" > </option>
+                                    {% for categoria in categorias %}
+                                        {% if (selects !=null) and (selects.categoria== categoria.id) %}
+                                            <option value="{{ categoria.id }}" id="c-{{categoria.id}}" selected="true">{{ categoria.nombre }}</option>
+                                        {% else %}
+                                            <option value="{{ categoria.id }}" id="c-{{categoria.id}}">{{ categoria.nombre }}</option>
+                                        {% endif %}
+                                    {% endfor %}
+                                </select>
+                                <span class="fa fa-list-ol"></span>
+                                <span class="bttn_d"><img src="/formacion2.0/web/img/down-arrowwht.png" alt=""></span>
+                            </div>
+
+                        </div>
+                    </div>
+                    <div class="col-md-5 columna"  >
+                        <div class="row titulo">
+                            <label>Pagina</label>
+                        </div>
+                        <div class="row select">
+                            <div class="col-16">
+                                <select id="form_paginaSeleccionada" name="form[paginaSeleccionada]" class="form-control form_sty_sel" style="border-radius: 5px;">
+                                    {% if (selects != null) %}
+                                        {{ selects.html|raw }}
+                                    {% endif %}
+                                </select>
+                                <span class="fa fa-list-ol"></span>
+                                <span class="bttn_d"><img src="/formacion2.0/web/img/down-arrowwht.png" alt=""></span>
+                                {% if selects != null %}
+                                    <input type="hidden" id="pagina_id" name="pagina_id" value="{{ selects.pagina_id }}">
+                                {% else %}
+                                    <input type="hidden" id="pagina_id" name="pagina_id" value="">
+                                {% endif %}
+
+                            </div>
+
+                        </div>
+                    </div>
+                    <div class="col-md-2 columna" style="display: flex;align-items: flex-start;justify-content: flex-end;" >
+                         <img id="select-loader" class="img-loader " src="{{ asset('img/ui-anim_basic_16x16.gif') }}" style="display:none;margin-bottom: .5rem" >
+                    </div>
+                </div>
+                <hr>
+                <div class="row" style="margin-top: 1rem;">
                     <div class="col-sm-6 col-md-6 col-lg-6 col-xl-6">
                         <div class="form-group">
                             <label for="form_nombre" class="col-16 col-form-label">{{ form_label(form.nombre) }}</label>
@@ -60,6 +157,7 @@
                         </div>
                     </div>
                 </div>
+                <hr>
                 <div class="row">
                     <div class="col-sm-5 col-md-5 col-lg-5 col-xl-5">
                         <div class="form-group">
@@ -81,34 +179,8 @@
                         </div>
                     </div>
                 </div>
-                <hr>
-                <div class="row">
-                    <div class="col-sm-10 col-md-10 col-lg-10 col-xl-10">
-                       <h5>{{ 'Página asociada a la evaluación'|trans }}</h5>
-                        <div class="row">
-                            <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12 offset-sm-2 offset-md-2 offset-lg-2 offset-xl-2 pnl__tree">
-                                {% if paginas.tiene > 0 %}
-                                    <div class="tree">
-                                        <ul data-jstree='{ "opened" : true }'>
-                                            {{ paginas.str|raw }}
-                                        </ul>
-                                    </div>
-                                {% else %}
-                                    {{ 'No existen páginas'|trans }}
-                                {% endif %}
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-sm-6 col-md-6 col-lg-6 col-xl-6">
-                        <div class="form-group">
-                            <label for="pg_sel" class="col-16 col-form-label">{{ 'Página seleccionada'|trans }}</label>
-                            <div class="col-14">
-                                <input type="text" class="form-control" id="pagina_str" name="pagina_str" readonly="readonly" value="{{ prueba.pagina ? prueba.pagina.categoria.nombre~': '~prueba.pagina.nombre : '' }}">
-                                <input type="hidden" id="pagina_id" name="pagina_id" value="{{ prueba.pagina ? prueba.pagina.id : '' }}">
-                            </div>
-                        </div>
-                    </div>
-                </div>
+
+
             </div>
             <div class="card-footer" style="background: #e6e6e6;">
                 <div class="col-sm-16 text-right">
@@ -130,26 +202,32 @@
     <script type="text/javascript" src="{{ asset('jq/jquery-timepicker/jquery.timepicker.min.js') }}"></script>
     <script type="text/javascript" src="{{ asset('js/admin/evaluacion.js') }}"></script>
     <script type="text/javascript">
-
-        var pagina_evaluada = $('#pagina_evaluada').val();
-        if (parseInt(pagina_evaluada) > 0) {
-            $('#div-error ul').html("<li>- {{ 'La página seleccionada ya está asociada a otra evaluación.'|trans }}</li>");
-            $('#div-error ul').show();
-            notify($('#div-error').html());
-        }
-        
         $('#finish').click(function(){
             var valid = $("#form").valid();
-            if (!valid) 
+            if (!valid)
             {
                 notify($('#div-error').html());
             }
             else {
-                $('#form').submit();
+                //validaciones adicionales
+                if($('#form_categoria').val() ==0 || !$('#form_paginaSeleccionada').val()){
+                    $('#div-error ul').html('');
+                    if($('#form_categoria').val() == 0){
+                        $('#div-error ul').append('<li> - Debe seleccionar la categoria.</li>');
+                    }
+                    if(!$('#form_paginaSeleccionada').val()){
+                       $('#div-error ul').append('<li> - Debe seleccionar la pagina para asignar la evaluación. </li>');
+                    }
+                    $('#div-error ul').show();
+                    notify($('#div-error').html());
+                }else{
+                    $('#form').submit();
+                }
+
             }
         });
 
-        jQuery.validator.addMethod("greaterThan", function(value, element, param) { 
+        jQuery.validator.addMethod("greaterThan", function(value, element, param) {
             var $otherElement = $(param);
             return parseInt(value, 10) >= parseInt($otherElement.val(), 10);
         });
@@ -179,6 +257,12 @@
                 },
                 'pagina_str': {
                     required: true
+                },
+                'form_paginaSeleccionada': {
+                    required: true
+                },
+                'form_categoria': {
+                    required: true
                 }
             },
             messages: {
@@ -202,6 +286,12 @@
                 },
                 'pagina_str': {
                     required: "- {{ 'Debe seleccionar la página.'|trans }}"
+                },
+                'form_paginaSeleccionada': {
+                    required: "- {{ 'Debe seleccionar la página.'|trans }}"
+                },
+                'form_categoria': {
+                    required: "- {{ 'Debe seleccionar categoria.'|trans }}"
                 }
             }
         });
