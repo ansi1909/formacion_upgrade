@@ -1505,21 +1505,30 @@ class NotificacionController extends Controller
                    ->andWhere('u.empresa = :empresa_id')
                    ->andWhere('ru.rol = :participante')
                    ->andWhere('u.activo = :status')
-                   ->andWhere('n.fechaFin >= :hoy')
                    ->orderBy('u.nombre', 'ASC')
                    ->setParameters(array('empresa_id' => $notificacion->getEmpresa()->getId(),
                                          'participante' => $yml['parameters']['rol']['participante'],
-                                         'status'=>TRUE,
-                                         'hoy'=> $hoy));
+                                         'status'=>TRUE));
                 $query = $qb->getQuery();
                 $rus = $query->getResult();
                 $valores = array();
                 foreach ($rus as $ru)
                 {
-                    $correo = !$ru->getUsuario()->getCorreoPersonal() ? !$ru->getUsuario()->getCorreoCorporativo() ? $this->get('translator')->trans('Sin correo') : $ru->getUsuario()->getCorreoCorporativo() : $ru->getUsuario()->getCorreoPersonal();
-                    $valores[] = array('id' => $ru->getUsuario()->getId(),
-                                       'nombre' => $ru->getUsuario()->getNombre().' '.$ru->getUsuario()->getApellido().' ('.$correo.')',
-                                       'selected' => in_array($ru->getUsuario()->getId(), $usuarios_id) ? 'selected' : '');
+                    if($ru->getUsuario()->getNivel()->getFechaFin())
+                    {
+                        if($ru->getUsuario()->getNivel()->getFechaFin() > $hoy)
+                        {
+                            $correo = !$ru->getUsuario()->getCorreoPersonal() ? !$ru->getUsuario()->getCorreoCorporativo() ? $this->get('translator')->trans('Sin correo') : $ru->getUsuario()->getCorreoCorporativo() : $ru->getUsuario()->getCorreoPersonal();
+                            $valores[] = array('id' => $ru->getUsuario()->getId(),
+                                            'nombre' => $ru->getUsuario()->getNombre().' '.$ru->getUsuario()->getApellido().' ('.$correo.')',
+                                            'selected' => in_array($ru->getUsuario()->getId(), $usuarios_id) ? 'selected' : '');
+                        }
+                    }else{
+                        $correo = !$ru->getUsuario()->getCorreoPersonal() ? !$ru->getUsuario()->getCorreoCorporativo() ? $this->get('translator')->trans('Sin correo') : $ru->getUsuario()->getCorreoCorporativo() : $ru->getUsuario()->getCorreoPersonal();
+                        $valores[] = array('id' => $ru->getUsuario()->getId(),
+                                        'nombre' => $ru->getUsuario()->getNombre().' '.$ru->getUsuario()->getApellido().' ('.$correo.')',
+                                        'selected' => in_array($ru->getUsuario()->getId(), $usuarios_id) ? 'selected' : '');
+                    }
                 }
                 $entidades = array('tipo' => 'select',
                                    'multiple' => true,
