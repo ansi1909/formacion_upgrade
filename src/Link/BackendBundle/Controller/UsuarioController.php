@@ -1031,7 +1031,8 @@ class UsuarioController extends Controller
                             // }
                         }
                         else {
-                            $particulares[$this->get('translator')->trans('Línea').' '.$row][$this->get('translator')->trans('Columna').' '.$col_name] = $this->get('translator')->trans('Correo electrónico requerido').'.';
+                            // $particulares[$this->get('translator')->trans('Línea').' '.$row][$this->get('translator')->trans('Columna').' '.$col_name] = $this->get('translator')->trans('Correo electrónico requerido').'.';
+                            $correos[] = null;
                         }
 
                         // Competencia
