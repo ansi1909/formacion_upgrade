@@ -24,6 +24,13 @@ _ajaxEditOpcion:
     requirements:
         _method: GET
 
+
+_ajaxCargarPaginas:
+    path:     /ajaxCargarPaginas
+    defaults: { _controller: LinkBackendBundle:Evaluacion:ajaxCargarPaginas }
+    requirements:
+        _method: POST
+
 _ajaxUpdateOpcion:
     path:     /ajaxUpdateOpcion
     defaults: { _controller: LinkBackendBundle:Evaluacion:ajaxUpdateOpcion }

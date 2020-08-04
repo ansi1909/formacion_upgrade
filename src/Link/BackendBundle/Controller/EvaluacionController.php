@@ -53,6 +53,7 @@ class EvaluacionController extends Controller
     }
 
     public function ajaxObtenerPreguntasAction(Request $request){
+
         $f = $this->get('funciones');
         $em = $this->getDoctrine()->getManager();
         $html='';
@@ -87,19 +88,20 @@ class EvaluacionController extends Controller
             }
         }
         $f->setRequest($session->get('sesion_id'));
-
+        $yml = Yaml::parse(file_get_contents($this->get('kernel')->getRootDir().'/config/parametros.yml'));
         $em = $this->getDoctrine()->getManager();
         $pagina_evaluada = 0;
         $pagina_id = '';
-        $pagina_str = '';
 
         if ($prueba_id)
         {
             $prueba = $em->getRepository('LinkComunBundle:CertiPrueba')->find($prueba_id);
+            $selects = $f->obtnerPadres($prueba->getPagina(),$yml);
         }
         else {
             $prueba = new CertiPrueba();
             $prueba->setFechaCreacion(new \DateTime('now'));
+            $selects = null;
         }
 
         $usuario = $em->getRepository('LinkComunBundle:AdminUsuario')->find($session->get('usuario')['id']);
@@ -128,24 +130,24 @@ class EvaluacionController extends Controller
         {
 
             $pagina_id = $request->request->get('pagina_id');
-            $pagina_str = $request->request->get('pagina_str');
+            $pagina_evaluada = null;
 
             // Verificamos si la página asociada ya había sido seleccionada
-            $qb = $em->createQueryBuilder();
-            $qb->select('COUNT(p.id)')
-               ->from('LinkComunBundle:CertiPrueba', 'p')
-               ->where('p.pagina = :pagina_id');
-            $parametros['pagina_id'] = $pagina_id;
+            // $qb = $em->createQueryBuilder();
+            // $qb->select('COUNT(p.id)')
+            //    ->from('LinkComunBundle:CertiPrueba', 'p')
+            //    ->where('p.pagina = :pagina_id');
+            // $parametros['pagina_id'] = $pagina_id;
 
-            if ($prueba_id)
-            {
-                $qb->andWhere('p.id != :prueba_id');
-                $parametros['prueba_id'] = $prueba_id;
-            }
+            // if ($prueba_id)
+            // {
+            //     $qb->andWhere('p.id != :prueba_id');
+            //     $parametros['prueba_id'] = $prueba_id;
+            // }
 
-            $qb->setParameters($parametros);
-            $query = $qb->getQuery();
-            $pagina_evaluada = $query->getSingleScalarResult();
+            // $qb->setParameters($parametros);
+            // $query = $qb->getQuery();
+            // $pagina_evaluada = $query->getSingleScalarResult();
 
             $pagina = $em->getRepository('LinkComunBundle:CertiPagina')->find($pagina_id);
             $prueba->setPagina($pagina);
@@ -183,47 +185,60 @@ class EvaluacionController extends Controller
 
         $query = $em->createQuery("SELECT p FROM LinkComunBundle:CertiPagina p
                                     WHERE p.pagina IS NULL
-                                    ORDER BY p.id ASC");
-        $pages = $query->getResult();
+                                    ORDER BY p.nombre ASC");
+        $paginas = $query->getResult();
 
-        // Páginas que ya tienen asociadas sus evaluaciones
-        $paginas_asociadas = array();
+        $query = $em->createQuery("SELECT c FROM LinkComunBundle:CertiCategoria c
+                                    WHERE c.id <> 1 AND c.id <> 5
+                                    ORDER BY c.id ASC");
+        $categorias = $query->getResult();
 
-        $query = $em->createQuery("SELECT p FROM LinkComunBundle:CertiPrueba p
-                                    WHERE p.id != :prueba_id")
-                    ->setParameter('prueba_id', $prueba->getId() ? $prueba->getId() : 0);
-        $tests = $query->getResult();
-
-        foreach ($tests as $test)
-        {
-            $paginas_asociadas[] = $test->getPagina()->getId();
-        }
-
-        foreach ($pages as $page)
-        {
-            $tiene++;
-            $check = in_array($page->getId(), $paginas_asociadas) ? ' <span class="fa fa-check"></span>' : '';
-            $str .= '<li data-jstree=\'{ "icon": "fa fa-angle-double-right" }\' p_id="'.$page->getId().'" p_str="'.$page->getCategoria()->getNombre().': '.$page->getNombre().'">'.$page->getCategoria()->getNombre().': '.$page->getNombre().$check;
-            $subPaginas = $f->subPaginas($page->getId(), $paginas_asociadas);
-            if ($subPaginas['tiene'] > 0)
-            {
-                $str .= '<ul>';
-                $str .= $subPaginas['return'];
-                $str .= '</ul>';
-            }
-            $str .= '</li>';
-        }
-
-        $paginas = array('tiene' => $tiene,
-                         'str' => $str);
-
+        //return new response(var_dump($selects));
         return $this->render('LinkBackendBundle:Evaluacion:edit.html.twig', array('form' => $form->createView(),
                                                                                   'prueba' => $prueba,
                                                                                   'paginas' => $paginas,
+                                                                                  'categorias' => $categorias,
                                                                                   'pagina_evaluada' => $pagina_evaluada,
                                                                                   'pagina_id' => $pagina_id,
-                                                                                  'pagina_str' => $pagina_str));
+                                                                                  'selects'=>$selects
+                                                                                  ));
 
+    }
+
+    public function ajaxCargarPaginasAction(Request $request){
+        $session = new Session();
+        $f = $this->get('funciones');
+
+        if (!$session->get('ini') || $f->sesionBloqueda($session->get('sesion_id')))
+        {
+            return $this->redirectToRoute('_loginAdmin');
+        }
+        else {
+            if (!$f->accesoRoles($session->get('usuario')['roles'], $session->get('app_id')))
+            {
+                return $this->redirectToRoute('_authException');
+            }
+        }
+        $em = $this->getDoctrine()->getManager();
+        $yml = Yaml::parse(file_get_contents($this->get('kernel')->getRootDir().'/config/parametros.yml'));
+        $pagina_id = $request->request->get('pagina_id');
+        $categoria_id = $request->request->get('categoria_id');
+        $pagina_seleccionada_id = $request->request->get('pagina_seleccionada_id');
+        $paginas = $f->obtenerPaginas($pagina_id,$categoria_id,$yml);
+        $html = '';
+          $html .=  '<option value="" id="" data-orden=""  > </option>';
+        foreach ($paginas  as $pagina) {
+            $prueba = $em->getRepository('LinkComunBundle:CertiPrueba')->findByPagina($pagina->getId());
+            if($prueba){
+                $disabled = ($pagina_seleccionada_id != $pagina->getId())? ' disabled="true"':' ';
+                $style = ($pagina_seleccionada_id == $pagina->getId())? ' style="color:#0BA92D" ':' style="color:#D696A9" ';
+                $html .=  '<option value='.$pagina->getId().' id= s-'.$pagina->getId().'data-orden='.$pagina->getOrden().$disabled.$style.'  >'.$pagina->getNombre().'</option>';
+            }else{
+                $html .=  '<option value='.$pagina->getId().' id= s-'.$pagina->getId().' data-orden='.$pagina->getOrden().'>'.$pagina->getNombre().'</option>';
+            }
+        }
+        $return = json_encode(['html'=>$html]);
+        return new Response($return, 200, array('Content-Type' => 'application/json'));
     }
 
     public function editPreguntaAction($prueba_id, $pregunta_id, $cantidad, $total, Request $request){

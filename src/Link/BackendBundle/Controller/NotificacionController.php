@@ -660,7 +660,7 @@ class NotificacionController extends Controller
                                                 ORDER BY n.nombre ASC")
                                 ->setParameter('empresa_id',$notificacion_programada->getNotificacion()->getEmpresa()->getId());
                     $niveles = $query->getResult();
-                    
+
                     $valores = array();
                     foreach ($niveles as $nivel)
                     {
@@ -708,7 +708,7 @@ class NotificacionController extends Controller
                                 }
                             }
                     }
-                    
+
                     }
                     $entidades = array('tipo' => 'select',
                                     'multiple' => false,
@@ -1040,7 +1040,7 @@ class NotificacionController extends Controller
                     {
                         if ($correo != '')
                         {
-                            
+
                             // Validar que no se haya enviado el correo a este destinatario
                             $correo_bd = $em->getRepository('LinkComunBundle:AdminCorreo')->findOneBy(array('tipoCorreo' => $yml['parameters']['tipo_correo']['notificacion_programada'],
                                                                                                             'entidadId' => $np_id,
@@ -1129,7 +1129,7 @@ class NotificacionController extends Controller
                             {
                                 if ($correo != '')
                                 {
-                                    
+
                                     // Validar que no se haya enviado el correo a este destinatario
                                     $correo_bd = $em->getRepository('LinkComunBundle:AdminCorreo')->findOneBy(array('tipoCorreo' => $yml['parameters']['tipo_correo']['notificacion_programada'],
                                                                                                                     'entidadId' => $np_id,
@@ -1209,7 +1209,7 @@ class NotificacionController extends Controller
                             {
                                 if ($correo != '')
                                 {
-                                    
+
                                     // Validar que no se haya enviado el correo a este destinatario
                                     $correo_bd = $em->getRepository('LinkComunBundle:AdminCorreo')->findOneBy(array('tipoCorreo' => $yml['parameters']['tipo_correo']['notificacion_programada'],
                                                                                                                     'entidadId' => $np_id,
@@ -1285,12 +1285,12 @@ class NotificacionController extends Controller
                                 }
                             }
                         }
-                        
+
                     }
-                    
+
                     //return new response('holaaa');
 
-                    
+
 
                 }
                 //return new response(var_dump($prueba_usuario));
@@ -1384,7 +1384,7 @@ class NotificacionController extends Controller
                                             ORDER BY n.nombre ASC")
                             ->setParameter('empresa_id',$notificacion->getEmpresa()->getId());
                 $niveles = $query->getResult();
-                
+
                 $valores = array();
                 foreach ($niveles as $nivel)
                 {
@@ -1432,7 +1432,7 @@ class NotificacionController extends Controller
                             }
                         }
                    }
-                   
+
                 }
                 $entidades = array('tipo' => 'select',
                                    'multiple' => false,
@@ -1505,21 +1505,30 @@ class NotificacionController extends Controller
                    ->andWhere('u.empresa = :empresa_id')
                    ->andWhere('ru.rol = :participante')
                    ->andWhere('u.activo = :status')
-                   ->andWhere('n.fechaFin >= :hoy')
                    ->orderBy('u.nombre', 'ASC')
                    ->setParameters(array('empresa_id' => $notificacion->getEmpresa()->getId(),
                                          'participante' => $yml['parameters']['rol']['participante'],
-                                         'status'=>TRUE,
-                                         'hoy'=> $hoy));
+                                         'status'=>TRUE));
                 $query = $qb->getQuery();
                 $rus = $query->getResult();
                 $valores = array();
                 foreach ($rus as $ru)
                 {
-                    $correo = !$ru->getUsuario()->getCorreoPersonal() ? !$ru->getUsuario()->getCorreoCorporativo() ? $this->get('translator')->trans('Sin correo') : $ru->getUsuario()->getCorreoCorporativo() : $ru->getUsuario()->getCorreoPersonal();
-                    $valores[] = array('id' => $ru->getUsuario()->getId(),
-                                       'nombre' => $ru->getUsuario()->getNombre().' '.$ru->getUsuario()->getApellido().' ('.$correo.')',
-                                       'selected' => in_array($ru->getUsuario()->getId(), $usuarios_id) ? 'selected' : '');
+                    if($ru->getUsuario()->getNivel()->getFechaFin())
+                    {
+                        if($ru->getUsuario()->getNivel()->getFechaFin() > $hoy)
+                        {
+                            $correo = !$ru->getUsuario()->getCorreoPersonal() ? !$ru->getUsuario()->getCorreoCorporativo() ? $this->get('translator')->trans('Sin correo') : $ru->getUsuario()->getCorreoCorporativo() : $ru->getUsuario()->getCorreoPersonal();
+                            $valores[] = array('id' => $ru->getUsuario()->getId(),
+                                            'nombre' => $ru->getUsuario()->getNombre().' '.$ru->getUsuario()->getApellido().' ('.$correo.')',
+                                            'selected' => in_array($ru->getUsuario()->getId(), $usuarios_id) ? 'selected' : '');
+                        }
+                    }else{
+                        $correo = !$ru->getUsuario()->getCorreoPersonal() ? !$ru->getUsuario()->getCorreoCorporativo() ? $this->get('translator')->trans('Sin correo') : $ru->getUsuario()->getCorreoCorporativo() : $ru->getUsuario()->getCorreoPersonal();
+                        $valores[] = array('id' => $ru->getUsuario()->getId(),
+                                        'nombre' => $ru->getUsuario()->getNombre().' '.$ru->getUsuario()->getApellido().' ('.$correo.')',
+                                        'selected' => in_array($ru->getUsuario()->getId(), $usuarios_id) ? 'selected' : '');
+                    }
                 }
                 $entidades = array('tipo' => 'select',
                                    'multiple' => true,

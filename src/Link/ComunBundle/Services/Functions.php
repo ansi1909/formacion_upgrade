@@ -3930,6 +3930,94 @@ public function obtenerEstructuraJson($pagina_id){
         return $retorno;
     }
 
+    public function obtenerPaginas($pagina_id,$categoria_id,$yml){
+      $paginas = null;
+      $em = $this->em;
+      $ids = array();
+      $activo = $yml['parameters']['estatus_contenido']['activo'];
+      $categoria = $yml['parameters']['categoria']['modulo'];
+
+      $query = $em->createQuery('SELECT p FROM LinkComunBundle:CertiPagina p
+                                 WHERE p.pagina =:pagina_id
+                                 AND p.estatusContenido =:estatus_contenido_id
+                                 ORDER BY p.nombre ASC')
+                ->setParameters(['pagina_id'=> $pagina_id,'estatus_contenido_id'=> $activo]);
+      $modulos = $query->getResult();
+
+      if ($categoria_id == $yml['parameters']['categoria']['modulo']) {
+        $paginas = $modulos;
+      }elseif ($categoria_id == $yml['parameters']['categoria']['materia'] || $categoria_id == $yml['parameters']['categoria']['leccion'] ) {
+        foreach ($modulos as $modulo) {
+          array_push($ids,$modulo->getId());
+        }
+          //AND pl.estatusPagina IN (:vista)')
+        $query = $em->createQuery('SELECT p FROM LinkComunBundle:CertiPagina p
+                                   WHERE p.pagina IN (:ids)
+                                   AND p.estatusContenido =:estatus_contenido_id
+                                   ORDER BY p.orden ASC')
+                  ->setParameters(['ids'=> $ids,'estatus_contenido_id'=> $activo]);
+        $materias = $query->getResult();
+
+        if ($categoria_id == $yml['parameters']['categoria']['materia']) {
+          $paginas = $materias;
+        }else{
+          $ids = array();
+          foreach ($materias as $materia) {
+            array_push($ids,$materia->getId());
+          }
+          $query = $em->createQuery('SELECT p FROM LinkComunBundle:CertiPagina p
+                                     WHERE p.pagina IN (:ids)
+                                     AND p.estatusContenido =:estatus_contenido_id
+                                     ORDER BY p.orden ASC')
+                          ->setParameters(['ids'=> $ids,'estatus_contenido_id'=> $activo]);
+          $paginas = $query->getResult();
+        }
+      }
+      return $paginas;
+    }
+
+    public function obtnerPadres($pagina,$yml){
+      $return = array('html'=>null,'categoria'=>$pagina->getCategoria()->getId(),'padre'=>null,'pagina_id'=>$pagina->getId());
+      $em = $this->em;
+      $activo = $yml['parameters']['estatus_contenido']['activo'];
+      $query = $em->createQuery('SELECT p FROM LinkComunBundle:CertiPagina p
+                                 WHERE p.pagina =:pagina_id
+                                 AND p.estatusContenido =:estatus_contenido_id
+                                 ORDER BY p.orden ASC')
+                ->setParameters(['pagina_id'=> $pagina->getPagina()->getId(),'estatus_contenido_id'=> $activo]);
+      $paginas = $query->getResult();
+
+      if ($pagina->getCategoria()->getId() == $yml['parameters']['categoria']['leccion']) {
+          $materia = $em->getRepository('LinkComunBundle:CertiPagina')->findOneBy(array('id'=>$pagina->getPagina()->getId()));
+          $modulo = $em->getRepository('LinkComunBundle:CertiPagina')->findOneBy(array('id'=>$materia->getPagina()->getId()));
+          $programa = $em->getRepository('LinkComunBundle:CertiPagina')->findOneBy(array('id'=>$modulo->getPagina()->getId()));
+      }else if($pagina->getCategoria()->getId() == $yml['parameters']['categoria']['materia']){
+          $modulo = $em->getRepository('LinkComunBundle:CertiPagina')->findOneBy(array('id'=>$pagina->getPagina()->getId()));
+          $programa = $em->getRepository('LinkComunBundle:CertiPagina')->findOneBy(array('id'=>$modulo->getPagina()->getId()));
+      }else{
+       /* Si la pagina con evaluacion es un modulo*/
+        $programa = $em->getRepository('LinkComunBundle:CertiPagina')->findOneBy(array('id'=>$pagina->getPagina()->getId()));
+      }
+      $html ='';
+      $html .=  '<option value="" id="" data-orden=""  > </option>';
+      foreach ($paginas  as $pagina) {
+            $prueba = $em->getRepository('LinkComunBundle:CertiPrueba')->findOneByPagina($pagina->getId());
+            if($prueba){
+                $disabled = ( $prueba->getPagina()->getId() != $return['pagina_id'])?"disabled = true ":" ";
+                $selected = ( $prueba->getPagina()->getId() == $return['pagina_id'])? "selected = true ":" ";
+                $style = ( $prueba->getPagina()->getId() == $return['pagina_id'])? ' style="color:#0BA92D" ':' style="color:#D696A9" ';
+                $html .=  '<option value='.$pagina->getId().' id="s-'.$pagina->getId().'" data-orden="'.$pagina->getOrden().'"'.$disabled.$selected.$style.' >'.$pagina->getNombre().'</option>';
+            }else{
+                $html .=  '<option value='.$pagina->getId().' id= s-'.$pagina->getId().' data-orden='.$pagina->getOrden().'>'.$pagina->getNombre().'</option>';
+            }
+      }
+      $return['html'] = $html;
+      $return['categoria'] = $pagina->getCategoria()->getId();
+      $return['padre'] = $programa->getId();
+      //$return['pagina_id'] = $pagina->getId();
+      return $return;
+    }
+
 
 
 
