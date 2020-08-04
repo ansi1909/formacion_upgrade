@@ -660,7 +660,7 @@ class NotificacionController extends Controller
                                                 ORDER BY n.nombre ASC")
                                 ->setParameter('empresa_id',$notificacion_programada->getNotificacion()->getEmpresa()->getId());
                     $niveles = $query->getResult();
-                    
+
                     $valores = array();
                     foreach ($niveles as $nivel)
                     {
@@ -708,7 +708,7 @@ class NotificacionController extends Controller
                                 }
                             }
                     }
-                    
+
                     }
                     $entidades = array('tipo' => 'select',
                                     'multiple' => false,
@@ -1040,7 +1040,7 @@ class NotificacionController extends Controller
                     {
                         if ($correo != '')
                         {
-                            
+
                             // Validar que no se haya enviado el correo a este destinatario
                             $correo_bd = $em->getRepository('LinkComunBundle:AdminCorreo')->findOneBy(array('tipoCorreo' => $yml['parameters']['tipo_correo']['notificacion_programada'],
                                                                                                             'entidadId' => $np_id,
@@ -1129,7 +1129,7 @@ class NotificacionController extends Controller
                             {
                                 if ($correo != '')
                                 {
-                                    
+
                                     // Validar que no se haya enviado el correo a este destinatario
                                     $correo_bd = $em->getRepository('LinkComunBundle:AdminCorreo')->findOneBy(array('tipoCorreo' => $yml['parameters']['tipo_correo']['notificacion_programada'],
                                                                                                                     'entidadId' => $np_id,
@@ -1209,7 +1209,7 @@ class NotificacionController extends Controller
                             {
                                 if ($correo != '')
                                 {
-                                    
+
                                     // Validar que no se haya enviado el correo a este destinatario
                                     $correo_bd = $em->getRepository('LinkComunBundle:AdminCorreo')->findOneBy(array('tipoCorreo' => $yml['parameters']['tipo_correo']['notificacion_programada'],
                                                                                                                     'entidadId' => $np_id,
@@ -1285,12 +1285,12 @@ class NotificacionController extends Controller
                                 }
                             }
                         }
-                        
+
                     }
-                    
+
                     //return new response('holaaa');
 
-                    
+
 
                 }
                 //return new response(var_dump($prueba_usuario));
@@ -1384,7 +1384,7 @@ class NotificacionController extends Controller
                                             ORDER BY n.nombre ASC")
                             ->setParameter('empresa_id',$notificacion->getEmpresa()->getId());
                 $niveles = $query->getResult();
-                
+
                 $valores = array();
                 foreach ($niveles as $nivel)
                 {
@@ -1432,7 +1432,7 @@ class NotificacionController extends Controller
                             }
                         }
                    }
-                   
+
                 }
                 $entidades = array('tipo' => 'select',
                                    'multiple' => false,
