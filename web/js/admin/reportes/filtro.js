@@ -4,7 +4,7 @@ $(document).ready(function() {
 	var filtro_tema = $('#filtro_tema').val();
 	var empresa_id = $('#empresa_id').val();
 	$("#check_filtro").prop('disabled', true);
-    
+
 
     if(filtro_programas == 1){
 		$('#pagina_id').change(function(event) {
@@ -17,15 +17,20 @@ $(document).ready(function() {
 
 		});
 	}else{
-		$('#empresa_id').change(function(event) {
-			if($('#empresa_id').val()!=''){
-				$("#check_filtro").prop('disabled', false);
+			var tipoElemento = $('#empresa_id').get(0).tagName;
+			if (tipoElemento == 'SELECT') {
+			    $('#empresa_id').change(function(event) {
+			        if ($('#empresa_id').val() != '') {
+			            $("#check_filtro").prop('disabled', false);
 
+			        } else {
+			            $("#check_filtro").prop('disabled', true);
+			        }
+
+			    });
 			}else{
-				$("#check_filtro").prop('disabled', true);
+				$("#check_filtro").prop('disabled', false);
 			}
-
-		});
 	}
 
 	$('#check_filtro').change(function(event) {
@@ -58,7 +63,7 @@ $(document).ready(function() {
 				    $("#check_filtro").prop('checked', false)}, 1000);
 
 				}
-					
+
 				},
 				error: function(){
 					$('#search').show();
@@ -73,7 +78,7 @@ $(document).ready(function() {
 
 		}
     });
-	
+
 	if (filtro_programas == '1')
 	{
 
@@ -118,7 +123,7 @@ $(document).ready(function() {
 
 	$('#search').click(function(){
 		var valid = $("#form").valid();
-        if (!valid) 
+        if (!valid)
         {
             notify($('#div-error').html());
         }
