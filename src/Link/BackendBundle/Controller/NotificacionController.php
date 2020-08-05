@@ -1125,7 +1125,7 @@ class NotificacionController extends Controller
                                                             'hoy' => $hoy,
                                                             'empresa_id' => $notificacion_programada->getNotificacion()->getEmpresa()->getId()));
                             $niveles_f = $query->getResult();
-                            if($nivel_f)
+                            if($niveles_f)
                             {
                                 if ($correo != '')
                                 {
