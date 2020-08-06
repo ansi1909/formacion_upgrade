@@ -1125,7 +1125,7 @@ class NotificacionController extends Controller
                                                             'hoy' => $hoy,
                                                             'empresa_id' => $notificacion_programada->getNotificacion()->getEmpresa()->getId()));
                             $niveles_f = $query->getResult();
-                            if($nivel_f)
+                            if($niveles_f)
                             {
                                 if ($correo != '')
                                 {
@@ -1585,7 +1585,7 @@ class NotificacionController extends Controller
                                             JOIN np.nivel n
                                             WHERE pe.empresa = :empresa_id
                                             AND p.pagina IS NULL
-                                            AND n.fechaFin >= :hoy
+                                            AND (n.fechaFin IS NULL OR n.fechaFin >= :hoy)
                                             ORDER BY pe.orden ASC")
                             ->setParameters(array('empresa_id'=> $notificacion->getEmpresa()->getId(),
                                                   'hoy' => $hoy));
@@ -1626,7 +1626,7 @@ class NotificacionController extends Controller
                                             JOIN np.nivel n
                                             WHERE pe.empresa = :empresa_id
                                             AND p.pagina IS NULL
-                                            AND n.fechaFin >= :hoy
+                                            AND(n.fechaFin IS NULL OR n.fechaFin >= :hoy)
                                             ORDER BY pe.orden ASC")
                             ->setParameters(array('empresa_id'=> $notificacion->getEmpresa()->getId(),
                                                   'hoy' => $hoy));
