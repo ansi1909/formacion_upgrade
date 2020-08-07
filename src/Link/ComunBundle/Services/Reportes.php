@@ -11,8 +11,8 @@ use Symfony\Component\Translation\TranslatorInterface;
 
 
 class Reportes
-{	
-	
+{
+
 	protected $em;
 	protected $container;
 	protected $mailer;
@@ -43,7 +43,7 @@ class Reportes
         $query->bindValue(':phasta', $phasta, \PDO::PARAM_STR);
         $query->execute();
         $rs = $query->fetchAll();
-        
+
         return $rs;
     }
 
@@ -62,7 +62,7 @@ class Reportes
         $query->bindValue(':phasta', $phasta, \PDO::PARAM_STR);
         $query->execute();
         $rs = $query->fetchAll();
-        
+
         return $rs;
     }
 
@@ -79,7 +79,7 @@ class Reportes
          $query->bindValue(':pusuario_id', $pusuario_id, \PDO::PARAM_INT);
         $query->execute();
         $rs = $query->fetchAll();
-        
+
         return $rs;
     }
 
@@ -90,7 +90,7 @@ class Reportes
 		$em = $this->em;
         $empresa = $em->getRepository('LinkComunBundle:AdminEmpresa')->find($empresa_id);
 		$timeZoneEmpresa = ($empresa->getZonaHoraria())? $empresa->getZonaHoraria()->getNombre():$yml['parameters']['time_zone']['default'];
-		
+
         // Acumuladores
         $columna_mayor = 0;
         $fila_mayor = 0;
@@ -220,7 +220,7 @@ class Reportes
                 $r_arr = explode("__", $r[0]['resultado']);
                 $f = 0;
                 $total_hora = 0;
-                
+
                 foreach ($r_arr as $r)
                 {
 
@@ -282,7 +282,7 @@ class Reportes
 	{
 
 		$em = $this->em;
-		
+
         // Cálculos desde la función de BD
         $query = $em->getConnection()->prepare('SELECT
                                                 fnevaluaciones_modulo(:re, :pempresa_id, :ppagina_id, :pdesde, :phasta) as
@@ -390,7 +390,7 @@ class Reportes
 
 
         $em = $this->em;
-        
+
         // Cálculos desde la función de BD
         $query = $em->getConnection()->prepare('SELECT
                                                 fninteraccion_muro(:re, :pempresa_id, :ppagina_id) as
@@ -411,7 +411,7 @@ class Reportes
 
 
         $em = $this->em;
-        
+
         // Cálculos desde la función de BD
         $query = $em->getConnection()->prepare('SELECT
                                                 fninteraccion_espacio_colaborativo(:re, :pempresa_id, :ppagina_id, :pforo_id) as
@@ -424,7 +424,7 @@ class Reportes
         $query->execute();
         $rs = $query->fetchAll();
 
-        
+
 
         return $rs;
 
@@ -460,7 +460,7 @@ class Reportes
         $resultados['week_before_total1'] = $resultados['week_before_activos'] + $resultados['week_before_inactivos'];
         $resultados['week_before_total2'] = $resultados['week_before_no_iniciados'] + $resultados['week_before_en_curso'] + $resultados['week_before_aprobados'];
         $resultados['week_before_total3'] = $resultados['week_before_inactivos'] + $resultados['week_before_no_iniciados'] + $resultados['week_before_en_curso'] + $resultados['week_before_aprobados'];
-        
+
         $desde_inactivos_pct = $resultados['desde_total'] != 0 ? ($resultados['desde_inactivos']/$resultados['desde_total'])*100 : '-';
         $resultados['desde_inactivos_pct'] = $desde_inactivos_pct != '-' ? number_format($desde_inactivos_pct, 0) : $desde_inactivos_pct;
 
@@ -471,7 +471,7 @@ class Reportes
 
         $week_before_inactivos_pct = $resultados['week_before_total1'] != 0 ? ($resultados['week_before_inactivos']/$resultados['week_before_total1'])*100 : '-';
         $resultados['week_before_inactivos_pct'] = $week_before_inactivos_pct != '-' ? number_format($week_before_inactivos_pct, 0) : $week_before_inactivos_pct;
-        
+
         $week_before_activos_pct = $resultados['week_before_total1'] != 0 ? ($resultados['week_before_activos']/$resultados['week_before_total1'])*100 : '-';
         $resultados['week_before_activos_pct'] = $week_before_activos_pct != '-' ? number_format($week_before_activos_pct, 0) : $week_before_activos_pct;
 
@@ -508,10 +508,10 @@ class Reportes
         $resultados['hasta_activos_pct'] = $hasta_activos_pct != '-' ? number_format($hasta_activos_pct, 0) : $hasta_activos_pct;
 
         $resultados['hasta_total_pct'] = $resultados['hasta_total'] != 0 ? 100 : '-';
-        
+
         $now_inactivos_pct = $resultados['now_total1'] != 0 ? ($resultados['now_inactivos']/$resultados['now_total1'])*100 : '-';
         $resultados['now_inactivos_pct'] = $now_inactivos_pct != '-' ? number_format($now_inactivos_pct, 0) : $now_inactivos_pct;
-        
+
         $now_activos_pct = $resultados['now_total1'] != 0 ? ($resultados['now_activos']/$resultados['now_total1'])*100 : '-';
         $resultados['now_activos_pct'] = $now_activos_pct != '-' ? number_format($now_activos_pct, 0) : $now_activos_pct;
 
@@ -604,7 +604,7 @@ class Reportes
 
         $listado = array('participantes' => $participantes,
                          'paginas' => $paginas);
-        
+
         return $listado;
 
     }
@@ -635,30 +635,30 @@ class Reportes
         $resultados['ingresos']['finalizados'] = (int) $r_arr[6];
 
         //obtenemos los programas asociados al usuario
-        $query =  $em->createQuery('SELECT p FROM LinkComunBundle:CertiPagina p 
-                                    INNER JOIN LinkComunBundle:CertiPaginaEmpresa pe WITH p.id = pe.pagina 
-                                    INNER JOIN LinkComunBundle:CertiNivelPagina np WITH pe.id = np.paginaEmpresa 
-                                    WHERE np.nivel = :nivel_id 
-                                        AND pe.empresa = :empresa_id 
-                                        AND p.pagina IS NULL 
+        $query =  $em->createQuery('SELECT p FROM LinkComunBundle:CertiPagina p
+                                    INNER JOIN LinkComunBundle:CertiPaginaEmpresa pe WITH p.id = pe.pagina
+                                    INNER JOIN LinkComunBundle:CertiNivelPagina np WITH pe.id = np.paginaEmpresa
+                                    WHERE np.nivel = :nivel_id
+                                        AND pe.empresa = :empresa_id
+                                        AND p.pagina IS NULL
                                     ORDER BY pe.orden ASC')
                      ->setParameters(array('nivel_id' => $nivel_id,
                                            'empresa_id' => $empresa_id));
         $programas = $query->getResult();
 
         $programas_arr = array();
-      
-        foreach ($programas as $programa) 
+
+        foreach ($programas as $programa)
         {
 
             $programa_log = $em->getRepository('LinkComunBundle:CertiPaginaLog')->findOneBy(array('pagina' => $programa->getId(),
                                                                                                   'usuario' => $usuario_id));
 
             // Módulos
-            $query =  $em->createQuery('SELECT pe FROM LinkComunBundle:CertiPaginaEmpresa pe 
-                                        JOIN pe.pagina p 
-                                        WHERE pe.empresa = :empresa_id 
-                                            AND p.pagina = :pagina_id  
+            $query =  $em->createQuery('SELECT pe FROM LinkComunBundle:CertiPaginaEmpresa pe
+                                        JOIN pe.pagina p
+                                        WHERE pe.empresa = :empresa_id
+                                            AND p.pagina = :pagina_id
                                         ORDER BY pe.orden ASC')
                          ->setParameters(array('empresa_id' => $empresa_id,
                                                'pagina_id' => $programa->getId()));
@@ -673,10 +673,10 @@ class Reportes
                                                                                                     'usuario' => $usuario_id));
 
                 // Materias
-                $query =  $em->createQuery('SELECT pe FROM LinkComunBundle:CertiPaginaEmpresa pe 
-                                            JOIN pe.pagina p 
-                                            WHERE pe.empresa = :empresa_id 
-                                                AND p.pagina = :pagina_id  
+                $query =  $em->createQuery('SELECT pe FROM LinkComunBundle:CertiPaginaEmpresa pe
+                                            JOIN pe.pagina p
+                                            WHERE pe.empresa = :empresa_id
+                                                AND p.pagina = :pagina_id
                                             ORDER BY pe.orden ASC')
                              ->setParameters(array('empresa_id' => $empresa_id,
                                                    'pagina_id' => $modulo->getPagina()->getId()));
@@ -699,10 +699,10 @@ class Reportes
                     }
 
                     // Lecciones
-                    $query =  $em->createQuery('SELECT pe FROM LinkComunBundle:CertiPaginaEmpresa pe 
-                                                JOIN pe.pagina p 
-                                                WHERE pe.empresa = :empresa_id 
-                                                    AND p.pagina = :pagina_id  
+                    $query =  $em->createQuery('SELECT pe FROM LinkComunBundle:CertiPaginaEmpresa pe
+                                                JOIN pe.pagina p
+                                                WHERE pe.empresa = :empresa_id
+                                                    AND p.pagina = :pagina_id
                                                 ORDER BY pe.orden ASC')
                                  ->setParameters(array('empresa_id' => $empresa_id,
                                                        'pagina_id' => $materia->getPagina()->getId()));
@@ -746,7 +746,7 @@ class Reportes
         }
 
         $resultados['programas'] = $programas_arr;
-        
+
         return $resultados;
 
     }
