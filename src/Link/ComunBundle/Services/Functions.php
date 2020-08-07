@@ -3934,14 +3934,13 @@ public function obtenerEstructuraJson($pagina_id){
       $paginas = null;
       $em = $this->em;
       $ids = array();
-      $activo = $yml['parameters']['estatus_contenido']['activo'];
+      //$activo = $yml['parameters']['estatus_contenido']['activo'];
       $categoria = $yml['parameters']['categoria']['modulo'];
 
       $query = $em->createQuery('SELECT p FROM LinkComunBundle:CertiPagina p
                                  WHERE p.pagina =:pagina_id
-                                 AND p.estatusContenido =:estatus_contenido_id
                                  ORDER BY p.nombre ASC')
-                ->setParameters(['pagina_id'=> $pagina_id,'estatus_contenido_id'=> $activo]);
+                ->setParameters(['pagina_id'=> $pagina_id]);
       $modulos = $query->getResult();
 
       if ($categoria_id == $yml['parameters']['categoria']['modulo']) {
@@ -3953,9 +3952,8 @@ public function obtenerEstructuraJson($pagina_id){
           //AND pl.estatusPagina IN (:vista)')
         $query = $em->createQuery('SELECT p FROM LinkComunBundle:CertiPagina p
                                    WHERE p.pagina IN (:ids)
-                                   AND p.estatusContenido =:estatus_contenido_id
                                    ORDER BY p.orden ASC')
-                  ->setParameters(['ids'=> $ids,'estatus_contenido_id'=> $activo]);
+                  ->setParameters(['ids'=> $ids]);
         $materias = $query->getResult();
 
         if ($categoria_id == $yml['parameters']['categoria']['materia']) {
@@ -3967,9 +3965,8 @@ public function obtenerEstructuraJson($pagina_id){
           }
           $query = $em->createQuery('SELECT p FROM LinkComunBundle:CertiPagina p
                                      WHERE p.pagina IN (:ids)
-                                     AND p.estatusContenido =:estatus_contenido_id
                                      ORDER BY p.orden ASC')
-                          ->setParameters(['ids'=> $ids,'estatus_contenido_id'=> $activo]);
+                          ->setParameters(['ids'=> $ids]);
           $paginas = $query->getResult();
         }
       }
@@ -3979,12 +3976,11 @@ public function obtenerEstructuraJson($pagina_id){
     public function obtnerPadres($pagina,$yml){
       $return = array('html'=>null,'categoria'=>$pagina->getCategoria()->getId(),'padre'=>null,'pagina_id'=>$pagina->getId());
       $em = $this->em;
-      $activo = $yml['parameters']['estatus_contenido']['activo'];
+     // $activo = $yml['parameters']['estatus_contenido']['activo'];
       $query = $em->createQuery('SELECT p FROM LinkComunBundle:CertiPagina p
                                  WHERE p.pagina =:pagina_id
-                                 AND p.estatusContenido =:estatus_contenido_id
                                  ORDER BY p.orden ASC')
-                ->setParameters(['pagina_id'=> $pagina->getPagina()->getId(),'estatus_contenido_id'=> $activo]);
+                ->setParameters(['pagina_id'=> $pagina->getPagina()->getId()]);
       $paginas = $query->getResult();
 
       if ($pagina->getCategoria()->getId() == $yml['parameters']['categoria']['leccion']) {
