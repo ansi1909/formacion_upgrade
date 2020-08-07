@@ -18,7 +18,8 @@ begin
 			  au.nombre AS nombre,
 			  au.apellido AS apellido,
 			  au.login AS login,
-			  au.correo_corporativo AS correo,
+			  au.correo_corporativo AS correo_corporativo,
+			  au.correo_personal AS correo_personal,
 			  an.nombre  AS nivel
 		FROM
 			  admin_usuario au
@@ -36,7 +37,7 @@ begin
 	         ( LOWER(an.nombre) NOT LIKE 'revisor%' AND LOWER(an.nombre) NOT LIKE 'tutor%' )
 		AND
 			  ass.usuario_id <> pusuario_id
-		GROUP BY au.login, au.nombre, au.apellido, an.nombre, au.correo_corporativo
+		GROUP BY au.login, au.nombre, au.apellido, an.nombre, au.correo_corporativo,au.correo_personal
 		ORDER BY au.login DESC;
 
     RETURN resultado;

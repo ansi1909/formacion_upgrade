@@ -86,7 +86,7 @@
                                     <div class="col-sm-7 col-md-7 col-lg-7 offset-sm-4 offset-md-4 offset-lg-4">
                                         <select class="form_sty_sel form-control" style="border-radius: 5px" id="empresa_id" name="empresa_id">
                                             <option value="0"></option>
-                                            
+
                                         </select>
                                         <span class="fa fa-industry"></span>
                                         <span class="bttn_d"><img src="{{ asset('img/down-arrowbck.png') }}"></span>
@@ -147,6 +147,7 @@
             </div>
         </div>
     {% else %}
+    {# cuando no se tiene rol administrador o se tiene una empresa asignada #}
         <input type="hidden" id="ver_conectados" name="ver_conectados" value="1">
         <div class="emp_dash">
             <input type="hidden" id="error-msg" name="error-msg" value="{{ 'Ha ocurrido un error al cargar los participantes conectados, verifique su conexión a internet o contacte al administrador del sistema.'|trans }}">
@@ -193,11 +194,11 @@
             <br>
             <div class="row">
                 <div class="col-md-14 col-sm-14 col-lg-14 col-xl-14 offset-md-1 offset-sm-1 offset-lg-1 offset-xl-1">
-                    <div class="card">
+                    <div class="card" >
                         <div class="card-header gradiente">
                             <div class="card-title">{{'Listado de programas' |trans}}</div>
                         </div>
-                        <div class="card-block">
+                        <div class="card-block" >
                             <table class="table data_table">
                                 <thead class="sty__title">
                                     <tr>
@@ -227,8 +228,15 @@
                                     {% endfor %}
                                 </tbody>
                             </table>
+                        </div> {# fin del cuero de la tabla #}
+                        <div class="card-footer">
+                            <div class="row">
+                                <div class="col-sm-16 col-md-16 col-lg-16 col-xl-16 text-right">
+                                   <a href="{{ path('_excelReporteGeneral',{'app_id':20, 'empresa_id':usuario.empresa.id}) }} "> <button type="button" class="bttn__edit" data-toggle="tooltip" data-placement="bottom" title="Descargar"><span class="fa fa-download"></span></button></a>
+                                </div>
+                            </div>
                         </div>
-                    </div>
+                    </div> {# fin de la tarjeta #}
                 </div>
             </div>
             <form id="form" name="form" action="{{ path ('_ajaxUsuariosConectados') }}" method="POST">
