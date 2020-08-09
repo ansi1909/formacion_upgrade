@@ -179,7 +179,7 @@ class DefaultController extends Controller
         foreach ($empresas_db as $empresa)
         {
             $html.='<option value="'.$empresa->getId().'" >'.$empresa->getNombre().'</option>';
-            
+
         }
 
         $return = json_encode($html);
@@ -505,10 +505,11 @@ class DefaultController extends Controller
                     <tbody style="font-size: .7rem;">';
         foreach ($listado as $registro)
         {
+            $correo = ($registro['correo_corporativo'])? strtolower($registro['correo_corporativo']) : strtolower($registro['correo_personal']);
             $html .= '<tr>
                         <td>'.$registro['login'].'</td>
                         <td>'.$registro['nombre'].' '.$registro['apellido'].'</td>
-                        <td>'.$registro['correo'].'</td>
+                        <td>'.$correo.'</td>
                         <td>'.$registro['nivel'].'</td>
                     </tr>';
         }
