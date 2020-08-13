@@ -137,7 +137,7 @@ parameters:
     limite_correos_notificaciones:
         cron: 50
         controlador: 0
-        diario: 1000
+        diario: 10000
     evaluaciones:
         puntaje_minimo: 75
         intentos: 100
