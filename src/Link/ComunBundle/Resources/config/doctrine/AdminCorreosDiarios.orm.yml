@@ -1,0 +1,22 @@
+Link\ComunBundle\Entity\AdminCorreosDiarios:
+    type: entity
+    table: admin_correos_diarios
+    id:
+        id:
+            type: integer
+            nullable: false
+            options:
+                unsigned: false
+            id: true
+            generator:
+                strategy: SEQUENCE
+    fields:
+        fecha:
+            type: date
+            nullable: true
+        cantidad:
+            type: integer
+            nullable: true
+            options:
+                unsigned: false
+    lifecycleCallbacks: {  }

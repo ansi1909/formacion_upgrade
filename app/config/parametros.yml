@@ -135,8 +135,9 @@ parameters:
         alarma_tutor: 0
         alarma_participantes: 0
     limite_correos_notificaciones:
-        cron: 1000
-        controlador: 300
+        cron: 50
+        controlador: 0
+        diario: 1000
     evaluaciones:
         puntaje_minimo: 75
         intentos: 100
