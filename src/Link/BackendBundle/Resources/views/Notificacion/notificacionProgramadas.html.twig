@@ -1,0 +1,146 @@
+{% extends '::admin.html.twig' %}
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('assets/vendor/jstree/dist/themes/default/style.min.css') }}" type="text/css">
+    <style type="text/css" media="screen">
+        .alignment{
+            padding: 4%;
+            text-align: left;
+        }
+        .alignment_{
+            padding: 4%;
+            text-align: center;
+        }
+        .smallth{
+            width: 12%;
+        }
+        .small_th{
+            width: 16%;
+        }
+        .big_th{
+            width: 20%;
+        }
+        .bigth{
+            width: 40%;
+        }
+    </style>
+{% endblock %}
+{% block body %}
+<br>
+<input type="hidden" id="url_correos_excel" name="url_correos_excel" value="{{ path('_ajaxExcelCorreos') }}">
+<input type="hidden" id="url_usuarios_excel" name="url_usuarios_excel" value="{{ path('_ajaxExcelUsuariosCorreos') }}">
+<input type="hidden" id="url_tree" name="url_tree" value="{{ path('_ajaxTreeGrupoProgramado') }}">
+<div class="col-sm-16 col-md-16 col-lg-16 col-xl-16 col-16" id="div-programados">
+    <div class="card">
+        <div class="card-header gradiente">
+            <h5 class="card-title">{{ 'Avisos programados de'|trans }} <span id="notificacionTitle"></span></h5>
+        </div>
+        <div class="card-block">
+            <div class="row" id="div-programados-alert" style="display: none">
+                <div class="col-sm-2">
+                    &nbsp;
+                </div>
+                <div class="col-sm-12">
+                    <div class="alert alert-danger" role="alert"> 
+                        <strong>{{ 'Error en el servidor'|trans }}!</strong> {{ 'Error al obtener las notificaciones programadas'|trans }}.</span>
+                    </div>
+                </div>
+                <div class="col-sm-2">
+                    &nbsp;
+                </div>
+            </div>
+            <div id="programados">
+                <table class="table" id="t-programados">
+                    <thead class="sty__title">
+                        <tr>
+                            <th class="hd__title alignment_ big_th">{{ 'Destinado a'|trans }}</th>
+                            <th class="hd__title alignment_ bigth">{{ 'Grupo seleccionado'|trans }}</th>
+                            <th class="hd__title alignment_ small_th">{{ 'Programado para'|trans }}</th>
+                            <th class="hd__title alignment_ smallth">{{ 'Enviado'|trans }}</th>
+                            <th class="hd__title alignment_ smallth">{{ 'Acciones'|trans }}</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tbody-programados">
+                        {% for np in nps %}
+                        
+                            <tr id="tr-{{ np.id }}">
+                                <td class="alignment">{{ np.tipoDestino.nombre }}</td>
+                                <td class="alignment click" id="td-{{ np.id }}" data= "{{np.id}}" name="hola"> &nbsp;</td>
+                                <td class="alignment_" style="text-align: center">{{ np.fechaDifusion|date('d/m/Y') }}</td>
+                                {% set enviado = np.enviado ? 'Sí'|trans : 'No' %}
+                                <td class="alignment alignment" style="text-align: center;">{{ enviado }}</td>
+                                <td class="center">
+                                    <a href="{{ path('_editNotificacionProgramada', { 'notificacion_id': np.notificacion.id, 'notificacion_programada_id': np.id }) }}" title="{{ 'Editar'|trans }}" class="btn btn-link btn-sm edit"><span class="fa fa-pencil"></span></a>
+                                    <a href="#" title="{{ 'Eliminar'|trans }}" class="btn btn-link btn-sm delete" data="{{ np.id }}"><span class="fa fa-trash"></span></a>
+                                    <a href="#" name="usuarios_excel" id="{{'usuarios'~np.id}}" data={{np.id}} title="Excel usuarios" class="btn btn-link btn-sm usuariosCorreos"><span class="fa fa-file-excel-o"></span></a>
+                                    <img class="img-loader" src="{{ asset('img/ui-anim_basic_16x16.gif') }}" id="{{ 'usuariosLoader'~np.id }}" style="display:none">
+                                    <a href="#" title="{{ 'Descargar Excel'|trans }}" class="btn btn-link btn-sm downloadUsuarios"  id="{{ 'downloadUsuarios'~np.id }}" style="display: none"><span class="fa fa-download"></span></a>
+                                    {% if failed[np.id] is defined %}
+                                        <a href="#" title="{{ 'Correos no enviados'|trans ~ ' ('~failed[np.id]~') '}}" class="btn btn-link btn-sm failedEmails" id="{{'excel'~np.id}}" data="{{ np.id }}"><span class="fa fa-file-excel-o" style=""></span></a>
+                                        <img class="img-loader" src="{{ asset('img/ui-anim_basic_16x16.gif') }}" id="{{ 'excelLoader'~np.id }}" style="display:none">
+                                        <a href="#" title="{{ 'Descargar Excel'|trans }}" class="btn btn-link btn-sm downloadExcel"  id="{{ 'downloadExcel'~np.id }}" style="display: none"><span class="fa fa-download"></span></a>
+                                    {% endif%}
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script type="text/javascript" src="{{ asset('assets/vendor/jstree/dist/jstree.min.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('js/admin/programados.js') }}"></script>
+    <script type="text/javascript">
+             function applyDataTableProgramados()
+                {
+                    $('#t-programados,#t-programados-index').DataTable({
+                        destroy: true,
+                        rowReorder: true,
+                        responsive: false,
+                        pageLength:10,
+                        sPaginationType: "full_numbers",
+                        lengthChange: false,
+                        info: true,
+                        fnDrawCallback: function(){
+                            observe();
+                        },
+                        oLanguage: {
+                            "sProcessing":    "{{ 'Procesando'|trans }}...",
+                            "sLengthMenu":    "{{ 'Mostrar'|trans }} _MENU_ {{ 'registros'|trans }}",
+                            "sZeroRecords":   "{{ 'No se encontraron resultados'|trans }}",
+                            "sEmptyTable":    "{{ 'Ningún dato disponible en esta tabla'|trans }}",
+                            "sInfo":          "{{ 'Total de registros'|trans }} _TOTAL_.",
+                            "sInfoEmpty":     "{{ 'Mostrando registros del'|trans }} 0 al 0 de un total de 0 registros",
+                            "sInfoFiltered":  "({{ 'filtrado de un total de'|trans }} _MAX_ {{ 'registros'|trans }})",
+                            "sInfoPostFix":   "",
+                            "sSearch":        "{{ 'Buscar'|trans }}:",
+                            "sUrl":           "",
+                            "sInfoThousands":  ",",
+                            "sLoadingRecords": "{{ 'Cargando..'|trans }}.",
+                            oPaginate: {
+                                sFirst: "<<",
+                                sPrevious: "<",
+                                sNext: ">", 
+                                sLast: ">>" 
+                            },
+                            "oAria": {
+                                "sSortAscending":  ": {{ 'Activar para ordenar la columna de manera ascendente'|trans }}",
+                                "sSortDescending": ": {{ 'Activar para ordenar la columna de manera descendente'|trans }}"
+                            }
+                        }
+                    });
+                }
+       
+    </script>
+{% endblock %}

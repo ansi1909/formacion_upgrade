@@ -16,6 +16,9 @@ use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Yaml\Yaml;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\ResponseHeaderBag;
+
+
 
 class NotificacionController extends Controller
 {
@@ -394,7 +397,7 @@ class NotificacionController extends Controller
 
     }
 
-    public function ajaxProgramadosAction(Request $request)
+    public function notificacionProgramadasAction($id,Request $request)
     {
 
         $em = $this->getDoctrine()->getManager();
@@ -413,23 +416,26 @@ class NotificacionController extends Controller
         $f->setRequest($session->get('sesion_id'));
         $notificacion_id = $request->query->get('notificacion_id');
 
-        $notificacion = $this->getDoctrine()->getRepository('LinkComunBundle:AdminNotificacion')->find($notificacion_id);
+        $notificacion = $this->getDoctrine()->getRepository('LinkComunBundle:AdminNotificacion')->find($id);
 
         $query = $em->createQuery("SELECT np FROM LinkComunBundle:AdminNotificacionProgramada np
                                     WHERE np.notificacion = :notificacion_id
                                     AND np.grupo IS NULL
                                     ORDER BY np.fechaDifusion DESC")
-                    ->setParameters(array('notificacion_id' => $notificacion_id));
+                    ->setParameters(array('notificacion_id' => $id));
         $nps = $query->getResult();
         $failed = $this->failedEmails($nps);
 
-        $html = $this->renderView('LinkBackendBundle:Notificacion:notificacionesProgramadas.html.twig', array('nps' => $nps,'failed'=>$failed));
+        //$html = $this->renderView('LinkBackendBundle:Notificacion:notificacionesProgramadas.html.twig', array('nps' => $nps,'failed'=>$failed));
 
-        $return = array('html' => $html,
-                        'notificacion' => $notificacion->getAsunto());
+        //return = array('html' => $html,
+                        //'notificacion' => $notificacion->getAsunto());
 
-        $return = json_encode($return);
-        return new Response($return, 200, array('Content-Type' => 'application/json'));
+        return $this->render('LinkBackendBundle:Notificacion:notificacionProgramadas.html.twig', array('nps' => $nps,
+                                                                                                        'failed' => $failed));
+
+        //$return = json_encode($return);
+        //eturn new Response($return, 200, array('Content-Type' => 'application/json'));
 
     }
 
@@ -773,10 +779,26 @@ class NotificacionController extends Controller
                     $valores = array();
                     foreach ($rus as $ru)
                     {
-                        $correo = !$ru->getUsuario()->getCorreoPersonal() ? !$ru->getUsuario()->getCorreoCorporativo() ? $this->get('translator')->trans('Sin correo') : $ru->getUsuario()->getCorreoCorporativo() : $ru->getUsuario()->getCorreoPersonal();
-                        $valores[] = array('id' => $ru->getUsuario()->getId(),
-                                           'nombre' => $ru->getUsuario()->getNombre().' '.$ru->getUsuario()->getApellido().' ('.$correo.')',
-                                           'selected' => in_array($ru->getUsuario()->getId(), $usuarios_id) ? 'selected' : '');
+                        if($ru->getUsuario()->getCorreoPersonal() && $ru->getUsuario()->getCorreoCorporativo())
+                    {
+                        if($ru->getUsuario()->getNivel()->getFechaFin())
+                        {
+                            $hoy = date('Y-m-d');
+                            if($ru->getUsuario()->getNivel()->getFechaFin() > $hoy)
+                            {
+                                $correo = !$ru->getUsuario()->getCorreoPersonal() ? !$ru->getUsuario()->getCorreoCorporativo() ? $this->get('translator')->trans('Sin correo') : $ru->getUsuario()->getCorreoCorporativo() : $ru->getUsuario()->getCorreoPersonal();
+                                $valores[] = array('id' => $ru->getUsuario()->getId(),
+                                                'nombre' => $ru->getUsuario()->getNombre().' '.$ru->getUsuario()->getApellido().' ('.$correo.')',
+                                                'selected' => in_array($ru->getUsuario()->getId(), $usuarios_id) ? 'selected' : '');
+                            }
+                        }else{
+                            $correo = !$ru->getUsuario()->getCorreoPersonal() ? !$ru->getUsuario()->getCorreoCorporativo() ? $this->get('translator')->trans('Sin correo') : $ru->getUsuario()->getCorreoCorporativo() : $ru->getUsuario()->getCorreoPersonal();
+                            $valores[] = array('id' => $ru->getUsuario()->getId(),
+                                            'nombre' => $ru->getUsuario()->getNombre().' '.$ru->getUsuario()->getApellido().' ('.$correo.')',
+                                            'selected' => in_array($ru->getUsuario()->getId(), $usuarios_id) ? 'selected' : '');
+                        }
+                    }
+
                     }
                     $entidades = array('tipo' => 'select',
                                        'multiple' => true,
@@ -1514,21 +1536,25 @@ class NotificacionController extends Controller
                 $valores = array();
                 foreach ($rus as $ru)
                 {
-                    if($ru->getUsuario()->getNivel()->getFechaFin())
+                    if($ru->getUsuario()->getCorreoPersonal() && $ru->getUsuario()->getCorreoCorporativo())
                     {
-                        if($ru->getUsuario()->getNivel()->getFechaFin() > $hoy)
+                        if($ru->getUsuario()->getNivel()->getFechaFin())
                         {
+                            if($ru->getUsuario()->getNivel()->getFechaFin() > $hoy)
+                            {
+                                $correo = !$ru->getUsuario()->getCorreoPersonal() ? !$ru->getUsuario()->getCorreoCorporativo() ? $this->get('translator')->trans('Sin correo') : $ru->getUsuario()->getCorreoCorporativo() : $ru->getUsuario()->getCorreoPersonal();
+                                $valores[] = array('id' => $ru->getUsuario()->getId(),
+                                                'nombre' => $ru->getUsuario()->getNombre().' '.$ru->getUsuario()->getApellido().' ('.$correo.')',
+                                                'selected' => in_array($ru->getUsuario()->getId(), $usuarios_id) ? 'selected' : '');
+                            }
+                        }else{
                             $correo = !$ru->getUsuario()->getCorreoPersonal() ? !$ru->getUsuario()->getCorreoCorporativo() ? $this->get('translator')->trans('Sin correo') : $ru->getUsuario()->getCorreoCorporativo() : $ru->getUsuario()->getCorreoPersonal();
                             $valores[] = array('id' => $ru->getUsuario()->getId(),
                                             'nombre' => $ru->getUsuario()->getNombre().' '.$ru->getUsuario()->getApellido().' ('.$correo.')',
                                             'selected' => in_array($ru->getUsuario()->getId(), $usuarios_id) ? 'selected' : '');
                         }
-                    }else{
-                        $correo = !$ru->getUsuario()->getCorreoPersonal() ? !$ru->getUsuario()->getCorreoCorporativo() ? $this->get('translator')->trans('Sin correo') : $ru->getUsuario()->getCorreoCorporativo() : $ru->getUsuario()->getCorreoPersonal();
-                        $valores[] = array('id' => $ru->getUsuario()->getId(),
-                                        'nombre' => $ru->getUsuario()->getNombre().' '.$ru->getUsuario()->getApellido().' ('.$correo.')',
-                                        'selected' => in_array($ru->getUsuario()->getId(), $usuarios_id) ? 'selected' : '');
                     }
+
                 }
                 $entidades = array('tipo' => 'select',
                                    'multiple' => true,
@@ -1585,7 +1611,7 @@ class NotificacionController extends Controller
                                             JOIN np.nivel n
                                             WHERE pe.empresa = :empresa_id
                                             AND p.pagina IS NULL
-                                            AND (n.fechaFin IS NULL OR n.fechaFin >= :hoy)
+                                            AND n.fechaFin >= :hoy
                                             ORDER BY pe.orden ASC")
                             ->setParameters(array('empresa_id'=> $notificacion->getEmpresa()->getId(),
                                                   'hoy' => $hoy));
@@ -1626,7 +1652,7 @@ class NotificacionController extends Controller
                                             JOIN np.nivel n
                                             WHERE pe.empresa = :empresa_id
                                             AND p.pagina IS NULL
-                                            AND(n.fechaFin IS NULL OR n.fechaFin >= :hoy)
+                                            AND n.fechaFin >= :hoy
                                             ORDER BY pe.orden ASC")
                             ->setParameters(array('empresa_id'=> $notificacion->getEmpresa()->getId(),
                                                   'hoy' => $hoy));
@@ -1755,4 +1781,116 @@ class NotificacionController extends Controller
 
     }
 
+    public function previewnAction($id, Request $request)
+    {
+        $em = $this->getDoctrine()->getManager();
+
+
+        $notificacion = $this->getDoctrine()->getRepository('LinkComunBundle:AdminNotificacion')->find($id);
+        $mensaje = $notificacion->getMensaje();
+        return new response ($notificacion->getMensaje());
+    }
+
+    public function ajaxExcelUsuariosCorreosAction(Request $request)
+    {
+        $em = $this->getDoctrine()->getManager();
+        $f = $this->get('funciones');
+        $session = new Session();
+        if (!$session->get('ini') || $f->sesionBloqueda($session->get('sesion_id')))
+        {
+            return $this->redirectToRoute('_loginAdmin');
+        }
+        else {
+            if (!$f->accesoRoles($session->get('usuario')['roles'], $session->get('app_id')))
+            {
+                return $this->redirectToRoute('_authException');
+            }
+        }
+        $f->setRequest($session->get('sesion_id'));
+        $yml = Yaml::parse(file_get_contents($this->get('kernel')->getRootDir().'/config/parameters.yml'));
+
+        $notificacion_programada_id = (int)$request->request->get('notificacion_programada_id');
+
+        //return new response($notificacion_programada_id);
+        $notificacion_programada = $this->getDoctrine()->getRepository('LinkComunBundle:AdminNotificacionProgramada')->find($notificacion_programada_id);
+
+        $return = array();
+        $query = $em->getConnection()->prepare('SELECT
+                                                fnlistado_participantes_correos(:re, :pnotificacion_programada_id) as
+                                                resultado; fetch all from re;');
+        $re = 're';
+        $query->bindValue(':re', $re, \PDO::PARAM_STR);
+        $query->bindValue(':pnotificacion_programada_id', $notificacion_programada->getId(), \PDO::PARAM_INT);
+        $query->execute();
+        $res = $query->fetchAll();
+
+        // Solicita el servicio de excel
+        $fileWithPath = $this->container->getParameter('folders')['dir_project'].'docs/formatos/CorreosParticipantes.xlsx';
+        $objPHPExcel = \PHPExcel_IOFactory::load($fileWithPath);
+        $objWorksheet = $objPHPExcel->setActiveSheetIndex(0);
+        $columnNames = array('A', 'B', 'C', 'D', 'E', 'F', 'G');
+
+        // Encabezado
+        $objWorksheet->setCellValue('A1', $this->get('translator')->trans('Listado de participantes correos enviados'));
+            $row = 5;
+            $i = 0;
+            $styleThinBlackBorderOutline = array(
+                'borders' => array(
+                    'allborders' => array(
+                        'style' => \PHPExcel_Style_Border::BORDER_THIN,
+                        'color' => array('argb' => 'FF000000'),
+                    ),
+                ),
+            );
+            $font_size = 11;
+            $font = 'Arial';
+            $horizontal_aligment = \PHPExcel_Style_Alignment::HORIZONTAL_CENTER;
+            $vertical_aligment = \PHPExcel_Style_Alignment::VERTICAL_CENTER;
+            //return new response(var_dump($res));
+
+            foreach ($res as $re)
+            {
+
+                $correo = trim($re['correo1']) ? trim($re['correo1']) : trim($re['correo2']);
+                $objWorksheet->getStyle("A$row:E$row")->applyFromArray($styleThinBlackBorderOutline); //bordes
+                $objWorksheet->getStyle("A$row:E$row")->getFont()->setSize($font_size); // Tamaño de las letras
+                $objWorksheet->getStyle("A$row:E$row")->getFont()->setName($font); // Tipo de letra
+                $objWorksheet->getStyle("A$row:E$row")->getAlignment()->setHorizontal($horizontal_aligment); // Alineado horizontal
+                $objWorksheet->getStyle("A$row:E$row")->getAlignment()->setVertical($vertical_aligment); // Alineado vertical
+                $objWorksheet->getRowDimension($row)->setRowHeight(40); // Altura de la fila
+                // Datos de las columnas comunes
+                $objWorksheet->setCellValue('A'.$row, $re['nombre']);
+                $objWorksheet->setCellValue('B'.$row, $re['apellido']);
+                $objWorksheet->setCellValue('C'.$row, $re['login']);
+                $objWorksheet->setCellValue('D'.$row, $re['correo1']);
+                $objWorksheet->setCellValue('E'.$row, $re['correo2']);
+                $row++;
+
+            }
+
+
+
+        // Crea el writer
+
+
+        $writer = $this->get('phpexcel')->createWriter($objPHPExcel, 'Excel2007');
+        $hoy = date('y-m-d H:i:s');
+        $path ='recursos/notificaciones/'.'CorreosParticipantes_'.$hoy.'.xlsx';
+        $xls = $yml['parameters']['folders']['dir_uploads'].$path;
+        $writer->save($xls);
+        $archivo = $yml['parameters']['folders']['uploads'].$path;
+        $document_name = 'CorreosParticipantes_'.$hoy.'.xls';
+        $bytes = filesize($xls);
+        $document_size = $f->fileSizeConvert($bytes);
+
+
+       // return $response;
+
+        //return new response(var_dump($res));
+
+
+
+        $return = json_encode($archivo);
+        return new Response($return, 200, array('Content-Type' => 'application/json'));
+    }
 }
