@@ -54,11 +54,10 @@ class UsersScheduledCommand extends ContainerAwareCommand
 				$hoy = date('Y-m-d');
                 $ayer = new \DateTime("NOW");
                 $ayer->modify("-1 day");
-                $ayer = $ayer->format('Y-m-d');
 
 				$query = $em->getConnection()->prepare('SELECT fnrecordatorios_usuarios(:pfechaHoy,:pfechaAyer) AS resultado;');
 				$query->bindValue(':pfechaHoy', $hoy, \PDO::PARAM_STR);
-                $query->bindValue(':pfechaAyer', $ayer, \PDO::PARAM_STR);
+                $query->bindValue(':pfechaAyer', $ayer->format('Y-m-d'), \PDO::PARAM_STR);
 				$query->execute();
 				$r = $query->fetchAll();
 				$notificaciones_id = array();
@@ -139,11 +138,12 @@ class UsersScheduledCommand extends ContainerAwareCommand
 									$em->persist($notificacion_programada);
 									$em->flush();
 									array_push($notificaciones_id,$np_id);
-								}else{
-									if(count($notificaciones_id) == 0){
-										array_push($notificaciones_id, $np_id);
-									}
 								}
+									//else{
+								// 	if(count($notificaciones_id) == 0){
+								// 		array_push($notificaciones_id, $np_id);
+								// 	}
+								// }
 
 								$output->writeln($j.' .----------------------------------------------------------------------------------------------');
 								$output->writeln('np_id: '.$np_id);
@@ -181,51 +181,108 @@ class UsersScheduledCommand extends ContainerAwareCommand
 
 				}
 
-				// Si se enviaron todos los correos, se coloca la notificación como enviada
+
 				$totalCorreosHoy = $em->getRepository('LinkComunBundle:AdminCorreosDiarios')->findOneByfecha(new \DateTime("NOW"));
 				$totalCorreosHoy->setCantidad($cantidadHoy);
 				$em->persist($totalCorreosHoy);
                 $em->flush();
 
-				if ($np_id)
-				{
-					if($tipo_destino_id == $yml2['parameters']['tipo_destino']['todos'] || $tipo_destino_id == $yml2['parameters']['tipo_destino']['nivel'] ||
-							   $tipo_destino_id == $yml2['parameters']['tipo_destino']['no_ingresado'] || $tipo_destino_id == $yml2['parameters']['tipo_destino']['no_ingresado_programa']){
-								   $np_main = $em->getRepository('LinkComunBundle:AdminNotificacionProgramada')->find($np_id);
+                // Actualizar status de las notificaciones
+		        $output->writeln('Corriendo Query : ');
+		        $query = $em->createQuery('SELECT n FROM LinkComunBundle:AdminNotificacionProgramada n
+		        						   WHERE n.grupo IS NULL
+		        						   AND n.enviado = :enviado
+										   AND (n.fechaDifusion = :fechaHoy OR n.fechaDifusion = :fechaAyer) ' )
+										   ->setParameters(array('fechaHoy' => new \DateTime("NOW") ,
+															      'fechaAyer' => $ayer,
+															       'enviado' => FALSE));
+		        $np = $query->getResult();
+
+		        $output->writeln('Catidad Abierta : '.count($np));
+
+		        foreach ($np as $n) {
+                    $destino = $n->getTipoDestino()->getId();
+		            if($destino != $yml2['parameters']['tipo_destino']['aprobados'] AND $destino != $yml2['parameters']['tipo_destino']['en_curso'] AND $destino != $yml2['parameters']['tipo_destino']['programa']){
+
+						        	$entidad[$yml2['parameters']['tipo_destino']['todos']] = 0;
+						            $entidad[$yml2['parameters']['tipo_destino']['nivel']] = $n->getEntidadId();
+						            $entidad[$yml2['parameters']['tipo_destino']['grupo']] = $n->getId();
+						            $entidad[$yml2['parameters']['tipo_destino']['no_ingresado']] = 0;
+						            $entidad[$yml2['parameters']['tipo_destino']['no_ingresado_programa']] = $n->getEntidadId();
+
+						            $query = $em->getConnection()->prepare('SELECT
+							    											   fncantidad_programados(:ptipo_destino_id, :pempresa_id, :pentidad_id, :pfecha_hoy) as
+								                                               resultado;');
+									$query->bindValue(':ptipo_destino_id', $n->getTipoDestino()->getId(), \PDO::PARAM_INT);
+									$query->bindValue(':pempresa_id', $n->getNotificacion()->getEmpresa()->getId(), \PDO::PARAM_INT);
+									$query->bindValue(':pentidad_id', $entidad[$n->getTipoDestino()->getId()], \PDO::PARAM_INT);
+									$query->bindValue(':pfecha_hoy', $hoy, \PDO::PARAM_STR);
+									$query->execute();
+									$r = $query->fetchAll();
+									$programados = $r[0]['resultado'];
+									$output->writeln('Cantidad programados: '.$programados);
+
+									$query = $em->createQuery('SELECT count(c.id) FROM LinkComunBundle:AdminCorreo c
+															   WHERE (c.entidadId = :np_id
+															   OR c.entidadId IN (SELECT np.id FROM LinkComunBundle:AdminNotificacionProgramada np WHERE np.grupo = :np_id))')
+													           ->setParameters(array('np_id' => $n->getId()));
+								    $correos = $query->getSingleScalarResult();
+
+								    $output->writeln('correo Enviados: '.$correos);
+								    if($correos == $programados ){
+								    	$n->setEnviado(true);
+									    $em->persist($n);
+										$em->flush();
+										$output->writeln('La notificacion: '. $n->getId().' , se proceso completa');
+								    }
 					}else{
-							 $np_hija = $em->getRepository('LinkComunBundle:AdminNotificacionProgramada')->find($np_id);
-							 $np_main = $em->getRepository('LinkComunBundle:AdminNotificacionProgramada')->find($np_hija->getGrupo());
+						$na = $em->getRepository('LinkComunBundle:AdminNotificacionProgramada')->findByGrupo($n->getId());
+						$total = 0;
+						foreach ($na as $nh) {
 
+
+						            $query = $em->getConnection()->prepare('SELECT
+							    											   fncantidad_programados(:ptipo_destino_id, :pempresa_id, :pentidad_id, :pfecha_hoy) as
+								                                               resultado;');
+									$query->bindValue(':ptipo_destino_id', $nh->getTipoDestino()->getId(), \PDO::PARAM_INT);
+									$query->bindValue(':pempresa_id', $nh->getNotificacion()->getEmpresa()->getId(), \PDO::PARAM_INT);
+									$query->bindValue(':pentidad_id', $nh->getEntidadId(), \PDO::PARAM_INT);
+									$query->bindValue(':pfecha_hoy', $hoy, \PDO::PARAM_STR);
+									$query->execute();
+									$r = $query->fetchAll();
+									$programados = $r[0]['resultado'];
+									$total = $total + $programados;
+
+									$output->writeln('Cantidad programados: '.$programados);
+
+									$query = $em->createQuery('SELECT count(c.id) FROM LinkComunBundle:AdminCorreo c
+															   WHERE (c.entidadId = :np_id
+															   OR c.entidadId IN (SELECT np.id FROM LinkComunBundle:AdminNotificacionProgramada np WHERE np.grupo = :np_id))')
+													           ->setParameters(array('np_id' => $nh->getId()));
+								    $correos = $query->getSingleScalarResult();
+
+								    $output->writeln('correo Enviados: '.$correos);
+								    if($correos == $programados ){
+								    	$n->setEnviado(true);
+									    $em->persist($n);
+										$em->flush();
+										$output->writeln('La notificacion: '. $n->getId().' , se proceso completa');
+								    }
+
+
+						}
+						$na = $em->getRepository('LinkComunBundle:AdminNotificacionProgramada')->findByGrupo($n->getId());
+						if (count($na) == $total) {
+							$n->setEnviado(true);
+						    $em->persist($n);
+							$em->flush();
+							$output->writeln('La notificacion: '. $n->getId().' , se proceso completa');
+						}
 					}
-					 $query = $em->createQuery('SELECT COUNT(c.id) FROM LinkComunBundle:AdminCorreo c
-														WHERE c.tipoCorreo = :notificacion_programada
-														AND c.entidadId IN (:np_id)' )
-										->setParameters(array('notificacion_programada' => $yml2['parameters']['tipo_correo']['notificacion_programada'],
-															  'np_id' => $notificaciones_id));
-					 $emails = $query->getSingleScalarResult();
-					 if($emails == count($r)){
-						$np_main->setEnviado(true);
-						$em->persist($np_main);
-						$em->flush();
-					 }
 
-					// $notificacion_programada = $em->getRepository('LinkComunBundle:AdminNotificacionProgramada')->find($np_id);
+			    }//foreach
 
-					// $query = $em->createQuery('SELECT COUNT(c.id) FROM LinkComunBundle:AdminCorreo c
-					//                             WHERE c.tipoCorreo = :notificacion_programada
-					//                             AND c.entidadId = :np_id')
-					//             ->setParameters(array('notificacion_programada' => $yml2['parameters']['tipo_correo']['notificacion_programada'],
-					//                                   'np_id' => $np_id));
-					// $emails = $query->getSingleScalarResult();
 
-					// if ($notificacion_programada->getTipoDestino()->getId() != $yml2['parameters']['tipo_destino']['grupo'] && $emails >= count($r))
-					// {
-					//     $notificacion_programada->setEnviado(true);
-					//     $em->persist($notificacion_programada);
-					//     $em->flush();
-					// }
-
-				}
 		}//else{
 			// //Si ya se cumplieron los envios diarios
 		// }
