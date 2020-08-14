@@ -27,7 +27,6 @@
 {% endblock %}
 {% block body %}
 <br>
-<input type="hidden" id="url_programados" name="url_programados" value="{{ path('_ajaxProgramados') }}">
 <input type="hidden" id="url_correos_excel" name="url_correos_excel" value="{{ path('_ajaxExcelCorreos') }}">
 <input type="hidden" id="url_tree" name="url_tree" value="{{ path('_ajaxTreeGrupoProgramado') }}">
 <div class="row align-items-center justify-content-between">
@@ -36,7 +35,7 @@
     </div>
 </div>
 <div class="row">
-    <div class="col-sm-6 col-md-6 col-lg-6">
+    <div class="col-sm-16 col-md-16 col-lg-16">
         <div class="card">
             <div class="card-header gradiente">
                 <h5 class="card-title">{{ 'Listado de notificaciones'|trans }}</h5>
@@ -65,8 +64,10 @@
                                 <td class="center">
                                     <a href="{{ path('_editNotificacionProgramada', { 'notificacion_id': notificacion.id }) }}" title="{{ 'Programar nuevo aviso'|trans }}" class="btn btn-link btn-sm"><span class="fa fa-plus"></span></a>
                                     {% if notificacion.tiene_programados %}
-                                        <a href="#" title="{{ 'Ver notificaciones programadas'|trans }}" class="btn btn-link btn-sm see" data="{{ notificacion.id }}"><span class="fa fa-eye"></span></a>
+                                        <a href="{{ path('_notificacionProgramadas', { 'id': notificacion.id }) }}" title="{{ 'Ver notificaciones programadas'|trans }}" class="btn btn-link btn-sm " data="{{ notificacion.id }}"><span class="fa fa-eye"></span></a>
                                     {% endif %}
+                                    <a href="{{ path('_previewN', { 'id': notificacion.id }) }}" title="{{ 'Preview'|trans }}" target="_blank" class="btn btn-link btn-sm preview" data="{{ notificacion.id }}"><span class="fa fa-picture-o"></span></a>
+
                                 </td>
                             </tr>
                         {% endfor %}
