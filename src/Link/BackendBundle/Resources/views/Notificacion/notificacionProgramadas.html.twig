@@ -65,7 +65,7 @@
                         
                             <tr id="tr-{{ np.id }}">
                                 <td class="alignment">{{ np.tipoDestino.nombre }}</td>
-                                <td class="alignment click" id="td-{{ np.id }}" data= "{{np.id}}" name="hola"> &nbsp;</td>
+                                <td class="alignment click" id="td-{{ np.id }}" data= "{{np.id}}"> &nbsp;</td>
                                 <td class="alignment_" style="text-align: center">{{ np.fechaDifusion|date('d/m/Y') }}</td>
                                 {% set enviado = np.enviado ? 'Sí'|trans : 'No' %}
                                 <td class="alignment alignment" style="text-align: center;">{{ enviado }}</td>

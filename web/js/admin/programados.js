@@ -90,7 +90,8 @@ function treeGrupoProgramado(notificacion_programada_id)
                 "dataType" : "json"
             }
         }
-    });
+	});
+	$('#td-'+notificacion_programada_id).attr('data-cantidad');
 }
 
 function afterPaginate()

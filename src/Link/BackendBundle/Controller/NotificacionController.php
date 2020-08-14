@@ -1808,6 +1808,7 @@ class NotificacionController extends Controller
         }
         $f->setRequest($session->get('sesion_id'));
         $yml = Yaml::parse(file_get_contents($this->get('kernel')->getRootDir().'/config/parameters.yml'));
+        $cantidad= '';
 
         $notificacion_programada_id = (int)$request->request->get('notificacion_programada_id');
 
@@ -1865,9 +1866,11 @@ class NotificacionController extends Controller
                 $objWorksheet->setCellValue('D'.$row, $re['correo1']);
                 $objWorksheet->setCellValue('E'.$row, $re['correo2']);
                 $row++;
+                $i++;
 
             }
-
+                settype($i,'string');
+                $objWorksheet->setCellValue('F5', $i);
 
 
         // Crea el writer
