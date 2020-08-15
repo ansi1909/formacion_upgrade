@@ -20,11 +20,9 @@ _programados:
     path:     /programados/{app_id}
     defaults: { _controller: LinkBackendBundle:Notificacion:programados }
 
-_ajaxProgramados:
-    path:     /ajaxProgramados
-    defaults: { _controller: LinkBackendBundle:Notificacion:ajaxProgramados }
-    requirements:
-        _method: GET
+_notificacionProgramadas:
+    path:     /notificacionProgramadas/{id}
+    defaults: { _controller: LinkBackendBundle:Notificacion:notificacionProgramadas }
 
 _ajaxTreeGrupoProgramado:
     path:     /ajaxTreeGrupoProgramado/{notificacion_programada_id}
@@ -49,5 +47,15 @@ _showNotificacionProgramada:
 _ajaxExcelCorreos:
     path:     /_ajaxExcelCorreos
     defaults: { _controller: LinkBackendBundle:Notificacion:ajaxExcelCorreos }
+    requirements:
+        _method: POST
+
+_previewN:
+    path:     /previewN/{id}
+    defaults: { _controller: LinkBackendBundle:Notificacion:previewn }
+
+_ajaxExcelUsuariosCorreos:
+    path:     /_ajaxExcelUsuariosCorreos/
+    defaults: { _controller: LinkBackendBundle:Notificacion:ajaxExcelUsuariosCorreos }
     requirements:
         _method: POST

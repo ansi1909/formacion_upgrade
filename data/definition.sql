@@ -707,5 +707,12 @@ nombre varchar(300),
  PRIMARY KEY (id),
  FOREIGN KEY (pais_id) REFERENCES admin_pais (id));
 
+CREATE TABLE admin_correos_diarios(
+-- Attributes --
+id serial,
+fecha date,
+cantidad integer,
+ PRIMARY KEY (id));
+
 
 

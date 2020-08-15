@@ -11,6 +11,32 @@ $(document).ready(function() {
 		sweetAlertDelete(programada_id,'AdminNotificacionProgramada');	
 	});
 
+	$('.usuariosCorreos').click(function(){
+		var npId = $(this).attr('data');
+		console.log(npId);
+        $('#usuarios'+npId).hide();
+		$('#usuariosLoader'+npId).show();
+		$.ajax({
+			type: "POST",
+			url: $('#url_usuarios_excel').val(),
+			async: true,
+			data: { notificacion_programada_id: npId },
+			dataType: "json",
+			success: function(data) {
+				$('#downloadUsuarios'+npId).attr('data-href',data);
+				$('#usuariosLoader'+npId).hide();
+				$('#downloadUsuarios'+npId).show();
+			},
+			error: function(){
+				console.log('Error de comunicacion');
+			}
+		});
+	});
+
+		$('.downloadExcel').click(function(event) {
+		window.location.href = $(this).attr('data-href');
+		});
+
 });
 
 function observe()
@@ -47,7 +73,7 @@ function observe()
 		});
 	});
 
-	   $('.downloadExcel').click(function(event) {
+	   $('.downloadUsuarios').click(function(event) {
 	   	window.location.href = $(this).attr('data-href');
    });
 
@@ -64,7 +90,8 @@ function treeGrupoProgramado(notificacion_programada_id)
                 "dataType" : "json"
             }
         }
-    });
+	});
+	$('#td-'+notificacion_programada_id).attr('data-cantidad');
 }
 
 function afterPaginate()

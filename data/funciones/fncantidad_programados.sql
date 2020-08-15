@@ -20,13 +20,16 @@ begin
         INNER JOIN admin_nivel n ON n.id = u.nivel_id
         WHERE u.activo = true
             AND u.empresa_id = pempresa_id
+            AND (((u.correo_personal<>'') AND (u.correo_personal IS NOT NULL)) OR((u.correo_corporativo<>'')AND(u.correo_corporativo IS NOT NULL)))
             AND LOWER(n.nombre) NOT LIKE 'revisor%'
-        AND n.fecha_fin >= pfecha_hoy;
+            AND LOWER(n.nombre) NOT LIKE 'tutor%'
+            AND (n.fecha_fin IS NULL OR n.fecha_fin >= pfecha_hoy);
     -- En caso de ser una programacion dirigida a los participantes de un nivel especifico
     ELSIF ptipo_destino_id = 2 THEN
         SELECT COUNT(*) INTO c
         FROM admin_usuario u
         WHERE u.activo = true
+            AND (((u.correo_personal<>'') AND (u.correo_personal IS NOT NULL)) OR((u.correo_corporativo<>'')AND(u.correo_corporativo IS NOT NULL)))
             AND u.empresa_id = pempresa_id
             AND u.nivel_id = pentidad_id;
     -- En caso de ser una programacion dirigida a los participantes del(de los) programa(s)
@@ -37,7 +40,9 @@ begin
         WHERE u.empresa_id = pempresa_id
             AND u.activo = true
             AND LOWER(n.nombre) NOT LIKE 'revisor%'
-            AND n.fecha_fin >= pfecha_hoy
+            AND LOWER(n.nombre) NOT LIKE 'tutor%'
+            AND (((u.correo_personal<>'') AND (u.correo_personal IS NOT NULL)) OR((u.correo_corporativo<>'')AND(u.correo_corporativo IS NOT NULL)))
+            AND (n.fecha_fin IS NULL OR n.fecha_fin >= pfecha_hoy)
             AND u.id IN (SELECT ru.usuario_id FROM admin_rol_usuario ru WHERE ru.rol_id = 2)
             AND u.nivel_id IN
                 (SELECT np.nivel_id FROM certi_nivel_pagina np WHERE np.pagina_empresa_id IN
@@ -51,8 +56,12 @@ begin
     -- En caso de ser una programacion dirigida a un grupo de participantes
     ELSIF ptipo_destino_id = 4 THEN
         SELECT COUNT(*) INTO c
-        FROM admin_notificacion_programada
-        WHERE grupo_id = pentidad_id;
+        FROM admin_notificacion_programada np
+        INNER JOIN admin_usuario u ON u.id = np.entidad_id
+        WHERE np.grupo_id = pentidad_id
+        AND u.activo = true
+        AND (((u.correo_personal<>'') AND (u.correo_personal IS NOT NULL)) OR((u.correo_corporativo<>'')AND(u.correo_corporativo IS NOT NULL)))
+        AND u.id IN (SELECT ru.usuario_id FROM admin_rol_usuario ru WHERE ru.rol_id = 2);
 
     -- En caso de ser una programacion dirigida a todos los participantes que no han ingresado a la plataforma
     ELSIF ptipo_destino_id = 5 THEN
@@ -61,8 +70,10 @@ begin
         INNER JOIN admin_nivel n ON n.id = u.nivel_id
         WHERE u.activo = true
             AND LOWER(n.nombre) NOT LIKE 'revisor%'
-            AND n.fecha_fin >= pfecha_hoy
+            AND LOWER(n.nombre) NOT LIKE 'tutor%'
+            AND (n.fecha_fin IS NULL OR n.fecha_fin >= pfecha_hoy)
             AND u.empresa_id = pempresa_id
+             AND (((u.correo_personal<>'') AND (u.correo_personal IS NOT NULL)) OR((u.correo_corporativo<>'')AND(u.correo_corporativo IS NOT NULL)))
             AND u.id IN (SELECT ru.usuario_id FROM admin_rol_usuario ru WHERE ru.rol_id = 2)
             AND u.id NOT IN (SELECT DISTINCT(s.usuario_id) FROM admin_sesion s);
 
@@ -74,8 +85,10 @@ begin
         WHERE u.empresa_id = pempresa_id
             AND u.activo = true
             AND LOWER(n.nombre) NOT LIKE 'revisor%'
-            AND n.fecha_fin >= pfecha_hoy
+            AND LOWER(n.nombre) NOT LIKE 'tutor%'
+            AND (n.fecha_fin IS NULL OR n.fecha_fin >= pfecha_hoy)
             AND u.id IN (SELECT ru.usuario_id FROM admin_rol_usuario ru WHERE ru.rol_id = 2)
+             AND (((u.correo_personal<>'') AND (u.correo_personal IS NOT NULL)) OR((u.correo_corporativo<>'')AND(u.correo_corporativo IS NOT NULL)))
             AND u.nivel_id IN
                 (SELECT np.nivel_id FROM certi_nivel_pagina np WHERE np.pagina_empresa_id IN
                     (SELECT pe.id FROM certi_pagina_empresa pe
@@ -95,8 +108,10 @@ begin
         WHERE u.empresa_id = pempresa_id
             AND u.activo = true
             AND LOWER(n.nombre) NOT LIKE 'revisor%'
-            AND n.fecha_fin >= pfecha_hoy
+            AND LOWER(n.nombre) NOT LIKE 'tutor%'
+            AND (n.fecha_fin IS NULL OR n.fecha_fin >= pfecha_hoy)
             AND u.id IN (SELECT ru.usuario_id FROM admin_rol_usuario ru WHERE ru.rol_id = 2)
+            AND (((u.correo_personal<>'') AND (u.correo_personal IS NOT NULL)) OR((u.correo_corporativo<>'')AND(u.correo_corporativo IS NOT NULL)))
             AND u.nivel_id IN
                 (SELECT np.nivel_id FROM certi_nivel_pagina np WHERE np.pagina_empresa_id IN
                     (SELECT pe.id FROM certi_pagina_empresa pe
@@ -116,8 +131,10 @@ begin
         WHERE u.empresa_id = pempresa_id
             AND u.activo = true
             AND LOWER(n.nombre) NOT LIKE 'revisor%'
-            AND n.fecha_fin >= pfecha_hoy
+            AND LOWER(n.nombre) NOT LIKE 'tutor%'
+            AND (n.fecha_fin IS NULL OR n.fecha_fin >= pfecha_hoy)
             AND u.id IN (SELECT ru.usuario_id FROM admin_rol_usuario ru WHERE ru.rol_id = 2)
+            AND (((u.correo_personal<>'') AND (u.correo_personal IS NOT NULL)) OR((u.correo_corporativo<>'')AND(u.correo_corporativo IS NOT NULL)))
             AND u.nivel_id IN
                 (SELECT np.nivel_id FROM certi_nivel_pagina np WHERE np.pagina_empresa_id IN
                     (SELECT pe.id FROM certi_pagina_empresa pe
