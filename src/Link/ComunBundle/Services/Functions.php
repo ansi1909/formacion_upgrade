@@ -26,7 +26,6 @@ use Link\ComunBundle\Entity\AdminNoticia;
 
 
 
-
 class Functions
 {
 
@@ -3793,8 +3792,20 @@ public function obtenerEstructuraJson($pagina_id){
         $date->setTimeZone(new \DateTimeZone($finalTimeZone));
         $date = $date->format($format);
         $date = explode(" ",$date);
-        $return = ($reportDate)? (object)array('fecha'=>$date[0],'hora'=>$date[1].$date[2]):(object)array('fecha'=>$date[0],'hora'=>$date[1]);
+        $return = ($reportDate)? (object)array('fecha'=>$date[0],'hora'=>$date[1].' '.$date[2]):(object)array('fecha'=>$date[0],'hora'=>$date[1]);
         return $return;
+    }
+
+    public function totalTime($date_inicio,$date_fin){
+        //$fecha_inicio_total = $date_inicio.' '.$time_inicio[0].':00'
+        //(new \DateTime('now'))
+        $fecha_inicio_total = new \DateTime(date('Y/m/d H:i:s', strtotime($date_inicio)));
+
+        //$time_fin = explode(" ",$time_fin);
+        //$fecha_fin_total = $date_fin.' '.$time_fin[0];
+        $fecha_fin_total = new \DateTime(date('Y/m/d H:i:s', strtotime($date_fin)));
+        $interval = date_diff($fecha_inicio_total, $fecha_fin_total);
+        return $interval->format('%h:%i:%s');
     }
 
     public function clearNameTimeZone($timeZone,$pais,$yml){
