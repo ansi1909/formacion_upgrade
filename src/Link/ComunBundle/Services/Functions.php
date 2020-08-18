@@ -234,7 +234,7 @@ class Functions
         return $text;
     }
 
-  //verifica si existen pruebas cargadas para un programa/curso y que el usuario las aprobaras todas
+  //verifica si el usuario aprobo el curso y alguna evaluacion correspondiente
   public function notasDisponibles($pagina_id,$usuario_id,$yml){
     $em = $this->em;
     $buscar = array($pagina_id);
@@ -251,9 +251,11 @@ class Functions
       }
 
     }
+
+    $programa = $em->getRepository('LinkComunBundle:CertiPaginaLog')->findOneBy(array('pagina'=>$pag_id,'usuario'=>$usuario_id,'estatusPagina'=>$yml['parameters']['estatus_pagina']['completada']));
     //obtener pruebas
     foreach ($estructura as $pag_id) {
-      $prueba = $em->getRepository('LinkComunBundle:CertiPrueba')->findOneBy(array('pagina'=>$pag_id,'estatusContenido'=>$yml['parameters']['estatus_contenido']['activo']));
+      $prueba = $em->getRepository('LinkComunBundle:CertiPrueba')->findOneBy(array('pagina'=>$pag_id));
       if ($prueba != NULL) {
          $cn_pruebas++;
          $prueba_log = $em->getRepository('LinkComunBundle:CertiPruebaLog')->findOneBy(array('prueba'=>$prueba->getId(),'usuario'=>$usuario_id,'estado'=>$yml['parameters']['estado_prueba']['aprobado']));
@@ -262,7 +264,7 @@ class Functions
          }
       }
     }
-    return ($cn_pruebas > 0 && ($cn_pruebas == $cn_aprobadas ) )? 1:0;
+    return ($cn_aprobadas>0 && $programa )? 1:0;
   }
 
 
