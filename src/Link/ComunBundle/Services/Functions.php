@@ -244,7 +244,7 @@ class Functions
     //obtener estructura del programa
     while ($buscar!=NULL) {
       $pag_id = array_pop($buscar);
-      $paginas = $em->getRepository('LinkComunBundle:CertiPagina')->findBy(array('pagina'=>$pag_id,'estatusContenido'=>$yml['parameters']['estatus_contenido']['activo']));
+      $paginas = $em->getRepository('LinkComunBundle:CertiPagina')->findBy(array('pagina'=>$pag_id,'estatusContenido'=>$yml['parameters']['estatus_contenido']['activo'],'categoria'=>$yml['parameters']['categoria']['modulo']));
       foreach ($paginas as $pagina) {
         array_push($buscar,$pagina->getId());
         array_push($estructura,$pagina->getId());
