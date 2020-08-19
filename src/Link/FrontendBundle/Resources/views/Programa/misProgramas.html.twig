@@ -41,7 +41,7 @@
     </div>
 
 {% else %}
-
+    <input type="hidden" id="descripcion_pagina" name="descripcion_pagina" value="{{ path('_descripcion') }}">
     <div class="container-fluid">
         <div class="row">
             <div class="col-12">
@@ -99,11 +99,28 @@
                                     <div class="card">
                                         <img class="card-img-top" src="{{ uploads ~ pagina.imagen }}" alt="Card image cap">
                                         <div class="card-img-overlay">
-                                            <span class="count text-xs">{{ pagina.dias_vencimiento }}</span>
+                                            <span class="count text-xs {{pagina.class_finaliza}}">{{ pagina.dias_vencimiento }}</span>
                                         </div>
-                                        <div class="card-body">
+                                        <div class="card-body d-flex flex-column justify-content-between align-items-center">
+										     <div class="float-right mt-4 radar-img"  id="radar-img-{{pagina.id}}" style="display: none;" >
+                                               <div class="contenedor">
+                                                  <div class="radar"></div>
+                                               </div>
+                                            </div>
+                                            <div class="info-icon" >
+                                              {% if pagina.descripcion %}
+                                                <a href="#modal" data-toggle="tooltip"   data-title="{{ 'Descripción'|trans }}"  class="modalButton" data-pagina="{{ pagina.id }}">
+                                                    <span class="material-icons">info</span>
+                                                </a>
+                                              {% endif %}
+                                              {% if pagina.pdf %}
+                                               <a href="{{ pagina.pdf }}" target="_blank" data-toggle="tooltip"   data-title="{{ 'Material complemetario'|trans}} ">
+                                                    <span class="material-icons">description</span>
+                                                </a>
+                                              {% endif %}
+                                            </div>
                                             <h5 class="card-title mb-3"> {{ pagina.nombre }} </h5>
-                                            <p class="card-text">{{ pagina.descripcion|raw }}</p>
+                                            {#<p class="card-text">{{ pagina.descripcion|raw }}</p>#}
                                             <div class="badge-wrap">
                                                 {% if pagina.link_enabled %}
                                                     <i class="material-icons badge-aprobado">check_circle</i>
@@ -121,7 +138,7 @@
                                                 <i class="material-icons d-block">aspect_ratio</i>
                                                 <small class="d-block">{{ 'Certificado'|trans }}</small>
                                             </a>
-                                            {% if pagina.prueba != null %}
+                                            {% if pagina.notas %}
                                                 <a href="{{ path('_generarNotas', { 'programa_id': pagina.id }) }}" target="_blank" class="flex-column align-items-center col-4 btn-edge btn-notas">
                                                     <i class="material-icons d-block">content_copy</i>
                                                     <small class=" d-block">{{ 'Notas'|trans }}</small>
@@ -154,6 +171,24 @@
             </ul>
         </div>
     </div>
+	<div class="modal fade" id="modalInfo" tabindex="-1" role="dialog" aria-labelledby="modalInfo" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h4 class="modal-title text-center w-100 mt-4" id="label_modal"></h4>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body" id="pdescripcion">
+
+        </div>
+        <div class="modal-footer">
+
+        </div>
+      </div>
+    </div>
+  </div>
 {% endif %}
 
 {% endblock %}
@@ -161,6 +196,7 @@
 {% block javascripts %}
     {{ parent() }}
     <script type="text/javascript" src="{{ asset('js/front/tabs.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('js/front/dashboard.js') }}"></script>
     <script>
         $(document).ready(function(){
             $('#misProg').addClass("active");

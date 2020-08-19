@@ -318,7 +318,7 @@ class ProgramaController extends Controller
 
     }
 
-    public function misProgramasAction($activo, Request $request )
+   public function misProgramasAction($activo, Request $request )
     {
 
         $em = $this->getDoctrine()->getManager();
@@ -332,6 +332,8 @@ class ProgramaController extends Controller
         $f->setRequest($session->get('sesion_id'));
 
         $yml = Yaml::parse(file_get_contents($this->get('kernel')->getRootDir().'/config/parametros.yml'));
+        $yml2 = Yaml::parse(file_get_contents($this->get('kernel')->getRootDir().'/config/parameters.yml'));
+        $timeZone = 0;
 
         $empresa = $this->getDoctrine()->getRepository('LinkComunBundle:AdminEmpresa')->find($session->get('empresa')['id']);
 
@@ -376,8 +378,38 @@ class ProgramaController extends Controller
 
                 $modulo = $this->getDoctrine()->getRepository('LinkComunBundle:CertiPagina')->findOneBy(array('pagina' => $pagina_empresa->getPagina()->getId()));
                 $prueba = $this->getDoctrine()->getRepository('LinkComunBundle:CertiPrueba')->findOneBy(array('pagina' => $modulo->getId()));
+                $notas = $f->notasDisponibles($pl->getPagina()->getId(),$session->get('usuario')['id'],$yml);
 
-                $link_enabled = $pagina_empresa->getFechaVencimiento()->format('Y-m-d') < date('Y-m-d') ? 0 : 1;
+                //$link_enabled = $pagina_empresa->getFechaVencimiento()->format('Y-m-d') < date('Y-m-d') ? 0 : 1;
+                $usuario = $this->getDoctrine()->getRepository('LinkComunBundle:AdminUsuario')->find($session->get('usuario')['id']);
+                $fechaFin = $pagina_empresa->getFechaVencimiento();
+                $fechaInicio = $pagina_empresa->getFechaInicio();
+                if($usuario->getNivel()){
+                    if ($usuario->getNivel()->getFechaInicio() && $usuario->getNivel()->getFechaFin()) {
+                        $fechaInicio = $usuario->getNivel()->getFechaInicio();
+                        $fechaFin = $usuario->getNivel()->getFechaFin();
+                    }
+                }
+                if ($pagina_empresa->getEmpresa()->getZonaHoraria()){
+                    $timeZone = 1;
+                    $zonaHoraria = $pagina_empresa->getEmpresa()->getZonaHoraria()->getNombre();
+                }
+
+                if($timeZone){
+                    date_default_timezone_set($zonaHoraria);
+                }
+                $fechaActual = date('d-m-Y H:i:s');
+                $fechaInicio = $fechaInicio->format('d-m-Y 00:00:00');
+                $fechaFin = new \DateTime($fechaFin->format('d-m-Y 23:59:00'));
+                $fechaFin = $fechaFin->format('d-m-Y H:i:s');
+                $link_enabled = (strtotime($fechaActual)<strtotime($fechaFin))? 1:0;
+
+                $dias = $f->timeAgo($fechaFin);
+                $porcentaje = $f->porcentaje_finalizacion($fechaInicio,$fechaFin,$dias);
+                $porcentaje_finalizacion = $dias;
+                $class_finaliza = $f->classFinaliza($porcentaje);
+
+
 
                 if ($pagina_empresa->getAcceso() && $link_enabled)
                 {
@@ -389,7 +421,19 @@ class ProgramaController extends Controller
                     $continuar = 3;
                 }
 
-                $dias_vencimiento = $link_enabled ? $this->get('translator')->trans('Finaliza en').' '.$f->timeAgo($pagina_empresa->getFechaVencimiento()->format("Y/m/d")).' '.$this->get('translator')->trans('días') : $this->get('translator')->trans('Vencido');
+               if ($link_enabled)
+                    {
+                      $nivel_vigente = true;
+                      if($dias == 0){
+                         $dias_vencimiento = $this->get('translator')->trans('Vence hoy');
+                      }else{
+                         $dias_vencimiento = $this->get('translator')->trans('Finaliza en').' '.$dias.' '.$this->get('translator')->trans('días');
+                      }
+                    }
+                    else {
+                        $nivel_vigente = false;
+                        $dias_vencimiento = $this->get('translator')->trans('Programa Vencido');
+                    }
 
                 $paginas[] = array('id' => $pl->getPagina()->getId(),
                                    'nombre' => $pl->getPagina()->getNombre(),
@@ -398,7 +442,11 @@ class ProgramaController extends Controller
                                    'dias_vencimiento' => $dias_vencimiento,
                                    'continuar' => $continuar,
                                    'link_enabled' => $link_enabled,
-                                   'prueba' => $prueba);
+                                   'class_finaliza' => $class_finaliza,
+                                   'prueba' => $prueba,
+                                   'notas' => $notas,
+                                   'pdf' => ($pl->getPagina()->getPdf())? $yml2['parameters']['folders']['uploads'].$pl->getPagina()->getPdf():null);
+
 
             }
 
