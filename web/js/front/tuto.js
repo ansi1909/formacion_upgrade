@@ -1,4 +1,4 @@
-$(document).ready(function () { 
+$(document).ready(function () {
   console.log($('#paso_actual_intro').val());
 });
 
@@ -7,7 +7,7 @@ function startIntro(introSteps, hasInitialModal = false, isAReview = false) {
   const currentStep = Number(document.querySelector('#paso_actual_intro').value);
   const stepNeededToPlayIntro = Number(document.querySelector('#paso_actual_intro').dataset.pasocorrecto);
   const cancelTutorial = $('#cancelar_intro').val();
-  
+
   intro.setOptions({
     doneLabel: '¡Listo!',
     nextLabel: 'Siguiente',
@@ -50,12 +50,12 @@ function startIntro(introSteps, hasInitialModal = false, isAReview = false) {
       }
     });
   }
-  
+
   function startCountDown(e) {
     killCountDown();
     startCircularCountDown();
   }
-  
+
   function handleClick(e) {
     const clickedElement = $(e.target);
     const introModal = document.querySelector('.tuto-intro-overlay');
@@ -77,7 +77,10 @@ function startIntro(introSteps, hasInitialModal = false, isAReview = false) {
       cancelTutorial = true;
       showCountDown();
       intro.onskip(startCountDown);
-    } 
+      if (clickedElement.is('#tuto-btn-skip')) {
+        startCountDown();
+      }
+    }
 
     ajaxIntroEstado(nextStep, cancelTutorial);
   }
@@ -100,6 +103,10 @@ function startIntro(introSteps, hasInitialModal = false, isAReview = false) {
   if (currentStep == stepNeededToPlayIntro && !cancelTutorial) {
     manageIntroModal();
   } else if (isAReview) {
-    startCountDown();
+    if (cancelTutorial) {
+      startCountDown();
+    } else {
+      manageIntroModal();
+    }
   }
 }
