@@ -36,7 +36,7 @@
             </div>
         </div>
     </div>
-    <div class="row">
+    <div class="row" >
         <ul class="tab__content">
             {% set card_cont = 0%}
             {% for grupo in grupos %}
@@ -139,7 +139,7 @@
                                                 <i class="material-icons d-block">aspect_ratio</i>
                                                 <small class="d-block">{{ 'Certificado'|trans }}</small>
                                             </a>
-                                            {% if pagina.notas == 1%}
+                                            {% if pagina.notas %}
                                             <a href="{{ path('_generarNotas', { 'programa_id': pagina.id }) }}" target="_blank" class="flex-column align-items-center col-4 btn-edge btn-notas">
                                                 <i class="material-icons d-block">content_copy</i>
                                                 <small class=" d-block">{{ 'Notas'|trans }}</small>

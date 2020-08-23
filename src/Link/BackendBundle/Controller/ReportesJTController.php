@@ -208,12 +208,12 @@ class ReportesJTController extends Controller
                  // Estilizar las celdas antes de insertar los datos
                 for ($f=$row; $f<=$last_row; $f++)
                 {
-                        $objWorksheet->getStyle("A$f:V$f")->applyFromArray($styleThinBlackBorderOutline); //bordes
-                        $objWorksheet->getStyle("A$f:V$f")->getFont()->setSize($font_size); // Tamaño de las letras
-                        $objWorksheet->getStyle("A$f:V$f")->getFont()->setName($font); // Tipo de letra
-                        $objWorksheet->getStyle("A$f:V$f")->getAlignment()->setHorizontal($horizontal_aligment); // Alineado horizontal
-                        $objWorksheet->getStyle("A$f:V$f")->getAlignment()->setVertical($vertical_aligment); // Alineado vertical
-                        $objWorksheet->getStyle("A$f:V$f")->getAlignment()->setWrapText(true);//ajustar texto a la columna
+                        $objWorksheet->getStyle("A$f:W$f")->applyFromArray($styleThinBlackBorderOutline); //bordes
+                        $objWorksheet->getStyle("A$f:W$f")->getFont()->setSize($font_size); // Tamaño de las letras
+                        $objWorksheet->getStyle("A$f:W$f")->getFont()->setName($font); // Tipo de letra
+                        $objWorksheet->getStyle("A$f:W$f")->getAlignment()->setHorizontal($horizontal_aligment); // Alineado horizontal
+                        $objWorksheet->getStyle("A$f:W$f")->getAlignment()->setVertical($vertical_aligment); // Alineado vertical
+                        $objWorksheet->getStyle("A$f:W$f")->getAlignment()->setWrapText(true);//ajustar texto a la columna
                         $objWorksheet->getRowDimension($f)->setRowHeight(35); // Altura de la fila
                 }
 
@@ -242,7 +242,11 @@ class ReportesJTController extends Controller
                     $fecha_registro = $fun->converDate($participante['fecha_registro'],$yml['parameters']['time_zone']['default'],$timeZoneEmpresa);
                     $fecha_inicio = $fun->converDate($participante['fecha_inicio_programa'],$yml['parameters']['time_zone']['default'],$timeZoneEmpresa);
                     $fecha_fin = $fun->converDate($participante['fecha_fin_programa'],$yml['parameters']['time_zone']['default'],$timeZoneEmpresa);
-
+                    if($status == 3){
+                        $totalTime = $fun->totalTime($participante['fecha_inicio_programa'],$participante['fecha_fin_programa']);
+                       
+                    }
+                    
                     // Datos de las columnas del reporte
                     $correo = trim($participante['correo_corporativo']) != '' ? $participante['correo_corporativo'] : $participante['correo_personal'];
                     $objWorksheet->setCellValue('A'.$row, $participante['codigo']);
@@ -259,15 +263,15 @@ class ReportesJTController extends Controller
                     $objWorksheet->setCellValue('L'.$row, $participante['campo2']);
                     $objWorksheet->setCellValue('M'.$row, $participante['campo3']);
                     $objWorksheet->setCellValue('N'.$row, $participante['campo4']);
-                    $objWorksheet->setCellValue('O'.$row, $participante['modulos']);
-                    $objWorksheet->setCellValue('P'.$row, $participante['materias']);
-                    $objWorksheet->setCellValue('Q'.$row, $promedio);
-                    $objWorksheet->setCellValue('R'.$row, $estatusProragama[$status]);
+                    $objWorksheet->setCellValue('O'.$row, trim($participante['modulos']));
+                    $objWorksheet->setCellValue('P'.$row, trim($participante['materias']));
+                    $objWorksheet->setCellValue('Q'.$row, trim($promedio));
+                    $objWorksheet->setCellValue('R'.$row, trim($estatusProragama[$status]));
                     $objWorksheet->setCellValue('S'.$row, ($status != 0)? $fecha_inicio->fecha:'');
                     $objWorksheet->setCellValue('T'.$row, ($status!= 0)? $fecha_inicio->hora:'');
                     $objWorksheet->setCellValue('U'.$row, ($status == 3)? $fecha_fin->fecha:'');
                     $objWorksheet->setCellValue('V'.$row, ($status == 3)? $fecha_fin->hora:'');
-
+                    $objWorksheet->setCellValue('W'.$row, ($status == 3)? $totalTime:'');
                     $row++;
 
                 }

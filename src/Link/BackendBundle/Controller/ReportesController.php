@@ -340,7 +340,7 @@ class ReportesController extends Controller
             $v++;
         }
 
-        $programCells = count($paginas_id)*5;
+        $programCells = count($paginas_id)*6;
         $lastColumnIndex = 14 + $programCells; // 13 es el índice de la columna N + 1 de la columna APROBADOS
         $lastColumn = $columnNames[$lastColumnIndex];
 
@@ -378,7 +378,7 @@ class ReportesController extends Controller
             }
             else {
 
-                $col += 5;
+                $col += 6;
 
                 // Ancho de las columnas
                 $objWorksheet->getColumnDimension($columnNames[$col])->setWidth(12);
@@ -386,37 +386,39 @@ class ReportesController extends Controller
                 $objWorksheet->getColumnDimension($columnNames[$col+2])->setWidth(14);
                 $objWorksheet->getColumnDimension($columnNames[$col+3])->setWidth(16);
                 $objWorksheet->getColumnDimension($columnNames[$col+4])->setWidth(14);
+                $objWorksheet->getColumnDimension($columnNames[$col+5])->setWidth(14);
 
                 // Fila de nombre de programas
-                $objWorksheet->getStyle($columnNames[$col].$row.":".$columnNames[$col+4].$row)->applyFromArray($styleProgramHeader); //bordes
-                $objWorksheet->getStyle($columnNames[$col].$row.":".$columnNames[$col+4].$row)->getFont()->setSize($font_size); // Tamaño de las letras
-                $objWorksheet->getStyle($columnNames[$col].$row.":".$columnNames[$col+4].$row)->getFont()->setName($font); // Tipo de letra
-                $objWorksheet->getStyle($columnNames[$col].$row.":".$columnNames[$col+4].$row)->getAlignment()->setHorizontal($horizontal_aligment); // Alineado horizontal
-                $objWorksheet->getStyle($columnNames[$col].$row.":".$columnNames[$col+4].$row)->getAlignment()->setVertical($vertical_aligment); // Alineado vertical
-                $objWorksheet->getStyle($columnNames[$col].$row.":".$columnNames[$col+4].$row)->getFill()->setFillType(\PHPExcel_Style_Fill::FILL_SOLID)->getStartColor()->setRGB($pagina['bgcolor']);
-                $objWorksheet->mergeCells($columnNames[$col].$row.":".$columnNames[$col+4].$row);
+                $objWorksheet->getStyle($columnNames[$col].$row.":".$columnNames[$col+5].$row)->applyFromArray($styleProgramHeader); //bordes
+                $objWorksheet->getStyle($columnNames[$col].$row.":".$columnNames[$col+5].$row)->getFont()->setSize($font_size); // Tamaño de las letras
+                $objWorksheet->getStyle($columnNames[$col].$row.":".$columnNames[$col+5].$row)->getFont()->setName($font); // Tipo de letra
+                $objWorksheet->getStyle($columnNames[$col].$row.":".$columnNames[$col+5].$row)->getAlignment()->setHorizontal($horizontal_aligment); // Alineado horizontal
+                $objWorksheet->getStyle($columnNames[$col].$row.":".$columnNames[$col+5].$row)->getAlignment()->setVertical($vertical_aligment); // Alineado vertical
+                $objWorksheet->getStyle($columnNames[$col].$row.":".$columnNames[$col+5].$row)->getFill()->setFillType(\PHPExcel_Style_Fill::FILL_SOLID)->getStartColor()->setRGB($pagina['bgcolor']);
+                $objWorksheet->mergeCells($columnNames[$col].$row.":".$columnNames[$col+5].$row);
                 $objWorksheet->setCellValue($columnNames[$col].$row, $pagina['nombre']);
 
                 // Header interno de cada programa
                 $inHeaderRow = $row+1;
-                $objWorksheet->getStyle($columnNames[$col].$inHeaderRow.":".$columnNames[$col+4].$inHeaderRow)->applyFromArray($styleProgramHeader); //bordes
-                $objWorksheet->getStyle($columnNames[$col].$inHeaderRow.":".$columnNames[$col+4].$inHeaderRow)->getFont()->setSize($font_size); // Tamaño de las letras
-                $objWorksheet->getStyle($columnNames[$col].$inHeaderRow.":".$columnNames[$col+4].$inHeaderRow)->getFont()->setName($font); // Tipo de letra
-                $objWorksheet->getStyle($columnNames[$col].$inHeaderRow.":".$columnNames[$col+4].$inHeaderRow)->getAlignment()->setHorizontal($horizontal_aligment); // Alineado horizontal
-                $objWorksheet->getStyle($columnNames[$col].$inHeaderRow.":".$columnNames[$col+4].$inHeaderRow)->getAlignment()->setVertical($vertical_aligment); // Alineado vertical
-                $objWorksheet->getStyle($columnNames[$col].$inHeaderRow.":".$columnNames[$col+4].$inHeaderRow)->getFill()->setFillType(\PHPExcel_Style_Fill::FILL_SOLID)->getStartColor()->setRGB($pagina['bgcolor']);
+                $objWorksheet->getStyle($columnNames[$col].$inHeaderRow.":".$columnNames[$col+5].$inHeaderRow)->applyFromArray($styleProgramHeader); //bordes
+                $objWorksheet->getStyle($columnNames[$col].$inHeaderRow.":".$columnNames[$col+5].$inHeaderRow)->getFont()->setSize($font_size); // Tamaño de las letras
+                $objWorksheet->getStyle($columnNames[$col].$inHeaderRow.":".$columnNames[$col+5].$inHeaderRow)->getFont()->setName($font); // Tipo de letra
+                $objWorksheet->getStyle($columnNames[$col].$inHeaderRow.":".$columnNames[$col+5].$inHeaderRow)->getAlignment()->setHorizontal($horizontal_aligment); // Alineado horizontal
+                $objWorksheet->getStyle($columnNames[$col].$inHeaderRow.":".$columnNames[$col+5].$inHeaderRow)->getAlignment()->setVertical($vertical_aligment); // Alineado vertical
+                $objWorksheet->getStyle($columnNames[$col].$inHeaderRow.":".$columnNames[$col+5].$inHeaderRow)->getFill()->setFillType(\PHPExcel_Style_Fill::FILL_SOLID)->getStartColor()->setRGB($pagina['bgcolor']);
                 $objWorksheet->setCellValue($columnNames[$col].$inHeaderRow, $this->get('translator')->trans('Promedio'));
                 $objWorksheet->setCellValue($columnNames[$col+1].$inHeaderRow, $this->get('translator')->trans('Fecha inicio'));
                 $objWorksheet->setCellValue($columnNames[$col+2].$inHeaderRow, $this->get('translator')->trans('Hora inicio'));
                 $objWorksheet->setCellValue($columnNames[$col+3].$inHeaderRow, $this->get('translator')->trans('Fecha fin'));
                 $objWorksheet->setCellValue($columnNames[$col+4].$inHeaderRow, $this->get('translator')->trans('Hora fin'));
+                $objWorksheet->setCellValue($columnNames[$col+5].$inHeaderRow, $this->get('translator')->trans('Tiempo total'));
 
             }
             $p++;
         }
 
         // Columna de APROBADOS
-        $col += 5;
+        $col += 6;
         $inHeaderRow = $row+1;
         $objWorksheet->getColumnDimension($columnNames[$col])->setWidth(14);
         $objWorksheet->getStyle($columnNames[$col].$inHeaderRow)->applyFromArray($styleProgramHeader); //bordes
@@ -428,7 +430,7 @@ class ReportesController extends Controller
 
         if (!count($listado['participantes']))
         {
-            $objWorksheet->mergeCells('A5:'.$lastColumn.'5');
+            $objWorksheet->mergeCells('A5:'.$lastColumn.'6');
             $objWorksheet->setCellValue('A5', $this->get('translator')->trans('No existen registros para esta consulta'));
         }
         else {
@@ -479,28 +481,30 @@ class ReportesController extends Controller
                 $aprobados = 0;
                 foreach ($listado['paginas'] as $pagina_id => $pagina)
                 {
-                    $objWorksheet->getStyle($columnNames[$col].$row.":".$columnNames[$col+4].$row)->getFill()->setFillType(\PHPExcel_Style_Fill::FILL_SOLID)->getStartColor()->setRGB($pagina['bgcolor']);
+                    $objWorksheet->getStyle($columnNames[$col].$row.":".$columnNames[$col+5].$row)->getFill()->setFillType(\PHPExcel_Style_Fill::FILL_SOLID)->getStartColor()->setRGB($pagina['bgcolor']);
                     if (array_key_exists($pagina_id, $participante['paginas']))
                     {
                         $fecha_inicio = $f->converDate($participante['paginas'][$pagina_id]['fecha_inicio'],$yml['parameters']['time_zone']['default'],$timeZoneEmpresa);
                         $fecha_fin = $f->converDate($participante['paginas'][$pagina_id]['fecha_fin'],$yml['parameters']['time_zone']['default'],$timeZoneEmpresa);
+                        $totalTime = $f->totalTime($participante['paginas'][$pagina_id]['fecha_inicio'],$participante['paginas'][$pagina_id]['fecha_fin']);
                         $aprobados++;
                         $objWorksheet->setCellValue($columnNames[$col].$row, $participante['paginas'][$pagina_id]['promedio']);
                         $objWorksheet->setCellValue($columnNames[$col+1].$row, $fecha_inicio->fecha);
                         $objWorksheet->setCellValue($columnNames[$col+2].$row, $fecha_inicio->hora);
                         $objWorksheet->setCellValue($columnNames[$col+3].$row, $fecha_fin->fecha);
                         $objWorksheet->setCellValue($columnNames[$col+4].$row, $fecha_fin->hora);
+                        $objWorksheet->setCellValue($columnNames[$col+5].$row, $totalTime);
                     }
-                    $col += 5;
+                    $col += 6;
                 }
-
+                //return new response($col.' '.$row);
                 $objWorksheet->getStyle($columnNames[$col].$row.":".$columnNames[$col].$row)->applyFromArray($styleThinBlackBorderOutline); //bordes
                 $objWorksheet->getStyle($columnNames[$col].$row.":".$columnNames[$col].$row)->getFont()->setSize($font_size); // Tamaño de las letras
                 $objWorksheet->getStyle($columnNames[$col].$row.":".$columnNames[$col].$row)->getFont()->setName($font); // Tipo de letra
                 $objWorksheet->getStyle($columnNames[$col].$row.":".$columnNames[$col].$row)->getAlignment()->setHorizontal($horizontal_left); // Alineado horizontal
                 $objWorksheet->getStyle($columnNames[$col].$row.":".$columnNames[$col].$row)->getAlignment()->setVertical($vertical_aligment); // Alineado vertical
 
-                $objWorksheet->setCellValue($columnNames[$col].$row, $aprobados);
+                $objWorksheet->setCellValue($columnNames[$col].$row, trim($aprobados));
 
                 $row++;
 
@@ -522,15 +526,15 @@ class ReportesController extends Controller
 
             foreach ($listado['paginas'] as $pagina_id => $pagina)
             {
-                $objWorksheet->getStyle($columnNames[$col].$row.":".$columnNames[$col+4].$row)->applyFromArray($styleProgramTotal); //bordes
-                $objWorksheet->getStyle($columnNames[$col].$row.":".$columnNames[$col+4].$row)->getFont()->setSize($font_size); // Tamaño de las letras
-                $objWorksheet->getStyle($columnNames[$col].$row.":".$columnNames[$col+4].$row)->getFont()->setName($font); // Tipo de letra
-                $objWorksheet->getStyle($columnNames[$col].$row.":".$columnNames[$col+4].$row)->getAlignment()->setHorizontal($horizontal_left); // Alineado horizontal
-                $objWorksheet->getStyle($columnNames[$col].$row.":".$columnNames[$col+4].$row)->getAlignment()->setVertical($vertical_aligment); // Alineado vertical
-                $objWorksheet->getStyle($columnNames[$col].$row.":".$columnNames[$col+4].$row)->getFill()->setFillType(\PHPExcel_Style_Fill::FILL_SOLID)->getStartColor()->setRGB($pagina['bgcolor']);
-                $objWorksheet->mergeCells($columnNames[$col].$row.":".$columnNames[$col+4].$row);
+                $objWorksheet->getStyle($columnNames[$col].$row.":".$columnNames[$col+5].$row)->applyFromArray($styleProgramTotal); //bordes
+                $objWorksheet->getStyle($columnNames[$col].$row.":".$columnNames[$col+5].$row)->getFont()->setSize($font_size); // Tamaño de las letras
+                $objWorksheet->getStyle($columnNames[$col].$row.":".$columnNames[$col+5].$row)->getFont()->setName($font); // Tipo de letra
+                $objWorksheet->getStyle($columnNames[$col].$row.":".$columnNames[$col+5].$row)->getAlignment()->setHorizontal($horizontal_left); // Alineado horizontal
+                $objWorksheet->getStyle($columnNames[$col].$row.":".$columnNames[$col+5].$row)->getAlignment()->setVertical($vertical_aligment); // Alineado vertical
+                $objWorksheet->getStyle($columnNames[$col].$row.":".$columnNames[$col+5].$row)->getFill()->setFillType(\PHPExcel_Style_Fill::FILL_SOLID)->getStartColor()->setRGB($pagina['bgcolor']);
+                $objWorksheet->mergeCells($columnNames[$col].$row.":".$columnNames[$col+5].$row);
                 $objWorksheet->setCellValue($columnNames[$col].$row, $this->get('translator')->trans('Total aprobados').': '.$pagina['total']);
-                $col += 5;
+                $col += 6;
             }
 
         }

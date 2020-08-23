@@ -26,7 +26,6 @@ use Link\ComunBundle\Entity\AdminNoticia;
 
 
 
-
 class Functions
 {
 
@@ -235,7 +234,7 @@ class Functions
         return $text;
     }
 
-  //verifica si existen pruebas cargadas para un programa/curso y que el usuario las aprobaras todas
+  //verifica si el usuario aprobo el curso y alguna evaluacion correspondiente
   public function notasDisponibles($pagina_id,$usuario_id,$yml){
     $em = $this->em;
     $buscar = array($pagina_id);
@@ -245,16 +244,18 @@ class Functions
     //obtener estructura del programa
     while ($buscar!=NULL) {
       $pag_id = array_pop($buscar);
-      $paginas = $em->getRepository('LinkComunBundle:CertiPagina')->findBy(array('pagina'=>$pag_id,'estatusContenido'=>$yml['parameters']['estatus_contenido']['activo']));
+      $paginas = $em->getRepository('LinkComunBundle:CertiPagina')->findBy(array('pagina'=>$pag_id,'estatusContenido'=>$yml['parameters']['estatus_contenido']['activo'],'categoria'=>$yml['parameters']['categoria']['modulo']));
       foreach ($paginas as $pagina) {
         array_push($buscar,$pagina->getId());
         array_push($estructura,$pagina->getId());
       }
 
     }
+
+    $programa = $em->getRepository('LinkComunBundle:CertiPaginaLog')->findOneBy(array('pagina'=>$pag_id,'usuario'=>$usuario_id,'estatusPagina'=>$yml['parameters']['estatus_pagina']['completada']));
     //obtener pruebas
     foreach ($estructura as $pag_id) {
-      $prueba = $em->getRepository('LinkComunBundle:CertiPrueba')->findOneBy(array('pagina'=>$pag_id,'estatusContenido'=>$yml['parameters']['estatus_contenido']['activo']));
+      $prueba = $em->getRepository('LinkComunBundle:CertiPrueba')->findOneBy(array('pagina'=>$pag_id));
       if ($prueba != NULL) {
          $cn_pruebas++;
          $prueba_log = $em->getRepository('LinkComunBundle:CertiPruebaLog')->findOneBy(array('prueba'=>$prueba->getId(),'usuario'=>$usuario_id,'estado'=>$yml['parameters']['estado_prueba']['aprobado']));
@@ -263,7 +264,7 @@ class Functions
          }
       }
     }
-    return ($cn_pruebas > 0 && ($cn_pruebas == $cn_aprobadas ) )? 1:0;
+    return ($cn_aprobadas>0 && $programa )? 1:0;
   }
 
 
@@ -3793,8 +3794,20 @@ public function obtenerEstructuraJson($pagina_id){
         $date->setTimeZone(new \DateTimeZone($finalTimeZone));
         $date = $date->format($format);
         $date = explode(" ",$date);
-        $return = ($reportDate)? (object)array('fecha'=>$date[0],'hora'=>$date[1].$date[2]):(object)array('fecha'=>$date[0],'hora'=>$date[1]);
+        $return = ($reportDate)? (object)array('fecha'=>$date[0],'hora'=>$date[1].' '.$date[2]):(object)array('fecha'=>$date[0],'hora'=>$date[1]);
         return $return;
+    }
+
+    public function totalTime($date_inicio,$date_fin){
+        //$fecha_inicio_total = $date_inicio.' '.$time_inicio[0].':00'
+        //(new \DateTime('now'))
+        $fecha_inicio_total = new \DateTime(date('Y/m/d H:i:s', strtotime($date_inicio)));
+
+        //$time_fin = explode(" ",$time_fin);
+        //$fecha_fin_total = $date_fin.' '.$time_fin[0];
+        $fecha_fin_total = new \DateTime(date('Y/m/d H:i:s', strtotime($date_fin)));
+        $interval = date_diff($fecha_inicio_total, $fecha_fin_total);
+        return $interval->format('%h:%i:%s');
     }
 
     public function clearNameTimeZone($timeZone,$pais,$yml){
