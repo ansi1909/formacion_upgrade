@@ -1,0 +1,10 @@
+[20-Aug-2020 17:34:56 America/Halifax] PHP Warning:  PHP Startup: Unable to load dynamic library 'pdo_pgsql' (tried: /usr/lib/php/20190902/pdo_pgsql (/usr/lib/php/20190902/pdo_pgsql: cannot open shared object file: No such file or directory), /usr/lib/php/20190902/pdo_pgsql.so (/usr/lib/php/20190902/pdo_pgsql.so: undefined symbol: pdo_parse_params)) in Unknown on line 0
+[20-Aug-2020 17:34:56 America/Halifax] PHP Warning:  Module 'curl' already loaded in Unknown on line 0
+[20-Aug-2020 17:34:57 America/Halifax] PHP Warning:  Module 'intl' already loaded in Unknown on line 0
+[20-Aug-2020 17:34:57 America/Halifax] PHP Warning:  Module 'pgsql' already loaded in Unknown on line 0
+[20-Aug-2020 17:34:57 America/Halifax] PHP Warning:  Module 'zip' already loaded in Unknown on line 0
+[20-Aug-2020 17:40:22 America/Halifax] PHP Warning:  PHP Startup: Unable to load dynamic library 'pdo_pgsql' (tried: /usr/lib/php/20190902/pdo_pgsql (/usr/lib/php/20190902/pdo_pgsql: cannot open shared object file: No such file or directory), /usr/lib/php/20190902/pdo_pgsql.so (/usr/lib/php/20190902/pdo_pgsql.so: undefined symbol: pdo_parse_params)) in Unknown on line 0
+[20-Aug-2020 17:40:22 America/Halifax] PHP Warning:  Module 'curl' already loaded in Unknown on line 0
+[20-Aug-2020 17:40:22 America/Halifax] PHP Warning:  Module 'intl' already loaded in Unknown on line 0
+[20-Aug-2020 17:40:22 America/Halifax] PHP Warning:  Module 'pgsql' already loaded in Unknown on line 0
+[20-Aug-2020 17:40:22 America/Halifax] PHP Warning:  Module 'zip' already loaded in Unknown on line 0
