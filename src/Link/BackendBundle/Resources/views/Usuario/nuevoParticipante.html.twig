@@ -438,17 +438,11 @@
                         }
                     }
                 },
-                'correo_personal': {
-                    email: true
-                },
                 'empresa_id': {
                     required: true
                 },
                 'nivel_id': {
                     required: true
-                },
-                'correo_corporativo': {
-                    email: true
                 }
             },
             messages: {
@@ -467,17 +461,11 @@
                 'clave': {
                     required: "- {{ 'La clave es requerida'|trans }}."
                 },
-                'correo_personal': {
-                    email: "- {{ 'El correo personal tiene un formato inválido'|trans }}."
-                },
                 'empresa_id': {
                     required: "- {{ 'La empresa es requerida.'|trans }}"
                 },
                 'nivel_id': {
                     required: "- {{ 'El nivel es requerido.'|trans }}"
-                },
-                'correo_corporativo': {
-                    email: "- {{ 'El correo corporativo tiene un formato inválido'|trans }}."
                 }
             }
         });

@@ -5,12 +5,14 @@ parameters:
         tutor: 3
         reporte: 4
         empresa: 5
+        tutor_empresa: 8
     rol_convertir:
         rol_administrador: 'Administrador'
         rol_participante: 'Participante'
         rol_tutor: 'Tutor Virtual'
         rol_reporte: 'Reporte'
         rol_empresa: 'Empresa'
+        rol_tutor_empresa: 'Tutor Empresa'
     tipo_pregunta:
         simple: 1
         multiple: 2

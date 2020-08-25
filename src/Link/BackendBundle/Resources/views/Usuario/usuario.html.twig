@@ -419,11 +419,11 @@
                 }
 
                 // Validar que uno de los correos sea ingresado
-                if (correo_personal == '' && correo_corporativo == '')
+                /*if (correo_personal == '' && correo_corporativo == '')
                 {
                     valid = false;
                     html += "<li>- {{ 'Debes ingresar el correo personal o el correo corporativo'|trans }}.</li>";
-                }
+                }*/
 
                 if (!valid){
                     $('#div-error ul').html(html);
@@ -493,12 +493,6 @@
                         }
                     }
                 },
-                'correo_personal': {
-                    email: true
-                },
-                'correo_corporativo': {
-                    email: true
-                },
                 'roles[]': {
                     required: true,
                     minlength: 1
@@ -519,12 +513,6 @@
                 },
                 'clave': {
                     required: "- {{ 'La clave es requerida'|trans }}."
-                },
-                'correo_personal': {
-                    email: "- {{ 'El correo personal tiene un formato inválido'|trans }}"
-                },
-                'correo_corporativo': {
-                    email: "- {{ 'El correo corporativo tiene un formato inválido'|trans }}."
                 },
                 'roles[]': {
                     required: "- {{ 'Debe seleccionar al menos un rol'|trans }}.",
