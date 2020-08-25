@@ -39,6 +39,7 @@ class UsuarioController extends Controller
         if ($request->getMethod() == 'POST')
         {
             $rol_id = $request->request->get('rol_id');
+            //return new response($rol_id);
             $empresa_id = $request->request->get('empresa_id');
             $nivel_id = $request->request->get('nivel_id');
             $nombre = trim(strtolower($request->request->get('nombre')));
@@ -59,9 +60,21 @@ class UsuarioController extends Controller
         $and = ' AND ';
 
         if ($rol_id){
-           $rol =  $em->getRepository('LinkComunBundle:AdminRol')->find($rol_id);
-           $rol = explode(" ",$rol->getNombre());
-           $rol = 'rol_'.strtolower($rol[0]);
+            if($rol_id == '8')
+            {
+                $rol =  $em->getRepository('LinkComunBundle:AdminRol')->find($rol_id);
+                //return new response ($rol->getNombre());
+                $rol = explode(" ",$rol->getNombre());
+                $rol = 'rol_tutor_'.strtolower($rol[1]);
+                //return new response ($rol);
+            }else{
+                $rol =  $em->getRepository('LinkComunBundle:AdminRol')->find($rol_id);
+                //return new response ($rol->getNombre());
+                $rol = explode(" ",$rol->getNombre());
+                $rol = 'rol_'.strtolower($rol[0]);
+                //return new response ($rol);
+            }
+           
            $query_final.= ($query_final==$query_base)?  $where."$rol <> 0":$and."$rol <> 0";
         }
         if ($empresa_id)
@@ -85,7 +98,7 @@ class UsuarioController extends Controller
        $query->execute();
        $usuarios_db = $query->fetchAll();
        $usuarios = array();
-       $roles_viewSql = array('rol_administrador','rol_participante','rol_tutor','rol_reporte','rol_empresa');
+       $roles_viewSql = array('rol_administrador','rol_participante','rol_tutor','rol_reporte','rol_empresa','rol_tutor_empresa');
        foreach ($usuarios_db as $usuario)
         {
             $roles_usuario = array();

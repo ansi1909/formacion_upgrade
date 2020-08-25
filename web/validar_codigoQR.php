@@ -128,7 +128,7 @@ else {
             }
         }
     }
-    if ($cn_pruebas >0 &&($cn_pruebas == $cn_aprobadas) ) {
+    if ($cn_pruebas >0  ) {
     	$promedio = $notas / $cm;
     	$promedio = round($promedio,2);
     }
