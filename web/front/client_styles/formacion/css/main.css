@@ -366,46 +366,41 @@ input.form-control:focus {
       transform: scaleX(-1) rotate(360deg); }
 
 .panelBtn {
-  position: absolute;
-  right: 5rem;
-  top: 6rem;
   list-style: none;
   z-index: 1000; }
   @media (max-width: 991.98px) {
     .panelBtn {
       right: 4rem; } }
-  .panelBtn .seccBtn {
-    margin-top: 2.5rem; }
-    .panelBtn .seccBtn .btnC {
-      width: 6rem;
-      height: 6rem;
-      padding: .25rem;
-      border-radius: 50%;
-      box-shadow: 2px 2px 5px rgba(51, 51, 51, 0.5);
-      cursor: pointer; }
+  .panelBtn .seccBtn .btnC {
+    width: 6rem;
+    height: 6rem;
+    padding: .25rem;
+    border-radius: 50%;
+    box-shadow: 2px 2px 5px rgba(51, 51, 51, 0.5);
+    cursor: pointer; }
+    @media (max-width: 991.98px) {
+      .panelBtn .seccBtn .btnC {
+        width: 4.5rem;
+        height: 4.5rem; } }
+    .panelBtn .seccBtn .btnC .certi {
+      width: 4rem;
+      height: auto;
+      border-radius: calc(1rem - 6px);
+      position: relative;
+      top: .3rem;
+      text-align: center; }
       @media (max-width: 991.98px) {
-        .panelBtn .seccBtn .btnC {
-          width: 4.5rem;
-          height: 4.5rem; } }
-      .panelBtn .seccBtn .btnC .certi {
-        width: 4rem;
-        height: auto;
-        border-radius: calc(1rem - 6px);
-        position: relative;
-        top: .3rem;
-        text-align: center; }
-        @media (max-width: 991.98px) {
-          .panelBtn .seccBtn .btnC .certi {
-            width: 2.5rem; } }
-      .panelBtn .seccBtn .btnC .notas {
-        width: 4rem;
-        height: auto;
-        position: relative;
-        top: .3rem;
-        text-align: center; }
-        @media (max-width: 991.98px) {
-          .panelBtn .seccBtn .btnC .notas {
-            width: 2.5rem; } }
+        .panelBtn .seccBtn .btnC .certi {
+          width: 2.5rem; } }
+    .panelBtn .seccBtn .btnC .notas {
+      width: 4rem;
+      height: auto;
+      position: relative;
+      top: .3rem;
+      text-align: center; }
+      @media (max-width: 991.98px) {
+        .panelBtn .seccBtn .btnC .notas {
+          width: 2.5rem; } }
 
 .bttn_fm {
   font-family: "Roboto";
@@ -3793,8 +3788,11 @@ p.up {
 .titulo-resul {
   color: #5CAEE6;
   font-family: "Open Sans";
-  font-size: 3rem;
+  font-size: 2.4rem;
   margin-top: 3rem; }
+  @media (min-width: 768px) {
+    .titulo-resul {
+      font-size: 3rem; } }
 
 .txt-resul {
   font-family: "Roboto";
@@ -3803,7 +3801,10 @@ p.up {
   margin: 2rem 0 1rem 0; }
 
 .calif {
-  left: 0rem; }
+  left: 0rem;
+  margin: 0 !important; }
+  .calif .num {
+    left: unset !important; }
 
 .mostrar-resul {
   background: #fff;
@@ -3833,8 +3834,8 @@ p.up {
     font-size: 2rem;
     font-weight: 400; }
   .mostrar-resul .resp-eval {
+    max-width: 55rem;
     position: relative;
-    left: 16%;
     margin-left: auto;
     margin-right: auto;
     margin-bottom: calc(4rem + 4px); }
@@ -3856,6 +3857,9 @@ p.up {
         border-bottom: 0.125rem solid #df584c;
         border-right: 0.125rem solid #df584c;
         border-top: 0.125rem solid #df584c; }
+
+.test-results-container {
+  margin-top: 7rem !important; }
 
 .enun .enun_eval, .enun_eval {
   max-width: 45rem;
@@ -3920,7 +3924,7 @@ p.up {
       margin-right: calc(1rem + 7px); } }
 
 .mostrar-resul .resp-eval li .preg-aprob, .mostrar-resul .resp-eval li .preg-reprob {
-  width: 44rem;
+  width: 100%;
   display: flex;
   flex-direction: row;
   margin: 0;
@@ -3936,7 +3940,7 @@ p.up {
   top: .05rem; }
 
 .mostrar-resul .resp-eval li .preg-aprob .preg_num-aprob, .mostrar-resul .resp-eval li .preg-reprob .preg_num-reprob {
-  width: 6rem;
+  width: 20%;
   height: auto;
   border-radius: calc(1rem - 8px) 0 0 calc(1rem - 8px);
   position: relative;
@@ -3960,7 +3964,7 @@ p.up {
       font-size: 2rem; }
 
 .mostrar-resul .resp-eval li .preg-aprob .preg_enun, .mostrar-resul .resp-eval li .preg-reprob .preg_enun {
-  width: 38rem;
+  width: 80%;
   height: auto;
   text-align: justify;
   padding: .75rem .75rem .5rem .75rem;

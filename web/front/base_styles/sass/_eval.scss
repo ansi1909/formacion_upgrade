@@ -245,7 +245,7 @@
 }
 
 .mgn_img-asig{
-    margin: .5rem 0 .5rem 5rem; 
+    margin: .5rem 0 .5rem 5rem;
 }
 
 .opc_lado-a{
@@ -307,8 +307,12 @@
 .titulo-resul{
     color: $blue;
     font-family: $lessons-font;
-    font-size: 3rem;
+    font-size: 2.4rem;
     margin-top: 3rem;
+
+    @include media-breakpoint-up(md) {
+        font-size: 3rem;
+    }
 }
 
 .txt-resul{
@@ -321,8 +325,10 @@
 .calif{
     @extend %cal-log;
     left: 0rem;
+    margin: 0 !important;
     .num{
         @extend %number;
+        left: unset !important;
     }
 }
 
@@ -339,9 +345,9 @@
         .num{
            @extend %number;
             .unidad{
-                color: $blue;	
-                font-family: $primary-font;	
-                font-size: $h4-font-size;	
+                color: $blue;
+                font-family: $primary-font;
+                font-size: $h4-font-size;
                 line-height: calc(2rem - 4px);
                 margin-left: calc(1rem - 8px);
             }
@@ -349,14 +355,14 @@
     }*/
     .anun-resul{
         margin: 1rem auto;
-        color: $gray-700;	
-        font-family: $secondary-font;	
+        color: $gray-700;
+        font-family: $secondary-font;
         font-size: $h3-font-size;
         font-weight: $font-weight-normal;
     }
     .resp-eval{
+        max-width: 55rem;
         position: relative;
-        left: 16%;
         margin-left: auto;
         margin-right: auto;
         margin-bottom: calc(4rem + 4px);
@@ -383,7 +389,7 @@
                     @extend %num-preg;
                     background: $red;
                     .preg_n{
-                        color: $white !important; 
+                        color: $white !important;
                     }
                 }
                 .preg_enun{
@@ -397,6 +403,9 @@
     }
 }
 
+.test-results-container {
+    margin-top: 7rem !important;
+}
 //Extends
 %enunc{
     max-width: 45rem;
@@ -483,7 +492,7 @@
 }
 
 %pregunta{
-    width: 44rem;
+    width: 100%;
     display: flex;
     flex-direction: row;
     margin: 0;
@@ -491,9 +500,9 @@
 }
 
 %number{
-    color: $blue;	
-    font-family: $primary-font;	
-    font-size: 2rem;	
+    color: $blue;
+    font-family: $primary-font;
+    font-size: 2rem;
     line-height: calc(2rem + 6px);
     position: relative;
     left: calc(1rem + 7px);
@@ -501,7 +510,7 @@
 }
 
 %num-preg{
-    width: 6rem;
+    width: 20%;
     height: auto;
     border-radius: calc(1rem - 8px) 0 0 calc(1rem - 8px);
     position: relative;
@@ -528,7 +537,7 @@
 }
 
 %enun-preg{
-    width: 38rem;
+    width: 80%;
     height: auto;
     text-align: justify;
     padding: .75rem .75rem .5rem .75rem;
