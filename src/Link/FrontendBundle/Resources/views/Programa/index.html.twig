@@ -4,7 +4,7 @@
     <link rel="stylesheet" href="{{ asset('front/js/plugins/introjs/introjs.css') }}">
     {{ parent() }}
     <style type="text/css">
-        
+
     </style>
 {% endblock %}
 
@@ -85,7 +85,7 @@
 
                 <!-- CARDS MODULOS HZR -->
                 {{ lis_mods|raw }}
-                
+
         </div>
     {% endif %}
 {% endblock %}
@@ -95,7 +95,7 @@
     <script type="text/javascript" src="{{ asset('js/front/tuto.js') }}"></script>
     <script type="text/javascript" src="{{ asset('js/front/resizeElements.js') }}"></script>
     <script>
-    
+
         $(document).ready(function(){
             $('#proG').addClass("active");
             const allImages = document.querySelectorAll('#message img');
@@ -113,13 +113,13 @@
                     intro: 'Para ingresar al programa haz clic en el botón iniciar.'
                 }
             ]
-            
+
 
 
             startIntro(introSteps);
             resizeImages(allImages);
         });
     </script>
-    <script type="text/javascript" src="{{ asset('js/front/programa_inicio.js') }}"></script> 
+    <script type="text/javascript" src="{{ asset('js/front/programa_inicio.js') }}"></script>
     <script type="text/javascript" src="{{ asset('js/front/mapa.js') }}"></script>
 {% endblock %}
