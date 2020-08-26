@@ -35,6 +35,7 @@ $(document).ready(function() {
 			success: function(data) {
 				if (data.ok == 1)
 				{
+					console.log(data);
 					var preguntas_sin_contestar = $('#preguntas_sin_contestar').val();
 					if (data.psc != 0)
 					{
@@ -183,7 +184,7 @@ $(document).ready(function() {
 
 	$( ".opc_lado-b, .elec-resp-asig-b" ).droppable({
      	drop: function( event, ui ) {
-     		
+
      		var target = $(this);
      		var target_data = target.attr('data');
      		var target_style = target.attr('style');
@@ -212,7 +213,7 @@ $(document).ready(function() {
 	      			}
 	      		});
      		}
-      		
+
       		// Chequeamos que otra opción ya no esté seleccionada con la misma pregunta
       		$('.opc_lado-b__'+p_pa[0]).each(function(){
       			div_b = $(this);
@@ -232,7 +233,7 @@ $(document).ready(function() {
       		{
       			target.children().attr( "style", style );
       		}
-        	
+
       	}
     });
 
