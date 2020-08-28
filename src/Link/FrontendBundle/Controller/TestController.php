@@ -19,7 +19,7 @@ class TestController extends Controller
     	$session = new Session();
         $f = $this->get('funciones');
         $yml = Yaml::parse(file_get_contents($this->get('kernel')->getRootDir().'/config/parametros.yml'));
-        
+
         if (!$session->get('iniFront') || $f->sesionBloqueda($session->get('sesion_id')))
         {
             return $this->redirectToRoute('_authExceptionEmpresa', array('tipo' => 'sesion'));
@@ -49,7 +49,7 @@ class TestController extends Controller
                                                                                             'usuario' => $session->get('usuario')['id'],
                                                                                             'estado' => $yml['parameters']['estado_prueba']['curso']),
                                                                                       array('id' => 'DESC'));
-        
+
         if (!$prueba_log)
         {
 
@@ -99,9 +99,9 @@ class TestController extends Controller
         }
 
         // Preguntas
-        $query = $em->createQuery("SELECT p FROM LinkComunBundle:CertiPregunta p 
-                                    WHERE p.prueba = :prueba_id 
-                                    AND p.estatusContenido = :activo 
+        $query = $em->createQuery("SELECT p FROM LinkComunBundle:CertiPregunta p
+                                    WHERE p.prueba = :prueba_id
+                                    AND p.estatusContenido = :activo
                                     AND p.pregunta IS NULL")
                     ->setParameters(array('prueba_id' => $prueba->getId(),
                                           'activo' => $yml['parameters']['estatus_contenido']['activo']));
@@ -137,9 +137,9 @@ class TestController extends Controller
             if ($pregunta->getTipoPregunta()->getId() != $yml['parameters']['tipo_pregunta']['asociacion'])
             {
 
-                $query = $em->createQuery("SELECT po FROM LinkComunBundle:CertiPreguntaOpcion po 
-                                            JOIN po.opcion o 
-                                            WHERE po.pregunta = :pregunta_id AND o.prueba = :prueba_id 
+                $query = $em->createQuery("SELECT po FROM LinkComunBundle:CertiPreguntaOpcion po
+                                            JOIN po.opcion o
+                                            WHERE po.pregunta = :pregunta_id AND o.prueba = :prueba_id
                                             ORDER BY o.id ASC")
                             ->setParameters(array('pregunta_id' => $pregunta->getId(),
                                                   'prueba_id' => $pregunta->getPrueba()->getId()));
@@ -155,7 +155,7 @@ class TestController extends Controller
 
             }
             else {
-                
+
                 $asociacion = $em->getRepository('LinkComunBundle:CertiPreguntaAsociacion')->findOneByPregunta($pregunta->getId());
 
                 if ($asociacion)
@@ -213,7 +213,7 @@ class TestController extends Controller
         $paso_actual_intro = $intro_del_usuario[0]->getPasoActual();
         $cancelar_intro = $intro_del_usuario[0]->getCancelado();
 
-         
+
         return $this->render('LinkFrontendBundle:Test:index.html.twig', array('prueba_log' => $prueba_log,
                                                                               'preguntas' => $preguntas,
                                                                               'preguntas_str' => $preguntas_str,
@@ -227,7 +227,7 @@ class TestController extends Controller
 
     public function ajaxTestResponseAction(Request $request)
     {
-        
+
         $session = new Session();
         $em = $this->getDoctrine()->getManager();
         $yml = Yaml::parse(file_get_contents($this->get('kernel')->getRootDir().'/config/parametros.yml'));
@@ -430,7 +430,7 @@ class TestController extends Controller
         $session = new Session();
         $f = $this->get('funciones');
         $yml = Yaml::parse(file_get_contents($this->get('kernel')->getRootDir().'/config/parametros.yml'));
-        
+
         if (!$session->get('iniFront') || $f->sesionBloqueda($session->get('sesion_id')))
         {
             return $this->redirectToRoute('_authExceptionEmpresa', array('tipo' => 'sesion'));
@@ -458,8 +458,8 @@ class TestController extends Controller
         $prueba_log = $em->getRepository('LinkComunBundle:CertiPruebaLog')->find($prueba_log_id);
 
         // Cantidad de intentos
-        $query = $em->createQuery("SELECT COUNT(pl.id) FROM LinkComunBundle:CertiPruebaLog pl 
-                                    WHERE pl.usuario = :usuario_id 
+        $query = $em->createQuery("SELECT COUNT(pl.id) FROM LinkComunBundle:CertiPruebaLog pl
+                                    WHERE pl.usuario = :usuario_id
                                     AND pl.prueba = :prueba_id")
                     ->setParameters(array('usuario_id' => $session->get('usuario')['id'],
                                           'prueba_id' => $prueba_log->getPrueba()->getId()));
@@ -469,7 +469,7 @@ class TestController extends Controller
         $preguntas_ids = explode(",", $preguntas_str);
 
         // Verificar si todas las preguntas fueron contestadas
-        $query = $em->createQuery("SELECT DISTINCT(r.nro) AS nro FROM LinkComunBundle:CertiRespuesta r 
+        $query = $em->createQuery("SELECT DISTINCT(r.nro) AS nro FROM LinkComunBundle:CertiRespuesta r
                                     WHERE r.pruebaLog = :prueba_log_id ORDER BY r.nro ASC")
                     ->setParameter('prueba_log_id', $prueba_log_id);
         $nros = $query->getResult();
@@ -525,7 +525,7 @@ class TestController extends Controller
         $correctas = $cantidad_preguntas - $prueba_log->getErradas();
         $prueba_log->setCorrectas($correctas);
         $contestadas = $prueba_log->getErradas() + $prueba_log->getCorrectas();
-        
+
         if ((!$prueba_log->getPreguntasErradas() || $prueba_log->getPreguntasErradas() == '') && ($contestadas == $cantidad_preguntas))
         {
             // Pasó con el 100%. No hace falta cálculos.
@@ -535,7 +535,7 @@ class TestController extends Controller
             if ($intentos > 1)
             {
                 $puntos = $puntos/$intentos;
-                $puntos = round($puntos, 0, PHP_ROUND_HALF_UP);
+                $puntos = round($puntos);
             }
         }
         else {
@@ -574,7 +574,7 @@ class TestController extends Controller
                     $nota += $porcentaje;
                 }
             }
-            $nota = round($nota, 2, PHP_ROUND_HALF_UP);
+            $nota = round($nota);
 
             $pagina_empresa = $em->getRepository('LinkComunBundle:CertiPaginaEmpresa')->findOneBy(array('empresa' => $session->get('empresa')['id'],
                                                                                                         'pagina' => $prueba_log->getPrueba()->getPagina()->getId()));
@@ -644,7 +644,7 @@ class TestController extends Controller
         $session = new Session();
         $f = $this->get('funciones');
         $yml = Yaml::parse(file_get_contents($this->get('kernel')->getRootDir().'/config/parametros.yml'));
-        
+
         if (!$session->get('iniFront') || $f->sesionBloqueda($session->get('sesion_id')))
         {
             return $this->redirectToRoute('_authExceptionEmpresa', array('tipo' => 'sesion'));
@@ -668,7 +668,7 @@ class TestController extends Controller
             $erradas = array();
         }
 
-        $query = $em->createQuery("SELECT DISTINCT(r.nro) AS nro FROM LinkComunBundle:CertiRespuesta r 
+        $query = $em->createQuery("SELECT DISTINCT(r.nro) AS nro FROM LinkComunBundle:CertiRespuesta r
                                     WHERE r.pruebaLog = :prueba_log_id ORDER BY r.nro ASC")
                     ->setParameter('prueba_log_id', $prueba_log_id);
         $nros = $query->getResult();
@@ -701,14 +701,14 @@ class TestController extends Controller
         if ($prueba_log->getEstado() == $yml['parameters']['estado_prueba']['reprobado'])
         {
             // Cantidad de intentos
-            $query = $em->createQuery("SELECT COUNT(pl.id) FROM LinkComunBundle:CertiPruebaLog pl 
-                                        WHERE pl.usuario = :usuario_id 
+            $query = $em->createQuery("SELECT COUNT(pl.id) FROM LinkComunBundle:CertiPruebaLog pl
+                                        WHERE pl.usuario = :usuario_id
                                         AND pl.prueba = :prueba_id")
                         ->setParameters(array('usuario_id' => $session->get('usuario')['id'],
                                               'prueba_id' => $prueba_log->getPrueba()->getId()));
             $intentos = $query->getSingleScalarResult();
-            $query = $em->createQuery("SELECT pe FROM LinkComunBundle:CertiPaginaEmpresa pe 
-                                        WHERE pe.empresa = :empresa_id 
+            $query = $em->createQuery("SELECT pe FROM LinkComunBundle:CertiPaginaEmpresa pe
+                                        WHERE pe.empresa = :empresa_id
                                         AND pe.pagina = :pagina_id")
                         ->setParameters(array('empresa_id' => $session->get('empresa')['id'],
                                               'pagina_id' => $prueba_log->getPrueba()->getPagina()->getId()));

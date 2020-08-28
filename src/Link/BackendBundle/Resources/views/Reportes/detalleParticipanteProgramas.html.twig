@@ -37,14 +37,14 @@
                                             <div class="row">
                                                 <div class="col-8 col-md-8 col-xl-8 text-center">
                                                     {% set pct = modulo.avance/100 %}
-                                                    <div class="progress-circle progress-success" data-value="{{ pct }}"  data-size="140"  data-thickness="4"  data-animation-start-value="0" data-reverse="false" ><strong>{{ modulo.avance }} %</strong></div>
+                                                    <div class="progress-circle progress-success" data-value="{{ pct }}"  data-size="140"  data-thickness="4"  data-animation-start-value="0" data-reverse="false" ><strong>{{ modulo.avance }}</strong></div>
                                                     <br>
                                                     <p class="text-uppercase">{{ 'Avance en el módulo'|trans }}</p>
                                                 </div>
                                                 <div class="col-8 col-md-8 col-xl-8 text-center">
                                                     {% if modulo.evaluacion.tiene %}
                                                         {% set pct = modulo.evaluacion.nota/100 %}
-                                                        <div class="progress-circle progress-{{ modulo.evaluacion.class }}" data-value="{{ pct }}"  data-size="140"  data-thickness="4"  data-animation-start-value="0" data-reverse="false" ><strong>{{ modulo.evaluacion.nota }}</strong></div>
+                                                        <div class="progress-circle progress-circle-nota progress-{{ modulo.evaluacion.class }}" data-value="{{ pct }}"  data-size="140"  data-thickness="4"  data-animation-start-value="0" data-reverse="false" ><strong>{{ modulo.evaluacion.nota }}</strong></div>
                                                         <br>
                                                         <p>{{ 'Evaluación del módulo'|trans }}</p>
                                                         <p class="text-uppercase">{{ modulo.evaluacion.status }}</p>
@@ -61,7 +61,7 @@
                                                                 <h5><span class="spincreament">{{ modulo.materias }}</span></h5>
                                                                 <p>{{ 'Materias vistas'|trans }}</p>
                                                             </div>
-                                                            <i class="fa fa-hand-o-right text-success"></i> 
+                                                            <i class="fa fa-hand-o-right text-success"></i>
                                                         </div>
                                                         <br>
                                                         <div class="media">
@@ -69,10 +69,10 @@
                                                                 <span class="progress-heading">&nbsp;</span>
                                                             </div>
                                                             <span>
-                                                                <span class="dynamicsparkline">&nbsp;</span> 
-                                                            </span> 
+                                                                <span class="dynamicsparkline">&nbsp;</span>
+                                                            </span>
                                                         </div>
-                                                        <i class="bg-icon text-right fa fa-hand-o-right text-success"></i> 
+                                                        <i class="bg-icon text-right fa fa-hand-o-right text-success"></i>
                                                     </div>
                                                 </div>
                                                 <div class="col-8 col-md-8 col-xl-8 text-center">
@@ -82,7 +82,7 @@
                                                                 <h5><span class="spincreament">{{ modulo.lecciones }}</span></h5>
                                                                 <p>{{ 'Lecciones vistas'|trans }}</p>
                                                             </div>
-                                                            <i class="fa fa-hand-o-right text-success"></i> 
+                                                            <i class="fa fa-hand-o-right text-success"></i>
                                                         </div>
                                                         <br>
                                                         <div class="media">
@@ -90,10 +90,10 @@
                                                                 <span class="progress-heading">&nbsp;</span>
                                                             </div>
                                                             <span>
-                                                                <span class="dynamicsparkline">&nbsp;</span> 
-                                                            </span> 
+                                                                <span class="dynamicsparkline">&nbsp;</span>
+                                                            </span>
                                                         </div>
-                                                        <i class="bg-icon text-right fa fa-hand-o-right text-success"></i> 
+                                                        <i class="bg-icon text-right fa fa-hand-o-right text-success"></i>
                                                     </div>
                                                 </div>
                                             </div>
@@ -107,7 +107,7 @@
                                                             <div class="indication text-{{ evaluacion_materia.class }}"><i class="fa fa-dot-circle-o"></i></div>
                                                             <div class="media-body">
                                                                 <h6 class="mb-1">{{ evaluacion_materia.nombre }}<small> - {{ evaluacion_materia.status }}</small></h6>
-                                                                {{ 'Nota'|trans }}: {{ evaluacion_materia.nota }} 
+                                                                {{ 'Nota'|trans }}: {{ evaluacion_materia.nota }}
                                                             </div>
                                                         {% else %}
                                                             <div class="indication text-danger"><i class="fa fa-dot-circle-o"></i></div>
