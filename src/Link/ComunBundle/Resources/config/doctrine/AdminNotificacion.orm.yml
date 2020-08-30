@@ -5,12 +5,12 @@ Link\ComunBundle\Entity\AdminNotificacion:
         notificacion_ndx1:
             columns:
                 - usuario_id
-        IDX_BDBBB019B394FE3:
-            columns:
-                - tipo_notificacion_id
         IDX_BDBBB01521E1991:
             columns:
                 - empresa_id
+        IDX_BDBBB019B394FE3:
+            columns:
+                - tipo_notificacion_id
     id:
         id:
             type: integer
@@ -33,7 +33,20 @@ Link\ComunBundle\Entity\AdminNotificacion:
             length: null
             options:
                 fixed: false
+        fecha:
+            type: date
+            nullable: true
     manyToOne:
+        empresa:
+            targetEntity: AdminEmpresa
+            cascade: {  }
+            fetch: LAZY
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                empresa_id:
+                    referencedColumnName: id
+            orphanRemoval: false
         tipoNotificacion:
             targetEntity: AdminTipoNotificacion
             cascade: {  }
@@ -52,16 +65,6 @@ Link\ComunBundle\Entity\AdminNotificacion:
             inversedBy: null
             joinColumns:
                 usuario_id:
-                    referencedColumnName: id
-            orphanRemoval: false
-        empresa:
-            targetEntity: AdminEmpresa
-            cascade: {  }
-            fetch: LAZY
-            mappedBy: null
-            inversedBy: null
-            joinColumns:
-                empresa_id:
                     referencedColumnName: id
             orphanRemoval: false
     lifecycleCallbacks: {  }
