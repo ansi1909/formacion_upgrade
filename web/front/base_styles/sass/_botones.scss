@@ -185,16 +185,12 @@
 }
 
 .panelBtn{
-    position: absolute;
-    right: 5rem;
-    top: 6rem;
     list-style: none;
     z-index: 1000;
     @include media-breakpoint-down(md) {
         right: 4rem;
     }
     .seccBtn{
-        margin-top: 2.5rem;
         .btnC{
         width: 6rem;
         height: 6rem;
@@ -227,12 +223,12 @@
                     width: 2.5rem;
                 }
             }
-        } 
+        }
     }
 }
 //Extend
 %bttn{
-    font-family: $primary-font;	
-    font-weight: $font-weight-normal-hard;		
+    font-family: $primary-font;
+    font-weight: $font-weight-normal-hard;
     text-align: center;
 }

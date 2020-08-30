@@ -1500,7 +1500,7 @@ class UsuarioController extends Controller
                 $rol = 'rol_'.strtolower($rol[0]);
                 //return new response ($rol);
             }
-           
+
            $query_final.= ($query_final==$query_base)?  $where."$rol <> 0":$and."$rol <> 0";
         }
         if ($empresa_id)
@@ -2844,13 +2844,13 @@ class UsuarioController extends Controller
             $query->execute();
             $r = $query->fetchAll();
 
-            // La respuesta viene formada por Inserts__Updates
+            // La respuesta viene Inserts__Updates
             $r_arr = explode("__", $r[0]['resultado']);
 
             $return = array('inserts' => $r_arr[0],
                             'updates' => $r_arr[1]);
 
-            // Se borra el archivo CSV
+            // Se borra el CSV
             unlink($csv);
 
         }
