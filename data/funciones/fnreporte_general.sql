@@ -62,7 +62,7 @@ begin
         INNER JOIN (certi_nivel_pagina np INNER JOIN admin_nivel ne ON np.nivel_id = ne.id) 
         ON pe.id = np.pagina_empresa_id
        WHERE p.pagina_id IS NULL
-           AND pe.empresa_id = 1
+           AND pe.empresa_id = pempresa_id
 		   AND (LOWER(ne.nombre) NOT LIKE 'revisor%' AND LOWER(ne.nombre) NOT LIKE 'tutor%')
 		   GROUP BY ne.id, p.nombre,p.id,pe.fecha_inicio,pe.fecha_vencimiento,ne.fecha_inicio,ne.fecha_fin,ne.nombre,pe.id
        ORDER BY p.nombre ASC;
