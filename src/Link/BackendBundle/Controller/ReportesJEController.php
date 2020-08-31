@@ -664,7 +664,7 @@ class ReportesJEController extends Controller
                             <page_footer>
                                 <table style="width: 100%; border: solid 1px black;">
                                     <tr>
-                                        <td style="text-align: left;    width: 50%">Generado el '.date('d/m/Y H:i a').'</td>
+                                        
                                         <td style="text-align: right;    width: 50%">Página [[page_cu]]/[[page_nb]]</td>
                                     </tr>
                                 </table>
