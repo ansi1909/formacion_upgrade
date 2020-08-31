@@ -73,7 +73,7 @@ class ProgramaController extends Controller
                 {
                     $tiene_evaluacion = 1;
                     $prueba = $this->getDoctrine()->getRepository('LinkComunBundle:CertiPrueba')->findOneBy(array('pagina' => $subpagina['id'])) ;
-                    $pruebaLog = $this->getDoctrine()->getRepository('LinkComunBundle:CertiPruebaLog')->findOneBy(array('prueba' => $prueba->getId(),'usuario'=>$session->get('usuario')['id'],'estado'=>$yml['parameters']['estado_prueba']['aprobado'])) ;
+                    $pruebaLog = $prueba? $this->getDoctrine()->getRepository('LinkComunBundle:CertiPruebaLog')->findOneBy(array('prueba' => $prueba->getId(),'usuario'=>$session->get('usuario')['id'],'estado'=>$yml['parameters']['estado_prueba']['aprobado'])):false ;
                 }
                 $lis_mods .= '<div class="card-hrz card-mod d-flex flex-column flex-md-row">';
                 $lis_mods .= '<div class="card-mod-num  mr-xl-3 d-flex justify-content-center align-items-center px-3 py-3 px-md-6 py-md-6">';
@@ -256,13 +256,15 @@ class ProgramaController extends Controller
                     $score = $tiene_evaluacion ? $this->get('translator')->trans('Calificación') : '';
                     $lis_mods .= '<div class="'.$div_class1.'">';
                     $lis_mods .= '<div class="'.$div_class2.'">';
-                    if($score){
+                    if($score && $pruebaLog){
                         $lis_mods .= '<h2 class="color-light-grey mb-0 pb-0"> '.round($pruebaLog->getNota()).' </h2>';
+                        $lis_mods .= '<span class="'.$span_class.'">'.$score.'</span>';
                     }else{
                         $lis_mods .= '<h2 class="color-light-grey mb-0 pb-0" style="visibility:hidden"> '.''.' </h2>';
+                        $lis_mods .= '<span class="'.$span_class.'">'.''.'</span>';
                     }
 
-                    $lis_mods .= '<span class="'.$span_class.'">'.$score.'</span>';
+
                     $lis_mods .= '</div>';
                     $lis_mods .= '<div class="badge-wrap-mod mt-3 d-flex flex-column align-items-center">';
                     $lis_mods .= '<i class="material-icons badge-aprobado text-center">check_circle</i>';
