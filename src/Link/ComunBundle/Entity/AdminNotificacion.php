@@ -197,4 +197,33 @@ class AdminNotificacion
     {
         return $this->empresa;
     }
+    /**
+     * @var \DateTime
+     */
+    private $fecha;
+
+
+    /**
+     * Set fecha
+     *
+     * @param \DateTime $fecha
+     *
+     * @return AdminNotificacion
+     */
+    public function setFecha($fecha)
+    {
+        $this->fecha = $fecha;
+    
+        return $this;
+    }
+
+    /**
+     * Get fecha
+     *
+     * @return \DateTime
+     */
+    public function getFecha()
+    {
+        return $this->fecha;
+    }
 }

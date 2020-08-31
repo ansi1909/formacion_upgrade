@@ -30,10 +30,16 @@
 <input type="hidden" id="url_correos_excel" name="url_correos_excel" value="{{ path('_ajaxExcelCorreos') }}">
 <input type="hidden" id="url_usuarios_excel" name="url_usuarios_excel" value="{{ path('_ajaxExcelUsuariosCorreos') }}">
 <input type="hidden" id="url_tree" name="url_tree" value="{{ path('_ajaxTreeGrupoProgramado') }}">
+<div class="row align-items-center justify-content-start">
+    <div class="col text-left">
+        <a href="{{ path('_programados', { 'app_id': app.session.get('app_id') })}}" class="bttn__bck"><span class="fa fa-clipboard"></span><span class="text__bck">{{ 'Ir al listado'|trans }}</span></a>
+    </div>
+</div>
+<br>
 <div class="col-sm-16 col-md-16 col-lg-16 col-xl-16 col-16" id="div-programados">
     <div class="card">
         <div class="card-header gradiente">
-            <h5 class="card-title">{{ 'Avisos programados'|trans }} <span id="notificacionTitle"></span></h5>
+            <h5 class="card-title">{{ titulo }} <span id="notificacionTitle"></span></h5>
         </div>
         <div class="card-block">
             <div class="row" id="div-programados-alert" style="display: none">
@@ -41,7 +47,7 @@
                     &nbsp;
                 </div>
                 <div class="col-sm-12">
-                    <div class="alert alert-danger" role="alert"> 
+                    <div class="alert alert-danger" role="alert">
                         <strong>{{ 'Error en el servidor'|trans }}!</strong> {{ 'Error al obtener las notificaciones programadas'|trans }}.</span>
                     </div>
                 </div>
@@ -62,7 +68,7 @@
                     </thead>
                     <tbody id="tbody-programados">
                         {% for np in nps %}
-                        
+
                             <tr id="tr-{{ np.id }}">
                                 <td class="alignment">{{ np.tipoDestino.nombre }}</td>
                                 <td class="alignment click" id="td-{{ np.id }}" data= "{{np.id}}"> &nbsp;</td>
@@ -131,8 +137,8 @@
                             oPaginate: {
                                 sFirst: "<<",
                                 sPrevious: "<",
-                                sNext: ">", 
-                                sLast: ">>" 
+                                sNext: ">",
+                                sLast: ">>"
                             },
                             "oAria": {
                                 "sSortAscending":  ": {{ 'Activar para ordenar la columna de manera ascendente'|trans }}",
@@ -141,6 +147,6 @@
                         }
                     });
                 }
-       
+
     </script>
 {% endblock %}

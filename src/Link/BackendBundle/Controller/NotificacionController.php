@@ -235,6 +235,7 @@ class NotificacionController extends Controller
         if ($request->getMethod() == 'POST')
         {
 
+            $notificacion->setFecha(new \DateTime('now'));
             $em->persist($notificacion);
             $em->flush();
 
@@ -282,7 +283,7 @@ class NotificacionController extends Controller
             $query = $em->createQuery("SELECT n FROM LinkComunBundle:AdminNotificacion n
                                        JOIN n.empresa e
                                        WHERE e.activo = :activo
-                                       ORDER BY n.id ASC")
+                                       ORDER BY n.id DESC")
                          ->setParameter('activo', true);
             $notificacionesdb = $query->getResult();
         }
@@ -299,6 +300,7 @@ class NotificacionController extends Controller
                                       'asunto' => $notificacion->getAsunto(),
                                       'empresa' => $notificacion->getEmpresa()->getNombre(),
                                       'tipo' => $notificacion->getTipoNotificacion()->getNombre(),
+                                      'fecha' => $notificacion->getFecha()? $notificacion->getFecha():'',
                                       'tiene_programados' => $tiene_programados);
         }
 
@@ -425,17 +427,12 @@ class NotificacionController extends Controller
                     ->setParameters(array('notificacion_id' => $id));
         $nps = $query->getResult();
         $failed = $this->failedEmails($nps);
-
-        //$html = $this->renderView('LinkBackendBundle:Notificacion:notificacionesProgramadas.html.twig', array('nps' => $nps,'failed'=>$failed));
-
-        //return = array('html' => $html,
-                        //'notificacion' => $notificacion->getAsunto());
+        $titulo =  $this->get('translator')->trans('Avisos programados').': '.$notificacion->getEmpresa()->getNombre().' - '.$notificacion->getAsunto();
 
         return $this->render('LinkBackendBundle:Notificacion:notificacionProgramadas.html.twig', array('nps' => $nps,
-                                                                                                        'failed' => $failed));
-
-        //$return = json_encode($return);
-        //eturn new Response($return, 200, array('Content-Type' => 'application/json'));
+                                                                                                        'failed' => $failed,
+                                                                                                        'titulo' => $titulo
+                                                                                                      ));
 
     }
 
@@ -1356,7 +1353,8 @@ class NotificacionController extends Controller
 
         return $this->render('LinkBackendBundle:Notificacion:editNotificacionProgramada.html.twig', array('notificacion_programada' => $notificacion_programada,
                                                                                                           'tds' => $tds,
-                                                                                                          'entidades' => $entidades));
+                                                                                                          'entidades' => $entidades,
+                                                                                                          'notificacion_id' => $notificacion_id));
 
     }
 
