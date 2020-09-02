@@ -82,7 +82,7 @@
                                     <img class="img-loader" src="{{ asset('img/ui-anim_basic_16x16.gif') }}" id="{{ 'usuariosLoader'~np.id }}" style="display:none">
                                     <a href="#" title="{{ 'Descargar Excel'|trans }}" class="btn btn-link btn-sm downloadUsuarios"  id="{{ 'downloadUsuarios'~np.id }}" style="display: none"><span class="fa fa-download"></span></a>
                                     {% if failed[np.id] is defined %}
-                                        <a href="#" title="{{ 'Correos no enviados'|trans ~ ' ('~failed[np.id]~') '}}" class="btn btn-link btn-sm failedEmails" id="{{'excel'~np.id}}" data="{{ np.id }}"><span class="fa fa-file-excel-o" style=""></span></a>
+                                        <a href="#" title="{{ 'Correos no enviados'|trans ~ ' ('~failed[np.id]~') '}}" class="btn btn-link btn-sm failedEmails" id="{{'excel'~np.id}}" data="{{ np.id }}"><span class="fa fa-file-excel-o" style="color: #FF5733;"></span></a>
                                         <img class="img-loader" src="{{ asset('img/ui-anim_basic_16x16.gif') }}" id="{{ 'excelLoader'~np.id }}" style="display:none">
                                         <a href="#" title="{{ 'Descargar Excel'|trans }}" class="btn btn-link btn-sm downloadExcel"  id="{{ 'downloadExcel'~np.id }}" style="display: none"><span class="fa fa-download"></span></a>
                                     {% endif%}
