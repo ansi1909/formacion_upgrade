@@ -618,6 +618,11 @@ class CertificadoController extends Controller
         $pagina_id = $request->request->get('programa_id');
         $fechaD = $request->request->get('fechaD');
         $fechaH = $request->request->get('fechaH');
+        $fi = explode("/", $fechaD);
+        $inicio = $fi[2].'-'.$fi[1].'-'.$fi[0];
+        $ff = explode("/", $fechaH);
+        $fin = $ff[2].'-'.$ff[1].'-'.$ff[0];
+        //return new response($inicio);
         $uploads = Yaml::parse(file_get_contents($this->get('kernel')->getRootDir().'/config/parameters.yml'));
         $values = Yaml::parse(file_get_contents($this->get('kernel')->getRootDir().'/config/parametros.yml'));
 
@@ -647,14 +652,15 @@ class CertificadoController extends Controller
             $contador = 0;
             foreach($rs as $usuario)
             {
+                //return new response('aqui');
                 $query = $em->createQuery("SELECT pl FROM LinkComunBundle:CertiPaginaLog pl 
                                             WHERE pl.pagina = :pagina_id 
                                             AND pl.usuario = :usuario_id
                                             AND pl.fechaFin BETWEEN :fechaD AND :fechaH ")
                             ->setParameters(array('pagina_id' => $pagina_id,
                                                 'usuario_id' => $usuario['id'],
-                                                'fechaD' => $fechaD,
-                                                'fechaH' => $fechaH));
+                                                'fechaD' => $inicio,
+                                                'fechaH' => $fin));
                 $pagina_logs = $query->getResult();
                 //return new response(count($pagina_logs).'hola');
                 if($pagina_logs)
