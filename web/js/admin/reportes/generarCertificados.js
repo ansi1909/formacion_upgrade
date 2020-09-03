@@ -17,6 +17,14 @@ if(empresa_select)
     getProgramas(empresa_select,pagina_selected);
 }
 
+$('.date_picker').datepicker({
+	startView: 1,
+	autoclose: true,
+	format: 'dd/mm/yyyy',
+	language: 'es',
+	clearBtn: true
+});
+
 $('#empresa_id').change(function(){
     $('#div-active-alert').hide();
     var empresa_id = $(this).val();

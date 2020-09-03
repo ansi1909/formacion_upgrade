@@ -2,7 +2,7 @@
 
 {% block stylesheets %}
     {{ parent() }}
-    
+    <link rel="stylesheet" href="{{ asset('assets/vendor/bootstrap-datepicker-1.6.4-dist/css/bootstrap-datepicker.css') }}" type="text/css">
 {% endblock %}
 
 {% block body %}
@@ -54,6 +54,24 @@
                         </div>
                     </div>
                     <br>
+                    <div class="row">
+                        <div class="col-sm-8 col-md-8 col-lg-8">
+                            <label for="texto" class="col-6 col-form-label">{{ 'Fecha de publicación'|trans }}</label>
+                            <div class="col-14">
+                               
+                                <input type="text" class="form-control form_sty1 date_picker" name="fechaD" id="fechaD"  placeholder="DD/MM/YYYY">
+                                <span class="fa fa-calendar"></span>
+                            </div>
+                        </div>
+                        <div class="col-sm-8 col-md-8 col-lg-8">                                            
+                            <label for="texto" class="col-6 col-form-label">{{ 'Fecha de vencimiento'|trans }}</label>
+                            <div class="col-14">
+                               
+                                <input type="text" class="form-control form_sty1 date_picker" name="fechaH" id="fechaH"  placeholder="DD/MM/YYYY">
+                                <span class="fa fa-calendar"></span>
+                            </div>
+                        </div>
+                    </div>
                 </div>
                 <div class="card-footer" style="display: none;">
                     <div class="col-sm-16 col-md-16 text-right">
@@ -113,6 +131,8 @@
 
 {% block javascripts %}
     {{ parent() }}
+    <script type="text/javascript" src="{{ asset('assets/vendor/bootstrap-datepicker-1.6.4-dist/js/bootstrap-datepicker.min.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('assets/vendor/bootstrap-datepicker-1.6.4-dist/locales/bootstrap-datepicker.es.min.js') }}" charset="UTF-8"></script> 
     <script type="text/javascript" src="{{ asset('js/admin/reportes/generarCertificados.js') }}"></script>
 
 {% endblock %}
