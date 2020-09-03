@@ -653,7 +653,7 @@ class CertificadoController extends Controller
             foreach($rs as $usuario)
             {                  
             
-                return new response('aqui');
+                //return new response('aqui');
                 $query = $em->createQuery("SELECT pe, p FROM LinkComunBundle:CertiPaginaEmpresa pe 
                                             JOIN pe.pagina p 
                                             WHERE pe.empresa = :empresa_id AND p.pagina = :pagina_id 
