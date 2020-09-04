@@ -76,6 +76,8 @@
 	- funciones/fnalarmas_participantes.sql
 	- funciones/fneliminar_prueba.sql
 	- funciones/fnmigrar_programa.sql
+	- funciones/fnlistado_notificaciones_programadas.sql
+	- funciones/fnlistado_participantes_correos.sql
 	- vistas/view_cursos.sql
 	- vistas/view_pruebas.sql
 	- vistas/view_usuarios_roles.sql

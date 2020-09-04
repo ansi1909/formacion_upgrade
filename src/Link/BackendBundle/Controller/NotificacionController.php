@@ -330,10 +330,10 @@ class NotificacionController extends Controller
             $query = $em->createQuery("SELECT cf.id FROM LinkComunBundle:AdminCorreoFallido cf
                                       WHERE cf.reenviado = :reenviado
                                       AND cf.entidadId = :notificacion_id")
-                    ->setParameters(array('notificacion_id' => $notificacion->getId(),'reenviado'=>FALSE));
+                    ->setParameters(array('notificacion_id' => $notificacion['id'],'reenviado'=>FALSE));
             $cfll = $query->getResult();
 
-            $hijos = $this->getDoctrine()->getRepository('LinkComunBundle:AdminNotificacionProgramada')->findByGrupo($notificacion->getId());
+            $hijos = $this->getDoctrine()->getRepository('LinkComunBundle:AdminNotificacionProgramada')->findByGrupo($notificacion['id']);
 
             if(count($hijos)>0)
             {
@@ -420,12 +420,16 @@ class NotificacionController extends Controller
 
         $notificacion = $this->getDoctrine()->getRepository('LinkComunBundle:AdminNotificacion')->find($id);
 
-        $query = $em->createQuery("SELECT np FROM LinkComunBundle:AdminNotificacionProgramada np
-                                    WHERE np.notificacion = :notificacion_id
-                                    AND np.grupo IS NULL
-                                    ORDER BY np.fechaDifusion DESC")
-                    ->setParameters(array('notificacion_id' => $id));
-        $nps = $query->getResult();
+        $query = $em->getConnection()->prepare('SELECT
+                                                fnlistado_notificaciones_programadas(:re, :pnotificacion_id) as
+                                                resultado; fetch all from re;');
+        $re = 're';
+        $query->bindValue(':re', $re, \PDO::PARAM_STR);
+        $query->bindValue(':pnotificacion_id', $notificacion->getId(), \PDO::PARAM_INT);
+        $query->execute();
+        $res = $query->fetchAll();
+        $nps = $res;
+
         $failed = $this->failedEmails($nps);
         $titulo =  $this->get('translator')->trans('Avisos programados').': '.$notificacion->getEmpresa()->getNombre().' - '.$notificacion->getAsunto();
 
