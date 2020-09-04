@@ -238,6 +238,7 @@ class DefaultController extends Controller
                 <thead class="sty__title">
                     <tr>
                         <th class="hd__title">'.$this->get('translator')->trans('Nombre').'</th>
+                        <th class="hd__title">'.$this->get('translator')->trans('Nivel').'</th>
                         <th class="hd__title">'.$this->get('translator')->trans('Fecha Inicio').'</th>
                         <th class="hd__title">'.$this->get('translator')->trans('Fecha Fin').'</th>
                         <th class="hd__title text-center">'.$this->get('translator')->trans('Usuarios no iniciados').'</th>
@@ -260,10 +261,15 @@ class DefaultController extends Controller
 
         foreach ($r as $re)
         {
+            //return new response($re['fecha_inicio_nivel'].' '.$re['fecha_inicio']);
+            $fecha_inicio = $re['fecha_inicio_nivel']? $re['fecha_inicio_nivel']:$re['fecha_inicio'];
+            $fecha_vencimiento = $re['fecha_vencimiento_nivel']? $re['fecha_vencimiento_nivel']:$re['fecha_vencimiento'];
+
             $html .= '<tr>
                         <td >'. $re['nombre'] .'</td>
-                        <td >'. $re['fecha_inicio'] .'</td>
-                        <td >'. $re['fecha_vencimiento'].'</td>
+                        <td >'. $re['nombre_nivel'] .'</td>
+                        <td >'. $fecha_inicio .'</td>
+                        <td >'. $fecha_vencimiento.'</td>
                         <td class="text-center"><a href="'.$this->generateUrl('_participantesNoIniciados', array('app_id' => 34, 'pagina_id' => $re['id'], 'empresa_id' => $empresa_id )).'"><span>'. $re['no_iniciados'] .' <i class="fa fa-user"></i></span></a></td>
                         <td class="text-center"><a href="'.$this->generateUrl('_participantesCursando', array('app_id' => 21, 'pagina_id' => $re['id'], 'empresa_id' => $empresa_id )).'"><span>'. $re['cursando'] .'<i class="fa fa-user"></i></span></a></td>
                         <td class="text-center"><a href="'.$this->generateUrl('_participantesAprobados', array('app_id' => 22, 'pagina_id' => $re['id'], 'empresa_id' => $empresa_id )).'"><span>'. $re['culminado'] .' <i class="fa fa-user"></i></span></a></td>

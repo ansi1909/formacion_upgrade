@@ -111,17 +111,20 @@ parameters:
     fallidos:
         inbox: "{imap.formacionsmart.com:993/imap/ssl/novalidate-cert}INBOX"
         from: Mail Delivery System
-        subject: Mail delivery failed
-        subject2: Warning
-        separador: 'Action: failed'
-        separador2: Status
-        separador3: ;
-        separador4: Reporting-MTA
-        separador5: 'The following address(es) failed:'
+        subject: Undelivered Mail Returned to Sender
+        subject2: Mail Delivery Failure
+        subject3: Mail delivery failed
+        subject10: Warning
+        separador: 'Arrival-Date:'
+        separador2: '--'
+        separador3: 'Diagnostic-Code: smtp;'
+        separador4: 'Final-Recipient: rfc822;'
+        separador5: 'Action: failed'
         separador6: --
         separadorMailMessage: '=>'
         separadorMessages: '++'
         separadorMails: '|'
+        salto_linea: '%0D%0A'
     time_zone:
         default: 'UTC'
         local: 'America/Caracas'

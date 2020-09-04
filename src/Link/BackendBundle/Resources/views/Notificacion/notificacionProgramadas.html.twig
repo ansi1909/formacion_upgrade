@@ -30,10 +30,16 @@
 <input type="hidden" id="url_correos_excel" name="url_correos_excel" value="{{ path('_ajaxExcelCorreos') }}">
 <input type="hidden" id="url_usuarios_excel" name="url_usuarios_excel" value="{{ path('_ajaxExcelUsuariosCorreos') }}">
 <input type="hidden" id="url_tree" name="url_tree" value="{{ path('_ajaxTreeGrupoProgramado') }}">
+<div class="row align-items-center justify-content-start">
+    <div class="col text-left">
+        <a href="{{ path('_programados', { 'app_id': app.session.get('app_id') })}}" class="bttn__bck"><span class="fa fa-clipboard"></span><span class="text__bck">{{ 'Ir al listado'|trans }}</span></a>
+    </div>
+</div>
+<br>
 <div class="col-sm-16 col-md-16 col-lg-16 col-xl-16 col-16" id="div-programados">
     <div class="card">
         <div class="card-header gradiente">
-            <h5 class="card-title">{{ 'Avisos programados'|trans }} <span id="notificacionTitle"></span></h5>
+            <h5 class="card-title">{{ titulo }} <span id="notificacionTitle"></span></h5>
         </div>
         <div class="card-block">
             <div class="row" id="div-programados-alert" style="display: none">
@@ -41,7 +47,7 @@
                     &nbsp;
                 </div>
                 <div class="col-sm-12">
-                    <div class="alert alert-danger" role="alert"> 
+                    <div class="alert alert-danger" role="alert">
                         <strong>{{ 'Error en el servidor'|trans }}!</strong> {{ 'Error al obtener las notificaciones programadas'|trans }}.</span>
                     </div>
                 </div>
@@ -57,28 +63,30 @@
                             <th class="hd__title alignment_ bigth">{{ 'Grupo seleccionado'|trans }}</th>
                             <th class="hd__title alignment_ small_th">{{ 'Programado para'|trans }}</th>
                             <th class="hd__title alignment_ smallth">{{ 'Enviado'|trans }}</th>
+                            <th class="hd__title alignment_ smallth">{{ 'Enviados'|trans }}</th>
                             <th class="hd__title alignment_ smallth">{{ 'Acciones'|trans }}</th>
                         </tr>
                     </thead>
                     <tbody id="tbody-programados">
                         {% for np in nps %}
-                        
-                            <tr id="tr-{{ np.id }}">
-                                <td class="alignment">{{ np.tipoDestino.nombre }}</td>
-                                <td class="alignment click" id="td-{{ np.id }}" data= "{{np.id}}"> &nbsp;</td>
-                                <td class="alignment_" style="text-align: center">{{ np.fechaDifusion|date('d/m/Y') }}</td>
-                                {% set enviado = np.enviado ? 'Sí'|trans : 'No' %}
+
+                            <tr id="tr-{{ np['id'] }}">
+                                <td class="alignment">{{ np['destino'] }}</td>
+                                <td class="alignment click" id="td-{{ np['id'] }}" data= "{{np['id']}}"> &nbsp;</td>
+                                <td class="alignment_" style="text-align: center">{{ np['fecha_difusion']|date('d/m/Y') }}</td>
+                                {% set enviado = np['enviado'] ? 'Sí'|trans : 'No' %}
                                 <td class="alignment alignment" style="text-align: center;">{{ enviado }}</td>
+                                <td class="alignment alignment" style="text-align: center;">{{ np['enviados'] }}</td>
                                 <td class="center">
-                                    <a href="{{ path('_editNotificacionProgramada', { 'notificacion_id': np.notificacion.id, 'notificacion_programada_id': np.id }) }}" title="{{ 'Editar'|trans }}" class="btn btn-link btn-sm edit"><span class="fa fa-pencil"></span></a>
-                                    <a href="#" title="{{ 'Eliminar'|trans }}" class="btn btn-link btn-sm delete" data="{{ np.id }}"><span class="fa fa-trash"></span></a>
-                                    <a href="#" name="usuarios_excel" id="{{'usuarios'~np.id}}" data={{np.id}} title="Excel usuarios" class="btn btn-link btn-sm usuariosCorreos"><span class="fa fa-file-excel-o"></span></a>
-                                    <img class="img-loader" src="{{ asset('img/ui-anim_basic_16x16.gif') }}" id="{{ 'usuariosLoader'~np.id }}" style="display:none">
-                                    <a href="#" title="{{ 'Descargar Excel'|trans }}" class="btn btn-link btn-sm downloadUsuarios"  id="{{ 'downloadUsuarios'~np.id }}" style="display: none"><span class="fa fa-download"></span></a>
-                                    {% if failed[np.id] is defined %}
-                                        <a href="#" title="{{ 'Correos no enviados'|trans ~ ' ('~failed[np.id]~') '}}" class="btn btn-link btn-sm failedEmails" id="{{'excel'~np.id}}" data="{{ np.id }}"><span class="fa fa-file-excel-o" style=""></span></a>
-                                        <img class="img-loader" src="{{ asset('img/ui-anim_basic_16x16.gif') }}" id="{{ 'excelLoader'~np.id }}" style="display:none">
-                                        <a href="#" title="{{ 'Descargar Excel'|trans }}" class="btn btn-link btn-sm downloadExcel"  id="{{ 'downloadExcel'~np.id }}" style="display: none"><span class="fa fa-download"></span></a>
+                                    <a href="{{ path('_editNotificacionProgramada', { 'notificacion_id': np['notificacion_id'], 'notificacion_programada_id': np['id'] }) }}" title="{{ 'Editar'|trans }}" class="btn btn-link btn-sm edit"><span class="fa fa-pencil"></span></a>
+                                    <a href="#" title="{{ 'Eliminar'|trans }}" class="btn btn-link btn-sm delete" data="{{ np['id'] }}"><span class="fa fa-trash"></span></a>
+                                    <a href="#" name="usuarios_excel" id="{{'usuarios'~np['id']}}" data={{np['id']}} title="Excel usuarios" class="btn btn-link btn-sm usuariosCorreos"><span class="fa fa-file-excel-o"></span></a>
+                                    <img class="img-loader" src="{{ asset('img/ui-anim_basic_16x16.gif') }}" id="{{ 'usuariosLoader'~np['id'] }}" style="display:none">
+                                    <a href="#" title="{{ 'Descargar Excel'|trans }}" class="btn btn-link btn-sm downloadUsuarios"  id="{{ 'downloadUsuarios'~np['id'] }}" style="display: none"><span class="fa fa-download"></span></a>
+                                    {% if failed[np['id']] is defined %}
+                                        <a href="#" title="{{ 'Correos no enviados'|trans ~ ' ('~failed[np['id']]~') '}}" class="btn btn-link btn-sm failedEmails" id="{{'excel'~np['id']}}" data="{{ np['id'] }}"><span class="fa fa-file-excel-o" style="color: #FF5733;"></span></a>
+                                        <img class="img-loader" src="{{ asset('img/ui-anim_basic_16x16.gif') }}" id="{{ 'excelLoader'~np['id'] }}" style="display:none">
+                                        <a href="#" title="{{ 'Descargar Excel'|trans }}" class="btn btn-link btn-sm downloadExcel"  id="{{ 'downloadExcel'~np['id'] }}" style="display: none"><span class="fa fa-download"></span></a>
                                     {% endif%}
                                 </td>
                             </tr>
@@ -131,8 +139,8 @@
                             oPaginate: {
                                 sFirst: "<<",
                                 sPrevious: "<",
-                                sNext: ">", 
-                                sLast: ">>" 
+                                sNext: ">",
+                                sLast: ">>"
                             },
                             "oAria": {
                                 "sSortAscending":  ": {{ 'Activar para ordenar la columna de manera ascendente'|trans }}",
@@ -141,6 +149,6 @@
                         }
                     });
                 }
-       
+
     </script>
 {% endblock %}
