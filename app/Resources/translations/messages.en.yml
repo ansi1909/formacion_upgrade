@@ -62,7 +62,7 @@ Asignada: Assigned
 Asignar: Assign
 Asignar páginas: Assign page
 Asignar página al grupo: Assign page to group
-Asignar página al nivel: Assign page to level 
+Asignar página al nivel: Assign page to level
 Asunto: Subject
 Atrás: Back
 Aún no has respondido las preguntas: You have not answered the questions yet
@@ -107,7 +107,7 @@ Cantidad máxima de intentos: Maximum number of attempts
 Cantidad mínima de caracteres en el mensaje: Minimum number of characters in the message
 Cantidad mínima de caracteres en el mensaje de bienvenida: Minimum number of characters in the welcome message
 Cantidad mínima de caracteres en el Resumen: Minimum number of characters in the Summary
-Cantidad mínima de caracteres en el Contenido: Minimum number of characters in the Content 
+Cantidad mínima de caracteres en el Contenido: Minimum number of characters in the Content
 Cargando..: Loading..
 Cargando usuarios conectados..: Loading connected users..
 Carga masiva: Bulk load
@@ -641,7 +641,7 @@ Login repetido: Login repeated
 Login requerido: Login required
 Logo de la empresa: Company logo
 Los roles que tiene el usuario no son permitidos para ingresar al sistema.: The roles that the user has are not allowed to enter the system.
-Los roles que tiene el usuario no son permitidos para ingresar a la aplicación.: The roles that the user has are not allowed to enter the application. 
+Los roles que tiene el usuario no son permitidos para ingresar a la aplicación.: The roles that the user has are not allowed to enter the application.
 Los roles que tienes asignado no tiene autorización para ingresar a este módulo: The roles you have assigned are not authorized to access to this module
 Lugar: Place
 Lunes: Monday
@@ -759,7 +759,7 @@ Panel de acceso: Login
 Paso: Step
 País: Country
 Para disponer del archivo accede a: To have the file go to
-Para una correcta visualización de los recursos disponbles en : For a correct visualization of the resources available in 
+Para una correcta visualización de los recursos disponbles en : For a correct visualization of the resources available in
 Para enviar la notificación inmediatamente seleccione la fecha de hoy: To send the notification immediately select today
 Para ver el detalle del evento puede entrar al siguiente enlace: To see the detail of the event you can enter the following link
 participante: participant
@@ -835,7 +835,7 @@ Puntaje definitivo del programa: Definitive score of the program
 que aún no han ingresado a la plataforma: that have not yet entered the platform
 QR: QR
 Quieres hacer un tour guiado: You want to take a guided tour
-realizó una publicación en el muro de: make a publication on the wall of 
+realizó una publicación en el muro de: make a publication on the wall of
 realizó una publicación en el en el espacio colaborativo de: made a publication in the in the collaborative space of
 formación smart, recomendamos utilizar la ultima versión del: formación smart, we recommend using the latest version of the
 Recomendación: Recommendation
@@ -848,6 +848,7 @@ Recursos del programa: Program resources
 Registrar Empresa: Add/Edit Company
 Registrar Usuario: Add/Edit User
 Registrar participante: Register participant
+Registros del: Records of
 registros: items
 Registros actualizados: Updated items
 Registros nuevos: New items
