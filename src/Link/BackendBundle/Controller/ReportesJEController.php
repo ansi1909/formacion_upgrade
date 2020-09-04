@@ -69,6 +69,7 @@ class ReportesJEController extends Controller
 
         $desdef = $request->request->get('desde');
         $hastaf = $request->request->get('hasta');
+        //return new response($hastaf);
         $excel = $request->request->get('excel');
 
         list($d, $m, $a) = explode("/", $desdef);
