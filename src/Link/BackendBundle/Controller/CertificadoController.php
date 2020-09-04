@@ -616,20 +616,27 @@ class CertificadoController extends Controller
         
         $empresa_id = $request->request->get('empresa_id');
         $pagina_id = $request->request->get('programa_id');
+        $fechaD = $request->request->get('fechaD');
+        $fechaH = $request->request->get('fechaH');
+        $fi = explode("/", $fechaD);
+        $inicio = $fi[2].'-'.$fi[1].'-'.$fi[0];
+        $ff = explode("/", $fechaH);
+        $fin = $ff[2].'-'.$ff[1].'-'.$ff[0];
+        //return new response($inicio);
         $uploads = Yaml::parse(file_get_contents($this->get('kernel')->getRootDir().'/config/parameters.yml'));
         $values = Yaml::parse(file_get_contents($this->get('kernel')->getRootDir().'/config/parametros.yml'));
 
         $pagina = $em->getRepository('LinkComunBundle:CertiPagina')->find($pagina_id);
         $nombrePagina = $f->eliminarAcentos($pagina->getNombre());
         $query = $em->getConnection()->prepare('SELECT
-                                                fnlistado_participantes(:re, :preporte, :pempresa_id, :pnivel_id, :ppagina_id) as
+                                                fnlistado_certificados(:re, :pempresa_id, :ppagina_id, :pinicio, :pfin) as
                                                 resultado; fetch all from re;');
         $re = 're';
         $query->bindValue(':re', $re, \PDO::PARAM_STR);
-        $query->bindValue(':preporte', 4, \PDO::PARAM_INT);
         $query->bindValue(':pempresa_id', $empresa_id, \PDO::PARAM_INT);
-        $query->bindValue(':pnivel_id', 0, \PDO::PARAM_INT);
         $query->bindValue(':ppagina_id', $pagina_id, \PDO::PARAM_INT);
+        $query->bindValue(':pinicio', $inicio, \PDO::PARAM_STR);
+        $query->bindValue(':pfin', $fin, \PDO::PARAM_STR);
         $query->execute();
         $rs = $query->fetchAll();
 
@@ -642,9 +649,11 @@ class CertificadoController extends Controller
             $salida = $uploads['parameters']['folders']['dir_uploads'].'recursos';
 
             $zip->open($dirpath.'/certificados-'.$nombrePagina.'.zip', ZipArchive::CREATE);
-
+            $contador = 0;
             foreach($rs as $usuario)
-            {
+            {                  
+            
+                //return new response('aqui');
                 $query = $em->createQuery("SELECT pe, p FROM LinkComunBundle:CertiPaginaEmpresa pe 
                                             JOIN pe.pagina p 
                                             WHERE pe.empresa = :empresa_id AND p.pagina = :pagina_id 
@@ -717,7 +726,7 @@ class CertificadoController extends Controller
                         {
                         
                             /*certificado numero 2*/
-                            if ($pagina_log->getPagina()->getCategoria()->getNombre() == 'Curso') {
+                        if ($pagina_log->getPagina()->getCategoria()->getNombre() == 'Curso') {
                                 
                                 $comodines = array('%%categoria%%');
                                 $reemplazos = array('Curso');
@@ -1059,8 +1068,11 @@ class CertificadoController extends Controller
                         return $this->redirectToRoute('_authExceptionEmpresa', array('tipo' => 'certificado'));
                     }
                 }
+            
+                    
+                
             }
-
+            //return new response ($contador);
             $zip->close();
             /*header("Content-type: application/zip");
             header("Content-disposition: attachment; filename=certificados-$nombrePagina.zip");
