@@ -345,7 +345,7 @@ class NotificacionController extends Controller
 
             $total = $chijos +count($cfll);
             if($total>0){
-                $notificacionesId[$notificacion->getId()] = $total;
+                $notificacionesId[$notificacion['id']] = $total;
             }
 
         }
