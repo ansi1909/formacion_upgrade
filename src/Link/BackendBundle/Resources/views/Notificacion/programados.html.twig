@@ -49,18 +49,21 @@
                             {% endif %}
                             <th class="hd__title">{{ 'Tipo'|trans }}</th>
                             <th class="hd__title">{{ 'Asunto'|trans }}</th>
+                            <th class="hd__title">{{ 'Fecha'|trans }}</th>
                             <th class="hd__title">{{ 'Acciones'|trans }}</th>
                         </tr>
                     </thead>
                     <tbody>
                         {% for notificacion in notificaciones %}
                             {% set eo = cycle(['odd', 'even'], loop.index) %}
+                            {% set fecha = notificacion.fecha? notificacion.fecha|date("d/m/Y"):''  %}
                             <tr class="{{ eo }}">
                                 {% if not usuario.empresa %}
                                     <td>{{ notificacion.empresa }}</td>
                                 {% endif %}
                                 <td>{{ notificacion.tipo }}</td>
                                 <td>{{ notificacion.asunto }}</td>
+                                <td>{{ fecha }}</td>
                                 <td class="center">
                                     <a href="{{ path('_editNotificacionProgramada', { 'notificacion_id': notificacion.id }) }}" title="{{ 'Programar nuevo aviso'|trans }}" class="btn btn-link btn-sm"><span class="fa fa-plus"></span></a>
                                     {% if notificacion.tiene_programados %}
@@ -87,7 +90,7 @@
                         &nbsp;
                     </div>
                     <div class="col-sm-12">
-                        <div class="alert alert-danger" role="alert"> 
+                        <div class="alert alert-danger" role="alert">
                             <strong>{{ 'Error en el servidor'|trans }}!</strong> {{ 'Error al obtener las notificaciones programadas'|trans }}.</span>
                         </div>
                     </div>
@@ -101,7 +104,7 @@
         <div class="load1 load-wrapper">
             <div class="loader">
                 Loading...
-            </div>  
+            </div>
         </div>
     </div>
 </div>
@@ -142,8 +145,8 @@
                             oPaginate: {
                                 sFirst: "<<",
                                 sPrevious: "<",
-                                sNext: ">", 
-                                sLast: ">>" 
+                                sNext: ">",
+                                sLast: ">>"
                             },
                             "oAria": {
                                 "sSortAscending":  ": {{ 'Activar para ordenar la columna de manera ascendente'|trans }}",
@@ -152,6 +155,6 @@
                         }
                     });
                 }
-       
+
     </script>
 {% endblock %}

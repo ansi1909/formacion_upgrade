@@ -69,6 +69,7 @@ class ReportesJEController extends Controller
 
         $desdef = $request->request->get('desde');
         $hastaf = $request->request->get('hasta');
+        //return new response($hastaf);
         $excel = $request->request->get('excel');
 
         list($d, $m, $a) = explode("/", $desdef);
@@ -561,9 +562,9 @@ class ReportesJEController extends Controller
         $return = array('reporte' => $reporte,
                         'week_before' => $this->get('translator')->trans('Al').' '.$desde,
                         'now' => $this->get('translator')->trans('Al').' '.$hasta,
-                        'week_beforef' => $desdef,
+                        'week_beforef' => $desdeUtc,
                         'timeZone' =>$timeZoneEmpresaView,
-                        'nowf' => $hastaf,
+                        'nowf' => $hastaUtc,
                         'empresa' => $empresa->getNombre(),
                         'programa' => $pagina->getCategoria()->getNombre().' '.$pagina->getNombre(),
                         'fecha_inicio' => $pagina_empresa->getFechaInicio()->format('d/m/Y'),
@@ -664,7 +665,7 @@ class ReportesJEController extends Controller
                             <page_footer>
                                 <table style="width: 100%; border: solid 1px black;">
                                     <tr>
-                                        <td style="text-align: left;    width: 50%">Generado el '.date('d/m/Y H:i a').'</td>
+                                        
                                         <td style="text-align: right;    width: 50%">Página [[page_cu]]/[[page_nb]]</td>
                                     </tr>
                                 </table>

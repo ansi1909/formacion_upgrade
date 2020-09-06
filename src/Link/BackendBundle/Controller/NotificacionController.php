@@ -235,6 +235,7 @@ class NotificacionController extends Controller
         if ($request->getMethod() == 'POST')
         {
 
+            $notificacion->setFecha(new \DateTime('now'));
             $em->persist($notificacion);
             $em->flush();
 
@@ -282,7 +283,7 @@ class NotificacionController extends Controller
             $query = $em->createQuery("SELECT n FROM LinkComunBundle:AdminNotificacion n
                                        JOIN n.empresa e
                                        WHERE e.activo = :activo
-                                       ORDER BY n.id ASC")
+                                       ORDER BY n.id DESC")
                          ->setParameter('activo', true);
             $notificacionesdb = $query->getResult();
         }
@@ -299,6 +300,7 @@ class NotificacionController extends Controller
                                       'asunto' => $notificacion->getAsunto(),
                                       'empresa' => $notificacion->getEmpresa()->getNombre(),
                                       'tipo' => $notificacion->getTipoNotificacion()->getNombre(),
+                                      'fecha' => $notificacion->getFecha()? $notificacion->getFecha():'',
                                       'tiene_programados' => $tiene_programados);
         }
 
@@ -328,10 +330,10 @@ class NotificacionController extends Controller
             $query = $em->createQuery("SELECT cf.id FROM LinkComunBundle:AdminCorreoFallido cf
                                       WHERE cf.reenviado = :reenviado
                                       AND cf.entidadId = :notificacion_id")
-                    ->setParameters(array('notificacion_id' => $notificacion->getId(),'reenviado'=>FALSE));
+                    ->setParameters(array('notificacion_id' => $notificacion['id'],'reenviado'=>FALSE));
             $cfll = $query->getResult();
 
-            $hijos = $this->getDoctrine()->getRepository('LinkComunBundle:AdminNotificacionProgramada')->findByGrupo($notificacion->getId());
+            $hijos = $this->getDoctrine()->getRepository('LinkComunBundle:AdminNotificacionProgramada')->findByGrupo($notificacion['id']);
 
             if(count($hijos)>0)
             {
@@ -343,7 +345,7 @@ class NotificacionController extends Controller
 
             $total = $chijos +count($cfll);
             if($total>0){
-                $notificacionesId[$notificacion->getId()] = $total;
+                $notificacionesId[$notificacion['id']] = $total;
             }
 
         }
@@ -418,24 +420,23 @@ class NotificacionController extends Controller
 
         $notificacion = $this->getDoctrine()->getRepository('LinkComunBundle:AdminNotificacion')->find($id);
 
-        $query = $em->createQuery("SELECT np FROM LinkComunBundle:AdminNotificacionProgramada np
-                                    WHERE np.notificacion = :notificacion_id
-                                    AND np.grupo IS NULL
-                                    ORDER BY np.fechaDifusion DESC")
-                    ->setParameters(array('notificacion_id' => $id));
-        $nps = $query->getResult();
+        $query = $em->getConnection()->prepare('SELECT
+                                                fnlistado_notificaciones_programadas(:re, :pnotificacion_id) as
+                                                resultado; fetch all from re;');
+        $re = 're';
+        $query->bindValue(':re', $re, \PDO::PARAM_STR);
+        $query->bindValue(':pnotificacion_id', $notificacion->getId(), \PDO::PARAM_INT);
+        $query->execute();
+        $res = $query->fetchAll();
+        $nps = $res;
+
         $failed = $this->failedEmails($nps);
-
-        //$html = $this->renderView('LinkBackendBundle:Notificacion:notificacionesProgramadas.html.twig', array('nps' => $nps,'failed'=>$failed));
-
-        //return = array('html' => $html,
-                        //'notificacion' => $notificacion->getAsunto());
+        $titulo =  $this->get('translator')->trans('Avisos programados').': '.$notificacion->getEmpresa()->getNombre().' - '.$notificacion->getAsunto();
 
         return $this->render('LinkBackendBundle:Notificacion:notificacionProgramadas.html.twig', array('nps' => $nps,
-                                                                                                        'failed' => $failed));
-
-        //$return = json_encode($return);
-        //eturn new Response($return, 200, array('Content-Type' => 'application/json'));
+                                                                                                        'failed' => $failed,
+                                                                                                        'titulo' => $titulo
+                                                                                                      ));
 
     }
 
@@ -1356,7 +1357,8 @@ class NotificacionController extends Controller
 
         return $this->render('LinkBackendBundle:Notificacion:editNotificacionProgramada.html.twig', array('notificacion_programada' => $notificacion_programada,
                                                                                                           'tds' => $tds,
-                                                                                                          'entidades' => $entidades));
+                                                                                                          'entidades' => $entidades,
+                                                                                                          'notificacion_id' => $notificacion_id));
 
     }
 

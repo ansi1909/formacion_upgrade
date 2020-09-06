@@ -26,7 +26,7 @@
 <input type="hidden" id="url_grupo" name="url_grupo" value="{{ path('_ajaxGrupoSeleccion') }}">
 <div class="row align-items-center justify-content-start">
     <div class="col text-left">
-        <a href="{{ path('_programados', { 'app_id': app.session.get('app_id') })}}" class="bttn__bck"><span class="fa fa-clipboard"></span><span class="text__bck">{{ 'Ir al listado'|trans }}</span></a>
+        <a href="{{ path('_notificacionProgramadas', { 'id': notificacion_id })}}" class="bttn__bck"><span class="fa fa-clipboard"></span><span class="text__bck">{{ 'Ir al listado'|trans }}</span></a>
     </div>
 </div>
 <br>
@@ -96,9 +96,9 @@
                             <div class="load1 load-wrapper">
                                 <div class="loader">
                                     Loading...
-                                </div>  
+                                </div>
                             </div>
-                            <div class="alert alert-danger" role="alert" id="div-entidades-alert" style="display:none;"> 
+                            <div class="alert alert-danger" role="alert" id="div-entidades-alert" style="display:none;">
                                 <strong>{{ 'Error en el servidor'|trans }}!</strong> {{ 'Error al obtener el grupo de selección'|trans }}.</span>
                             </div>
                         </div>
@@ -145,7 +145,7 @@ function observeSelectChosen()
             $(selector).chosen(config[selector]);
             }
             console.log('entrando aca');
-        }    
+        }
 
         function observeMultiSelect()
         {
@@ -196,7 +196,7 @@ function observeSelectChosen()
                 // Validaciones adicionales
                 var entidades = $('#entidades').val();
                 var tipo_destino_id = $('#tipo_destino_id').val();
-                
+
                 if (tipo_destino_id == 3 || tipo_destino_id == 4 || tipo_destino_id == 7 || tipo_destino_id == 8)
                 {
                     if (entidades == null)
@@ -217,7 +217,7 @@ function observeSelectChosen()
                         valid = false;
                     }
                 }
-                
+
                 if (!valid){
                     $('#div-error ul').html("<li>- {{ 'Debe seleccionar el grupo'|trans }}.</li>");
                     $('#div-error ul').show();

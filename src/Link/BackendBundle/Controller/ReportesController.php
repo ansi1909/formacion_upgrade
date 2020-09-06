@@ -1161,12 +1161,16 @@ class ReportesController extends Controller
 
             foreach ($r1 as $re)
             {
-                $objWorksheet->getStyle("A$row:H$row")->applyFromArray($styleThinBlackBorderOutline); //bordes
-                $objWorksheet->getStyle("A8:H8")->applyFromArray($styleThinBlackBorderOutline); //bordes
-                $objWorksheet->getStyle("A$row:H$row")->getFont()->setSize($font_size); // Tamaño de las letras
-                $objWorksheet->getStyle("A$row:H$row")->getFont()->setName($font); // Tipo de letra
-                $objWorksheet->getStyle("A$row:H$row")->getAlignment()->setHorizontal($horizontal_aligment); // Alineado horizontal
-                $objWorksheet->getStyle("A$row:H$row")->getAlignment()->setVertical($vertical_aligment); // Alineado vertical
+                $fecha_inicio = $re['fecha_inicio_nivel']? $re['fecha_inicio_nivel']:$re['fecha_inicio'];
+                $fecha_vencimiento = $re['fecha_vencimiento_nivel']? $re['fecha_vencimiento_nivel']:$re['fecha_vencimiento'];
+
+
+                $objWorksheet->getStyle("A$row:I$row")->applyFromArray($styleThinBlackBorderOutline); //bordes
+                $objWorksheet->getStyle("A8:I8")->applyFromArray($styleThinBlackBorderOutline); //bordes
+                $objWorksheet->getStyle("A$row:I$row")->getFont()->setSize($font_size); // Tamaño de las letras
+                $objWorksheet->getStyle("A$row:I$row")->getFont()->setName($font); // Tipo de letra
+                $objWorksheet->getStyle("A$row:I$row")->getAlignment()->setHorizontal($horizontal_aligment); // Alineado horizontal
+                $objWorksheet->getStyle("A$row:I$row")->getAlignment()->setVertical($vertical_aligment); // Alineado vertical
                 $objWorksheet->getRowDimension($row)->setRowHeight(30); // Altura de la fila
                 $objWorksheet->getStyle("A6:C6")->applyFromArray($styleThinBlackBorderOutline); //bordes
                 $objWorksheet->getStyle("A5:C5")->applyFromArray($styleThinBlackBorderOutline); //bordes
@@ -1176,13 +1180,14 @@ class ReportesController extends Controller
                 $objWorksheet->setCellValue('B6', $usuarios_activos);
                 $objWorksheet->setCellValue('C6', $usuarios_inactivos);
                 $objWorksheet->setCellValue('A'.$row, $re['nombre']);
-                $objWorksheet->setCellValue('B'.$row, $re['fecha_inicio']);
-                $objWorksheet->setCellValue('C'.$row, $re['fecha_vencimiento']);
-                $objWorksheet->setCellValue('D'.$row, $re['no_iniciados']);
-                $objWorksheet->setCellValue('E'.$row, $re['cursando']);
-                $objWorksheet->setCellValue('F'.$row, $re['culminado']);
-                $objWorksheet->setCellValue('G'.$row, $re['activos']);
-                $objWorksheet->setCellValue('H'.$row, $re['registrados']);
+                $objWorksheet->setCellValue('B'.$row, $re['nombre_nivel']);
+                $objWorksheet->setCellValue('C'.$row, $fecha_inicio);
+                $objWorksheet->setCellValue('D'.$row, $fecha_vencimiento);
+                $objWorksheet->setCellValue('E'.$row, $re['no_iniciados']);
+                $objWorksheet->setCellValue('F'.$row, $re['cursando']);
+                $objWorksheet->setCellValue('G'.$row, $re['culminado']);
+                $objWorksheet->setCellValue('H'.$row, $re['activos']);
+                $objWorksheet->setCellValue('I'.$row, $re['registrados']);
                 $row++;
 
             }

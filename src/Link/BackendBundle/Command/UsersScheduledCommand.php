@@ -262,7 +262,7 @@ class UsersScheduledCommand extends ContainerAwareCommand
 								    $correos = $query->getSingleScalarResult();
 
 								    $output->writeln('correo Enviados: '.$correos);
-								    if($correos == $programados ){
+								    if($correos == $programados || $correos > $programados ){
 								    	$n->setEnviado(true);
 									    $em->persist($n);
 										$em->flush();
