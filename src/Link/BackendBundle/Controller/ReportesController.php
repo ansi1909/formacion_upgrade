@@ -19,7 +19,7 @@ class ReportesController extends Controller
         $session = new Session();
         $f = $this->get('funciones');
         $yml = Yaml::parse(file_get_contents($this->get('kernel')->getRootDir().'/config/parametros.yml'));
-        
+
         if (!$session->get('ini') || $f->sesionBloqueda($session->get('sesion_id')))
         {
             return $this->redirectToRoute('_loginAdmin');
@@ -54,7 +54,7 @@ class ReportesController extends Controller
             if($reporte == 1)
             {
                 $encabezado = 'empresa';
-                
+
             }
             elseif($reporte == 2)
             {
@@ -162,7 +162,7 @@ class ReportesController extends Controller
 
             }
 
-            
+
 
             // Crea el writer
             $writer = $this->get('phpexcel')->createWriter($objPHPExcel, 'Excel2007');
@@ -170,12 +170,12 @@ class ReportesController extends Controller
             $empresaName = strtoupper($empresaName);
             $encabezado = strtoupper($encabezado);
             $hoy = date('y-m-d');
-            
+
             // Envia la respuesta del controlador
             $response = $this->get('phpexcel')->createStreamedResponse($writer);
             // Agrega los headers requeridos
             if($pagina)
-            {   
+            {
                 $programaName = $f->eliminarAcentos($pagina->getNombre());
                 $programaName = strtoupper($programaName);
                 $dispositionHeader = $response->headers->makeDisposition(
@@ -200,22 +200,22 @@ class ReportesController extends Controller
 
         $usuario_empresa = 0;
         $empresas = array();
-        $usuario = $this->getDoctrine()->getRepository('LinkComunBundle:AdminUsuario')->find($session->get('usuario')['id']); 
+        $usuario = $this->getDoctrine()->getRepository('LinkComunBundle:AdminUsuario')->find($session->get('usuario')['id']);
 
         if ($usuario->getEmpresa()) {
-            $usuario_empresa = 1; 
+            $usuario_empresa = 1;
         }
         else {
             $empresas = $this->getDoctrine()->getRepository('LinkComunBundle:AdminEmpresa')->findBy(array('activo' => true),
                                                                                                    array('nombre' => 'ASC' ));
-        } 
+        }
 
         return $this->render('LinkBackendBundle:Reportes:index.html.twig', array('empresas' => $empresas,
                                                                                  'usuario_empresa' => $usuario_empresa,
                                                                                  'usuario' => $usuario,
                                                                                  'reporte' => $r,
                                                                                  'pagina_id' => $pagina_id,
-                                                                                 'empresa_dashboard' => $empresa_id));    
+                                                                                 'empresa_dashboard' => $empresa_id));
     }
 
     public function ajaxProgramasEAction(Request $request)
@@ -243,10 +243,10 @@ class ReportesController extends Controller
             if($reporte_id){
                 $options .= '<option value="0">Todos los programas</option>';
             }
-            
+
             foreach ($paginas as $pagina)
             {
-                if ($pagina->getPagina()->getId() == $pagina_id) 
+                if ($pagina->getPagina()->getId() == $pagina_id)
                 {
                     $options .= '<option value="'.$pagina->getPagina()->getId().'" selected >'.$pagina->getPagina()->getCategoria()->getNombre().': ' .$pagina->getPagina()->getNombre().'  </option>';
                 }
@@ -254,14 +254,14 @@ class ReportesController extends Controller
                 {
                     $options .= '<option value="'.$pagina->getPagina()->getId().'">'.$pagina->getPagina()->getCategoria()->getNombre().': ' .$pagina->getPagina()->getNombre().' </option>';
                 }
-            
+
             }
         }
 
-        
-        
+
+
         $return = array('options' => $options);
-        
+
         $return = json_encode($return);
         return new Response($return, 200, array('Content-Type' => 'application/json'));
     }
@@ -288,7 +288,7 @@ class ReportesController extends Controller
                                'nombre' => $pe->getPagina()->getCategoria()->getNombre().': '.$pe->getPagina()->getNombre(),
                                'selected' => $pe->getPagina()->getId() == $pagina_selected ? 'selected' : '');
         }
-        
+
         $html = $this->renderView('LinkBackendBundle:Reportes:grupoSeleccion.html.twig', array('valores' => $valores));
 
         $return = array('html' => $html);
@@ -449,7 +449,7 @@ class ReportesController extends Controller
 
             foreach ($listado['participantes'] as $participante)
             {
-                
+
                 $fecha = $f->converDate($participante['fecha_registro'],$yml['parameters']['time_zone']['default'],$timeZoneEmpresa);
                 // Estilizar toda la fila, excepto el bgcolor de las celdas de los programas
                 $objWorksheet->getStyle("A".$row.":".$lastColumn.$row)->applyFromArray($styleThinBlackBorderOutline); //bordes
@@ -475,7 +475,7 @@ class ReportesController extends Controller
                 $objWorksheet->setCellValue('M'.$row, $participante['campo2']);
                 $objWorksheet->setCellValue('N'.$row, $participante['campo3']);
                 $objWorksheet->setCellValue('O'.$row, $participante['campo4']);
-                
+
                 // Datos de cada programa
                 $col = 15; // Columna O
                 $aprobados = 0;
@@ -543,7 +543,7 @@ class ReportesController extends Controller
         $empresaName = $f->eliminarAcentos($empresa->getNombre());
         $empresaName = strtoupper($empresaName);
         $hoy = date('y-m-d h i');
-        $writer = $this->get('phpexcel')->createWriter($objPHPExcel, 'Excel5');
+        $writer = $this->get('phpexcel')->createWriter($objPHPExcel, 'Excel2007');
         $path = 'recursos/reportes/APROBADOS '.$empresaName.' '.$hoy.'.xls';
         $xls = $this->container->getParameter('folders')['dir_uploads'].$path;
         $writer->save($xls);
@@ -552,7 +552,7 @@ class ReportesController extends Controller
         $document_name = 'APROBADOS '.$empresaName.' '.$hoy.'.xls';
         $bytes = filesize($xls);
         $document_size = $f->fileSizeConvert($bytes);
-        
+
         $return = array('archivo' => $archivo,
                         'document_name' => $document_name,
                         'document_size' => $document_size);
@@ -591,7 +591,7 @@ class ReportesController extends Controller
             $query->bindValue(':ppagina_id', $pagina_id, \PDO::PARAM_INT);
             $query->execute();
             $r = $query->fetchAll();
-            
+
             $html = '<table class="table" id="dt">
                         <thead class="sty__title">
                             <tr>
@@ -605,7 +605,7 @@ class ReportesController extends Controller
                             </tr>
                         </thead>
                         <tbody style="font-size: .7rem;">';
-            
+
             foreach ($r as $ru)
             {
                 $activo = $ru['logueado'] > 0 ? $this->get('translator')->trans('Sí') : 'No';
@@ -624,17 +624,17 @@ class ReportesController extends Controller
                     </table>';
         }
         $return = array('html' => $html);
- 
+
         $return = json_encode($return);
         return new Response($return, 200, array('Content-Type' => 'application/json'));
     }
 
     public function interaccionColaborativoAction($app_id, Request $request)
     {
-        
+
         $session = new Session();
         $f = $this->get('funciones');
-        
+
         if (!$session->get('ini') || $f->sesionBloqueda($session->get('sesion_id')))
         {
             return $this->redirectToRoute('_loginAdmin');
@@ -666,13 +666,13 @@ class ReportesController extends Controller
 
     public function ajaxInteraccionColaborativoAction(Request $request)
     {
-        
+
         $session = new Session();
         $em = $this->getDoctrine()->getManager();
         $rs = $this->get('reportes');
         $fn = $this->get('funciones');
         $yml = Yaml::parse(file_get_contents($this->get('kernel')->getRootDir().'/config/parametros.yml'));
-        
+
         $tema_id = $request->request->get('tema_id');
         //$desdef = $request->request->get('desde');
         //$hastaf = $request->request->get('hasta');
@@ -734,7 +734,7 @@ class ReportesController extends Controller
                 $objWorksheet->getStyle("A$row:Q$row")->getAlignment()->setHorizontal($horizontal_aligment); // Alineado horizontal
                 $objWorksheet->getStyle("A$row:Q$row")->getAlignment()->setVertical($vertical_aligment); // Alineado vertical
                 $objWorksheet->getRowDimension($row)->setRowHeight(40); // Altura de la fila
-            
+
 
                 // Datos de las columnas comunes
                 $objWorksheet->setCellValue('A'.$row, $participante['codigo']);
@@ -766,27 +766,27 @@ class ReportesController extends Controller
         $paginaName = $fn->eliminarAcentos($pagina->getNombre());
         $paginaName = strtoupper($paginaName);
         $hoy = date('y-m-d h i');
-        $writer = $this->get('phpexcel')->createWriter($objPHPExcel, 'Excel5');
-        $path = 'recursos/reportes/ESPACIO COLABORATIVO '.$paginaName.' '.$empresaName.' '.$hoy.'.xls';
+        $writer = $this->get('phpexcel')->createWriter($objPHPExcel, 'Excel2007');
+        $path = 'recursos/reportes/ESPACIO COLABORATIVO '.$paginaName.' '.$empresaName.' '.$hoy.'.xlsx';
         $xls = $this->container->getParameter('folders')['dir_uploads'].$path;
         $writer->save($xls);
 
         $archivo = $this->container->getParameter('folders')['uploads'].$path;
-        $document_name = 'ESPACIO COLABORATIVO '.$empresaName.' '.$paginaName.' '.$hoy.'.xls';
+        $document_name = 'ESPACIO COLABORATIVO '.$empresaName.' '.$paginaName.' '.$hoy.'.xlsx';
         $bytes = filesize($xls);
         $document_size = $fn->fileSizeConvert($bytes);
-        
+
         $return = array('archivo' => $archivo,
                         'document_name' => $document_name,
                         'document_size' => $document_size);
 
         $return = json_encode($return);
-        return new Response($return, 200, array('Content-Type' => 'application/json'));  
+        return new Response($return, 200, array('Content-Type' => 'application/json'));
     }
 
     public function interaccionMuroAction($app_id, $empresa_id, Request $request)
     {
-        
+
         $session = new Session();
         $f = $this->get('funciones');
         $rs = $this->get('reportes');
@@ -794,7 +794,7 @@ class ReportesController extends Controller
         $hoy = date('Y-m-d h:i:s');
         $yml = Yaml::parse(file_get_contents($this->get('kernel')->getRootDir().'/config/parametros.yml'));
         //return new response($hoy);
-        
+
         if (!$session->get('ini') || $f->sesionBloqueda($session->get('sesion_id')))
         {
             return $this->redirectToRoute('_loginAdmin');
@@ -809,7 +809,7 @@ class ReportesController extends Controller
         }
         $f->setRequest($session->get('sesion_id'));
 
-        
+
         $usuario = $this->getDoctrine()->getRepository('LinkComunBundle:AdminUsuario')->find($session->get('usuario')['id']);
 
         $empresas = array();
@@ -829,14 +829,14 @@ class ReportesController extends Controller
 
             $str = '';
             $tiene = 0;
-            $query = $em->createQuery("SELECT pe FROM LinkComunBundle:CertiPaginaEmpresa pe 
+            $query = $em->createQuery("SELECT pe FROM LinkComunBundle:CertiPaginaEmpresa pe
                                         JOIN pe.pagina p
                                         WHERE p.pagina IS NULL
-                                        AND pe.empresa = :empresa_id 
+                                        AND pe.empresa = :empresa_id
                                         ORDER BY p.nombre ASC")
                         ->setParameter('empresa_id', $empresa_id);
             $pages = $query->getResult();
-            
+
             foreach ($pages as $page)
             {
                 $total = 0;
@@ -844,10 +844,10 @@ class ReportesController extends Controller
                 sort($estructura);
                 //print_r($estructura);exit();
                 foreach ($estructura as $id) {
-                     $listado = $rs->interaccionMuro($page->getEmpresa()->getId(), $id);    
+                     $listado = $rs->interaccionMuro($page->getEmpresa()->getId(), $id);
                      $total = $total + count($listado);
                 }
-               
+
                 $tiene++;
                 $str .= '<li data-jstree=\'{ "icon": "fa fa-angle-double-right" }\' p_id="'.$page->getPagina()->getId().'" p_str="'.$page->getPagina()->getCategoria()->getNombre().': '.$page->getPagina()->getNombre().'">'.$page->getPagina()->getCategoria()->getNombre().': '.$page->getPagina()->getNombre().' ('.$total.')';
                 $subPaginas = $this->subPaginasEmpresa($page->getPagina()->getId(), $empresa_id);
@@ -886,26 +886,26 @@ class ReportesController extends Controller
         $yml = Yaml::parse(file_get_contents($this->get('kernel')->getRootDir().'/config/parametros.yml'));
         $hoy = date('Y-m-d 23:59:59');
         //return new response($hoy);
-		$query = $em->createQuery("SELECT pe, p FROM LinkComunBundle:CertiPaginaEmpresa pe 
-                                    JOIN pe.pagina p 
-                                    WHERE pe.empresa = :empresa_id AND p.pagina = :pagina_id 
+		$query = $em->createQuery("SELECT pe, p FROM LinkComunBundle:CertiPaginaEmpresa pe
+                                    JOIN pe.pagina p
+                                    WHERE pe.empresa = :empresa_id AND p.pagina = :pagina_id
                                     ORDER BY p.orden ASC")
                     ->setParameters(array('empresa_id' => $empresa_id,
                     					  'pagina_id' => $pagina_id));
         $subpages = $query->getResult();
-		
+
 		foreach ($subpages as $subpage)
 		{
 			    $tiene++;
-                $listado = $rs->interaccionMuro($subpage->getEmpresa()->getId(), $subpage->getPagina()->getId());    
+                $listado = $rs->interaccionMuro($subpage->getEmpresa()->getId(), $subpage->getPagina()->getId());
                 $cantidad = count($listado);
                 if($subpage->getPagina()->getCategoria()->getId() == $yml['parameters']['categoria']['leccion'])
-                {   
+                {
                     $desde = $subpage->getPagina()->getFechaCreacion();
                     $desde = $desde->format('Y-m-d h:i:s');
-                    
+
                     $listado = $rs->interaccionMuro($subpage->getEmpresa()->getId(), $subpage->getPagina()->getId());
-                    
+
                     $cantidad = count($listado);
                     $return .= '<li data-jstree=\'{ "icon": "fa fa-angle-double-right" }\' p_id="'.$subpage->getPagina()->getId().'" p_str="'.$subpage->getPagina()->getCategoria()->getNombre().': '.$subpage->getPagina()->getNombre().'" tipo_recurso_id="'. $subpage->getPagina()->getCategoria()->getId() .'" >'.$subpage->getPagina()->getCategoria()->getNombre().': '.$subpage->getPagina()->getNombre().' ('.$cantidad.')';
                 }else{
@@ -919,7 +919,7 @@ class ReportesController extends Controller
 					$return .= '</ul>';
 				}
 				$return .= '</li>';
-			
+
 		}
 
 		$subpaginas = array('tiene' => $tiene,
@@ -931,7 +931,7 @@ class ReportesController extends Controller
 
     public function ajaxInteraccionMuroAction(Request $request)
     {
-        
+
         $modulo = $this->get('translator')->trans('Todos');
         $materia = $this->get('translator')->trans('Todas');
         $leccion = $this->get('translator')->trans('Todas');
@@ -970,11 +970,11 @@ class ReportesController extends Controller
                 $programa = $this->getDoctrine()->getRepository('LinkComunBundle:CertiPagina')->find($modulo->getPagina());
             }
         }
-       
+
         $modulo = ($modulo!='Todos')? $modulo->getNombre():$modulo;
         $materia = ($materia!='Todas')? $materia->getNombre():$materia;
         $leccion = ($leccion!='Todas')? $leccion->getNombre():$leccion;
-        
+
         $listado = $rs->interaccionMuro($empresa_id, $pestructura);
 
         $fileWithPath = $this->container->getParameter('folders')['dir_project'].'docs/formatos/interaccionMuro.xlsx';
@@ -1022,7 +1022,7 @@ class ReportesController extends Controller
                 $objWorksheet->getStyle("A$row:Q$row")->getAlignment()->setHorizontal($horizontal_aligment); // Alineado horizontal
                 $objWorksheet->getStyle("A$row:Q$row")->getAlignment()->setVertical($vertical_aligment); // Alineado vertical
                 $objWorksheet->getRowDimension($row)->setRowHeight(40); // Altura de la fila
-            
+
 
                 // Datos de las columnas comunes
                 $objWorksheet->setCellValue('A'.$row, $participante['codigo']);
@@ -1054,31 +1054,31 @@ class ReportesController extends Controller
         $paginaName = $fn->eliminarAcentos($programa->getNombre());
         $paginaName = strtoupper($paginaName);
         $hoy = date('y-m-d h i');
-        $writer = $this->get('phpexcel')->createWriter($objPHPExcel, 'Excel5');
-        $path = 'recursos/reportes/MURO '.$paginaName.' '.$empresaName.' '.$hoy.'.xls';
+        $writer = $this->get('phpexcel')->createWriter($objPHPExcel, 'Excel2007');
+        $path = 'recursos/reportes/MURO '.$paginaName.' '.$empresaName.' '.$hoy.'.xlsx';
         $xls = $this->container->getParameter('folders')['dir_uploads'].$path;
         $writer->save($xls);
 
         $archivo = $this->container->getParameter('folders')['uploads'].$path;
-        $document_name = 'MURO '.$paginaName.' '.$empresaName.' '.$hoy.'.xls';
+        $document_name = 'MURO '.$paginaName.' '.$empresaName.' '.$hoy.'.xlsx';
         $bytes = filesize($xls);
         $document_size = $fn->fileSizeConvert($bytes);
-        
+
         $return = array('archivo' => $archivo,
                         'document_name' => $document_name,
                         'document_size' => $document_size);
 
         $return = json_encode($return);
-        return new Response($return, 200, array('Content-Type' => 'application/json'));    
+        return new Response($return, 200, array('Content-Type' => 'application/json'));
     }
 
     public function reporteGeneralAction($app_id, $empresa_id, Request $request)
     {
-        
+
         $session = new Session();
         $f = $this->get('funciones');
         $yml = Yaml::parse(file_get_contents($this->get('kernel')->getRootDir().'/config/parametros.yml'));
-        
+
         if (!$session->get('ini') || $f->sesionBloqueda($session->get('sesion_id')))
         {
             return $this->redirectToRoute('_loginAdmin');
@@ -1136,7 +1136,7 @@ class ReportesController extends Controller
         // Encabezado
         $objWorksheet->setCellValue('A1', $this->get('translator')->trans('Cantidad de participantes por programa').'. ');
         $objWorksheet->setCellValue('A2', $this->get('translator')->trans('Empresa').': '.$empresa->getNombre().'. ');
-        
+
         if (!count($r))
         {
             $objWorksheet->mergeCells('A5:S5');
@@ -1199,7 +1199,7 @@ class ReportesController extends Controller
         $empresaName = $f->eliminarAcentos($empresa->getNombre());
         $empresaName = strtoupper($empresaName);
         $hoy = date('d-m-Y');
-        
+
         // Envia la respuesta del controlador
         $response = $this->get('phpexcel')->createStreamedResponse($writer);
         // Agrega los headers requeridos
@@ -1222,11 +1222,11 @@ class ReportesController extends Controller
     {
         $em = $this->getDoctrine()->getManager();
         $empresa_id = $request->query->get('empresa_id');
-        
-        $query = $em->createQuery('SELECT pe FROM LinkComunBundle:CertiPaginaEmpresa pe 
-                                    JOIN pe.pagina p 
+
+        $query = $em->createQuery('SELECT pe FROM LinkComunBundle:CertiPaginaEmpresa pe
+                                    JOIN pe.pagina p
                                     WHERE pe.empresa = :empresa_id
-                                    AND p.pagina IS NULL 
+                                    AND p.pagina IS NULL
                                     ORDER BY p.nombre ASC')
                     ->setParameter('empresa_id', $empresa_id);
         $paginas = $query->getResult();
@@ -1236,12 +1236,12 @@ class ReportesController extends Controller
         {
             $options .= '<option value="'.$pagina->getPagina()->getId().'">'.$pagina->getPagina()->getCategoria()->getNombre().': ' .$pagina->getPagina()->getNombre().'</option>';
         }
-        
+
         $return = array('options' => $options);
-        
+
         $return = json_encode($return);
         return new Response($return, 200, array('Content-Type' => 'application/json'));
-        
+
     }
 
     public function ajaxFiltroTemasAction(Request $request)
@@ -1249,10 +1249,10 @@ class ReportesController extends Controller
         $em = $this->getDoctrine()->getManager();
         $empresa_id = $request->query->get('empresa_id');
         $pagina_id = $request->query->get('pagina_id');
-        
-        $query = $em->createQuery('SELECT f FROM LinkComunBundle:CertiForo f  
+
+        $query = $em->createQuery('SELECT f FROM LinkComunBundle:CertiForo f
                                     WHERE f.empresa = :empresa_id
-                                    AND f.foro IS NULL 
+                                    AND f.foro IS NULL
                                     AND f.pagina = :pagina_id
                                     ORDER BY f.tema ASC')
                     ->setParameters(array('empresa_id' => $empresa_id,
@@ -1264,12 +1264,12 @@ class ReportesController extends Controller
         {
             $options .= '<option value="'.$tema->getId().'">'.$tema->getTema().'</option>';
         }
-        
+
         $return = array('options' => $options);
-        
+
         $return = json_encode($return);
         return new Response($return, 200, array('Content-Type' => 'application/json'));
-        
+
     }
-    
+
 }
