@@ -544,12 +544,12 @@ class ReportesController extends Controller
         $empresaName = strtoupper($empresaName);
         $hoy = date('y-m-d h i');
         $writer = $this->get('phpexcel')->createWriter($objPHPExcel, 'Excel2007');
-        $path = 'recursos/reportes/APROBADOS '.$empresaName.' '.$hoy.'.xls';
+        $path = 'recursos/reportes/APROBADOS '.$empresaName.' '.$hoy.'.xlsx';
         $xls = $this->container->getParameter('folders')['dir_uploads'].$path;
         $writer->save($xls);
 
         $archivo = $this->container->getParameter('folders')['uploads'].$path;
-        $document_name = 'APROBADOS '.$empresaName.' '.$hoy.'.xls';
+        $document_name = 'APROBADOS '.$empresaName.' '.$hoy.'.xlsx';
         $bytes = filesize($xls);
         $document_size = $f->fileSizeConvert($bytes);
 
