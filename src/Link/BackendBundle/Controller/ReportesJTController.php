@@ -277,13 +277,13 @@ class ReportesJTController extends Controller
                 }
             }
 
-            $writer = $this->get('phpexcel')->createWriter($objPHPExcel, 'Excel5');
+            $writer = $this->get('phpexcel')->createWriter($objPHPExcel, 'Excel2007');
             $empresaName = $fun->eliminarAcentos($empresa->getNombre());
             $empresaName = strtoupper($empresaName);
             $hoy = date('y-m-d h i');
             $paginaName =  $fun->eliminarAcentos($pagina->getNombre());
             $paginaName = strtoupper($paginaName);
-            $path = 'recursos/reportes/AVANCE '.$paginaName.' '.$empresaName.' '.$hoy.'.xls';
+            $path = 'recursos/reportes/AVANCE '.$paginaName.' '.$empresaName.' '.$hoy.'.xlsx';
             $xls = $this->container->getParameter('folders')['dir_uploads'].$path;
             $writer->save($xls);
 
@@ -460,6 +460,11 @@ class ReportesJTController extends Controller
                             $correo = '';
                         }
                     }
+                    if($participante['promedio'] == '00:00:00'){
+                        $promedio = '00:01:00';
+                    }else{
+                        $promedio = $participante['promedio'];
+                    }
                     $acceso = $participante['activo']? 'Sí' : 'No';
                     // Datos de las columnas del reporte
                     $objWorksheet->setCellValue('A'.$row, $participante['codigo']);
@@ -476,7 +481,7 @@ class ReportesJTController extends Controller
                     $objWorksheet->setCellValue('L'.$row, $participante['campo2']);
                     $objWorksheet->setCellValue('M'.$row, $participante['campo3']);
                     $objWorksheet->setCellValue('N'.$row, $participante['campo4']);
-                    $objWorksheet->setCellValue('O'.$row, $participante['promedio']);
+                    $objWorksheet->setCellValue('O'.$row, $promedio);
                     $objWorksheet->setCellValue('P'.$row, $participante['visitas']);
 
                   
@@ -487,8 +492,8 @@ class ReportesJTController extends Controller
             $empresaName = $fun->eliminarAcentos($empresa->getNombre());
             $empresaName = strtoupper($empresaName);
             $hoy = date('y-m-d h i');
-            $writer = $this->get('phpexcel')->createWriter($objPHPExcel, 'Excel5');
-            $path = 'recursos/reportes/CONEXIONES POR USUARIO '.$empresaName.' '.$hoy.'.xls';
+            $writer = $this->get('phpexcel')->createWriter($objPHPExcel, 'Excel2007');
+            $path = 'recursos/reportes/CONEXIONES POR USUARIO '.$empresaName.' '.$hoy.'.xlsx';
             $xls = $this->container->getParameter('folders')['dir_uploads'].$path;
             $writer->save($xls);
 
@@ -518,16 +523,30 @@ class ReportesJTController extends Controller
         
         foreach ($listado as $registro)
         {
-           
+            if ($registro['correo_corporativo']!='') {
+                $correo = $registro['correo_corporativo'];
+            }else{
+                if ($registro['correo_personal']!='') {
+                    $correo = $registro['correo_personal'];
+                }
+                else{
+                    $correo = '';
+                }
+            }
+            if($registro['promedio'] == '00:00:00'){
+                $promedio = '00:01:00';
+            }else{
+                $promedio = $registro['promedio'];
+            }
             $html .= '<tr>
                         
                         <td><a class="detail" data-toggle="modal" data-target="#detailModal" data="'.$registro['login'].'" empresa_id="'.$empresa_id.'" href="#">'.$registro['nombre'].' '.$registro['apellido'].'</a></td>
                         <td>'.$registro['login'].'</td>
                         <td>'.$registro['nivel'].'</td>
-                        <td>'.$registro['correo_corporativo'].'</td>
+                        <td>'.$correo.'</td>
                         <td>'.$registro['fecha_registro'].'</td>
                         <td>'.$registro['visitas'].'</td>
-                        <td>'.$registro['promedio'].'</td>
+                        <td>'.$promedio.'</td>
                     </tr>';
         }
 

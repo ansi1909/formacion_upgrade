@@ -28,7 +28,7 @@
                         <div class="row">
                             <div class="col-sm-7 col-md-7 col-lg-7 offset-sm-4 offset-md-4 offset-lg-4">
                                 <select class="form_sty_sel form-control" style="border-radius: 5px" id="empresa_id" name="empresa_id">
-                                    <option value="0"></option>
+                                    <option value=""></option>
                                     {% for empresa in empresas %}
                                         {% if empresa.id == empresa_select %}
                                             <option value="{{ empresa.id }}" selected >{{ empresa.nombre }}</option>
@@ -73,9 +73,22 @@
                         </div>
                     </div>
                 </div>
-                <div class="card-footer" style="display: none;">
+                <div class="card-footer" >
                     <div class="col-sm-16 col-md-16 text-right">
                         <button type="submit" id="search" class="bttn__saved" data-toggle="tooltip" data-placement="bottom" title="{{ 'Consultar'|trans }}"><span class="fa fa-search"></span></button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row" id="cargando" style="display: none;" >
+        <div class="col-sm-16">
+            <div class="card">
+                <div class="card-block">  
+                    <div class="load1 load-wrapper">
+                        <div class="loader">
+                            Loading...
+                        </div>
                     </div>
                 </div>
             </div>
@@ -148,7 +161,10 @@
                 notify($('#div-error').html());
             }
             else {
+                $('#cargando').show();
+                $('.load1').show();
                 $('#form').submit();
+
             }
         });
 
@@ -162,6 +178,12 @@
                 },
                 'fechaH': {
                     required: true
+                },
+                'empresa_id': {
+                    required: true
+                },
+                'programa_id': {
+                    required: true
                 }
             },
             messages: {
@@ -171,6 +193,12 @@
                 },
                 'fechaH': {
                     required: "- {{ 'La fehca fin es requerida.'|trans }}"
+                },
+                'empresa_id': {
+                    required: "- {{ 'La empresa es requerida.'|trans }}",
+                },
+                'programa_id': {
+                    required: "- {{ 'El programa es requerido.'|trans }}",
                 }
             }
         });

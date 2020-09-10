@@ -25,6 +25,12 @@
         #btn_foto, #btn_pdf {
             padding-top: 17px;
         } 
+        .photo_img{
+            width: 30rem!important;
+        }
+        #foto_img {
+            width: 100%!important;
+        }
     </style>
 {% endblock %}
 
@@ -215,7 +221,14 @@
                                     <div class="col-md-auto col-sm-auto col-xl-auto col-lg-auto">
                                         Imagen
                                         {% set img = biblioteca.imagen ? uploads~biblioteca.imagen : asset('img/picture.png') %}
-                                        <div class="photo_img" id="figure"><img id="foto_img" src="{{ img }}" alt="Imagen" style="width: 512px; height: auto; margin: 0 1rem;"></div>
+                                        <div class="photo_img" id="figure">
+                                            <img id="foto_img" src="{{ img }}" alt="Imagen" style="width: 512px; height: auto; margin: 0 1rem;">
+                                            <div class="load1 load-wrapper">
+                                                <div class="loader">
+                                                    Loading...
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
                                     <div class="col-md-auto col-sm-auto col-xl-auto col-lg-auto">
                                         <div class="input-group">
