@@ -468,11 +468,38 @@ class TestController extends Controller
         $puntos = 0;
         $preguntas_ids = explode(",", $preguntas_str);
 
-        // Verificar si todas las preguntas fueron contestadas
-        $query = $em->createQuery("SELECT DISTINCT(r.nro) AS nro FROM LinkComunBundle:CertiRespuesta r
-                                    WHERE r.pruebaLog = :prueba_log_id ORDER BY r.nro ASC")
+        // obtener las respuestas del usuario
+        $query = $em->createQuery("SELECT r.nro AS nro,po.correcta AS correcta FROM LinkComunBundle:CertiRespuesta r
+                                   INNER JOIN LinkComunBundle:CertiPreguntaOpcion po WITH r.opcion = po.opcion
+                                   WHERE r.pruebaLog = :prueba_log_id ORDER BY r.nro ASC")
                     ->setParameter('prueba_log_id', $prueba_log_id);
         $nros = $query->getResult();
+
+        $erradas = array();
+        $erradas_str = '';
+        $correctas = 0;
+
+        //obtener erradas
+        foreach ($nros as $respuesta) {
+           if(!$respuesta['correcta']){
+                array_push($erradas,$respuesta['nro']);
+           }else{
+                $correctas++;
+           }
+        }
+
+        if($erradas){
+            $erradas_str= implode(',',$erradas);
+        }
+
+        //actualizar las preguntas erradas y correctas
+        $prueba_log->setPreguntasErradas($erradas_str);
+        $prueba_log->setErradas(count($erradas));
+        $prueba_log->setCorrectas($correctas);
+        $em->persist($prueba_log);
+        $em->flush();
+
+
 
         $nros_arr = array();
         foreach ($nros as $nro)

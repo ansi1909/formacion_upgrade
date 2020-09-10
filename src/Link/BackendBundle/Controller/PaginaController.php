@@ -177,8 +177,7 @@ class PaginaController extends Controller
             ->add('categoria', EntityType::class, array('class' => 'Link\\ComunBundle\\Entity\\CertiCategoria',
                                                         'choice_label' => 'nombre',
                                                         'expanded' => false,
-                                                        'label' => $this->get('translator')->trans('Categoría'),
-                                                        'placeholder' => ''))
+                                                        'label' => $this->get('translator')->trans('Categoría')))
             ->add('descripcion', TextareaType::class, array('label' => $this->get('translator')->trans('Descripción')))
             ->add('contenido', TextareaType::class, array('label' => $this->get('translator')->trans('Contenido')))
             ->add('foto', HiddenType::class, array('label' => $this->get('translator')->trans('Foto de la página'),
@@ -282,8 +281,7 @@ class PaginaController extends Controller
             ->add('categoria', EntityType::class, array('class' => 'Link\\ComunBundle\\Entity\\CertiCategoria',
                                                         'choice_label' => 'nombre',
                                                         'expanded' => false,
-                                                        'label' => $this->get('translator')->trans('Categoría'),
-                                                        'placeholder' => ''))
+                                                        'label' => $this->get('translator')->trans('Categoría')))
             ->add('descripcion', TextareaType::class, array('label' => $this->get('translator')->trans('Descripción')))
             ->add('contenido', TextareaType::class, array('label' => $this->get('translator')->trans('Contenido'),
                                                           'required' => false))

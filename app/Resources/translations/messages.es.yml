@@ -141,7 +141,7 @@ Competencia debe tener como valor 0 o 1: Competencia debe tener como valor 0 o 1
 Competencia requerida. Valores válidos 0 o 1.: Competencia requerida. Valores válidos 0 o 1.
 Conceder: Conceder
 Conexiones por usuario: Conexiones por usuario
-Conexiones por participante: Conexiones por participante 
+Conexiones por participante: Conexiones por participante
 Conceder Permisos: Conceder Permisos
 Conceder permisos de acceso: Conceder permisos de acceso
 Configuración de asignación: Configuración de asignación
@@ -250,7 +250,7 @@ Dimensiones recomendadas: Dimensiones recomendadas
 Diseño: Diseño
 Domingo: Domingo
 Duplicar página y sub-páginas: Duplicar página y sub-páginas
-Duplicar evaluación : Duplicar evaluación 
+Duplicar evaluación : Duplicar evaluación
 Editar: Editar
 Editar asignación: Editar asignación
 Editar comentario: Editar comentario
@@ -503,7 +503,7 @@ Has aprobado con éxito la evaluación: Has aprobado con éxito la evaluación
 Has completado con éxito los contenidos: Has completado con éxito los contenidos
 Has ganado: Has ganado
 Hasta: Hasta
-Hemos detectado que estás usando un navegador no recomendado, te invitamos a usar Google Chrome, Mozilla Firefox o Microsoft Edge en sus últimas versiones para garantizar una correcta funcionalidad de la plataforma : Hemos detectado que estás usando un navegador no recomendado, te invitamos a usar Google Chrome, Mozilla Firefox o Microsoft Edge en sus últimas versiones para garantizar una correcta funcionalidad de la plataforma 
+Hemos detectado que estás usando un navegador no recomendado, te invitamos a usar Google Chrome, Mozilla Firefox o Microsoft Edge en sus últimas versiones para garantizar una correcta funcionalidad de la plataforma : Hemos detectado que estás usando un navegador no recomendado, te invitamos a usar Google Chrome, Mozilla Firefox o Microsoft Edge en sus últimas versiones para garantizar una correcta funcionalidad de la plataforma
 Historial de programaciones de: Historial de programaciones de
 Hizo un comentario: Hizo un comentario
 Hola: Hola
@@ -848,6 +848,7 @@ Recursos del programa: Recursos del programa
 Registrar Empresa: Registrar Empresa
 Registrar Usuario: Registrar Usuario
 Registrar participante: Registrar participante
+Registros del: Registros del
 registros: registros
 Registros actualizados: Registros actualizados
 Registros nuevos: Registros nuevos
@@ -868,7 +869,7 @@ Responder comentario: Responder comentario
 Responder publicación: Responder publicación
 respondió en el muro al comentario de: Respondió en el muro al comentario de
 respondió a tu comentario en el muro de: respondió a tu comentario en el muro de
-respondió a tu publicación en el espacio colaborativo de: respondió a tu publicación en el espacio colaborativo de 
+respondió a tu publicación en el espacio colaborativo de: respondió a tu publicación en el espacio colaborativo de
 respondió una publicación en el espacio colaborativo de: respondió una publicación en el espacio colaborativo de
 respondió a uno de tus comentarios en el muro de: respondió a uno de tus comentarios en el muro de
 Respuesta: Respuesta
@@ -929,7 +930,7 @@ Sin leer: Sin leer
 Sistema Formación Smart: Sistema Formación Smart
 Sólo archivo en PDF: Sólo archivo en PDF
 Sólo archivos con extensión xls, xlsx o csv.: Sólo archivos con extensión xls, xlsx o csv.
-Sólo archivos con extensión .jpg o .png: Sólo archivos con extensión .jpg o .png: 
+Sólo archivos con extensión .jpg o .png: Sólo archivos con extensión .jpg o .png:
 Sólo archivos con extensión .pdf: Sólo archivos con extensión .pdf
 Sólo archivos con extensión .mp4 o .webm o .ogv: Sólo archivos con extensión .mp4 o .webm o .ogv
 Sólo archivos con extensión .mp3: Sólo archivos con extensión .mp3
@@ -1037,5 +1038,5 @@ Volver al listado: Volver al listado
 y el: y el
 y finaliza el: y finaliza el
 Yo: Yo
-Zona horaria: Zona horaria 
+Zona horaria: Zona horaria
 ¿Olvidaste tu contraseña?: ¿Olvidaste tu contraseña?

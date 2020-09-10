@@ -75,6 +75,7 @@
 	- funciones/fncorreos_noentregados.sql
 	- funciones/fnalarmas_participantes.sql
 	- funciones/fneliminar_prueba.sql
+	- funciones/fneliminar_asignacion.sql
 	- funciones/fnmigrar_programa.sql
 	- funciones/fnlistado_notificaciones_programadas.sql
 	- funciones/fnlistado_participantes_correos.sql
