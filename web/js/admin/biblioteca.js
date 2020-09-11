@@ -51,7 +51,13 @@ $(document).ready(function() {
 		$('#div-error').hide();
 	});
 
+	$('.fileupload').click(function(){
+		$('#foto_img').hide();
+		$('.load1').show();
+	});
+
 	$('.fileupload').fileupload({
+		
         url: $('#url_upload').val(),
         dataType: 'json',
         acceptFileTypes: /(\.|\/)(gif|jpe?g|png|pdf)$/i,
@@ -94,7 +100,9 @@ $(document).ready(function() {
                 if (file_input == 'imagen')
                 {
                     var img = $('#foto_img');
-                    img.attr("src", uploads+base_upload+file.name);
+					img.attr("src", uploads+base_upload+file.name);
+					$('#foto_img').show();
+					$('.load1').hide();
                 }
                 $('#'+file_input).val(base_upload+file.name);
             });
