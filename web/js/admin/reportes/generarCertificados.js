@@ -4,7 +4,8 @@ $(document).ready(function() {
     	$('#label_filtro').hide();
     	$('.descargable').hide();
     	$('.generable').show();
-    	$('#resultado').hide();
+		$('#resultado').hide();
+		
     });
 
 });

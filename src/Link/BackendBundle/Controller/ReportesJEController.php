@@ -69,7 +69,6 @@ class ReportesJEController extends Controller
 
         $desdef = $request->request->get('desde');
         $hastaf = $request->request->get('hasta');
-        //return new response($hastaf);
         $excel = $request->request->get('excel');
 
         list($d, $m, $a) = explode("/", $desdef);
@@ -91,7 +90,7 @@ class ReportesJEController extends Controller
         {
 
             
-
+            //return new response($hastaf);
             $fileWithPath = $this->container->getParameter('folders')['dir_project'].'docs/formatos/horasConexion.xlsx';
             $objPHPExcel = \PHPExcel_IOFactory::load($fileWithPath);
             $objWorksheet = $objPHPExcel->setActiveSheetIndex(0);
@@ -134,8 +133,8 @@ class ReportesJEController extends Controller
             $empresaName = $fun->eliminarAcentos($empresa->getNombre());
             $empresaName = strtoupper($empresaName);
             $hoy = date('y-m-d h i');
-            $writer = $this->get('phpexcel')->createWriter($objPHPExcel, 'Excel5');
-            $path = 'recursos/reportes/HORAS CONEXION '.$empresaName.''.$hoy.'.xls';
+            $writer = $this->get('phpexcel')->createWriter($objPHPExcel, 'Excel2007');
+            $path = 'recursos/reportes/HORAS CONEXION '.$empresaName.''.$hoy.'.xlsx';
             $xls = $this->container->getParameter('folders')['dir_uploads'].$path;
             $writer->save($xls);
 
@@ -150,8 +149,8 @@ class ReportesJEController extends Controller
                         'columnas_mayores' => $columnas_mayores,
                         'filas_mayores' => $filas_mayores,
                         'archivo' => $archivo,
-                        'desdef' => $desde,
-                        'hastaf' => $hasta,
+                        'desdef' => $desdef,
+                        'hastaf' => $hastaf,
                         'timeZone' => $timeZoneEmpresaView);
 
         $return = json_encode($return);
@@ -196,7 +195,7 @@ class ReportesJEController extends Controller
         $session = new Session();
         $fun = $this->get('funciones');
         $yml = Yaml::parse(file_get_contents($this->get('kernel')->getRootDir().'/config/parametros.yml'));
-        
+        return new response($hasta);
         $reporte = $rs->horasConexion($empresa_id, $desde, $hasta, $yml);
         $conexiones = $reporte['conexiones'];
         $columnas_mayores = $reporte['columnas_mayores'];
@@ -420,8 +419,8 @@ class ReportesJEController extends Controller
         $empresaName = strtoupper($empresaName);
         $paginaName = strtoupper($paginaName);
         $hoy = date('y-m-d h i');
-        $writer = $this->get('phpexcel')->createWriter($objPHPExcel, 'Excel5');
-        $path = 'recursos/reportes/EVALUACIONES '.$paginaName.' '.$empresaName.' '.$hoy.'.xls';
+        $writer = $this->get('phpexcel')->createWriter($objPHPExcel, 'Excel2007');
+        $path = 'recursos/reportes/EVALUACIONES '.$paginaName.' '.$empresaName.' '.$hoy.'.xlsx';
         $xls = $this->container->getParameter('folders')['dir_uploads'].$path;
         $writer->save($xls);
 
