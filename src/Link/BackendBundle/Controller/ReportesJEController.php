@@ -149,8 +149,8 @@ class ReportesJEController extends Controller
                         'columnas_mayores' => $columnas_mayores,
                         'filas_mayores' => $filas_mayores,
                         'archivo' => $archivo,
-                        'desdef' => $desdef,
-                        'hastaf' => $hastaf,
+                        'desdef' => $desde,
+                        'hastaf' => $desde,
                         'timeZone' => $timeZoneEmpresaView);
 
         $return = json_encode($return);
@@ -195,7 +195,7 @@ class ReportesJEController extends Controller
         $session = new Session();
         $fun = $this->get('funciones');
         $yml = Yaml::parse(file_get_contents($this->get('kernel')->getRootDir().'/config/parametros.yml'));
-        return new response($hasta);
+        //return new response($hasta);
         $reporte = $rs->horasConexion($empresa_id, $desde, $hasta, $yml);
         $conexiones = $reporte['conexiones'];
         $columnas_mayores = $reporte['columnas_mayores'];
