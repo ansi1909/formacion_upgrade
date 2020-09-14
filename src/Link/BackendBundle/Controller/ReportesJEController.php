@@ -150,7 +150,7 @@ class ReportesJEController extends Controller
                         'filas_mayores' => $filas_mayores,
                         'archivo' => $archivo,
                         'desdef' => $desde,
-                        'hastaf' => $desde,
+                        'hastaf' => $hasta,
                         'timeZone' => $timeZoneEmpresaView);
 
         $return = json_encode($return);
