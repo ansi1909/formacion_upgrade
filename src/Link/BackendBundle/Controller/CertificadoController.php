@@ -643,6 +643,7 @@ class CertificadoController extends Controller
         //return new response(var_dump($rs));
         if($rs)
         {
+            ini_set('memory_limit',1024);
             $zip = new ZipArchive();
 
             $dirpath = $uploads['parameters']['folders']['dir_uploads'].'recursos/tmp';
