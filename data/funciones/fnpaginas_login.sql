@@ -1,43 +1,42 @@
---obtiene la estructura de un programa en forma de cadena JSON valida para php
+--obRetorna un JSON con la estructura de todos los cursos/programas para una empresa segun el nivel
 -- organiza las paginas por padre
-CREATE OR REPLACE FUNCTION fnpaginas_login(ppempresa_id integer,ppnivel_id integer) RETURNS json AS $$
+CREATE OR REPLACE FUNCTION fnpaginas_login(ppempresa_id integer,ppnivel_id integer,ppfecha timestamp) RETURNS json AS $$
 DECLARE
-    json_respuesta text:='{';
-    json_fila text:='{';
+    --variables para almacenar las string con formato json
+    json_response text:='{';
     json_modulo text;
     json_materia text;
     json_leccion text;
+    --Total de programas, modulos, materias y lecciones
     paginas integer;
     modulos integer;
     materias integer;
     lecciones integer;
+    -- contadores de programa, materias , cursos y lecciones
     cp integer:=0;
     cm integer;
     cma integer;
     cl integer;
+    -- Variable para las prelaciones
     pr integer;
-    inicio varchar(50);
-    fin varchar(50);
+    --Variables para las fotos
     mf varchar(200);
     maf varchar(200);
     lf varchar (200);
-    estructura json;
-    elemento json;
     pagina record;
     modulo record;
     materia record;
     leccion record;
-    i record;
 
 BEGIN
     SELECT COUNT(cp.id)  FROM certi_nivel_pagina cnp
         INNER JOIN certi_pagina_empresa cpe ON cnp.pagina_empresa_id = cpe.id
         INNER JOIN certi_pagina cp ON cpe.pagina_id = cp.id
         INNER JOIN certi_categoria cc ON cp.categoria_id = cc.id
-        WHERE cpe.empresa_id = 18
-        AND cnp.nivel_id = 54
+        WHERE cpe.empresa_id = ppempresa_id
+        AND cnp.nivel_id = ppnivel_id
         AND cpe.activo
-        AND cpe.fecha_inicio <= now()
+        AND cpe.fecha_inicio <= ppfecha
     INTO paginas;
 
     ---- Ciclo para obtener paginas padre
@@ -58,10 +57,10 @@ BEGIN
         INNER JOIN certi_pagina_empresa cpe ON cnp.pagina_empresa_id = cpe.id
         INNER JOIN certi_pagina cp ON cpe.pagina_id = cp.id
         INNER JOIN certi_categoria cc ON cp.categoria_id = cc.id
-        WHERE cpe.empresa_id = 18
-        AND cnp.nivel_id = 54
+        WHERE cpe.empresa_id = ppempresa_id
+        AND cnp.nivel_id = ppnivel_id
         AND cpe.activo
-        AND cpe.fecha_inicio <= now()
+        AND cpe.fecha_inicio <= ppfecha
         ORDER BY cp.orden  ASC
         LOOP
             cp:=cp+1;
@@ -70,16 +69,16 @@ BEGIN
             ELSE
                 pr:=pagina.prelacion;
             END IF;
-            json_fila:= json_fila||'"'||pagina.id||'" : {"id":'||pagina.id||','||'"orden":'||pagina.orden||','||'"nombre":"'||pagina.pagina||'",'||'"categoria":"'||pagina.categoria||'",'||'"foto":"'||pagina.foto||'",'||'"tiene_evaluacion":'||pagina.tiene_evaluacion||','||'"acceso":'||pagina.acceso||','||'"muro_activo":'||pagina.muro_activo||','||'"espacio_colaborativo":'||pagina.espacio_colaborativo||','||'"prelacion":'||pr||','||'"inicio":"'||to_char(pagina.inicio,'DD/MM/YYYY')||'",'||'"vencimiento":"'||to_char(pagina.vencimiento,'DD/MM/YYYY')||'"';
+            json_response:= json_response||'"'||pagina.id||'" : {"id":'||pagina.id||','||'"orden":'||pagina.orden||','||'"nombre":"'||pagina.pagina||'",'||'"categoria":"'||pagina.categoria||'",'||'"foto":"'||pagina.foto||'",'||'"tiene_evaluacion":'||pagina.tiene_evaluacion||','||'"acceso":'||pagina.acceso||','||'"muro_activo":'||pagina.muro_activo||','||'"espacio_colaborativo":'||pagina.espacio_colaborativo||','||'"prelacion":'||pr||','||'"inicio":"'||to_char(pagina.inicio,'DD/MM/YYYY')||'",'||'"vencimiento":"'||to_char(pagina.vencimiento,'DD/MM/YYYY')||'"';
             ----Obtener subpaginas
-            json_fila:=json_fila||','||'"subpaginas":{';
+            json_response:=json_response||','||'"subpaginas":{';
             ---Contar cuantos modulos tiene la pagina
                 SELECT COUNT(cp.id)  FROM certi_pagina cp
                     INNER JOIN certi_pagina_empresa cpe ON cpe.pagina_id = cp.id
                     WHERE cp.pagina_id = pagina.id
-                    AND cpe.empresa_id = 18
+                    AND cpe.empresa_id = ppempresa_id
                     AND cpe.activo
-                    AND cpe.fecha_inicio <= now()
+                    AND cpe.fecha_inicio <= ppfecha
                 INTO modulos;
                 json_modulo := '';
                 cm:=0;
@@ -99,10 +98,10 @@ BEGIN
                         FROM certi_pagina cp
                         INNER JOIN certi_pagina_empresa cpe ON cpe.pagina_id = cp.id
                         INNER JOIN certi_categoria cc ON cp.categoria_id = cc.id
-                        WHERE cpe.empresa_id = 18
+                        WHERE cpe.empresa_id = ppempresa_id
                         AND cpe.activo
                         AND cp.pagina_id = pagina.id
-                        AND cpe.fecha_inicio <= now()
+                        AND cpe.fecha_inicio <= ppfecha
                         ORDER BY cp.orden  ASC
                         LOOP
                             RAISE NOTICE 'Modulo: %',modulo.pagina;
@@ -123,9 +122,9 @@ BEGIN
                             SELECT COUNT(cp.id)  FROM certi_pagina cp
                                 INNER JOIN certi_pagina_empresa cpe ON cpe.pagina_id = cp.id
                                 WHERE cp.pagina_id = modulo.id
-                                AND cpe.empresa_id = 18
+                                AND cpe.empresa_id = ppempresa_id
                                 AND cpe.activo
-                                AND cpe.fecha_inicio <= now()
+                                AND cpe.fecha_inicio <= ppfecha
                             INTO materias;
                             json_materia :='';
                             cma:=0;
@@ -145,10 +144,10 @@ BEGIN
                                 FROM certi_pagina cp
                                 INNER JOIN certi_pagina_empresa cpe ON cpe.pagina_id = cp.id
                                 INNER JOIN certi_categoria cc ON cp.categoria_id = cc.id
-                                WHERE cpe.empresa_id = 18
+                                WHERE cpe.empresa_id = ppempresa_id
                                 AND cpe.activo
                                 AND cp.pagina_id = modulo.id
-                                AND cpe.fecha_inicio <= now()
+                                AND cpe.fecha_inicio <= ppfecha
                                 ORDER BY cp.orden  ASC
                                 LOOP
                                     cma:=cma+1;
@@ -162,7 +161,62 @@ BEGIN
                                     ELSE
                                         maf:=materia.foto;
                                     END IF;
-                                    json_materia:= json_materia||'"'||materia.id||'" : {"id":'||materia.id||','||'"orden":'||materia.orden||','||'"nombre":"'||materia.pagina||'",'||'"categoria":"'||materia.categoria||'",'||'"foto":"'||maf||'",'||'"tiene_evaluacion":'||materia.tiene_evaluacion||','||'"acceso":'||materia.acceso||','||'"muro_activo":'||materia.muro_activo||','||'"espacio_colaborativo":'||materia.espacio_colaborativo||','||'"prelacion":'||pr||','||'"inicio":"'||to_char(materia.inicio,'DD/MM/YYYY')||'",'||'"vencimiento":"'||to_char(materia.vencimiento,'DD/MM/YYYY')||'"}';
+                                    json_materia:= json_materia||'"'||materia.id||'" : {"id":'||materia.id||','||'"orden":'||materia.orden||','||'"nombre":"'||materia.pagina||'",'||'"categoria":"'||materia.categoria||'",'||'"foto":"'||maf||'",'||'"tiene_evaluacion":'||materia.tiene_evaluacion||','||'"acceso":'||materia.acceso||','||'"muro_activo":'||materia.muro_activo||','||'"espacio_colaborativo":'||materia.espacio_colaborativo||','||'"prelacion":'||pr||','||'"inicio":"'||to_char(materia.inicio,'DD/MM/YYYY')||'",'||'"vencimiento":"'||to_char(materia.vencimiento,'DD/MM/YYYY')||'"';
+                                   --abrir lecciones
+                                   json_materia:=json_materia||','||'"subpaginas":{';
+                                   --Obtener lecciones
+                                        SELECT COUNT(cp.id)  FROM certi_pagina cp
+                                        INNER JOIN certi_pagina_empresa cpe ON cpe.pagina_id = cp.id
+                                        WHERE cp.pagina_id = materia.id
+                                        AND cpe.empresa_id = ppempresa_id
+                                        AND cpe.activo
+                                        AND cpe.fecha_inicio <= ppfecha
+                                        INTO lecciones;
+                                    json_leccion :='';
+                                    cl:=0;
+                                    IF lecciones > 0 THEN
+                                            FOR leccion IN SELECT cp.id as id,
+                                              cp.orden as orden,
+                                              cp.nombre as pagina,
+                                              cc.nombre as categoria,
+                                              cp.foto as foto,
+                                              cpe.prueba_activa as tiene_evaluacion,
+                                              cpe.acceso as acceso,
+                                              cpe.muro_activo as muro_activo,
+                                              cpe.prelacion as prelacion,
+                                              cpe.colaborativo as espacio_colaborativo,
+                                              cpe.fecha_inicio as inicio,
+                                              cpe.fecha_vencimiento as vencimiento
+                                        FROM certi_pagina cp
+                                        INNER JOIN certi_pagina_empresa cpe ON cpe.pagina_id = cp.id
+                                        INNER JOIN certi_categoria cc ON cp.categoria_id = cc.id
+                                        WHERE cpe.empresa_id = ppempresa_id
+                                        AND cpe.activo
+                                        AND cp.pagina_id = materia.id
+                                        AND cpe.fecha_inicio <= ppfecha
+                                        ORDER BY cp.orden  ASC
+                                        LOOP
+                                        cl:=cl+1;
+                                        IF leccion.prelacion IS NULL THEN
+                                            pr:=0;
+                                        ELSE
+                                            pr:=leccion.prelacion;
+                                        END IF;
+                                        IF leccion.foto IS NULL THEN
+                                            lf:='';
+                                        ELSE
+                                            lf:=leccion.foto;
+                                        END IF;
+                                        json_leccion:= json_leccion||'"'||leccion.id||'" : {"id":'||leccion.id||','||'"orden":'||leccion.orden||','||'"nombre":"'||leccion.pagina||'",'||'"categoria":"'||leccion.categoria||'",'||'"foto":"'||lf||'",'||'"tiene_evaluacion":'||leccion.tiene_evaluacion||','||'"acceso":'||leccion.acceso||','||'"muro_activo":'||leccion.muro_activo||','||'"espacio_colaborativo":'||leccion.espacio_colaborativo||','||'"prelacion":'||pr||','||'"inicio":"'||to_char(leccion.inicio,'DD/MM/YYYY')||'",'||'"vencimiento":"'||to_char(leccion.vencimiento,'DD/MM/YYYY')||'"}';
+                                        IF cl < lecciones THEN
+                                            json_leccion:=json_leccion||',';
+                                        END IF;
+                                        END LOOP; --Loop de lecciones
+
+                                    END IF;---If de lecciones
+                                    json_materia:=json_materia||json_leccion;
+                                    json_materia:=json_materia||'}';--subpaginas de la materia
+                                    json_materia:=json_materia||'}';--cerrando la materia
                                     IF cma < materias THEN
                                         json_materia:=json_materia||',';
                                     END IF;
@@ -180,17 +234,17 @@ BEGIN
 
                 END IF;--if de modulos
 
-            json_fila:=json_fila||json_modulo;
+            json_response:=json_response||json_modulo;
             --cierre de subpaginas padres
-            json_fila:=json_fila||'}';
+            json_response:=json_response||'}';
             --cierre de la fila de la pagina padre
-            json_fila:=json_fila||'}';
+            json_response:=json_response||'}';
             IF cp < paginas THEN
-                json_fila:=json_fila||',';
+                json_response:=json_response||',';
             END IF;
         END LOOP;
-        json_fila:=json_fila||'}'; --cierre del json principal
-        RETURN json_fila::json;
+        json_response:=json_response||'}'; --cierre del json principal
+        RETURN json_response::json;
 END;
 $$ LANGUAGE plpgsql;
 
