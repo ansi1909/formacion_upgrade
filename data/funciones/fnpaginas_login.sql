@@ -5,20 +5,27 @@ DECLARE
     json_respuesta text:='{';
     json_fila text:='{';
     json_modulo text;
+    json_materia text;
+    json_leccion text;
     paginas integer;
     modulos integer;
     materias integer;
     lecciones integer;
     cp integer:=0;
     cm integer;
+    cma integer;
+    cl integer;
     pr integer;
     inicio varchar(50);
     fin varchar(50);
     mf varchar(200);
+    maf varchar(200);
+    lf varchar (200);
     estructura json;
     elemento json;
     pagina record;
     modulo record;
+    leccion record;
     i record;
 
 BEGIN
@@ -109,13 +116,32 @@ BEGIN
                             ELSE
                                 mf:=modulo.foto;
                             END IF;
-                            json_modulo:= json_modulo||'"'||modulo.id||'" : {"id":'||modulo.id||','||'"orden":'||modulo.orden||','||'"nombre":"'||modulo.pagina||'",'||'"categoria":"'||modulo.categoria||'",'||'"foto":"'||mf||'",'||'"tiene_evaluacion":'||modulo.tiene_evaluacion||','||'"acceso":'||modulo.acceso||','||'"muro_activo":'||modulo.muro_activo||','||'"espacio_colaborativo":'||modulo.espacio_colaborativo||','||'"prelacion":'||pr||','||'"inicio":"'||to_char(modulo.inicio,'DD/MM/YYYY')||'",'||'"vencimiento":"'||to_char(modulo.vencimiento,'DD/MM/YYYY')||'"}';
+                            json_modulo:= json_modulo||'"'||modulo.id||'" : {"id":'||modulo.id||','||'"orden":'||modulo.orden||','||'"nombre":"'||modulo.pagina||'",'||'"categoria":"'||modulo.categoria||'",'||'"foto":"'||mf||'",'||'"tiene_evaluacion":'||modulo.tiene_evaluacion||','||'"acceso":'||modulo.acceso||','||'"muro_activo":'||modulo.muro_activo||','||'"espacio_colaborativo":'||modulo.espacio_colaborativo||','||'"prelacion":'||pr||','||'"inicio":"'||to_char(modulo.inicio,'DD/MM/YYYY')||'",'||'"vencimiento":"'||to_char(modulo.vencimiento,'DD/MM/YYYY')||'"';
+                            json_modulo:=json_modulo||','||'"subpaginas":{';
+                            ---Contar cuantas materias tiene
+                            SELECT COUNT(cp.id)  FROM certi_pagina cp
+                                INNER JOIN certi_pagina_empresa cpe ON cpe.pagina_id = cp.id
+                                WHERE cp.pagina_id = modulo.id
+                                AND cpe.empresa_id = 18
+                                AND cpe.activo
+                                AND cpe.fecha_inicio <= now()
+                            INTO materias;
+                            json_materia :='';
+                            cma:=0;
+                            IF materias > 0 THEN
+                                RAISE NOTICE 'Corriendo';
+
+                            END IF;--if de materias
+                            json_modulo:=json_modulo||'}';--subpaginas del modulo
+                            json_modulo:=json_modulo||'}';--cerrando modulo
+
                             IF cm < modulos THEN
                                 json_modulo:=json_modulo||',';
                             END IF;
-                        END LOOP;
+                        END LOOP;---Loop modulos
 
-                END IF;
+                END IF;--if de modulos
+
             json_fila:=json_fila||json_modulo;
             --cierre de subpaginas padres
             json_fila:=json_fila||'}';
