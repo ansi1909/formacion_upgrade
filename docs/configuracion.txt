@@ -19,6 +19,7 @@
 			espacio/					# Aquí se almacenan los archivos del espacio colaborativo
 			qr/							# Aquí se almacenan las imágenes del código QR que se generan de los certificados
 			reportes/					# Aquí se escribirán los reportes en Excel o PDF generados de las consultas
+			tmp/						# Aquí se guardan temporalmente los certificados generados de forma masiva
 			thumbnails/					# Aquí se almacenan los archivos para los thumbnails de las plantillas
 										# 	OJO: Podemos importar las imágenes iniciales a este directorio desde docs/prototipos/front/thumbnails
 			decorate_certificado.png	# Tomar la imagen de web/front/assets/img/
@@ -79,6 +80,7 @@
 	- funciones/fnmigrar_programa.sql
 	- funciones/fnlistado_notificaciones_programadas.sql
 	- funciones/fnlistado_participantes_correos.sql
+	- funciones/fnlistado_certificados.sql
 	- vistas/view_cursos.sql
 	- vistas/view_pruebas.sql
 	- vistas/view_usuarios_roles.sql
