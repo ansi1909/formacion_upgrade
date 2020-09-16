@@ -2229,23 +2229,19 @@ public function obtenerEstructuraJson($pagina_id){
                                 }
                                 else {
 
-                                    // se consulta si la empresa tiene paginas activas
-                                    $query = $em->createQuery('SELECT np FROM LinkComunBundle:CertiNivelPagina np
-                                                               JOIN np.paginaEmpresa pe
-                                                               JOIN pe.pagina p
-                                                               WHERE pe.empresa = :empresa
-                                                                AND p.pagina IS NULL
-                                                                AND np.nivel = :nivel_usuario
-                                                                AND pe.activo = :activo
-                                                                AND pe.fechaInicio <= :hoy
-                                                               ORDER BY p.orden ASC')
-                                                ->setParameters(array('empresa' => $datos['empresa']['id'],
-                                                                      'nivel_usuario' => $usuario->getNivel()->getId(),
-                                                                      'activo' => true,
-                                                                      'hoy' => date('Y-m-d')));
-                                    $paginas_bd = $query->getResult();
+                                  // se consulta si la empresa tiene paginas activas
+                                  $query = $em->getConnection()->prepare('SELECT fnpaginas_login
+                                                            (:ppempresa_id,
+                                                             :ppnivel_id,
+                                                             :ppfecha) as resultado;');
+                                  $query->bindValue(':ppempresa_id',$datos['empresa']['id'], \PDO::PARAM_INT);
+                                  $query->bindValue(':ppnivel_id',$usuario->getNivel()->getId(), \PDO::PARAM_INT);
+                                  $query->bindValue(':ppfecha',date('Y-m-d'), \PDO::PARAM_STR);
+                                  $query->execute();
+                                  $gc = $query->fetchAll();
+                                  $paginas = json_decode($gc[0]['resultado'],true);
 
-                                    if (!$paginas_bd)  //validamos que la empresa tenga paginas activas
+                                    if (!$paginas)  //validamos que la empresa tenga paginas activas
                                     {
                                         $error = $this->translator->trans('No hay Programas disponibles para la empresa. Contacte al administrador del sistema.');
                                     }
@@ -2263,39 +2259,6 @@ public function obtenerEstructuraJson($pagina_id){
                                                               'foto' => $usuario->getFoto(),
                                                               'participante' => $participante,
                                                               'tutor' => $tutor);
-
-                                        // Estructura de páginas
-                                        $paginas = array();
-                                        $orden = 0;
-                                        foreach ($paginas_bd as $pagina)
-                                        {
-
-                                            $orden++;
-
-                                            $query = $em->createQuery('SELECT COUNT(cp.id) FROM LinkComunBundle:CertiPrueba cp
-                                                                       WHERE cp.estatusContenido = :activo and cp.pagina = :pagina_id')
-                                                        ->setParameters(array('activo' => $datos['yml']['estatus_contenido']['activo'],
-                                                                              'pagina_id' => $pagina->getPaginaEmpresa()->getPagina()->getId()));
-                                            $tiene_evaluacion = $query->getSingleScalarResult();
-
-                                            $subPaginas = $this->subPaginasNivel($pagina->getPaginaEmpresa()->getPagina()->getId(), $datos['yml']['estatus_contenido']['activo'], $datos['empresa']['id']);
-
-                                            $paginas[$pagina->getPaginaEmpresa()->getPagina()->getId()] = array('id' => $pagina->getPaginaEmpresa()->getPagina()->getId(),
-                                                                                                                'orden' => $orden,
-                                                                                                                'nombre' => $pagina->getPaginaEmpresa()->getPagina()->getNombre(),
-                                                                                                                'categoria' => $pagina->getPaginaEmpresa()->getPagina()->getCategoria()->getNombre(),
-                                                                                                                'foto' => $pagina->getPaginaEmpresa()->getPagina()->getFoto(),
-                                                                                                                'tiene_evaluacion' => $pagina->getPaginaEmpresa()->getPruebaActiva() ? $tiene_evaluacion ? true : false : false,
-                                                                                                                'acceso' => $pagina->getPaginaEmpresa()->getAcceso(),
-                                                                                                                'muro_activo' => $pagina->getPaginaEmpresa()->getMuroActivo(),
-                                                                                                                'espacio_colaborativo' => $pagina->getPaginaEmpresa()->getColaborativo(),
-                                                                                                                'prelacion' => $pagina->getPaginaEmpresa()->getPrelacion() ? $pagina->getPaginaEmpresa()->getPrelacion()->getId() : 0,
-                                                                                                                'inicio' => $pagina->getPaginaEmpresa()->getFechaInicio()->format('d/m/Y'),
-                                                                                                                'vencimiento' => $pagina->getPaginaEmpresa()->getFechaVencimiento()->format('d/m/Y'),
-                                                                                                                'subpaginas' => $subPaginas);
-
-                                        }
-
                                         // Cierre de sesiones activas
                                         $sesiones = $em->getRepository('LinkComunBundle:AdminSesion')->findBy(array('usuario' => $usuario->getId(),
                                                                                                                     'disponible' => true));
