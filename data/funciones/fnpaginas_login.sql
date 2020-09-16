@@ -25,6 +25,7 @@ DECLARE
     elemento json;
     pagina record;
     modulo record;
+    materia record;
     leccion record;
     i record;
 
@@ -129,9 +130,46 @@ BEGIN
                             json_materia :='';
                             cma:=0;
                             IF materias > 0 THEN
-                                RAISE NOTICE 'Corriendo';
+                                FOR materia IN SELECT cp.id as id,
+                                      cp.orden as orden,
+                                      cp.nombre as pagina,
+                                      cc.nombre as categoria,
+                                      cp.foto as foto,
+                                      cpe.prueba_activa as tiene_evaluacion,
+                                      cpe.acceso as acceso,
+                                      cpe.muro_activo as muro_activo,
+                                      cpe.prelacion as prelacion,
+                                      cpe.colaborativo as espacio_colaborativo,
+                                      cpe.fecha_inicio as inicio,
+                                      cpe.fecha_vencimiento as vencimiento
+                                FROM certi_pagina cp
+                                INNER JOIN certi_pagina_empresa cpe ON cpe.pagina_id = cp.id
+                                INNER JOIN certi_categoria cc ON cp.categoria_id = cc.id
+                                WHERE cpe.empresa_id = 18
+                                AND cpe.activo
+                                AND cp.pagina_id = modulo.id
+                                AND cpe.fecha_inicio <= now()
+                                ORDER BY cp.orden  ASC
+                                LOOP
+                                    cma:=cma+1;
+                                    IF materia.prelacion IS NULL THEN
+                                        pr:=0;
+                                    ELSE
+                                        pr:=materia.prelacion;
+                                    END IF;
+                                    IF materia.foto IS NULL THEN
+                                        maf:='';
+                                    ELSE
+                                        maf:=materia.foto;
+                                    END IF;
+                                    json_materia:= json_materia||'"'||materia.id||'" : {"id":'||materia.id||','||'"orden":'||materia.orden||','||'"nombre":"'||materia.pagina||'",'||'"categoria":"'||materia.categoria||'",'||'"foto":"'||maf||'",'||'"tiene_evaluacion":'||materia.tiene_evaluacion||','||'"acceso":'||materia.acceso||','||'"muro_activo":'||materia.muro_activo||','||'"espacio_colaborativo":'||materia.espacio_colaborativo||','||'"prelacion":'||pr||','||'"inicio":"'||to_char(materia.inicio,'DD/MM/YYYY')||'",'||'"vencimiento":"'||to_char(materia.vencimiento,'DD/MM/YYYY')||'"}';
+                                    IF cma < materias THEN
+                                        json_materia:=json_materia||',';
+                                    END IF;
 
-                            END IF;--if de materias
+                                END LOOP;--Loop de materias
+                            END IF;--If de materias
+                            json_modulo:=json_modulo||json_materia;
                             json_modulo:=json_modulo||'}';--subpaginas del modulo
                             json_modulo:=json_modulo||'}';--cerrando modulo
 
