@@ -1,6 +1,5 @@
---obRetorna un JSON con la estructura de todos los cursos/programas para una empresa segun el nivel
--- organiza las paginas por padre
-CREATE OR REPLACE FUNCTION fnpaginas_login(ppempresa_id integer,ppnivel_id integer,ppfecha timestamp) RETURNS json AS $$
+CREATE OR REPLACE FUNCTION "public"."fnpaginas_login"("ppempresa_id" int4, "ppnivel_id" int4, "ppfecha" timestamp)
+  RETURNS "pg_catalog"."json" AS $BODY$
 DECLARE
     --variables para almacenar las string con formato json
     json_response text:='{';
@@ -207,7 +206,7 @@ BEGIN
                                         ELSE
                                             lf:=leccion.foto;
                                         END IF;
-                                        json_leccion:= json_leccion||'"'||leccion.id||'" : {"id":'||leccion.id||','||'"orden":'||leccion.orden||','||'"nombre":"'||leccion.pagina||'",'||'"categoria":"'||leccion.categoria||'",'||'"foto":"'||lf||'",'||'"tiene_evaluacion":'||leccion.tiene_evaluacion||','||'"acceso":'||leccion.acceso||','||'"muro_activo":'||leccion.muro_activo||','||'"espacio_colaborativo":'||leccion.espacio_colaborativo||','||'"prelacion":'||pr||','||'"inicio":"'||to_char(leccion.inicio,'DD/MM/YYYY')||'",'||'"vencimiento":"'||to_char(leccion.vencimiento,'DD/MM/YYYY')||'"}';
+                                        json_leccion:= json_leccion||'"'||leccion.id||'" : {"id":'||leccion.id||','||'"orden":'||leccion.orden||','||'"nombre":"'||leccion.pagina||'",'||'"categoria":"'||leccion.categoria||'",'||'"foto":"'||lf||'",'||'"tiene_evaluacion":'||leccion.tiene_evaluacion||','||'"acceso":'||leccion.acceso||','||'"muro_activo":'||leccion.muro_activo||','||'"espacio_colaborativo":'||leccion.espacio_colaborativo||','||'"prelacion":'||pr||','||'"inicio":"'||to_char(leccion.inicio,'DD/MM/YYYY')||'",'||'"vencimiento":"'||to_char(leccion.vencimiento,'DD/MM/YYYY')||'","subpaginas":{}}';
                                         IF cl < lecciones THEN
                                             json_leccion:=json_leccion||',';
                                         END IF;
@@ -246,6 +245,7 @@ BEGIN
         json_response:=json_response||'}'; --cierre del json principal
         RETURN json_response::json;
 END;
-$$ LANGUAGE plpgsql;
+$BODY$
+  LANGUAGE plpgsql VOLATILE
 
---SELECT * from fnpaginas_login(18,54);
+  ------SELECT * from fnpaginas_login(18,54,'2020-09-18');
