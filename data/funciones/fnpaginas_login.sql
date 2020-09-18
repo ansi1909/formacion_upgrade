@@ -51,18 +51,12 @@ BEGIN
               cpe.prelacion as prelacion,
               cpe.colaborativo as espacio_colaborativo,
               cpe.fecha_inicio as inicio,
-              cpe.fecha_vencimiento as vencimiento,
-              cg.id as grupo_id,
-              cg.nombre as grupo,
-              cg.orden as grupo_orden
+              cpe.fecha_vencimiento as vencimiento
         FROM certi_nivel_pagina cnp
         INNER JOIN certi_pagina_empresa cpe ON cnp.pagina_empresa_id = cpe.id
         INNER JOIN certi_pagina cp ON cpe.pagina_id = cp.id
         INNER JOIN certi_categoria cc ON cp.categoria_id = cc.id
-        INNER JOIN certi_grupo_pagina cgp ON cgp.pagina_id = cp.id
-        INNER JOIN  certi_grupo cg ON cg.id = cgp.grupo_id
         WHERE cpe.empresa_id = ppempresa_id
-        AND cg.empresa_id = ppempresa_id
         AND cnp.nivel_id = ppnivel_id
         AND cpe.activo
         AND cpe.fecha_inicio <= ppfecha
@@ -74,7 +68,7 @@ BEGIN
             ELSE
                 pr:=pagina.prelacion;
             END IF;
-            json_response:= json_response||'"'||pagina.id||'" : {"id":'||pagina.id||','||'"orden":'||pagina.orden||','||'"nombre":"'||pagina.pagina||'",'||'"categoria":"'||pagina.categoria||'",'||'"foto":"'||pagina.foto||'",'||'"tiene_evaluacion":'||pagina.tiene_evaluacion||','||'"acceso":'||pagina.acceso||','||'"muro_activo":'||pagina.muro_activo||','||'"espacio_colaborativo":'||pagina.espacio_colaborativo||','||'"prelacion":'||pr||','||'"inicio":"'||to_char(pagina.inicio,'DD/MM/YYYY')||'",'||'"vencimiento":"'||to_char(pagina.vencimiento,'DD/MM/YYYY')||'",'||'"grupo_id":'||pagina.grupo_id||','||'"grupo":"'||pagina.grupo||'",'||'"grupo_orden":'||pagina.grupo_orden||'';
+            json_response:= json_response||'"'||pagina.id||'" : {"id":'||pagina.id||','||'"orden":'||pagina.orden||','||'"nombre":"'||pagina.pagina||'",'||'"categoria":"'||pagina.categoria||'",'||'"foto":"'||pagina.foto||'",'||'"tiene_evaluacion":'||pagina.tiene_evaluacion||','||'"acceso":'||pagina.acceso||','||'"muro_activo":'||pagina.muro_activo||','||'"espacio_colaborativo":'||pagina.espacio_colaborativo||','||'"prelacion":'||pr||','||'"inicio":"'||to_char(pagina.inicio,'DD/MM/YYYY')||'",'||'"vencimiento":"'||to_char(pagina.vencimiento,'DD/MM/YYYY')||'"';
             ----Obtener subpaginas
             json_response:=json_response||','||'"subpaginas":{';
             ---Contar cuantos modulos tiene la pagina
@@ -253,3 +247,5 @@ BEGIN
 END;
 $BODY$
   LANGUAGE plpgsql VOLATILE
+
+  ------SELECT * from fnpaginas_login(18,54,'2020-09-18');
