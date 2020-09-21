@@ -26,6 +26,12 @@ Link\ComunBundle\Entity\AdminSesion:
         disponible:
             type: boolean
             nullable: true
+        dispositivo:
+            type: string
+            nullable: true
+            length: 255
+            options:
+                fixed: false
     manyToOne:
         usuario:
             targetEntity: AdminUsuario

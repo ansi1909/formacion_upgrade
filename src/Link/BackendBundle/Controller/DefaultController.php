@@ -505,8 +505,11 @@ class DefaultController extends Controller
                             <th class="hd__title">'.$this->get('translator')->trans('Usuario').'</th>
                             <th class="hd__title">'.$this->get('translator')->trans('Nombre').'</th>
                             <th class="hd__title">'.$this->get('translator')->trans('Correo').'</th>
-                            <th class="hd__title">'.$this->get('translator')->trans('Nivel').'</th>
-                        </tr>
+                            <th class="hd__title">'.$this->get('translator')->trans('Dispositivo').'</th>';
+                        if ($session->get('administrador')) {
+                            $html .= '<th class="hd__title">'.$this->get('translator')->trans('Empresa').'</th>';
+                        }
+                        $html.='</tr>
                     </thead>
                     <tbody style="font-size: .7rem;">';
         foreach ($listado as $registro)
@@ -516,8 +519,11 @@ class DefaultController extends Controller
                         <td>'.$registro['login'].'</td>
                         <td>'.$registro['nombre'].' '.$registro['apellido'].'</td>
                         <td>'.$correo.'</td>
-                        <td>'.$registro['nivel'].'</td>
-                    </tr>';
+                        <td>'.$registro['dispositivo'].'</td>';
+                        if ($session->get('administrador')) {
+                            $html .= '<td>'.$registro['empresa'].'</td>';
+                        }
+                    $html .= '</tr>';
         }
 
         $html .= '</tbody>

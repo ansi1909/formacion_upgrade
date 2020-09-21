@@ -524,6 +524,7 @@ class DefaultController extends Controller
                     $recordar_datos = $request->request->get('recordar_datos');
                     $login = $request->request->get('usuario');
                     $clave = $request->request->get('password');
+                    $dispositivo = $request->request->get('dispositivo');
                     $verificacion = 1;
                 }
                 else {
@@ -542,6 +543,7 @@ class DefaultController extends Controller
                 $iniciarSesion = $f->iniciarSesion(array('recordar_datos' => $recordar_datos,
                                                          'login' => $login,
                                                          'clave' => $clave,
+                                                         'dispositivo' => $dispositivo,
                                                          'empresa' => $empresa,
                                                          'yml' => $yml['parameters']));
 
