@@ -393,7 +393,8 @@
                 }else if(result.device.type.toUpperCase() == 'MOBILE'){
                     device = 'SMARTPHONE';
                 }
-                device = `${device} - ${result.browser.name.toUpperCase()}`;
+                device = `${device} - ${result.browser.name.toUpperCase()} - ${result.os.name.toUpperCase()}`;
+                console.log(result);
                  console.log(device);
                 $('#dispositivo').val(device);
             }

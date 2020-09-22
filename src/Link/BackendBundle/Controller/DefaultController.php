@@ -493,6 +493,8 @@ class DefaultController extends Controller
        $session = new Session();
        $em = $this->getDoctrine()->getManager();
        $rs = $this->get('reportes');
+       $yml = Yaml::parse(file_get_contents($this->get('kernel')->getRootDir().'/config/parametros.yml'));
+
 
        $empresa_id = (integer) $request->request->get('empresa_id');
 
@@ -506,8 +508,9 @@ class DefaultController extends Controller
                             <th class="hd__title">'.$this->get('translator')->trans('Nombre').'</th>
                             <th class="hd__title">'.$this->get('translator')->trans('Correo').'</th>
                             <th class="hd__title">'.$this->get('translator')->trans('Dispositivo').'</th>';
-                        if ($session->get('administrador')) {
+                       if (!$empresa_id) {
                             $html .= '<th class="hd__title">'.$this->get('translator')->trans('Empresa').'</th>';
+                            $html .= '<th class="hd__title">'.$this->get('translator')->trans('País').'</th>';
                         }
                         $html.='</tr>
                     </thead>
@@ -520,8 +523,9 @@ class DefaultController extends Controller
                         <td>'.$registro['nombre'].' '.$registro['apellido'].'</td>
                         <td>'.$correo.'</td>
                         <td>'.$registro['dispositivo'].'</td>';
-                        if ($session->get('administrador')) {
+                        if (!$empresa_id) {
                             $html .= '<td>'.$registro['empresa'].'</td>';
+                            $html .= '<td>'.$registro['pais'].'</td>';
                         }
                     $html .= '</tr>';
         }

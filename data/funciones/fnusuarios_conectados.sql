@@ -11,10 +11,8 @@ CREATE OR REPLACE FUNCTION fnusuarios_conectados(
   RETURNS refcursor AS $$
   DECLARE
    query text;
-   admin integer;
   DECLARE
 BEGIN
-     SELECT COUNT (ar.id) INTO admin FROM admin_rol_usuario as ar WHERE ar.usuario_id = pusuario_id AND rol_id = 1;
 	 query :='
 	 			SELECT
 		 			au.nombre AS nombre,
@@ -24,8 +22,8 @@ BEGIN
 		 			au.correo_personal AS correo_personal,
 		 			ass.dispositivo AS dispositivo';
 
-		 		IF admin > 0 THEN
-		 			query:= query||',ae.nombre as empresa';
+		 		IF pempresa_id = 0  THEN
+		 			query:= query||',ae.nombre as empresa,ap.nombre as pais';
 		 		END IF;
 
 	 			query:=query||' FROM   admin_usuario au
@@ -36,8 +34,8 @@ BEGIN
 	 				admin_nivel an
 	 				ON an.id = au.nivel_id ';
 
-				IF admin > 0 THEN
-					query:= query||' INNER JOIN admin_empresa ae ON ae.id = au.empresa_id ';
+				IF pempresa_id = 0  THEN
+					query:= query||' INNER JOIN admin_empresa ae ON ae.id = au.empresa_id INNER JOIN admin_pais ap ON ap.id = ae.pais_id ';
 				END IF;
 
 				query := query||'WHERE ass.disponible IS TRUE
@@ -47,13 +45,13 @@ BEGIN
 			  	AND LOWER (an.nombre) NOT LIKE '||'''tutor%'''||'
 	 			';
 
-	 			IF admin = 0 THEN
+	 			IF pempresa_id > 0 THEN
 	 				query:=  query ||' AND au.empresa_id = '||pempresa_id||' ';
 	 			END IF;
 
 	 			query := query||'GROUP BY au.login, au.nombre, au.apellido, an.nombre, au.correo_corporativo,au.correo_personal,ass.dispositivo';
-	 			IF admin > 0 THEN
-	 				query := query ||',ae.nombre ';
+	 			IF pempresa_id = 0 THEN
+	 				query := query ||',ae.nombre,ap.nombre ';
 	 			END IF;
 
 				query := query||' ORDER BY au.login DESC';
