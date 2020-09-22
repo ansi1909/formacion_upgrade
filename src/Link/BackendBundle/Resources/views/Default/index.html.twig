@@ -145,10 +145,27 @@
                     </div>
                 </div>
             </div>
+			<form id="form" name="form" action="{{ path ('_ajaxUsuariosConectados') }}" method="POST">
+                 <input type="hidden" id="empresa_id" name="empresa_id" value="0">
+            </form>
+            <input type="hidden" id="usuarios_conectados" name="usuarios_conectados" value="{{ path('_ajaxUsuariosConectados') }}">
+            <div class="row">
+                <div class="col-md-14 col-sm-14 col-lg-14 col-xl-14 offset-md-1 offset-sm-1 offset-lg-1 offset-xl-1">
+                    <div class="card">
+                        <div class="card-header gradiente">
+                            <div class="card-title" id="labelConectados" style="display:none;">{{ 'Participantes conectados'|trans }}: <span id="totalConectados"></span></div>
+                            <div class="card-title" id="labelConectadosLoading" style="display:none;">{{ 'Actualizando la lista de participantes conectados'|trans}}..</div>
+                        </div>
+                        <div class="card-block" id="tablaConectados">
+                        </div>
+                        <div class="col-sm-8 col-md-8 col-lg-8 alert alert-danger" role="alert" id="div-error-users" style="display:none;">
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     {% else %}
     {# cuando no se tiene rol administrador o se tiene una empresa asignada #}
-        <input type="hidden" id="ver_conectados" name="ver_conectados" value="1">
         <div class="emp_dash">
             <input type="hidden" id="error-msg" name="error-msg" value="{{ 'Ha ocurrido un error al cargar los participantes conectados, verifique su conexión a internet o contacte al administrador del sistema.'|trans }}">
             <div class="row">

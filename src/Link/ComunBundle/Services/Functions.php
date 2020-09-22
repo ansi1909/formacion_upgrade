@@ -2275,6 +2275,7 @@ public function obtenerEstructuraJson($pagina_id){
                                         $admin_sesion->setFechaRequest(new \DateTime('now'));
                                         $admin_sesion->setUsuario($usuario);
                                         $admin_sesion->setDisponible(true);
+                                        $admin_sesion->setDispositivo($datos['dispositivo']);
                                         $em->persist($admin_sesion);
                                         $em->flush();
 

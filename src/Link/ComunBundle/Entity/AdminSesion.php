@@ -160,4 +160,33 @@ class AdminSesion
     {
         return $this->usuario;
     }
+    /**
+     * @var string
+     */
+    private $dispositivo;
+
+
+    /**
+     * Set dispositivo
+     *
+     * @param string $dispositivo
+     *
+     * @return AdminSesion
+     */
+    public function setDispositivo($dispositivo)
+    {
+        $this->dispositivo = $dispositivo;
+    
+        return $this;
+    }
+
+    /**
+     * Get dispositivo
+     *
+     * @return string
+     */
+    public function getDispositivo()
+    {
+        return $this->dispositivo;
+    }
 }

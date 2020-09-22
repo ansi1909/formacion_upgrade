@@ -8,43 +8,58 @@ CREATE OR REPLACE FUNCTION fnusuarios_conectados(
     pempresa_id integer,
     pusuario_id integer
 )
-  RETURNS refcursor AS
-$BODY$
+  RETURNS refcursor AS $$
+  DECLARE
+   query text;
+  DECLARE
+BEGIN
+	 query :='
+	 			SELECT
+		 			au.nombre AS nombre,
+		 			au.apellido AS apellido,
+		 			au.login AS login,
+		 			au.correo_corporativo AS correo_corporativo,
+		 			au.correo_personal AS correo_personal,
+		 			ass.dispositivo AS dispositivo';
 
-begin
+		 		IF pempresa_id = 0  THEN
+		 			query:= query||',ae.nombre as empresa,ap.nombre as pais';
+		 		END IF;
 
+	 			query:=query||' FROM   admin_usuario au
+	 			INNER JOIN
+	 				admin_sesion ass
+	 			ON au.id = ass.usuario_id
+	 			INNER JOIN
+	 				admin_nivel an
+	 				ON an.id = au.nivel_id ';
+
+				IF pempresa_id = 0  THEN
+					query:= query||' INNER JOIN admin_empresa ae ON ae.id = au.empresa_id INNER JOIN admin_pais ap ON ap.id = ae.pais_id ';
+				END IF;
+
+				query := query||'WHERE ass.disponible IS TRUE
+			     AND
+			  		ass.usuario_id <> '||pusuario_id||'
+			  	AND LOWER(an.nombre) NOT LIKE '||'''revisor%'''||'
+			  	AND LOWER (an.nombre) NOT LIKE '||'''tutor%'''||'
+	 			';
+
+	 			IF pempresa_id > 0 THEN
+	 				query:=  query ||' AND au.empresa_id = '||pempresa_id||' ';
+	 			END IF;
+
+	 			query := query||'GROUP BY au.login, au.nombre, au.apellido, an.nombre, au.correo_corporativo,au.correo_personal,ass.dispositivo';
+	 			IF pempresa_id = 0 THEN
+	 				query := query ||',ae.nombre,ap.nombre ';
+	 			END IF;
+
+				query := query||' ORDER BY au.login DESC';
     OPEN resultado FOR
-		SELECT
-			  au.nombre AS nombre,
-			  au.apellido AS apellido,
-			  au.login AS login,
-			  au.correo_corporativo AS correo_corporativo,
-			  au.correo_personal AS correo_personal,
-			  an.nombre  AS nivel
-		FROM
-			  admin_usuario au
-		INNER JOIN
-			  admin_sesion ass
-		ON au.id = ass.usuario_id
-		INNER JOIN
-			  admin_nivel an
-		ON an.id = au.nivel_id
-		WHERE
-			  ass.disponible IS TRUE
-		AND
-			  au.empresa_id = pempresa_id
-	    AND
-	         ( LOWER(an.nombre) NOT LIKE 'revisor%' AND LOWER(an.nombre) NOT LIKE 'tutor%' )
-		AND
-			  ass.usuario_id <> pusuario_id
-		GROUP BY au.login, au.nombre, au.apellido, an.nombre, au.correo_corporativo,au.correo_personal
-		ORDER BY au.login DESC;
-
+     EXECUTE query;
     RETURN resultado;
-
-end;
-$BODY$
-  LANGUAGE plpgsql VOLATILE
+END;
+$$ LANGUAGE plpgsql;
 
 
    --select * from fnusuarios_conectados('re', 2, 24) as resultado; fetch all from re;
