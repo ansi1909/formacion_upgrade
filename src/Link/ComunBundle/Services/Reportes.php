@@ -271,9 +271,18 @@ class Reportes
         // Total de totales
         $conexiones[8][25] = $total;
 
+        ///dispositivos
+        $query = $em->getConnection()->prepare('SELECT
+                                                        fnconexiones_dispositivos(:pdesde,:phasta)');
+        $query->bindValue(':pdesde', $desde, \PDO::PARAM_STR);
+        $query->bindValue(':phasta', $hasta, \PDO::PARAM_STR);
+        $query->execute();
+        $r = $query->fetchAll();
+        $dispositivos = json_decode($r[0]['fnconexiones_dispositivos'],true);
         return array('conexiones' => $conexiones,
         			 'columnas_mayores' => $columnas_mayores,
-        			 'filas_mayores' => $filas_mayores);
+        			 'filas_mayores' => $filas_mayores,
+                     'reporte_dispositivos'=>$dispositivos);
 
 	}
 

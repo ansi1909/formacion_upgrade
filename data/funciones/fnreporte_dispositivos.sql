@@ -16,7 +16,7 @@ BEGIN
         SELECT COUNT(ass.id) FROM admin_sesion ass WHERE ass.fecha_ingreso >= pfechainicio AND ass.fecha_ingreso <= pfechafin AND UPPER(ass.dispositivo) LIKE 'PC%'  INTO pc;
         SELECT COUNT(ass.id) FROM admin_sesion ass WHERE ass.fecha_ingreso >= pfechainicio AND ass.fecha_ingreso <= pfechafin AND UPPER(ass.dispositivo) LIKE 'SMARTPHONE%'  INTO smartphone;
         SELECT COUNT(ass.id) FROM admin_sesion ass WHERE ass.fecha_ingreso >= pfechainicio AND ass.fecha_ingreso <= pfechafin AND UPPER(ass.dispositivo) LIKE 'TABLET%'  INTO tablet;
-        json_response := json_response ||'"PC":'||pc||','||'"TABLET":'||tablet||','||'"SMARTPHONE":'||smartphone||'},"dispositivos_os":{';
+        json_response := json_response ||'"PC":'||pc||','||'"TABLET":'||tablet||','||'"SMARTPHONE":'||smartphone||'},"dispositivos_original":{';
         ---dispositivos os
         FOR disp_os IN SELECT ass.dispositivo as dispositivo FROM admin_sesion ass  WHERE ass.dispositivo IS NOT NULL AND  ass.dispositivo <> '' AND ass.fecha_ingreso >= pfechainicio AND ass.fecha_ingreso <= pfechafin  ORDER BY ass.dispositivo ASC LOOP
             RAISE NOTICE 'dispositivo: %',disp_os.dispositivo;

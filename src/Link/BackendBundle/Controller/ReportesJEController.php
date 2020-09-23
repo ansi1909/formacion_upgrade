@@ -18,11 +18,11 @@ class ReportesJEController extends Controller
 {
     public function horasConexionAction($app_id, Request $request)
     {
-        
+
         $session = new Session();
         $f = $this->get('funciones');
         $yml = Yaml::parse(file_get_contents($this->get('kernel')->getRootDir().'/config/parametros.yml'));
-        
+
         if (!$session->get('ini') || $f->sesionBloqueda($session->get('sesion_id')))
         {
             return $this->redirectToRoute('_loginAdmin');
@@ -55,13 +55,13 @@ class ReportesJEController extends Controller
 
     public function ajaxHorasConexionAction(Request $request)
     {
-        
+
         $session = new Session();
         $em = $this->getDoctrine()->getManager();
         $rs = $this->get('reportes');
         $fun = $this->get('funciones');
         $yml = Yaml::parse(file_get_contents($this->get('kernel')->getRootDir().'/config/parametros.yml'));
-        
+
         $empresa_id = $request->request->get('empresa_id');
         $empresa = $this->getDoctrine()->getRepository('LinkComunBundle:AdminEmpresa')->find($empresa_id);
         $timeZoneEmpresa = ($empresa->getZonaHoraria())? $empresa->getZonaHoraria()->getNombre():$yml['parameters']['time_zone']['default'];
@@ -85,11 +85,12 @@ class ReportesJEController extends Controller
         $conexiones = $reporte['conexiones'];
         $columnas_mayores = $reporte['columnas_mayores'];
         $filas_mayores = $reporte['filas_mayores'];
+        $reporte_dispositivos = $reporte['reporte_dispositivos'];
 
         if ($excel)
         {
 
-            
+
             //return new response($hastaf);
             $fileWithPath = $this->container->getParameter('folders')['dir_project'].'docs/formatos/horasConexion.xlsx';
             $objPHPExcel = \PHPExcel_IOFactory::load($fileWithPath);
@@ -144,31 +145,36 @@ class ReportesJEController extends Controller
         else {
             $archivo = '';
         }
-        
+
         $return = array('conexiones' => $conexiones,
-                        'columnas_mayores' => $columnas_mayores,
-                        'filas_mayores' => $filas_mayores,
-                        'archivo' => $archivo,
-                        'desdef' => $desde,
-                        'hastaf' => $hasta,
-                        'timeZone' => $timeZoneEmpresaView);
+                        'columnas_mayores'     => $columnas_mayores,
+                        'filas_mayores'        => $filas_mayores,
+                        'archivo'              => $archivo,
+                        'desdef'               => $desde,
+                        'hastaf'               => $hasta,
+                        'timeZone'             => $timeZoneEmpresaView,
+                        'labels_dispositivos'  => array_keys($reporte_dispositivos['dispositivos']),
+                        'values_dispositivos'  => array_values($reporte_dispositivos['dispositivos']),
+                        'labels_original'      => array_keys($reporte_dispositivos['dispositivos_original']),
+                        'values_original'      => array_values($reporte_dispositivos['dispositivos_original']),
+                    );
 
         $return = json_encode($return);
         return new Response($return, 200, array('Content-Type' => 'application/json'));
-        
+
     }
 
     public function ajaxSaveImgHorasConexionAction(Request $request)
     {
-        
+
         $session = new Session();
-        
+
         $bin_data = $request->request->get('bin_data');
-        
+
         $data = str_replace(' ', '+', $bin_data);
         $data = base64_decode($data);
         $im = imagecreatefromstring($data);
-        
+
         $path = 'recursos/reportes/horasConexion'.$session->get('sesion_id').'.png';
         $fileName = $this->container->getParameter('folders')['dir_uploads'].$path;
 
@@ -190,7 +196,7 @@ class ReportesJEController extends Controller
 
     public function pdfHorasConexionAction($empresa_id, $desde, $hasta, Request $request)
     {
-        
+
         $rs = $this->get('reportes');
         $session = new Session();
         $fun = $this->get('funciones');
@@ -226,7 +232,7 @@ class ReportesJEController extends Controller
         $grafica = $this->renderView('LinkBackendBundle:Reportes:horasConexionGrafica.html.twig', array('src' => $src));
 
         $logo = $this->container->getParameter('folders')['dir_project'].'web/img/logo_formacion_smart.png';
-        $header_footer = '<page_header> 
+        $header_footer = '<page_header>
                                  <img src="'.$logo.'" width="200" height="50">
                             </page_header>
                             <page_footer>
@@ -251,10 +257,10 @@ class ReportesJEController extends Controller
 
     public function evaluacionesModuloAction($app_id, Request $request)
     {
-        
+
         $session = new Session();
         $f = $this->get('funciones');
-        
+
         if (!$session->get('ini') || $f->sesionBloqueda($session->get('sesion_id')))
         {
             return $this->redirectToRoute('_loginAdmin');
@@ -286,13 +292,13 @@ class ReportesJEController extends Controller
 
     public function ajaxEvaluacionesModuloAction(Request $request)
     {
-        
+
         $session = new Session();
         $em = $this->getDoctrine()->getManager();
         $rs = $this->get('reportes');
         $fn = $this->get('funciones');
         $yml = Yaml::parse(file_get_contents($this->get('kernel')->getRootDir().'/config/parametros.yml'));
-        
+
         $empresa_id = $request->request->get('empresa_id');
         $pagina_id = $request->request->get('pagina_id');
         $empresa = $this->getDoctrine()->getRepository('LinkComunBundle:AdminEmpresa')->find($empresa_id);
@@ -311,7 +317,7 @@ class ReportesJEController extends Controller
         $hastaUtc = $fn->converDate($hasta,$timeZoneEmpresa,$yml['parameters']['time_zone']['default'],false);
         $hasta = $hastaUtc->fecha.' '.$hastaUtc->hora;
 
-       
+
         $pagina = $this->getDoctrine()->getRepository('LinkComunBundle:CertiPagina')->find($pagina_id);
 
         $listado = $rs->evaluacionesModulo($empresa_id, $pagina_id, $desde, $hasta);
@@ -350,7 +356,7 @@ class ReportesJEController extends Controller
             foreach ($listado as $participante)
             {
 
-                
+
                 $c_evaluaciones = count($participante['evaluaciones']);
                 $limit_iterations = $c_evaluaciones-1;
                 $limit_row = $row+$limit_iterations;
@@ -428,22 +434,22 @@ class ReportesJEController extends Controller
         $document_name = 'EVALUACIONES '.$paginaName.'_'.$empresaName.'.xls';
         $bytes = filesize($xls);
         $document_size = $fn->fileSizeConvert($bytes);
-        
+
         $return = array('archivo' => $archivo,
                         'document_name' => $document_name,
                         'document_size' => $document_size);
 
         $return =  json_encode($return);
         return new Response($return, 200, array('Content-Type' => 'application/json'));
-        
+
     }
 
     public function resumenRegistrosAction($app_id, Request $request)
     {
-        
+
         $session = new Session();
         $f = $this->get('funciones');
-        
+
         if (!$session->get('ini') || $f->sesionBloqueda($session->get('sesion_id')))
         {
             return $this->redirectToRoute('_loginAdmin');
@@ -475,7 +481,7 @@ class ReportesJEController extends Controller
 
     public function ajaxResumenRegistrosAction(Request $request)
     {
-        
+
         $session = new Session();
         $em = $this->getDoctrine()->getManager();
         $rs = $this->get('reportes');
@@ -553,11 +559,11 @@ class ReportesJEController extends Controller
 
         //print_r($desdef.' '.$hastaf.' '.$desdeUtc.' '.$hastaUtc);
          $reporte = $rs->resumenRegistros($empresa_id, $pagina_id, $desdeUtc, $hastaUtc);
-        //$reporte = $rs->resumenRegistros($empresa_id, $pagina_id, $desdef, $hastaf); --parametros anteriores 
+        //$reporte = $rs->resumenRegistros($empresa_id, $pagina_id, $desdef, $hastaf); --parametros anteriores
 
         $pagina_empresa = $em->getRepository('LinkComunBundle:CertiPaginaEmpresa')->findOneBy(array('pagina' => $pagina_id,
                                                                                                     'empresa' => $empresa_id));
-        
+
         $return = array('reporte' => $reporte,
                         'week_before' => $this->get('translator')->trans('Al').' '.$desde,
                         'now' => $this->get('translator')->trans('Al').' '.$hasta,
@@ -571,21 +577,21 @@ class ReportesJEController extends Controller
 
         $return = json_encode($return);
         return new Response($return, 200, array('Content-Type' => 'application/json'));
-        
+
     }
 
     public function ajaxSaveImgResumenRegistrosAction(Request $request)
     {
-        
+
         $session = new Session();
-        
+
         $bin_data = $request->request->get('bin_data');
         $chart = $request->request->get('chart');
-        
+
         $data = str_replace(' ', '+', $bin_data);
         $data = base64_decode($data);
         $im = imagecreatefromstring($data);
-        
+
         $path = 'recursos/reportes/resumenRegistros'.$session->get('sesion_id').'_'.$chart.'.png';
         $fileName = $this->container->getParameter('folders')['dir_uploads'].$path;
 
@@ -607,7 +613,7 @@ class ReportesJEController extends Controller
 
     public function pdfResumenRegistrosAction($empresa_id,$pagina_id,$desdef,$hastaf, Request $request)
     {
-        
+
         $yml = Yaml::parse(file_get_contents($this->get('kernel')->getRootDir().'/config/parametros.yml'));
         $rs = $this->get('reportes');
         $session = new Session();
@@ -616,12 +622,12 @@ class ReportesJEController extends Controller
         $empresa = $this->getDoctrine()->getRepository('LinkComunBundle:AdminEmpresa')->find($empresa_id);
         $timeZoneEmpresa = ($empresa->getZonaHoraria())? $empresa->getZonaHoraria()->getNombre():$yml['parameters']['time_zone']['default'];
         $timeZoneEmpresaView = ($timeZoneEmpresa != $yml['parameters']['time_zone']['utc'])? $fun->clearNameTimeZone($timeZoneEmpresa,$empresa->getPais()->getNombre(),$yml):$timeZoneEmpresa;
-        
+
         $pagina = $this->getDoctrine()->getRepository('LinkComunBundle:CertiPagina')->find($pagina_id);
 
         $datetime = new \DateTime($desdef);
         $desde = $datetime->format("d/m/Y h:i a");
-        
+
         $datetime = new \DateTime($hastaf);
         $hasta = $datetime->format("d/m/Y h:i a");
         date_default_timezone_set ( $timeZoneEmpresa ) ;
@@ -658,13 +664,13 @@ class ReportesJEController extends Controller
                                                                                                                          'src4' => $src4)));
 
         $logo = $this->container->getParameter('folders')['dir_project'].'web/img/logo_formacion_smart.png';
-        $header_footer = '<page_header> 
+        $header_footer = '<page_header>
                                  <img src="'.$logo.'" width="200" height="50">
                             </page_header>
                             <page_footer>
                                 <table style="width: 100%; border: solid 1px black;">
                                     <tr>
-                                        
+
                                         <td style="text-align: right;    width: 50%">Página [[page_cu]]/[[page_nb]]</td>
                                     </tr>
                                 </table>
@@ -680,5 +686,5 @@ class ReportesJEController extends Controller
 
     }
 
-    
+
 }

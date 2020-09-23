@@ -95,10 +95,70 @@
                         </div>
                     </div>
                 </div>
+                {# Graficos de sispositivos #}
+                <div class="row justify-content-center" id="dispositivos" style="display: none">
+                    <div class="col-16 col-lg-16 col-xl-16 col-md-16 col-sm-16">
+                        <div class="card">
+                            <div class="card-header gradiente">
+                                <h6 class="card-title">{{ 'Dispositivo'|trans }}</h6>
+                            </div>
+                            <div class="card-block">
+                                <div class="row">
+                                    <div class="col-10 col-lg-10 col-xl-10 col-md-10 col-sm-10 offset-sm-3 offset-md-3 offset-lg-3">
+                                        <div class="card">
+                                            <div class="card-block">
+                                                <div class="canvasCont2">
+                                                    <canvas class="barChart2" id="myChart2"></canvas>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card-footer">
+                                <div class="col-sm-16 col-md-16 text-right">
+                                    <button id="pdf" type="button" class="bttn__saved generable" data-toggle="tooltip" data-placement="bottom" title="{{ 'Generar'|trans }} PDF"><span class="fa fa-file-pdf-o"></span></button>
+                                    <a id="pdf-link" class="descargable" href="#" target="_blank" style="display:none;"><button type="button" class="bttn__saved" data-toggle="tooltip" data-placement="bottom" title="{{ 'Descargar'|trans }} PDF"><span class="fa fa-download"></span></button></a>
+                                    <img id="pdf-loader" class="img-loader descargable" src="{{ asset('img/ui-anim_basic_16x16.gif') }}" style="display:none;">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {# Graficos de dispositivos-navegador-sistema operativo #}
+                <div class="row justify-content-center" id="dispositivos_os" style="display: none">
+                    <div class="col-16 col-lg-16 col-xl-16 col-md-16 col-sm-16">
+                        <div class="card">
+                            <div class="card-header gradiente">
+                                <h6 class="card-title">{{ 'Dispositivo -  Navegador - Sistema Operativo '|trans }}</h6>
+                            </div>
+                            <div class="card-block">
+                                <div class="row">
+                                    <div class="col-10 col-lg-10 col-xl-10 col-md-10 col-sm-10 offset-sm-3 offset-md-3 offset-lg-3">
+                                        <div class="card">
+                                            <div class="card-block">
+                                                <div class="canvasCont3">
+                                                    <canvas class="barChart3" id="myChart3"></canvas>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card-footer">
+                                <div class="col-sm-16 col-md-16 text-right">
+                                    <button id="pdf" type="button" class="bttn__saved generable" data-toggle="tooltip" data-placement="bottom" title="{{ 'Generar'|trans }} PDF"><span class="fa fa-file-pdf-o"></span></button>
+                                    <a id="pdf-link" class="descargable" href="#" target="_blank" style="display:none;"><button type="button" class="bttn__saved" data-toggle="tooltip" data-placement="bottom" title="{{ 'Descargar'|trans }} PDF"><span class="fa fa-download"></span></button></a>
+                                    <img id="pdf-loader" class="img-loader descargable" src="{{ asset('img/ui-anim_basic_16x16.gif') }}" style="display:none;">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
                 <div class="load1 load-wrapper">
                     <div class="loader">
                         Loading...
-                    </div>  
+                    </div>
                 </div>
             </div>
         </div>
