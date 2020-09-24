@@ -70,7 +70,7 @@
                     <div class="col-16 col-lg-16 col-xl-16 col-md-16 col-sm-16">
                         <div class="card">
                             <div class="card-header gradiente">
-                                <h6 class="card-title">{{ 'Gráfica'|trans }}</h6>
+                                <h6 class="card-title">{{ 'Gráfica horas de conexión'|trans }}</h6>
                             </div>
                             <div class="card-block">
                                 <div class="row">
@@ -86,11 +86,6 @@
                                 </div>
                             </div>
                             <div class="card-footer">
-                                <div class="col-sm-16 col-md-16 text-right">
-                                    <button id="pdf" type="button" class="bttn__saved generable" data-toggle="tooltip" data-placement="bottom" title="{{ 'Generar'|trans }} PDF"><span class="fa fa-file-pdf-o"></span></button>
-                                    <a id="pdf-link" class="descargable" href="#" target="_blank" style="display:none;"><button type="button" class="bttn__saved" data-toggle="tooltip" data-placement="bottom" title="{{ 'Descargar'|trans }} PDF"><span class="fa fa-download"></span></button></a>
-                                    <img id="pdf-loader" class="img-loader descargable" src="{{ asset('img/ui-anim_basic_16x16.gif') }}" style="display:none;">
-                                </div>
                             </div>
                         </div>
                     </div>
@@ -100,7 +95,7 @@
                     <div class="col-16 col-lg-16 col-xl-16 col-md-16 col-sm-16">
                         <div class="card">
                             <div class="card-header gradiente">
-                                <h6 class="card-title">{{ 'Dispositivo'|trans }}</h6>
+                                <h6 class="card-title">{{ 'Gráfica conexiones por dispositivo'|trans }}</h6>
                             </div>
                             <div class="card-block">
                                 <div class="row">
@@ -116,11 +111,7 @@
                                 </div>
                             </div>
                             <div class="card-footer">
-                                <div class="col-sm-16 col-md-16 text-right">
-                                    <button id="pdf" type="button" class="bttn__saved generable" data-toggle="tooltip" data-placement="bottom" title="{{ 'Generar'|trans }} PDF"><span class="fa fa-file-pdf-o"></span></button>
-                                    <a id="pdf-link" class="descargable" href="#" target="_blank" style="display:none;"><button type="button" class="bttn__saved" data-toggle="tooltip" data-placement="bottom" title="{{ 'Descargar'|trans }} PDF"><span class="fa fa-download"></span></button></a>
-                                    <img id="pdf-loader" class="img-loader descargable" src="{{ asset('img/ui-anim_basic_16x16.gif') }}" style="display:none;">
-                                </div>
+
                             </div>
                         </div>
                     </div>
@@ -130,7 +121,7 @@
                     <div class="col-16 col-lg-16 col-xl-16 col-md-16 col-sm-16">
                         <div class="card">
                             <div class="card-header gradiente">
-                                <h6 class="card-title">{{ 'Dispositivo -  Navegador - Sistema Operativo '|trans }}</h6>
+                                <h6 class="card-title">{{ 'Gráfica'|trans ~ ': '~'Dispositivo -  Navegador - Sistema Operativo '|trans }}</h6>
                             </div>
                             <div class="card-block">
                                 <div class="row">

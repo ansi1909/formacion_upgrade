@@ -146,7 +146,7 @@ class ReportesJEController extends Controller
             $archivo = '';
         }
 
-        $return = array('conexiones' => $conexiones,
+        $return = array('conexiones'           => $conexiones,
                         'columnas_mayores'     => $columnas_mayores,
                         'filas_mayores'        => $filas_mayores,
                         'archivo'              => $archivo,
@@ -169,25 +169,60 @@ class ReportesJEController extends Controller
 
         $session = new Session();
 
-        $bin_data = $request->request->get('bin_data');
 
-        $data = str_replace(' ', '+', $bin_data);
-        $data = base64_decode($data);
-        $im = imagecreatefromstring($data);
+        //$bin_data = $request->request->get('bin_data');
+        $img1 = $request->request->get('img1');
+        $img2 = $request->request->get('img2');
+        $img3 = $request->request->get('img3');
 
-        $path = 'recursos/reportes/horasConexion'.$session->get('sesion_id').'.png';
-        $fileName = $this->container->getParameter('folders')['dir_uploads'].$path;
+        $data1 = str_replace(' ', '+', $img1);
+        $data1 = base64_decode($data1);
+        $im1 = imagecreatefromstring($data1);
 
-        if ($im !== false) {
+        $data2 = str_replace(' ', '+', $img2);
+        $data2 = base64_decode($data2);
+        $im2 = imagecreatefromstring($data2);
+
+        $data3 = str_replace(' ', '+', $img3);
+        $data3 = base64_decode($data3);
+        $im3 = imagecreatefromstring($data3);
+
+
+
+        $path = 'recursos/reportes/horasConexion'.$session->get('sesion_id');
+        $fileName1 = $this->container->getParameter('folders')['dir_uploads'].$path.'1.png';
+        $fileName2 = $this->container->getParameter('folders')['dir_uploads'].$path.'2.png';
+        $fileName3 = $this->container->getParameter('folders')['dir_uploads'].$path.'3.png';
+
+        if ($im1 !== false) {
             // Save image in the specified location
-            imagepng($im, $fileName);
-            imagedestroy($im);
+            imagepng($im1, $fileName1);
+            imagedestroy($im1);
         }
         else {
-            $fileName = 'An error occurred.';
+            $fileName1 = 'An error occurred.';
         }
 
-        $return = array('fileName' => $fileName);
+        if ($im2 !== false) {
+            // Save image in the specified location
+            imagepng($im2, $fileName2);
+            imagedestroy($im2);
+        }
+        else {
+            $fileName2 = 'An error occurred.';
+        }
+
+        if ($im3 !== false) {
+            // Save image in the specified location
+            imagepng($im3, $fileName3);
+            imagedestroy($im3);
+        }
+        else {
+            $fileName3 = 'An error occurred.';
+        }
+
+
+        $return = array('fileName1' => $fileName1,'fileName2' => $fileName2,'fileName3' => $fileName3);
 
         $return = json_encode($return);
         return new Response($return, 200, array('Content-Type' => 'application/json'));
@@ -226,10 +261,19 @@ class ReportesJEController extends Controller
                                                                                                     'hasta' => $hasta,
                                                                                                     'timeZone' => $timeZoneEmpresaView));
 
-        $path = 'recursos/reportes/horasConexion'.$session->get('sesion_id').'.png';
-        $src = $this->container->getParameter('folders')['dir_uploads'].$path;
+        $path = 'recursos/reportes/horasConexion'.$session->get('sesion_id');
+        $src1 = $this->container->getParameter('folders')['dir_uploads'].$path.'1.png';
+        $src2 = $this->container->getParameter('folders')['dir_uploads'].$path.'2.png';
+        $src3 = $this->container->getParameter('folders')['dir_uploads'].$path.'3.png';
 
-        $grafica = $this->renderView('LinkBackendBundle:Reportes:horasConexionGrafica.html.twig', array('src' => $src));
+        $grafica1 = $this->renderView('LinkBackendBundle:Reportes:horasConexionGrafica.html.twig', array('src' => $src1, 'titulo'=>$this->get('translator')->trans('Gráfica horas de conexión')));
+
+        $grafica2 = $this->renderView('LinkBackendBundle:Reportes:horasConexionGrafica.html.twig', array('src' => $src2, 'titulo'=> $this->get('translator')->trans('Gráfica conexiones por dispositivo')));
+
+        $grafica3 = $this->renderView('LinkBackendBundle:Reportes:horasConexionGrafica.html.twig', array('src' => $src3, 'titulo'=>$this->get('translator')->trans('Gráfica').': '.$this->get('translator')->trans('Dispositivo - Navegador - Sistema Operativo
+            ')));
+
+
 
         $logo = $this->container->getParameter('folders')['dir_project'].'web/img/logo_formacion_smart.png';
         $header_footer = '<page_header>
@@ -246,7 +290,9 @@ class ReportesJEController extends Controller
         $pdf = new Html2Pdf('L','A4','es','true','UTF-8',array(5, 5, 5, 8));
         $pdf->pdf->SetDisplayMode('fullpage');
         $pdf->writeHtml('<page>'.$header_footer.$tabla.'</page>');
-        $pdf->writeHtml('<page pageset="old">'.$grafica.'</page>');
+        $pdf->writeHtml('<page pageset="old">'.$grafica1.'</page>');
+        $pdf->writeHtml('<page pageset="old">'.$grafica2.'</page>');
+        $pdf->writeHtml('<page pageset="old">'.$grafica3.'</page>');
         $empresaName = $fun->eliminarAcentos($empresa->getNombre());
         $empresaName = strtoupper($empresaName);
 

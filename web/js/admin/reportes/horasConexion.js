@@ -284,15 +284,22 @@ function mostrarReporte(data)
 const renderIntoImage = () => {
 
 	// Función que transforma el gráfico en imagen
-  	const canvas = document.getElementById('myChart');
-  	var src_img = getImgFromCanvas(canvas);
+  	const canvas1 = document.getElementById('myChart');
+  	var src_img1 = getImgFromCanvas(canvas1);
+
+  	const canvas2 = document.getElementById('myChart2');
+  	var src_img2 = getImgFromCanvas(canvas2);
+
+    const canvas3 = document.getElementById('myChart3');
+  	var src_img3 = getImgFromCanvas(canvas3);
+
 
   	// Se almacena la imagen en el servidor
 	$.ajax({
 		type: "POST",
 		url: $('#url_img').val(),
 		async: true,
-		data: "bin_data="+src_img,
+		data:{img1: src_img1,img2:src_img2, img3: src_img3 },
 		dataType: "json",
 		success: function(response) {
 			$('#pdf-loader').hide();
