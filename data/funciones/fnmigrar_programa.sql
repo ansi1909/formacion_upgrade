@@ -47,7 +47,7 @@ DECLARE
     query_option text;
 DECLARE
 BEGIN
-   PERFORM dblink_connect('migrar_programa','host=amsterdam.venred.com user=postgres password=F$mart.4dmin dbname=fmart_develop');
+    PERFORM dblink_connect('migrar_programa','host=atenas.venred.com user=smrtfrmc_smart password=oIAk4%@o)MdD dbname=smrtfrmc_formacion');
    SELECT * FROM dblink('migrar_programa','SELECT nextval('''||'certi_pagina_id_seq'||''')') AS seq(nextval bigint) INTO next_id;
    select_videos := '';
    update_videos := '';
@@ -239,7 +239,7 @@ BEGIN
                      SELECT * INTO op_qu FROM certi_pregunta_opcion as po WHERE po.opcion_id = option.id;
                      SELECT json_extract_path_text (dictionary_question,op_qu.pregunta_id::text) INTO question_id;
                      SELECT json_extract_path_text (dictionary_option,op_qu.opcion_id::text) INTO option_id;
-             		 SELECT * FROM dblink('migrar_programa','INSERT INTO certi_pregunta_opcion (pregunta_id,opcion_id,correcta)  VALUES ('''||question_id||''','''||option_id||''','''||op_qu.correcta||''') RETURNING id')AS insertion_question_option(id INTEGER) INTO op_qu_id;
+             		     SELECT * FROM dblink('migrar_programa','INSERT INTO certi_pregunta_opcion (pregunta_id,opcion_id,correcta)  VALUES ('''||question_id||''','''||option_id||''','''||op_qu.correcta||''') RETURNING id')AS insertion_question_option(id INTEGER) INTO op_qu_id;
              END LOOP; -- FOR pregunta_opcion
       	END IF;
       	i := i+1;
