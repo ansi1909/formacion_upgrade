@@ -38,7 +38,7 @@ class DefaultController extends Controller
                                         FROM LinkComunBundle:AdminEmpresa e
                                          JOIN LinkComunBundle:AdminPais p WITH p.id = e.pais
                                         LEFT JOIN LinkComunBundle:AdminUsuario u WITH u.empresa = e.id
-                                        GROUP BY e.id, p.id
+                                        GROUP BY e.id, p.id,e.nombre,e.activo
                                         ORDER BY e.nombre ASC');
             $empresas_db = $query->getResult();
             $empresasA = array();
@@ -81,7 +81,7 @@ class DefaultController extends Controller
             $query = $em->createQuery('SELECT p.id as id, p.nombre as nombre FROM LinkComunBundle:AdminEmpresa e
                                     JOIN e.pais p
                                     WHERE e.activo = :activo
-                                    GROUP BY p.id')
+                                    GROUP BY p.id,p.nombre')
                          ->setParameter('activo', 'TRUE');
             $paises_db = $query->getResult();
 
