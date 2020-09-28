@@ -1,12 +1,7 @@
 jQuery(document).ready(function($) {
-	var ver_conectados = $('#ver_conectados').val();
-	if (ver_conectados == '1')
-	{
 		getUsuariosConectados();
 		getUsuariosConectadosRefresh();
-	}
 });
-
 
 function getUsuariosConectados()
 {
@@ -30,7 +25,7 @@ function getUsuariosConectados()
 			$("#tablaConectados").empty();
 			$('#div-error-users').html($('#error-msg').val());
 			notify($('#div-error-users').html());
-			
+
 		}
 	});
 }
@@ -41,5 +36,5 @@ function getUsuariosConectadosRefresh()
     timer = setInterval(function(){
         getUsuariosConectados();
     }, 30000);
-   
+
 }

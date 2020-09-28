@@ -38,7 +38,7 @@ class DefaultController extends Controller
                                         FROM LinkComunBundle:AdminEmpresa e
                                          JOIN LinkComunBundle:AdminPais p WITH p.id = e.pais
                                         LEFT JOIN LinkComunBundle:AdminUsuario u WITH u.empresa = e.id
-                                        GROUP BY e.id, p.id
+                                        GROUP BY e.id, p.id,e.nombre,e.activo
                                         ORDER BY e.nombre ASC');
             $empresas_db = $query->getResult();
             $empresasA = array();
@@ -81,7 +81,7 @@ class DefaultController extends Controller
             $query = $em->createQuery('SELECT p.id as id, p.nombre as nombre FROM LinkComunBundle:AdminEmpresa e
                                     JOIN e.pais p
                                     WHERE e.activo = :activo
-                                    GROUP BY p.id')
+                                    GROUP BY p.id,p.nombre')
                          ->setParameter('activo', 'TRUE');
             $paises_db = $query->getResult();
 
@@ -493,6 +493,8 @@ class DefaultController extends Controller
        $session = new Session();
        $em = $this->getDoctrine()->getManager();
        $rs = $this->get('reportes');
+       $yml = Yaml::parse(file_get_contents($this->get('kernel')->getRootDir().'/config/parametros.yml'));
+
 
        $empresa_id = (integer) $request->request->get('empresa_id');
 
@@ -505,8 +507,12 @@ class DefaultController extends Controller
                             <th class="hd__title">'.$this->get('translator')->trans('Usuario').'</th>
                             <th class="hd__title">'.$this->get('translator')->trans('Nombre').'</th>
                             <th class="hd__title">'.$this->get('translator')->trans('Correo').'</th>
-                            <th class="hd__title">'.$this->get('translator')->trans('Nivel').'</th>
-                        </tr>
+                            <th class="hd__title">'.$this->get('translator')->trans('Dispositivo').'</th>';
+                       if (!$empresa_id) {
+                            $html .= '<th class="hd__title">'.$this->get('translator')->trans('Empresa').'</th>';
+                            $html .= '<th class="hd__title">'.$this->get('translator')->trans('País').'</th>';
+                        }
+                        $html.='</tr>
                     </thead>
                     <tbody style="font-size: .7rem;">';
         foreach ($listado as $registro)
@@ -516,8 +522,12 @@ class DefaultController extends Controller
                         <td>'.$registro['login'].'</td>
                         <td>'.$registro['nombre'].' '.$registro['apellido'].'</td>
                         <td>'.$correo.'</td>
-                        <td>'.$registro['nivel'].'</td>
-                    </tr>';
+                        <td>'.$registro['dispositivo'].'</td>';
+                        if (!$empresa_id) {
+                            $html .= '<td>'.$registro['empresa'].'</td>';
+                            $html .= '<td>'.$registro['pais'].'</td>';
+                        }
+                    $html .= '</tr>';
         }
 
         $html .= '</tbody>
