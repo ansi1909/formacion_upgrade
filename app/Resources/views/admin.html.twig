@@ -326,6 +326,38 @@
                 </div>
             </div>
         </div>
+         <div class="modal dark_bg fade" id="modalOrden" tabindex="-1" role="dialog" aria-labelledby="detailModal" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header" style="background: linear-gradient(to right, #0084db 0%, #00558D 100%); color: #fff;">
+                        <h5 class="modal-title" id="formModalLabel">{{ 'Editar orden'|trans }}</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"> <span aria-hidden="true">&times;</span> </button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row" id="div-alert-detail" >
+                            <form id="formOrden" name="formOrden" action="{{ path('_ajaxEditarOrden') }}" method="POST" style="width:90%;">
+                                <input type="hidden" id="pagina_empresa_id" name="pagina_empresa_id" value="">
+                                <div class="row" style="width: 90%;margin-left: 3rem;">
+                                    <div class="col-sm-16 col-md-16 col-lg-16  form-group" >
+                                        <input type="text" class="form-control form_sty_modal" id="input_orden" name="input_orden" value="" autocomplete="off">
+                                    </div>
+                                </div>
+                                <div class="row" id="error-orden" style="width: 90%;margin-left: 8rem;display:none" >
+                                    <label style="color:#FF0035;font-size:16px">{{'Error al editar el orden de la pagina'|trans}}</label>
+                                </div>
+                                <div class="row" id="validar-orden" style="width: 90%;margin-left: 8rem;display:none" >
+                                    <label style="color:#FF0035;font-size:16px">{{'Debe indicar el orden de la pagina'|trans}}</label>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="bttn__cancel" data-dismiss="modal" id="cancelar"><span class="text__cancel">{{ 'Cancelar'|trans }}</span><span class="fa fa-times"></span></button>
+                        <button type="button" class="bttn__save" id="guardarOrden"><span class="text__save">{{ 'Guardar'|trans }}</span><span class="fa fa-save"></span></button>
+                    </div>
+                </div>
+            </div>
+        </div>
 
          <div class="modal dark_bg fade" id="modalPreguntas" tabindex="-1" role="dialog" aria-labelledby="detailModal" aria-hidden="true">
             <div class="modal-dialog" role="document">

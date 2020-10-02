@@ -64,6 +64,12 @@ _ajaxObtenerEstructura:
     requirements:
         _method: POST
 
+_ajaxEditarOrden:
+    path:     /ajaxEditarOrden
+    defaults: { _controller: LinkBackendBundle:Pagina:ajaxEditarOrden }
+    requirements:
+        _method: POST
+
 _asignarSubpaginas:
     path:     /asignarSubpaginas/{empresa_id}/{pagina_padre_id}
     defaults: { _controller: LinkBackendBundle:Pagina:asignarSubpaginas }

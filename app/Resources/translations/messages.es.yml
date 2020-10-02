@@ -213,6 +213,7 @@ Debe coincidir con la contraseña: Debe coincidir con la contraseña
 Debes elegir una empresa: Debes elegir una empresa
 Debe elegir un programa: Debe elegir un programa
 Debe escribir su respuesta: Debe escribir su respuesta
+Debe indicar el orden de la pagina: Debe indicar el orden de la pagina
 Debes ingresar el correo electrónico: Debes ingresar el correo electrónico
 Debes ingresar el correo personal o el correo corporativo: Debes ingresar el correo personal o el correo corporativo
 Debe seleccionar al menos un programa: Debe seleccionar al menos un programa
@@ -260,6 +261,8 @@ Editar evaluación: Editar evaluación
 Editar página: Editar página
 Editar perfil: Editar perfil
 Editar tema: Editar tema
+Editar orden: Editar orden
+Error al editar el orden de la pagina: Error al editar el orden de la pagina
 El archivo seleccionado no se cargo correctamente.: El archivo seleccionado no se cargo correctamente.
 Elegir empresa: Elegir empresa
 Elementos seleccionados: Elementos seleccionados
