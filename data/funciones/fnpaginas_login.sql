@@ -60,7 +60,7 @@ BEGIN
         AND cnp.nivel_id = ppnivel_id
         AND cpe.activo
         AND cpe.fecha_inicio <= ppfecha
-        ORDER BY cp.orden  ASC
+        ORDER BY cpe.orden  ASC
         LOOP
             cp:=cp+1;
             IF pagina.prelacion IS NULL THEN

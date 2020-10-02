@@ -5,6 +5,9 @@ $(document).ready(function() {
 	$('.paginate_button').click(function(){
 		afterPaginate();
 	});
+    $('#formOrden').submit(function(e) {
+		e.preventDefault();
+	});
 
 });
 
@@ -20,6 +23,50 @@ function observe()
 		}
 	});
 */
+    $('#input_orden').focus(function(event) {
+    	$('#error-orden').hide();
+    	$('#validar-orden').hide();
+    });
+    $('.orden').unbind('click');
+    $('.orden').click(function(event) {
+    	var id = $(this).attr('id');
+    	console.log(id);
+    	$('#pagina_empresa_id').val(id);
+    	$('#input_orden').val($(`#orden-${id}`).val());
+    	$('#error-orden').hide();
+    	$('#validar-orden').hide();
+    	$('#modalOrden').modal('show');
+    });
+
+    $('#guardarOrden').unbind('click');
+    $('#guardarOrden').click(function(event) {
+    	event.preventDefault();
+    	var orden = $('#input_orden').val();
+    	var pagina_empresa_id = $('#pagina_empresa_id').val();
+    	if (orden) {
+    		    $.ajax({
+					type: "POST",
+					url: $('#formOrden').attr('action'),
+					async: true,
+					data: $("#formOrden").serialize(),
+					dataType: "json",
+					success: function(data) {
+					  console.log('Exito al editar el orden de la pagina');
+					  var pagina_id = $('#asignacion_empresa_id').val();
+					  $('#modalOrden').modal('hide');
+                      $(`#ver-${pagina_id}`).trigger("click");
+					},
+					error: function(){
+						$('#error-orden').show();
+					}
+				});
+    	}else{
+    		$('#validar-orden').show();
+    	}
+
+    });
+
+
 	$('.cb_activo').unbind('click');
 	$('.cb_activo').click(function(){
 		var checked = $(this).is(':checked') ? 1 : 0;
@@ -84,6 +131,8 @@ function afterPaginate()
 	$('.see').unbind('click');
 	$('.see').click(function(){
 		var empresa_id = $(this).attr('data');
+		$('#asignacion_empresa_id').val(empresa_id);
+
 		$('#div-active-alert').hide();
 		$('#div-pages, .load1').show();
 		$.ajax({
