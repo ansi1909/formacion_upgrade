@@ -42,13 +42,14 @@
                                 <td class="center">
                                     <a href="{{ path('_empresaPaginas', { 'empresa_id': empresa.id }) }}" title="{{ 'Asignar páginas'|trans }}" class="btn btn-link btn-sm"><span class="fa fa-sitemap"></span></a>
                                     {% if empresa.tiene_paginas %}
-                                        <a href="#" title="{{ 'Ver páginas asignadas'|trans }}" class="btn btn-link btn-sm see" data="{{ empresa.id }}"><span class="fa fa-eye"></span></a>
+                                        <a href="#" title="{{ 'Ver páginas asignadas'|trans }}" class="btn btn-link btn-sm see" id="{{'ver-'~empresa.id}}" data="{{ empresa.id }}"><span class="fa fa-eye"></span></a>
                                     {% endif %}
                                 </td>
                             </tr>
                         {% endfor %}
                     </tbody>
                 </table>
+                <input type="hidden" name="asignacion_empresa_id" id="asignacion_empresa_id" value="">
             </div>
         </div>
     </div>

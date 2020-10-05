@@ -462,7 +462,7 @@ class PaginaController extends Controller
         $query = $em->createQuery("SELECT pe, p FROM LinkComunBundle:CertiPaginaEmpresa pe
                                     JOIN pe.pagina p
                                     WHERE pe.empresa = :empresa_id AND p.pagina IS NULL
-                                    ORDER BY p.orden ASC")
+                                    ORDER BY pe.orden ASC")
                     ->setParameter('empresa_id', $empresa_id);
         $pes = $query->getResult();
 
@@ -471,6 +471,7 @@ class PaginaController extends Controller
                         <tr>
                             <th class="hd__title">'.$this->get('translator')->trans('Páginas').'</th>
                             <th class="hd__title">'.$this->get('translator')->trans('Vencimiento').'</th>
+                            <th class="hd__title">'.$this->get('translator')->trans('Orden').'</th>
                             <th class="hd__title">'.$this->get('translator')->trans('Activo').'</th>
                             <th class="hd__title">'.$this->get('translator')->trans('Acceso').'</th>
                             <th class="hd__title">'.$this->get('translator')->trans('Acciones').'</th>
@@ -490,6 +491,7 @@ class PaginaController extends Controller
             $html .= '<tr id="tr-'.$pe->getId().'">
                         <td id="td-'.$pe->getId().'">'.$pe->getPagina()->getCategoria()->getNombre().': '.$pe->getPagina()->getNombre().'</td>
                         <td>'.$pe->getFechaVencimiento()->format('d/m/Y').'</td>
+                        <td>'.$pe->getOrden().'<input type="hidden" name="orden-'.$pe->getId().'" id="orden-'.$pe->getId().'" value="'.$pe->getOrden().'"></td>
                         <td class="center">
                             <div class="can-toggle demo-rebrand-2 small">
                                 <input id="f_active'.$pe->getId().'" class="cb_activo" type="checkbox" '.$activo.'>
@@ -512,6 +514,8 @@ class PaginaController extends Controller
                 $html .= '<a href="'.$this->generateUrl('_asignarSubpaginas', array('empresa_id' => $pe->getEmpresa()->getId(), 'pagina_padre_id' => $pe->getPagina()->getId())).'" title="'.$this->get('translator')->trans('Configurar asignación de sub-páginas').'" class="btn btn-link btn-sm"><span class="fa fa-sitemap"></span></a>';
             }
             $html .= '<a href="'.$this->generateUrl('_editAsignacion', array('pagina_empresa_id' => $pe->getId())).'" title="'.$this->get('translator')->trans('Editar asignación').'" class="btn btn-link btn-sm"><span class="fa fa-pencil"></span></a>';
+
+            $html.= '<a href="'.'#'.'" title="'.$this->get('translator')->trans('Editar orden').'" class="btn btn-link btn-sm orden" id="'.$pe->getId().'"><span class="fa fa-list-ol"></span></a>';
             $html .= '</td>
                     </tr>';
         }
@@ -524,6 +528,33 @@ class PaginaController extends Controller
 
         $return = json_encode($return);
         return new Response($return, 200, array('Content-Type' => 'application/json'));
+
+    }
+
+    public function ajaxEditarOrdenAction(Request $request){
+        $session = new Session();
+        $f = $this->get('funciones');
+        if (!$session->get('ini') || $f->sesionBloqueda($session->get('sesion_id')))
+        {
+            return $this->redirectToRoute('_loginAdmin');
+        }
+        else {
+         $em = $this->getDoctrine()->getManager();
+         $pagina_empresa_id = $request->request->get('pagina_empresa_id');
+         $pagina_empresa_orden = $request->request->get('input_orden');
+
+         $pagina_empresa = $em->getRepository('LinkComunBundle:CertiPaginaEmpresa')->find($pagina_empresa_id);
+
+         $pagina_empresa->setOrden($pagina_empresa_orden);
+         $em->persist($pagina_empresa);
+         $em->flush();
+         $return = array(
+            'ok'=>1
+         );
+         $return = json_encode($return);
+         return new Response($return, 200, array('Content-Type' => 'application/json'));
+
+        }
 
     }
 

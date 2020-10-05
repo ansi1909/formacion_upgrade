@@ -213,6 +213,7 @@ Debe coincidir con la contraseña: It must be equal to password
 Debe elegir una empresa: You must choose a company
 Debe elegir un programa: You must choose a program
 Debe escribir su respuesta: You must write your response
+Debe indicar el orden de la pagina: You must indicate the order of the page
 Debes ingresar el correo electrónico: You must enter the email
 Debes ingresar el correo personal o el correo corporativo: You must enter either personal email or corporate email
 Debe seleccionar al menos un programa: You must select at least one program
@@ -260,6 +261,8 @@ Editar evaluación: Edit test
 Editar página: Edit page
 Editar perfil: Edit profile
 Editar tema: Edit topic
+Editar orden: Edit order
+Error al editar el orden de la pagina: Error editing the page order
 El archivo seleccionado no se cargo correctamente.: The selected file is not loaded correctly.
 Elegir empresa: Choose company
 Elementos seleccionados: Selected items
