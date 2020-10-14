@@ -9,6 +9,8 @@ use Symfony\Component\HttpFoundation\Request;
 use Link\ComunBundle\Entity\AdminSesion;
 use Symfony\Component\HttpFoundation\Cookie;
 use Symfony\Component\Yaml\Yaml;
+use Symfony\Component\HttpFoundation\ResponseHeaderBag;
+
 
 class DefaultController extends Controller
 {
@@ -623,7 +625,7 @@ class DefaultController extends Controller
         
             $dispositionHeader = $response->headers->makeDisposition(
                 ResponseHeaderBag::DISPOSITION_ATTACHMENT,
-                    'Usuarios conectados.xlsx'
+                    'Usuarios conectados'.$hoy.'.xlsx'
             );
 
         $response->headers->set('Content-Type', 'text/vnd.ms-excel; charset=utf-8');
