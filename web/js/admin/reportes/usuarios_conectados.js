@@ -20,6 +20,10 @@ function getUsuariosConectados()
 			$("#labelConectados").show();
 			$('.data_table').DataTable().destroy();
 			applyDataTable();
+			if(data.conectados)
+			{
+				$('#footer_conectados').show();
+			}
 		},
 		error: function(){
 			$("#tablaConectados").empty();

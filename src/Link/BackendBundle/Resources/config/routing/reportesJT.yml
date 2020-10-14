@@ -22,6 +22,12 @@ _ajaxUsuariosConectados:
     requirements:
         _method: POST
 
+_excelUsuariosConectados:
+    path: /excelUsuariosConectados/{empresa_id}
+    defaults: { _controller:  LinkBackendBundle:Default:excelUsuariosConectados, empresa_id: 0 }
+    requirements:
+        _method: POST
+
 _detalleParticipante:
     path: /detalleParticipante
     defaults: { _controller: LinkBackendBundle:ReportesJT:detalleParticipante }
