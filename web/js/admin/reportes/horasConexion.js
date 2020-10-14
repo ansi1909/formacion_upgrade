@@ -95,7 +95,7 @@ function mostrarReporte(data)
             datasets: [{
                 label: '',
                 data: totales,
-                backgroundColor: ["#f9b1b4", "#f9ba7a", "#6fa8f2", "#9e9cd1", "#f7e894", "#abbc98", "#cbb0e5"],
+                backgroundColor: ["#87ffa3", "#f9ba7a", "#6fa8f2", "#9e9cd1", "#f7e894", "#abbc98", "#cbb0e5"],
                 borderColor: ['#fd5c63', '#ff9933', '#1a67cc', '#6a67ce', '#d8bc1e', '#8aba56', '#a560e8'],
                 borderWidth: 1
             }],
