@@ -499,11 +499,11 @@ class DefaultController extends Controller
       // $ip = $request->getClientIp();
        
        // if($ip == 'unknown'){
-            $ip = $_SERVER['REMOTE_ADDR'];
+            $ip = $_SERVER['HTTP_X_FORWARDED_FOR'];
        // }
        //$ip =  $this->container->get('request_stack')->getCurrentRequest()->getClientIp();
-       return new response(var_dump($ip));
-       $geoPlugin_array  =  unserialize (  file_get_contents ( 'http://www.geoplugin.net/php.gp?ip='.'190.77.147.121'));
+       //return new response(var_dump($ip));
+       $geoPlugin_array  =  unserialize (  file_get_contents ( 'http://www.geoplugin.net/php.gp?ip='.$ip));
         return new response(var_dump($geoPlugin_array));
 
        $empresa_id = (integer) $request->request->get('empresa_id');
