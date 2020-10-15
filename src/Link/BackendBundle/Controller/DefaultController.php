@@ -496,7 +496,15 @@ class DefaultController extends Controller
        $em = $this->getDoctrine()->getManager();
        $rs = $this->get('reportes');
        $yml = Yaml::parse(file_get_contents($this->get('kernel')->getRootDir().'/config/parametros.yml'));
-
+      // $ip = $request->getClientIp();
+       
+       // if($ip == 'unknown'){
+            $ip = $_SERVER['REMOTE_ADDR'];
+       // }
+       //$ip =  $this->container->get('request_stack')->getCurrentRequest()->getClientIp();
+       return new response(var_dump($ip));
+       $geoPlugin_array  =  unserialize (  file_get_contents ( 'http://www.geoplugin.net/php.gp?ip='.'190.77.147.121'));
+        return new response(var_dump($geoPlugin_array));
 
        $empresa_id = (integer) $request->request->get('empresa_id');
 
