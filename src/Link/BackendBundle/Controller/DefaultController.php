@@ -598,11 +598,11 @@ class DefaultController extends Controller
             foreach ($listado as $usuario)
             {
 
-                $objWorksheet->getStyle("A$row:F$row")->applyFromArray($styleThinBlackBorderOutline); //bordes
-                $objWorksheet->getStyle("A$row:F$row")->getFont()->setSize($font_size); // Tamaño de las letras
-                $objWorksheet->getStyle("A$row:F$row")->getFont()->setName($font); // Tipo de letra
-                $objWorksheet->getStyle("A$row:F$row")->getAlignment()->setHorizontal($horizontal_aligment); // Alineado horizontal
-                $objWorksheet->getStyle("A$row:F$row")->getAlignment()->setVertical($vertical_aligment); // Alineado vertical
+                $objWorksheet->getStyle("A$row:G$row")->applyFromArray($styleThinBlackBorderOutline); //bordes
+                $objWorksheet->getStyle("A$row:G$row")->getFont()->setSize($font_size); // Tamaño de las letras
+                $objWorksheet->getStyle("A$row:G$row")->getFont()->setName($font); // Tipo de letra
+                $objWorksheet->getStyle("A$row:G$row")->getAlignment()->setHorizontal($horizontal_aligment); // Alineado horizontal
+                $objWorksheet->getStyle("A$row:G$row")->getAlignment()->setVertical($vertical_aligment); // Alineado vertical
                 $objWorksheet->getRowDimension($row)->setRowHeight(40); // Altura de la fila
                 // Datos de las columnas comunes
                 $objWorksheet->setCellValue('A'.$row, $usuario['nombre']);

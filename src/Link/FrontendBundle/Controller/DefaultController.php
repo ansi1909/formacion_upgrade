@@ -540,7 +540,7 @@ class DefaultController extends Controller
 
             if ($verificacion)
             {
-                $ip = $_SERVER['HTTP_X_FORWARDED_FOR'];
+                $ip = $f->obtenerIp();
                 //$ip = '190.77.147.121';
                 $geoPlugin_array  =  unserialize (  file_get_contents ( 'http://www.geoplugin.net/php.gp?ip='.$ip));
                 $ubicacion = $geoPlugin_array['geoplugin_city'].' , '.$geoPlugin_array['geoplugin_countryName'];
