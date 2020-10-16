@@ -611,6 +611,7 @@ class DefaultController extends Controller
                 $objWorksheet->setCellValue('D'.$row, $usuario['correo_corporativo']);
                 $objWorksheet->setCellValue('E'.$row, $usuario['correo_personal']);
                 $objWorksheet->setCellValue('F'.$row, $usuario['dispositivo']);
+                $objWorksheet->setCellValue('G'.$row, $usuario['ubicacion']);
                 $row++;
 
             }
