@@ -44,6 +44,20 @@ class AdminSesion
     private $disponible;
 
     /**
+     * @var string
+     *
+     * @ORM\Column(name="dispositivo", type="string", length=255, nullable=true)
+     */
+    private $dispositivo;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="ubicacion", type="string", length=255, nullable=true)
+     */
+    private $ubicacion;
+
+    /**
      * @var \Link\ComunBundle\Entity\AdminUsuario
      *
      * @ORM\ManyToOne(targetEntity="Link\ComunBundle\Entity\AdminUsuario")
@@ -75,7 +89,7 @@ class AdminSesion
     public function setFechaIngreso($fechaIngreso)
     {
         $this->fechaIngreso = $fechaIngreso;
-    
+
         return $this;
     }
 
@@ -99,7 +113,7 @@ class AdminSesion
     public function setFechaRequest($fechaRequest)
     {
         $this->fechaRequest = $fechaRequest;
-    
+
         return $this;
     }
 
@@ -123,7 +137,7 @@ class AdminSesion
     public function setDisponible($disponible)
     {
         $this->disponible = $disponible;
-    
+
         return $this;
     }
 
@@ -138,35 +152,6 @@ class AdminSesion
     }
 
     /**
-     * Set usuario
-     *
-     * @param \Link\ComunBundle\Entity\AdminUsuario $usuario
-     *
-     * @return AdminSesion
-     */
-    public function setUsuario(\Link\ComunBundle\Entity\AdminUsuario $usuario = null)
-    {
-        $this->usuario = $usuario;
-    
-        return $this;
-    }
-
-    /**
-     * Get usuario
-     *
-     * @return \Link\ComunBundle\Entity\AdminUsuario
-     */
-    public function getUsuario()
-    {
-        return $this->usuario;
-    }
-    /**
-     * @var string
-     */
-    private $dispositivo;
-
-
-    /**
      * Set dispositivo
      *
      * @param string $dispositivo
@@ -176,7 +161,7 @@ class AdminSesion
     public function setDispositivo($dispositivo)
     {
         $this->dispositivo = $dispositivo;
-    
+
         return $this;
     }
 
@@ -188,5 +173,53 @@ class AdminSesion
     public function getDispositivo()
     {
         return $this->dispositivo;
+    }
+
+    /**
+     * Set ubicacion
+     *
+     * @param string $ubicacion
+     *
+     * @return AdminSesion
+     */
+    public function setUbicacion($ubicacion)
+    {
+        $this->ubicacion = $ubicacion;
+
+        return $this;
+    }
+
+    /**
+     * Get ubicacion
+     *
+     * @return string
+     */
+    public function getUbicacion()
+    {
+        return $this->ubicacion;
+    }
+
+    /**
+     * Set usuario
+     *
+     * @param \Link\ComunBundle\Entity\AdminUsuario $usuario
+     *
+     * @return AdminSesion
+     */
+    public function setUsuario(\Link\ComunBundle\Entity\AdminUsuario $usuario = null)
+    {
+        $this->usuario = $usuario;
+
+        return $this;
+    }
+
+    /**
+     * Get usuario
+     *
+     * @return \Link\ComunBundle\Entity\AdminUsuario
+     */
+    public function getUsuario()
+    {
+        return $this->usuario;
     }
 }

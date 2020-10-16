@@ -2276,6 +2276,7 @@ public function obtenerEstructuraJson($pagina_id){
                                         $admin_sesion->setUsuario($usuario);
                                         $admin_sesion->setDisponible(true);
                                         $admin_sesion->setDispositivo($datos['dispositivo']);
+                                        $admin_sesion->setUbicacion($datos['ubicacion']);
                                         $em->persist($admin_sesion);
                                         $em->flush();
 
@@ -3991,7 +3992,15 @@ public function obtenerEstructuraJson($pagina_id){
       return $return;
     }
 
-
+    public function obtenerIp(){
+      if (!empty($_SERVER['HTTP_CLIENT_IP']))
+          return $_SERVER['HTTP_CLIENT_IP'];
+        
+      if (!empty($_SERVER['HTTP_X_FORWARDED_FOR']))
+          return $_SERVER['HTTP_X_FORWARDED_FOR'];
+    
+      return $_SERVER['REMOTE_ADDR'];
+    }
 
 
 }

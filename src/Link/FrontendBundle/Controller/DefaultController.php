@@ -540,10 +540,15 @@ class DefaultController extends Controller
 
             if ($verificacion)
             {
+                $ip = $f->obtenerIp();
+                //$ip = '190.77.147.121';
+                $geoPlugin_array  =  unserialize (  file_get_contents ( 'http://www.geoplugin.net/php.gp?ip='.$ip));
+                $ubicacion = $geoPlugin_array['geoplugin_city'].' , '.$geoPlugin_array['geoplugin_countryName'];
                 $iniciarSesion = $f->iniciarSesion(array('recordar_datos' => $recordar_datos,
                                                          'login' => $login,
                                                          'clave' => $clave,
                                                          'dispositivo' => $dispositivo,
+                                                         'ubicacion' => $ubicacion,
                                                          'empresa' => $empresa,
                                                          'yml' => $yml['parameters']));
 

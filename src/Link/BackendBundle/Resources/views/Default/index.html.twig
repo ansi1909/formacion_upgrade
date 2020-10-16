@@ -158,6 +158,13 @@
                         </div>
                         <div class="card-block" id="tablaConectados">
                         </div>
+                        <div class="card-footer" id="footer_conectados" style="display: none;">
+                            <div class="row">
+                                <div class="col-sm-16 col-md-16 col-lg-16 col-xl-16 text-right">
+                                   <a href="{{ path('_excelUsuariosConectados') }} "> <button type="button" class="bttn__edit" data-toggle="tooltip" data-placement="bottom" title="Descargar"><span class="fa fa-download"></span></button></a>
+                                </div>
+                            </div>
+                        </div>
                         <div class="col-sm-8 col-md-8 col-lg-8 alert alert-danger" role="alert" id="div-error-users" style="display:none;">
                         </div>
                     </div>
@@ -269,6 +276,13 @@
                             <div class="card-title" id="labelConectadosLoading" style="display:none;">{{ 'Actualizando la lista de participantes conectados'|trans}}..</div>
                         </div>
                         <div class="card-block" id="tablaConectados">
+                        </div>
+                        <div class="card-footer" id="footer_conectados">
+                            <div class="row">
+                                <div class="col-sm-16 col-md-16 col-lg-16 col-xl-16 text-right">
+                                   <a href="{{ path('_excelUsuariosConectados',{'empresa_id':usuario.empresa.id}) }} "> <button type="button" class="bttn__edit" data-toggle="tooltip" data-placement="bottom" title="Descargar"><span class="fa fa-download"></span></button></a>
+                                </div>
+                            </div>
                         </div>
                         <div class="col-sm-8 col-md-8 col-lg-8 alert alert-danger" role="alert" id="div-error-users" style="display:none;">
                         </div>
