@@ -114,6 +114,7 @@ fecha_request timestamp without time zone,
 usuario_id integer,
 disponible boolean,
 dispositvo varchar(255),
+ubicacion varchar(250),
  PRIMARY KEY (id),
  FOREIGN KEY (usuario_id) REFERENCES admin_usuario (id));
 

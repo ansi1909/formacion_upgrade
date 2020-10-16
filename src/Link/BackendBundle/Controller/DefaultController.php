@@ -496,15 +496,7 @@ class DefaultController extends Controller
        $em = $this->getDoctrine()->getManager();
        $rs = $this->get('reportes');
        $yml = Yaml::parse(file_get_contents($this->get('kernel')->getRootDir().'/config/parametros.yml'));
-      // $ip = $request->getClientIp();
-       
-       // if($ip == 'unknown'){
-            $ip = $_SERVER['HTTP_X_FORWARDED_FOR'];
-       // }
-       //$ip =  $this->container->get('request_stack')->getCurrentRequest()->getClientIp();
-       //return new response(var_dump($ip));
-       $geoPlugin_array  =  unserialize (  file_get_contents ( 'http://www.geoplugin.net/php.gp?ip='.$ip));
-        return new response(var_dump($geoPlugin_array));
+     
 
        $empresa_id = (integer) $request->request->get('empresa_id');
 
@@ -520,8 +512,9 @@ class DefaultController extends Controller
                             <th class="hd__title">'.$this->get('translator')->trans('Dispositivo').'</th>';
                        if (!$empresa_id) {
                             $html .= '<th class="hd__title">'.$this->get('translator')->trans('Empresa').'</th>';
-                            $html .= '<th class="hd__title">'.$this->get('translator')->trans('País').'</th>';
+                            
                         }
+                        $html .= '<th class="hd__title">'.$this->get('translator')->trans('País').'</th>';
                         $html.='</tr>
                     </thead>
                     <tbody style="font-size: .7rem;">';
@@ -535,8 +528,9 @@ class DefaultController extends Controller
                         <td>'.$registro['dispositivo'].'</td>';
                         if (!$empresa_id) {
                             $html .= '<td>'.$registro['empresa'].'</td>';
-                            $html .= '<td>'.$registro['pais'].'</td>';
+                            
                         }
+                        $html .= '<td>'.$registro['ubicacion'].'</td>';
                     $html .= '</tr>';
         }
 

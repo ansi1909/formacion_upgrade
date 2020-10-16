@@ -2276,6 +2276,7 @@ public function obtenerEstructuraJson($pagina_id){
                                         $admin_sesion->setUsuario($usuario);
                                         $admin_sesion->setDisponible(true);
                                         $admin_sesion->setDispositivo($datos['dispositivo']);
+                                        $admin_sesion->setUbicacion($datos['ubicacion']);
                                         $em->persist($admin_sesion);
                                         $em->flush();
 
