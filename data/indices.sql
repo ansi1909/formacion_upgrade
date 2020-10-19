@@ -40,11 +40,48 @@ CREATE INDEX muro_ndx1 on certi_muro (pagina_id);
 DROP INDEX IF EXISTS foro_ndx1;
 CREATE INDEX foro_ndx1 on certi_foro (pagina_id);
 
-DROP INDEX IF EXISTS notificacion_ndx1;
-CREATE INDEX notificacion_ndx1 on admin_notificacion (usuario_id);
-
 DROP INDEX IF EXISTS preferencia_ndx1;
 CREATE INDEX preferencia_ndx1 on admin_preferencia (empresa_id);
 
 DROP INDEX IF EXISTS nivel_pagina_ndx1;
 CREATE INDEX nivel_pagina_ndx1 on certi_nivel_pagina (nivel_id, pagina_empresa_id);
+
+------ actualizacion : 12/10/2020
+DROP INDEX IF EXISTS correo_ndx1;
+CREATE INDEX correo_ndx1 on admin_correo (id,usuario_id);
+
+DROP INDEX IF EXISTS pagina_ndx1;
+CREATE INDEX pagina_ndx1 on certi_pagina(id,pagina_id,categoria_id);
+
+DROP INDEX IF EXISTS correo_fallido_ndx1;
+CREATE INDEX correo_fallido_ndx1 on admin_correo_fallido (id,usuario_id,entidad_id);
+
+DROP INDEX IF EXISTS introduccion_ndx1;
+CREATE INDEX introduccion_ndx1 on admin_introduccion (id,usuario_id);
+
+DROP INDEX IF EXISTS notificacion_ndx1;
+CREATE INDEX notificacion_ndx1 on admin_notificacion(id,usuario_id);
+
+DROP INDEX IF EXISTS notificacion_programada_ndx1;
+CREATE INDEX notificacion_programada_ndx1 on admin_notificacion_programada(id,notificacion_id,tipo_destino_id,entidad_id,usuario_id,grupo_id);
+
+DROP INDEX IF EXISTS grupo_pagina_ndx1;
+CREATE INDEX grupo_pagina_ndx1 on certi_grupo_pagina(grupo_id,pagina_id);
+
+DROP INDEX IF EXISTS categoria_ndx1;
+CREATE INDEX categoria_ndx1 on certi_categoria(id);
+
+DROP INDEX IF EXISTS rol_usuario_ndx1;
+CREATE INDEX rol_usuario_ndx1 on admin_rol_usuario(id,rol_id,usuario_id);
+
+DROP INDEX IF EXISTS usuario_ndx1;
+CREATE INDEX usuario_ndx1 on admin_usuario(id,pais_id,empresa_id,nivel_id);
+
+
+
+
+
+
+
+
+
