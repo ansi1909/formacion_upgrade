@@ -95,7 +95,7 @@ function mostrarReporte(data)
             datasets: [{
                 label: '',
                 data: totales,
-                backgroundColor: ["#f9b1b4", "#f9ba7a", "#6fa8f2", "#9e9cd1", "#f7e894", "#abbc98", "#cbb0e5"],
+                backgroundColor: ["#87ffa3", "#f9ba7a", "#6fa8f2", "#9e9cd1", "#f7e894", "#abbc98", "#cbb0e5"],
                 borderColor: ['#fd5c63', '#ff9933', '#1a67cc', '#6a67ce', '#d8bc1e', '#8aba56', '#a560e8'],
                 borderWidth: 1
             }],
@@ -152,7 +152,7 @@ function mostrarReporte(data)
             datasets: [{
                 label: '',
                 data: data.values_dispositivos,
-                backgroundColor: ["#F4B8BD", "#ADFFE8", "#B4C6F8"],
+                backgroundColor: ["#87ffa3", "#ADFFE8", "#B4C6F8"],
                 borderColor: ['#230508', '#00291D', '#07194B'],
                 borderWidth: 1
             }],
@@ -210,7 +210,7 @@ function mostrarReporte(data)
             datasets: [{
                 label: '',
                 data: data.values_original,
-                backgroundColor: '#F4B8BD',//ListbackgroundColor.slice(0,ListbackgroundColor.length-1),
+                backgroundColor: '#87ffa3',//ListbackgroundColor.slice(0,ListbackgroundColor.length-1),
                 borderColor: '#230508',//ListborderColor.slice(0,ListborderColor.length-1),
                 borderWidth: 1
             }],

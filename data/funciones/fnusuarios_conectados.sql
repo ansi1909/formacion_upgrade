@@ -20,7 +20,8 @@ BEGIN
 		 			au.login AS login,
 		 			au.correo_corporativo AS correo_corporativo,
 		 			au.correo_personal AS correo_personal,
-		 			ass.dispositivo AS dispositivo';
+		 			ass.dispositivo AS dispositivo,
+					ass.ubicacion AS ubicacion';
 
 		 		IF pempresa_id = 0  THEN
 		 			query:= query||',ae.nombre as empresa,ap.nombre as pais';
@@ -49,7 +50,7 @@ BEGIN
 	 				query:=  query ||' AND au.empresa_id = '||pempresa_id||' ';
 	 			END IF;
 
-	 			query := query||'GROUP BY au.login, au.nombre, au.apellido, an.nombre, au.correo_corporativo,au.correo_personal,ass.dispositivo';
+	 			query := query||'GROUP BY au.login, au.nombre, au.apellido, an.nombre, au.correo_corporativo,au.correo_personal,ass.dispositivo,ass.ubicacion';
 	 			IF pempresa_id = 0 THEN
 	 				query := query ||',ae.nombre,ap.nombre ';
 	 			END IF;

@@ -9,6 +9,8 @@ use Symfony\Component\HttpFoundation\Request;
 use Link\ComunBundle\Entity\AdminSesion;
 use Symfony\Component\HttpFoundation\Cookie;
 use Symfony\Component\Yaml\Yaml;
+use Symfony\Component\HttpFoundation\ResponseHeaderBag;
+
 
 class DefaultController extends Controller
 {
@@ -494,7 +496,7 @@ class DefaultController extends Controller
        $em = $this->getDoctrine()->getManager();
        $rs = $this->get('reportes');
        $yml = Yaml::parse(file_get_contents($this->get('kernel')->getRootDir().'/config/parametros.yml'));
-
+     
 
        $empresa_id = (integer) $request->request->get('empresa_id');
 
@@ -510,8 +512,9 @@ class DefaultController extends Controller
                             <th class="hd__title">'.$this->get('translator')->trans('Dispositivo').'</th>';
                        if (!$empresa_id) {
                             $html .= '<th class="hd__title">'.$this->get('translator')->trans('Empresa').'</th>';
-                            $html .= '<th class="hd__title">'.$this->get('translator')->trans('País').'</th>';
+                            
                         }
+                        $html .= '<th class="hd__title">'.$this->get('translator')->trans('País').'</th>';
                         $html.='</tr>
                     </thead>
                     <tbody style="font-size: .7rem;">';
@@ -525,8 +528,9 @@ class DefaultController extends Controller
                         <td>'.$registro['dispositivo'].'</td>';
                         if (!$empresa_id) {
                             $html .= '<td>'.$registro['empresa'].'</td>';
-                            $html .= '<td>'.$registro['pais'].'</td>';
+                            
                         }
+                        $html .= '<td>'.$registro['ubicacion'].'</td>';
                     $html .= '</tr>';
         }
 
@@ -537,6 +541,104 @@ class DefaultController extends Controller
 
         $return = json_encode($return);
         return new Response($return, 200, array('Content-Type' => 'application/json'));
+    }
+
+    public function excelUsuariosConectadosAction($empresa_id, Request $request)
+    {
+        $session = new Session();
+        $em = $this->getDoctrine()->getManager();
+        $rs = $this->get('reportes');
+        $yml = Yaml::parse(file_get_contents($this->get('kernel')->getRootDir().'/config/parametros.yml'));
+
+
+        //$empresa_id = (integer) $request->request->get('empresa_id');
+
+        //return new response($empresa_id);
+
+        $listado = $rs->usuariosConectados($empresa_id, $session->get('usuario')['id']);
+
+        $empresa = $this->getDoctrine()->getRepository('LinkComunBundle:AdminEmpresa')->find($empresa_id);
+
+
+
+        //return new response(var_dump($listado));
+
+
+
+        $fileWithPath = $this->container->getParameter('folders')['dir_project'].'docs/formatos/ListadoUsuariosConectados.xlsx';
+        $objPHPExcel = \PHPExcel_IOFactory::load($fileWithPath);
+        $objWorksheet = $objPHPExcel->setActiveSheetIndex(0);
+        $columnNames = array('A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z');
+
+        // Encabezado
+        $objWorksheet->setCellValue('A1', $this->get('translator')->trans('Listado de usuarios conectados'));
+        
+        if (!count($listado))
+        {
+            $objWorksheet->mergeCells('A5:S5');
+            $objWorksheet->setCellValue('A5', $this->get('translator')->trans('No existen registros para esta consulta'));
+        }
+        else {
+            $row = 5;
+            $i = 0;
+            $styleThinBlackBorderOutline = array(
+                'borders' => array(
+                    'allborders' => array(
+                        'style' => \PHPExcel_Style_Border::BORDER_THIN,
+                        'color' => array('argb' => 'FF000000'),
+                    ),
+                ),
+            );
+            $font_size = 11;
+            $font = 'Arial';
+            $horizontal_aligment = \PHPExcel_Style_Alignment::HORIZONTAL_CENTER;
+            $vertical_aligment = \PHPExcel_Style_Alignment::VERTICAL_CENTER;
+            //return new response(var_dump($res));
+
+            foreach ($listado as $usuario)
+            {
+
+                $objWorksheet->getStyle("A$row:G$row")->applyFromArray($styleThinBlackBorderOutline); //bordes
+                $objWorksheet->getStyle("A$row:G$row")->getFont()->setSize($font_size); // Tamaño de las letras
+                $objWorksheet->getStyle("A$row:G$row")->getFont()->setName($font); // Tipo de letra
+                $objWorksheet->getStyle("A$row:G$row")->getAlignment()->setHorizontal($horizontal_aligment); // Alineado horizontal
+                $objWorksheet->getStyle("A$row:G$row")->getAlignment()->setVertical($vertical_aligment); // Alineado vertical
+                $objWorksheet->getRowDimension($row)->setRowHeight(40); // Altura de la fila
+                // Datos de las columnas comunes
+                $objWorksheet->setCellValue('A'.$row, $usuario['nombre']);
+                $objWorksheet->setCellValue('B'.$row, $usuario['apellido']);
+                $objWorksheet->setCellValue('C'.$row, $usuario['login']);
+                $objWorksheet->setCellValue('D'.$row, $usuario['correo_corporativo']);
+                $objWorksheet->setCellValue('E'.$row, $usuario['correo_personal']);
+                $objWorksheet->setCellValue('F'.$row, $usuario['dispositivo']);
+                $objWorksheet->setCellValue('G'.$row, $usuario['ubicacion']);
+                $row++;
+
+            }
+
+        }
+
+        // Crea el writer
+        $writer = $this->get('phpexcel')->createWriter($objPHPExcel, 'Excel2007');
+        $hoy = date('y-m-d');
+
+        // Envia la respuesta del controlador
+        $response = $this->get('phpexcel')->createStreamedResponse($writer);
+        // Agrega los headers requeridos
+        
+            $dispositionHeader = $response->headers->makeDisposition(
+                ResponseHeaderBag::DISPOSITION_ATTACHMENT,
+                    'Usuarios conectados'.$hoy.'.xlsx'
+            );
+
+        $response->headers->set('Content-Type', 'text/vnd.ms-excel; charset=utf-8');
+        $response->headers->set('Pragma', 'public');
+        $response->headers->set('Cache-Control', 'maxage=1');
+        $response->headers->set('Content-Disposition', $dispositionHeader);
+
+        return $response;
+        
+
     }
 
 }
