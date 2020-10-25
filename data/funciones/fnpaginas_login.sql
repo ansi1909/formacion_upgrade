@@ -36,6 +36,7 @@ BEGIN
         AND cnp.nivel_id = ppnivel_id
         AND cpe.activo
         AND cpe.fecha_inicio <= ppfecha
+        AND cp.estatus_contenido_id = 2
     INTO paginas;
 
     ---- Ciclo para obtener paginas padre
@@ -60,6 +61,7 @@ BEGIN
         AND cnp.nivel_id = ppnivel_id
         AND cpe.activo
         AND cpe.fecha_inicio <= ppfecha
+        AND cp.estatus_contenido_id = 2
         ORDER BY cpe.orden  ASC
         LOOP
             cp:=cp+1;
@@ -77,6 +79,7 @@ BEGIN
                     WHERE cp.pagina_id = pagina.id
                     AND cpe.empresa_id = ppempresa_id
                     AND cpe.activo
+                    AND cp.estatus_contenido_id = 2
                     AND cpe.fecha_inicio <= ppfecha
                 INTO modulos;
                 json_modulo := '';
@@ -101,6 +104,7 @@ BEGIN
                         AND cpe.activo
                         AND cp.pagina_id = pagina.id
                         AND cpe.fecha_inicio <= ppfecha
+                        AND cp.estatus_contenido_id = 2
                         ORDER BY cp.orden  ASC
                         LOOP
                             RAISE NOTICE 'Modulo: %',modulo.pagina;
@@ -124,6 +128,7 @@ BEGIN
                                 AND cpe.empresa_id = ppempresa_id
                                 AND cpe.activo
                                 AND cpe.fecha_inicio <= ppfecha
+                                AND cp.estatus_contenido_id = 2
                             INTO materias;
                             json_materia :='';
                             cma:=0;
@@ -147,6 +152,7 @@ BEGIN
                                 AND cpe.activo
                                 AND cp.pagina_id = modulo.id
                                 AND cpe.fecha_inicio <= ppfecha
+                                AND cp.estatus_contenido_id = 2
                                 ORDER BY cp.orden  ASC
                                 LOOP
                                     cma:=cma+1;
@@ -170,6 +176,7 @@ BEGIN
                                         AND cpe.empresa_id = ppempresa_id
                                         AND cpe.activo
                                         AND cpe.fecha_inicio <= ppfecha
+                                        AND cp.estatus_contenido_id = 2
                                         INTO lecciones;
                                     json_leccion :='';
                                     cl:=0;
@@ -193,6 +200,7 @@ BEGIN
                                         AND cpe.activo
                                         AND cp.pagina_id = materia.id
                                         AND cpe.fecha_inicio <= ppfecha
+                                        AND cp.estatus_contenido_id = 2
                                         ORDER BY cp.orden  ASC
                                         LOOP
                                         cl:=cl+1;
