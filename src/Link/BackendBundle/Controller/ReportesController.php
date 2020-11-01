@@ -1096,6 +1096,7 @@ class ReportesController extends Controller
         $usuarios_activos=0;
         $usuarios_inactivos=0;
         $usuarios_registrados=0;
+        $usuarios_sin_acceso=0;
         $i= 5;
         $empresa = $this->getDoctrine()->getRepository('LinkComunBundle:AdminEmpresa')->find($empresa_id);
 
@@ -1109,14 +1110,18 @@ class ReportesController extends Controller
         $r = $query->fetchAll();
 
         foreach ($r as $re) {
-            if ($re['logueado'] > 0) {
-                $usuarios_activos++;
-            }else{
-                $usuarios_inactivos++;
-            }
-           $usuarios_registrados = $usuarios_activos + $usuarios_inactivos;
+            if($re['acceso']){
+                if($re['logueado']){
+                    $usuarios_activos++;
+                }else{
+                    $usuarios_inactivos++;
+                }
+                }else{
+                    $usuarios_sin_acceso++;
+                }
         }
 
+        $usuarios_registrados = count($r);
         $query2 = $em->getConnection()->prepare('SELECT
                                                 fnreporte_general(:re, :pempresa_id) as
                                                 resultado; fetch all from re;');
@@ -1172,13 +1177,14 @@ class ReportesController extends Controller
                 $objWorksheet->getStyle("A$row:I$row")->getAlignment()->setHorizontal($horizontal_aligment); // Alineado horizontal
                 $objWorksheet->getStyle("A$row:I$row")->getAlignment()->setVertical($vertical_aligment); // Alineado vertical
                 $objWorksheet->getRowDimension($row)->setRowHeight(30); // Altura de la fila
-                $objWorksheet->getStyle("A6:C6")->applyFromArray($styleThinBlackBorderOutline); //bordes
-                $objWorksheet->getStyle("A5:C5")->applyFromArray($styleThinBlackBorderOutline); //bordes
+                $objWorksheet->getStyle("A6:D6")->applyFromArray($styleThinBlackBorderOutline); //bordes
+                $objWorksheet->getStyle("A5:D5")->applyFromArray($styleThinBlackBorderOutline); //bordes
 
                 // Datos de las columnas comunes
                 $objWorksheet->setCellValue('A6', $usuarios_registrados);
                 $objWorksheet->setCellValue('B6', $usuarios_activos);
                 $objWorksheet->setCellValue('C6', $usuarios_inactivos);
+                $objWorksheet->setCellValue('D6', $usuarios_sin_acceso);
                 $objWorksheet->setCellValue('A'.$row, $re['nombre']);
                 $objWorksheet->setCellValue('B'.$row, $re['nombre_nivel']);
                 $objWorksheet->setCellValue('C'.$row, $fecha_inicio);

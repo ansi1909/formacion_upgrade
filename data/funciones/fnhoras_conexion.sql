@@ -21,6 +21,7 @@ begin
             INNER JOIN admin_nivel an ON an.id = u.nivel_id
             WHERE u.empresa_id = pempresa_id
             AND u.id IN (SELECT ru.usuario_id FROM admin_rol_usuario ru WHERE ru.rol_id = 2)
+            AND u.activo
             AND CAST(fecha_ingreso AS TIME) BETWEEN phora1 and phora2
             AND fecha_ingreso BETWEEN pdesde AND phasta
             AND (LOWER(an.nombre) NOT LIKE 'revisor%' AND LOWER(an.nombre) NOT LIKE 'tutor%')

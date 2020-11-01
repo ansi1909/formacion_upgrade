@@ -11,7 +11,7 @@ $BODY$
 begin
 
     OPEN resultado FOR
-        SELECT count(ass.usuario_id) as logueado,au.login as login
+        SELECT count(ass.usuario_id) as logueado,au.login as login,au.activo as acceso
         FROM admin_usuario au
         LEFT  JOIN admin_sesion ass ON au.id = ass.usuario_id
         INNER JOIN admin_nivel an ON au.nivel_id = an.id

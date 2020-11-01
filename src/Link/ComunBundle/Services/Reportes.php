@@ -746,11 +746,14 @@ class Reportes
                                        'evaluaciones_materias' => $evaluaciones_materias);
 
             }
-
-            $programas_arr[] = array('id' => $programa->getId(),
-                                     'nombre' => $programa->getNombre(),
-                                     'avance' => $programa_log ? number_format($programa_log->getPorcentajeAvance(), 0) : 0,
-                                     'modulos' => $modulos_arr);
+            $status_programa = ($programa_log)? $em->getRepository('LinkComunBundle:CertiEstatusPagina')->find($programa_log->getEstatusPagina()->getId()):null;
+            $fecha_inicio = ($programa_log)? $this->translator->trans('Inicio').': '.$programa_log->getFechaInicio()->format('d-m-Y').' ':'';
+            $fecha_fin = ($programa_log)? ($programa_log->getFechaFin())? ', '.$this->translator->trans('Fin').': '.$programa_log->getFechaFin()->format('d-m-Y'):'':'';
+            $status_programa = (is_null($status_programa))? $this->translator->trans('No iniciado'):$status_programa->getNombre().', ';
+            $programas_arr[] = array('id'        => $programa->getId(),
+                                     'nombre'    => $programa->getNombre().', '.$this->translator->trans('Estatus').': '.$status_programa.$fecha_inicio.$fecha_fin,
+                                     'avance'    => $programa_log ? number_format($programa_log->getPorcentajeAvance(), 0) : 0,
+                                     'modulos'   => $modulos_arr);
 
         }
 

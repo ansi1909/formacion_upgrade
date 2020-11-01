@@ -314,7 +314,10 @@ class Functions
         foreach ($tutores as $tutor)
         {
 
-            $correo = ($tutor->getCorreoCorporativo()) ? $tutor->getCorreoCorporativo() : ($tutor->getCorreoPersonal()) ? $tutor->getCorreoPersonal() : null;
+            //$correo = ($tutor->getCorreoCorporativo()) ? $tutor->getCorreoCorporativo() : ($tutor->getCorreoPersonal()) ? $tutor->getCorreoPersonal() : null;
+
+            $correo = ($tutor->getCorreoCorporativo())? $tutor->getCorreoCorporativo():(($tutor->getCorreoPersonal()? $tutor->getCorreoPersonal : null));
+
 
             // El usuario debe estar dentro del nivel asignado para ver el contenido de la página
             $query = $em->createQuery('SELECT count(np.id) FROM LinkComunBundle:CertiNivelPagina np
@@ -3995,10 +3998,10 @@ public function obtenerEstructuraJson($pagina_id){
     public function obtenerIp(){
       if (!empty($_SERVER['HTTP_CLIENT_IP']))
           return $_SERVER['HTTP_CLIENT_IP'];
-        
+
       if (!empty($_SERVER['HTTP_X_FORWARDED_FOR']))
           return $_SERVER['HTTP_X_FORWARDED_FOR'];
-    
+
       return $_SERVER['REMOTE_ADDR'];
     }
 

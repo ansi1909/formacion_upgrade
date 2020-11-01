@@ -6,7 +6,7 @@
         <meta http-equiv="X-UA-Compatible" content="ie=edge">
         <link href="https://fonts.googleapis.com/css?family=Merriweather:400,700|Open+Sans:300,400,400i,600,600i,700|Roboto:300,400,500,700" rel="stylesheet">
         <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-        
+
         <title>
             {% block title %}
                 {% if app.session.started and app.session.get('empresa').titulo is defined and app.session.get('empresa').titulo != '' %}
@@ -171,7 +171,7 @@
         <a data-toggle="modal" data-target="#modalCs2" id="automaticLogout"></a>
 
         <div class="container-fluid mt-6">
-            
+
             {# SIDE MENU #}
             {% block sidemenu %}
                 <nav>
@@ -193,13 +193,13 @@
                 {% block body %}
                     skbvgflsbvlashbl
                 {% endblock %}
-                
+
                 <footer class="container footer">
                     <div class="row d-flex flex-column flex-md-row justify-content-between align-items-center footer-wrapper">
                         <div class="">
                             <img src="{{ asset('front/assets/img/formacion2.0_smart.svg') }}" class="imgForm" alt="">
                         </div>
-                        
+
                         <div class="">
                             <ul class="ayudaForm p-0 text-center">
                                 <li>
@@ -227,7 +227,7 @@
                         </div>
                     </div>
                 </footer>
-                
+
             </div>
 
             {% block comments %}{% endblock %}
@@ -256,7 +256,7 @@
         </div>
         {{ include('LinkFrontendBundle:Soporte:soporteVirtual.html.twig') }}
         {{ include('LinkFrontendBundle:Default:confirmacionEmail.html.twig') }}
-        
+
         <!-- Modal Cierre Automático de Sesion-->
         <div class="modal modalCerrarSesion" id="modalCs2" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
             <div class="container-fluid">
@@ -300,8 +300,8 @@
                 </div>
                 <div class="row mt-2 mb-2 justify-content-center align-items-center">
                     <div class="col-10 col-md-10 col-sm-10 col-xs-10 col-lg-10 col-xl-10 text-center py-0" id="padre">
-                        
-                        
+
+
                     </div>
                 </div>
                 <form id="respuesta" method="POST" action="{{ path('_ajaxRespuestaComentario') }}">
@@ -332,8 +332,8 @@
 
         <!-- Modal Mostrar imagen grande-->
         <div class="modal modalShowImage pb-4 px-0" id="modalShowImage" tabindex="-1" role="dialog" aria-labelledby="showImage" aria-hidden="true">
-            <div class="bigImageContainer mx-auto d-flex justify-content-center align-items-center"> 
-                
+            <div class="bigImageContainer mx-auto d-flex justify-content-center align-items-center">
+
                 <div class="bigImage j-bigImage d-flex justify-content-center align-items-center">
                     <a href="#" class="closeModal" data-dismiss="modal"><span class="material-icons ic-close-white text-gray" aria-hidden="true">close</span></a>
                 </div>

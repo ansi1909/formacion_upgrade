@@ -19,10 +19,10 @@ class ReportesJTController extends Controller
 {
     public function conexionesUsuarioAction($app_id, Request $request)
     {
-        
+
         $session = new Session();
         $f = $this->get('funciones');
-        
+
         if (!$session->get('ini') || $f->sesionBloqueda($session->get('sesion_id')))
         {
             return $this->redirectToRoute('_loginAdmin');
@@ -58,10 +58,10 @@ class ReportesJTController extends Controller
 
     public function avanceProgramasAction($app_id, Request $request)
     {
-        
+
         $session = new Session();
         $f = $this->get('funciones');
-        
+
         if (!$session->get('ini') || $f->sesionBloqueda($session->get('sesion_id')))
         {
             return $this->redirectToRoute('_loginAdmin');
@@ -124,7 +124,7 @@ class ReportesJTController extends Controller
         }
 
         }
-        
+
         $timeZone = $yml['parameters']['time_zone']['local'];
         $fecha_actual = new \DateTime('now');
         $fecha_actual->setTimeZone(new \DateTimeZone($timeZone));
@@ -169,8 +169,8 @@ class ReportesJTController extends Controller
         $pagina = $this->getDoctrine()->getRepository('LinkComunBundle:CertiPagina')->find($pagina_id);
 
         $listado = $rs->avanceProgramas($empresa_id, $pagina_id, $desde, $hasta);
-        
-        if ($excel==1) 
+
+        if ($excel==1)
         {
 
            $fileWithPath = $this->container->getParameter('folders')['dir_project'].'docs/formatos/avanceProgramas.xlsx';
@@ -181,7 +181,7 @@ class ReportesJTController extends Controller
             // Encabezado
             $objWorksheet->setCellValue('A1', $this->get('translator')->trans('Avance en programas').'. '.$this->get('translator')->trans('Desde').': '.$desdef.'. '.$this->get('translator')->trans('Hasta').': '.$hastaf.'. '.$this->get('translator')->trans('Huso horario').': '.$timeZoneReport);
                 $objWorksheet->setCellValue('A2', $this->get('translator')->trans('Empresa').': '.$empresa->getNombre().'. '.$this->get('translator')->trans('Programa').': '.$pagina->getNombre().'.');
-            
+
             if (!count($listado))
             {
                 $objWorksheet->mergeCells('A5:S5');
@@ -208,17 +208,17 @@ class ReportesJTController extends Controller
                  // Estilizar las celdas antes de insertar los datos
                 for ($f=$row; $f<=$last_row; $f++)
                 {
-                        $objWorksheet->getStyle("A$f:W$f")->applyFromArray($styleThinBlackBorderOutline); //bordes
-                        $objWorksheet->getStyle("A$f:W$f")->getFont()->setSize($font_size); // Tamaño de las letras
-                        $objWorksheet->getStyle("A$f:W$f")->getFont()->setName($font); // Tipo de letra
-                        $objWorksheet->getStyle("A$f:W$f")->getAlignment()->setHorizontal($horizontal_aligment); // Alineado horizontal
-                        $objWorksheet->getStyle("A$f:W$f")->getAlignment()->setVertical($vertical_aligment); // Alineado vertical
-                        $objWorksheet->getStyle("A$f:W$f")->getAlignment()->setWrapText(true);//ajustar texto a la columna
+                        $objWorksheet->getStyle("A$f:X$f")->applyFromArray($styleThinBlackBorderOutline); //bordes
+                        $objWorksheet->getStyle("A$f:X$f")->getFont()->setSize($font_size); // Tamaño de las letras
+                        $objWorksheet->getStyle("A$f:X$f")->getFont()->setName($font); // Tipo de letra
+                        $objWorksheet->getStyle("A$f:X$f")->getAlignment()->setHorizontal($horizontal_aligment); // Alineado horizontal
+                        $objWorksheet->getStyle("A$f:X$f")->getAlignment()->setVertical($vertical_aligment); // Alineado vertical
+                        $objWorksheet->getStyle("A$f:X$f")->getAlignment()->setWrapText(true);//ajustar texto a la columna
                         $objWorksheet->getRowDimension($f)->setRowHeight(35); // Altura de la fila
                 }
 
                 //return new response(var_dump($listado[2]));
-                
+
                 foreach ($listado as $participante)
                 {
 
@@ -244,9 +244,9 @@ class ReportesJTController extends Controller
                     $fecha_fin = $fun->converDate($participante['fecha_fin_programa'],$yml['parameters']['time_zone']['default'],$timeZoneEmpresa);
                     if($status == 3){
                         $totalTime = $fun->totalTime($participante['fecha_inicio_programa'],$participante['fecha_fin_programa']);
-                       
+
                     }
-                    
+
                     // Datos de las columnas del reporte
                     $correo = trim($participante['correo_corporativo']) != '' ? $participante['correo_corporativo'] : $participante['correo_personal'];
                     $objWorksheet->setCellValue('A'.$row, $participante['codigo']);
@@ -256,22 +256,23 @@ class ReportesJTController extends Controller
                     $objWorksheet->setCellValue('E'.$row, $fecha_registro->fecha);
                     $objWorksheet->setCellValue('F'.$row, $fecha_registro->hora);
                     $objWorksheet->setCellValue('G'.$row, $acceso);
-                    $objWorksheet->setCellValue('H'.$row, $correo);
-                    $objWorksheet->setCellValue('I'.$row, $participante['pais']);
-                    $objWorksheet->setCellValue('J'.$row, $participante['nivel']);
-                    $objWorksheet->setCellValue('K'.$row, $participante['campo1']);
-                    $objWorksheet->setCellValue('L'.$row, $participante['campo2']);
-                    $objWorksheet->setCellValue('M'.$row, $participante['campo3']);
-                    $objWorksheet->setCellValue('N'.$row, $participante['campo4']);
-                    $objWorksheet->setCellValue('O'.$row, trim($participante['modulos']));
-                    $objWorksheet->setCellValue('P'.$row, trim($participante['materias']));
-                    $objWorksheet->setCellValue('Q'.$row, trim($promedio));
-                    $objWorksheet->setCellValue('R'.$row, trim($estatusProragama[$status]));
-                    $objWorksheet->setCellValue('S'.$row, ($status != 0)? $fecha_inicio->fecha:'');
-                    $objWorksheet->setCellValue('T'.$row, ($status!= 0)? $fecha_inicio->hora:'');
-                    $objWorksheet->setCellValue('U'.$row, ($status == 3)? $fecha_fin->fecha:'');
-                    $objWorksheet->setCellValue('V'.$row, ($status == 3)? $fecha_fin->hora:'');
-                    $objWorksheet->setCellValue('W'.$row, ($status == 3)? $totalTime:'');
+                    $objWorksheet->setCellValue('H'.$row, ($participante['logueado']>0)? $this->get('translator')->trans('SI'):$this->get('translator')->trans('NO'));
+                    $objWorksheet->setCellValue('I'.$row, $correo);
+                    $objWorksheet->setCellValue('J'.$row, $participante['pais']);
+                    $objWorksheet->setCellValue('K'.$row, $participante['nivel']);
+                    $objWorksheet->setCellValue('L'.$row, $participante['campo1']);
+                    $objWorksheet->setCellValue('M'.$row, $participante['campo2']);
+                    $objWorksheet->setCellValue('N'.$row, $participante['campo3']);
+                    $objWorksheet->setCellValue('O'.$row, $participante['campo4']);
+                    $objWorksheet->setCellValue('P'.$row, trim($participante['modulos']));
+                    $objWorksheet->setCellValue('Q'.$row, trim($participante['materias']));
+                    $objWorksheet->setCellValue('R'.$row, trim($promedio));
+                    $objWorksheet->setCellValue('S'.$row, trim($estatusProragama[$status]));
+                    $objWorksheet->setCellValue('T'.$row, ($status != 0)? $fecha_inicio->fecha:'');
+                    $objWorksheet->setCellValue('U'.$row, ($status!= 0)? $fecha_inicio->hora:'');
+                    $objWorksheet->setCellValue('V'.$row, ($status == 3)? $fecha_fin->fecha:'');
+                    $objWorksheet->setCellValue('W'.$row, ($status == 3)? $fecha_fin->hora:'');
+                    $objWorksheet->setCellValue('X'.$row, ($status == 3)? $totalTime:'');
                     $row++;
 
                 }
@@ -290,10 +291,10 @@ class ReportesJTController extends Controller
             $archivo = $this->container->getParameter('folders')['uploads'].$path;
             $html = '';
 
-           
+
         }
         else {
-            
+
             $archivo = '';
 
             $html = '<table class="table" id="dt">
@@ -312,7 +313,7 @@ class ReportesJTController extends Controller
                     </tr>
                 </thead>
                 <tbody style="font-size: .7rem;">';
-            
+
             foreach ($listado as $registro)
             {
                 $correo = trim($registro['correo_corporativo']) != '' ? $registro['correo_corporativo'] : $registro['correo_personal'];
@@ -353,7 +354,7 @@ class ReportesJTController extends Controller
             $html .= '</tbody>
                     </table>';
             $archivo = '';
-        }                                                                             
+        }
 
         $return = array('archivo' => $archivo,
                         'html' => $html);
@@ -374,7 +375,7 @@ class ReportesJTController extends Controller
         $rs = $this->get('reportes');
         $fun = $this->get('funciones');
         $yml = Yaml::parse(file_get_contents($this->get('kernel')->getRootDir().'/config/parametros.yml'));
-        
+
         $empresa_id = $request->request->get('empresa_id');
 
         $empresa = $this->getDoctrine()->getRepository('LinkComunBundle:AdminEmpresa')->find($empresa_id);
@@ -397,10 +398,10 @@ class ReportesJTController extends Controller
 
         $listado = $rs->conexionesUsuario($empresa_id,$desde,$hasta);//
 
-      
-        if($excel==1) 
+
+        if($excel==1)
         {
-            
+
             $fileWithPath = $this->container->getParameter('folders')['dir_project'].'docs/formatos/conexionesUsuarios.xlsx';
             $objPHPExcel = \PHPExcel_IOFactory::load($fileWithPath);
             $objWorksheet = $objPHPExcel->setActiveSheetIndex(0);
@@ -409,7 +410,7 @@ class ReportesJTController extends Controller
             // Encabezado
             $objWorksheet->setCellValue('A1', $this->get('translator')->trans('Conexiones por usuario').'. '.$this->get('translator')->trans('Desde').': '.$desdef.'. '.$this->get('translator')->trans('Hasta').': '.$hastaf.'. '.$this->get('translator')->trans('Huso horario').' : '.$timeZoneReport);
             $objWorksheet->setCellValue('A2', $this->get('translator')->trans('Empresa').': '.$empresa->getNombre());
-            
+
             if (!count($listado))
             {
                 $objWorksheet->mergeCells('A5:S5');
@@ -437,7 +438,7 @@ class ReportesJTController extends Controller
                  // Estilizar las celdas antes de insertar los datos
                 for ($f=$row; $f<=$last_row; $f++)
                 {
-                        
+
                         $objWorksheet->getStyle("A$f:P$f")->applyFromArray($styleThinBlackBorderOutline); //bordes
                         $objWorksheet->getStyle("A$f:P$f")->getFont()->setSize($font_size); // Tamaño de las letras
                         $objWorksheet->getStyle("A$f:P$f")->getFont()->setName($font); // Tipo de letra
@@ -446,7 +447,7 @@ class ReportesJTController extends Controller
                         $objWorksheet->getStyle("A$f:P$f")->getAlignment()->setWrapText(true);//ajustar texto a la columna
                         $objWorksheet->getRowDimension($f)->setRowHeight(35); // Altura de la fila
                 }
-                
+
                 foreach ($listado as $participante)
                 {
                     $fecha = $fun->converDate($participante['fecha_registro'],$yml['parameters']['time_zone']['default'],$timeZoneEmpresa);
@@ -484,7 +485,7 @@ class ReportesJTController extends Controller
                     $objWorksheet->setCellValue('O'.$row, $promedio);
                     $objWorksheet->setCellValue('P'.$row, $participante['visitas']);
 
-                  
+
                     $row++;
                 }
             }
@@ -500,12 +501,12 @@ class ReportesJTController extends Controller
             $archivo = $this->container->getParameter('folders')['uploads'].$path;
             $html = '';
 
-           
+
         }
         else
         {
 
-               
+
 
                   $html = '<table class="table" id="dt">
                     <thead class="sty__title">
@@ -520,7 +521,7 @@ class ReportesJTController extends Controller
                         </tr>
                     </thead>
                     <tbody style="font-size: .7rem;">';
-        
+
         foreach ($listado as $registro)
         {
             if ($registro['correo_corporativo']!='') {
@@ -539,7 +540,7 @@ class ReportesJTController extends Controller
                 $promedio = $registro['promedio'];
             }
             $html .= '<tr>
-                        
+
                         <td><a class="detail" data-toggle="modal" data-target="#detailModal" data="'.$registro['login'].'" empresa_id="'.$empresa_id.'" href="#">'.$registro['nombre'].' '.$registro['apellido'].'</a></td>
                         <td>'.$registro['login'].'</td>
                         <td>'.$registro['nivel'].'</td>
@@ -556,7 +557,7 @@ class ReportesJTController extends Controller
         }
 
 
-                                                                                              
+
 
         $return = array('archivo' => $archivo,
                         'html' => $html);
@@ -598,10 +599,10 @@ class ReportesJTController extends Controller
         $empresa_id = $request->query->get('empresa_id');
         $term =  $request->query->get('term');
         $term = '%'.$term.'%';
-        
+
         $em = $this->getDoctrine()->getManager();
 
-        $query = $em->createQuery('SELECT u FROM LinkComunBundle:AdminUsuario u 
+        $query = $em->createQuery('SELECT u FROM LinkComunBundle:AdminUsuario u
                                     WHERE u.login LIKE :term AND u.empresa = :empresa_id')
                     ->setParameters(array( 'term' => $term, 'empresa_id' => $empresa_id));
         $usuarios = $query->getResult();
@@ -634,7 +635,7 @@ class ReportesJTController extends Controller
         $dataUsuario = array();
         $html = '';
 
-        $usuario = $this->getDoctrine()->getRepository('LinkComunBundle:AdminUsuario')->findOneBy(array('login' => $login, 
+        $usuario = $this->getDoctrine()->getRepository('LinkComunBundle:AdminUsuario')->findOneBy(array('login' => $login,
                                                                                                         'empresa' => $empresa_id));
 
         if ($usuario)
@@ -643,18 +644,19 @@ class ReportesJTController extends Controller
             $data_found = 1;
             $nivel_id = $usuario->getNivel() ? $usuario->getNivel()->getId() : 0;
             $reporte = $rs->detalleParticipanteProgramas($usuario->getId(), $empresa_id, $nivel_id, $yml);
-            //tomar los valores devueltos por la consulta, transformarlos segun la zona horaria y actualizarlos en el array si tiene 
+            //tomar los valores devueltos por la consulta, transformarlos segun la zona horaria y actualizarlos en el array si tiene
             if($reporte['ingresos']['primeraConexion']!='Nunca se ha conectado') {
                 $primeraConexion = $fn->converDate($reporte['ingresos']['primeraConexion'],$yml['parameters']['time_zone']['default'],$timeZoneEmpresa);
                 $ultimaConexion = $fn->converDate($reporte['ingresos']['ultimaConexion'],$yml['parameters']['time_zone']['default'],$timeZoneEmpresa);
                 $reporte['ingresos']['primeraConexion'] = $primeraConexion->fecha.' '.$primeraConexion->hora;
                 $reporte['ingresos']['ultimaConexion'] = $ultimaConexion->fecha.' '.$ultimaConexion->hora;
-            }   
-                
+            }
+
             $dataUsuario = array('foto' => trim($usuario->getFoto()) ? trim($usuario->getFoto()) : 0,
                                  'login' => $usuario->getLogin(),
                                  'nombre' => $usuario->getNombre(),
                                  'apellido' => $usuario->getApellido(),
+                                 'clave'   => $usuario->getClave(),
                                  'correoPersonal' => $usuario->getCorreoPersonal(),
                                  'fechaNacimiento' => $usuario->getFechaNacimiento() ? $usuario->getFechaNacimiento()->format('d/m/Y') : '',
                                  'activo' => $usuario->getActivo() ? $this->get('translator')->trans('Sí') : 'No',
@@ -678,8 +680,8 @@ class ReportesJTController extends Controller
         return new Response($return, 200, array('Content-Type' => 'application/json'));
 
     }
-   
 
-   
+
+
 
 }

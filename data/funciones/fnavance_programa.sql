@@ -17,7 +17,7 @@ begin
 
     SELECT u.id, u.codigo AS codigo, u.login AS login, u.nombre AS nombre, u.apellido AS apellido, u.activo AS activo, u.correo_personal AS correo_personal,
         u.correo_corporativo AS correo_corporativo, e.nombre AS empresa, c.nombre AS pais, n.nombre AS nivel,
-        u.fecha_registro AS fecha_registro, u.campo1 AS campo1, u.campo2 AS campo2, u.campo3 AS campo3, u.campo4 AS campo4,
+        u.fecha_registro AS fecha_registro, u.campo1 AS campo1, u.campo2 AS campo2, u.campo3 AS campo3, u.campo4 AS campo4,count(ass.usuario_id) as logueado,
         (SELECT COUNT(pl.id) AS modulos FROM certi_pagina_log pl INNER JOIN certi_pagina p ON pl.pagina_id = p.id
             WHERE pl.estatus_pagina_id = 3
             AND pl.usuario_id = u.id
@@ -66,6 +66,7 @@ begin
         ) as hora_fin_programa
     FROM admin_usuario u INNER JOIN (admin_empresa e INNER JOIN admin_pais c ON e.pais_id = c.id) ON u.empresa_id = e.id
     LEFT JOIN admin_nivel n ON u.nivel_id = n.id
+    LEFT  JOIN admin_sesion ass ON u.id = ass.usuario_id
     WHERE u.empresa_id = pempresa_id
     AND (LOWER(n.nombre) NOT LIKE 'revisor%' AND LOWER(n.nombre) NOT LIKE 'tutor%')
     AND ( u.id IN (SELECT pl.usuario_id FROM certi_pagina_log pl WHERE pl.fecha_inicio BETWEEN pdesde AND phasta AND pl.pagina_id = ppagina_id)
