@@ -21,7 +21,7 @@ class CertificadoController extends Controller
         if (!$session->get('ini') || $f->sesionBloqueda($session->get('sesion_id')))
         {
             return $this->redirectToRoute('_loginAdmin');
-        }else 
+        }else
         {
             $session->set('app_id', $app_id);
             if (!$f->accesoRoles($session->get('usuario')['roles'], $session->get('app_id')) )
@@ -40,8 +40,8 @@ class CertificadoController extends Controller
         {
             $usuario = $em->getRepository('LinkComunBundle:AdminUsuario')->find($session->get('usuario')['id']);
 
-            if ($usuario->getEmpresa()) 
-                $usuario_empresa = $usuario->getEmpresa()->getId(); 
+            if ($usuario->getEmpresa())
+                $usuario_empresa = $usuario->getEmpresa()->getId();
         }
 
         //contultamos el nombre de la aplicacion para reutilizarla en la vista
@@ -50,7 +50,7 @@ class CertificadoController extends Controller
         $certificados = $em->getRepository('LinkComunBundle:CertiCertificado')->findAll();
 
         $certificadodb = array();
-        
+
         foreach ($certificados as $certificado)
         {
             if ($usuario_empresa)
@@ -71,7 +71,7 @@ class CertificadoController extends Controller
                                          'tipoImagenCertificado' => $certificado->getTipoImagenCertificado()->getNombre(),
                                          'delete_disabled' => $f->linkEliminar($certificado->getId(),'CertiCertificado'));
             }
-            
+
         }
 
         return $this->render('LinkBackendBundle:Certificado:index.html.twig', array('aplicacion' => $aplicacion,
@@ -85,7 +85,7 @@ class CertificadoController extends Controller
 
         $session = new Session();
         $f = $this->get('funciones');
-      
+
         if (!$session->get('ini') || $f->sesionBloqueda($session->get('sesion_id')))
         {
             return $this->redirectToRoute('_loginAdmin');
@@ -100,26 +100,26 @@ class CertificadoController extends Controller
         $yml = Yaml::parse(file_get_contents($this->get('kernel')->getRootDir().'/config/parametros.yml'));
 
         $em = $this->getDoctrine()->getManager();
-     
+
         $usuario_empresa = 0;
         if($session->get('administrador')==false)//si no es administrador
         {
             $usuario = $em->getRepository('LinkComunBundle:AdminUsuario')->find($session->get('usuario')['id']);
 
-            if ($usuario->getEmpresa()) 
-                $usuario_empresa = $usuario->getEmpresa()->getId(); 
+            if ($usuario->getEmpresa())
+                $usuario_empresa = $usuario->getEmpresa()->getId();
         }
-     
+
         $empresas = $em->getRepository('LinkComunBundle:AdminEmpresa')->findBy(array('activo' => true),
                                                                                array('nombre' => 'ASC'));
-     
-        $tipo_certificados = $em->getRepository('LinkComunBundle:CertiTipoCertificado')->findAll(array('nombre' => 'ASC')); 
+
+        $tipo_certificados = $em->getRepository('LinkComunBundle:CertiTipoCertificado')->findAll(array('nombre' => 'ASC'));
 
         $tipo_imagen_certificados = $em->getRepository('LinkComunBundle:CertiTipoImagenCertificado')->findAll(array('nombre' => 'ASC'));
 
         if ($certificado_id)
             $certificado = $em->getRepository('LinkComunBundle:CertiCertificado')->find($certificado_id);
-        else 
+        else
             $certificado = new CertiCertificado();
 
         if ($request->getMethod() == 'POST')
@@ -136,7 +136,7 @@ class CertificadoController extends Controller
             $empresa = $em->getRepository('LinkComunBundle:AdminEmpresa')->find($empresa_id);
             $tipoCertificado = $em->getRepository('LinkComunBundle:CertiTipoCertificado')->find($tipo_certificado_id);
             $tipoImagenCertificado = $em->getRepository('LinkComunBundle:CertiTipoImagenCertificado')->find($tipo_imagen_certificado_id);
-            
+
             $certificado->setEntidadId($entidad);
             $certificado->setEmpresa($empresa);
             $certificado->setTipoCertificado($tipoCertificado);
@@ -165,7 +165,7 @@ class CertificadoController extends Controller
     {
         $session = new Session();
         $f = $this->get('funciones');
-      
+
         if (!$session->get('ini') || $f->sesionBloqueda($session->get('sesion_id')))
         {
             return $this->redirectToRoute('_loginAdmin');
@@ -185,8 +185,8 @@ class CertificadoController extends Controller
         {
             $usuario = $em->getRepository('LinkComunBundle:AdminUsuario')->find($session->get('usuario')['id']);
 
-            if ($usuario->getEmpresa()) 
-                $usuario_empresa = $usuario->getEmpresa()->getId(); 
+            if ($usuario->getEmpresa())
+                $usuario_empresa = $usuario->getEmpresa()->getId();
         }
 
         $certificado = $em->getRepository('LinkComunBundle:CertiCertificado')->find($certificado_id);
@@ -219,17 +219,17 @@ class CertificadoController extends Controller
 
     public function ajaxTipoCertificadoAction(Request $request)
     {
-        
+
         $em = $this->getDoctrine()->getManager();
         $yml = Yaml::parse(file_get_contents($this->get('kernel')->getRootDir().'/config/parametros.yml'));
-        
+
         $certificado_id = $request->query->get('certificado_id');
         $tipo_certificado_id = $request->query->get('tipo_certificado_id');
         $empresa_id = $request->query->get('empresa_id');
-        
+
         $error = 0;
         $html = '';
-       
+
         $empresa = $em->getRepository('LinkComunBundle:AdminEmpresa')->find($empresa_id);
 
         $tipo_certificado = $em->getRepository('LinkComunBundle:CertiTipoCertificado')->find($tipo_certificado_id);
@@ -238,7 +238,7 @@ class CertificadoController extends Controller
 
         if($tipo_certificado->getId()==1)//validamos que no exista un tipo de certificado para la empresa
             $certificado = $em->getRepository('LinkComunBundle:CertiCertificado')->findOneBy(array('tipoCertificado' => $tipo_certificado->getId(),
-                                                                                                   'empresa' => $empresa->getId()));            
+                                                                                                   'empresa' => $empresa->getId()));
 
         if($certificado)
         {
@@ -265,7 +265,7 @@ class CertificadoController extends Controller
             {
 
                 $certificados = $em->getRepository('LinkComunBundle:CertiCertificado')->findBy(array('tipoCertificado' => $tipo_certificado->getId(),
-                                                                                                     'empresa' => $empresa->getId()));     
+                                                                                                     'empresa' => $empresa->getId()));
 
                $entidad_ids = array();
                 if($certificado_id!=0)
@@ -285,10 +285,10 @@ class CertificadoController extends Controller
 
                 if($tipo_certificado->getId() == 2)
                 {
-                    
+
                     if(count($entidad_ids) == 0)
                     {
-                        $query = $em->createQuery('SELECT pe FROM LinkComunBundle:CertiPaginaEmpresa pe 
+                        $query = $em->createQuery('SELECT pe FROM LinkComunBundle:CertiPaginaEmpresa pe
                                                    JOIN pe.pagina p
                                                    WHERE pe.empresa= :empresa AND p.pagina IS NULL AND p.estatusContenido = :estatus_contenido_activo and pe.activo = :activo ORDER BY p.nombre ASC')
                                     ->setParameters(array('empresa' => $empresa->getId(),
@@ -297,7 +297,7 @@ class CertificadoController extends Controller
                         $paginaEmpresa = $query->getResult();
                     }else
                     {
-                        $query = $em->createQuery('SELECT pe FROM LinkComunBundle:CertiPaginaEmpresa pe 
+                        $query = $em->createQuery('SELECT pe FROM LinkComunBundle:CertiPaginaEmpresa pe
                                                    JOIN pe.pagina p
                                                    WHERE pe.empresa= :empresa AND p.pagina IS NULL AND pe.pagina NOT IN (:entidad) AND p.estatusContenido = :estatus_contenido_activo and pe.activo = :activo ORDER BY p.nombre ASC')
                                     ->setParameters(array('empresa' => $empresa->getId(),
@@ -311,7 +311,7 @@ class CertificadoController extends Controller
                     {
                         $html .= '<label for="texto" class="col-2 col-form-label">Entidad</label>';
                         $html .= '<div class="col-14">
-                                    <select class="form-control form_sty_select" name="entidad" id="entidad">'; 
+                                    <select class="form-control form_sty_select" name="entidad" id="entidad">';
                         foreach ($paginaEmpresa as $pagina)
                         {
                             $nombre = ucwords(mb_strtolower( $pagina->getPagina()->getNombre(),"UTF-8" ));
@@ -319,7 +319,7 @@ class CertificadoController extends Controller
                         }
                         $html .= '  </select>
                                     <span class="fa fa-industry"></span>
-                                  </div>';                    
+                                  </div>';
 
                     }else
                     {
@@ -331,7 +331,7 @@ class CertificadoController extends Controller
                         if($certificado_especifico)
                         {
 
-                            $query = $em->createQuery('SELECT pe FROM LinkComunBundle:CertiPaginaEmpresa pe 
+                            $query = $em->createQuery('SELECT pe FROM LinkComunBundle:CertiPaginaEmpresa pe
                                                        JOIN pe.pagina p
                                                        WHERE pe.empresa= :empresa AND p.pagina IS NULL AND pe.pagina = :entidad AND p.estatusContenido = :estatus_contenido_activo and pe.activo = :activo ORDER BY p.nombre ASC')
                                         ->setParameters(array('empresa' => $empresa->getId(),
@@ -339,12 +339,12 @@ class CertificadoController extends Controller
                                                               'entidad' => $certificado_especifico->getEntidadId(),
                                                               'activo' => true ));
                             $paginaEmpresa = $query->getResult();
-                            
+
                             if($paginaEmpresa)
                             {
                                 $html .= '<label for="texto" class="col-2 col-form-label">Entidad</label>';
                                 $html .= '<div class="col-14">
-                                            <select class="form-control form_sty_select" name="entidad" id="entidad">'; 
+                                            <select class="form-control form_sty_select" name="entidad" id="entidad">';
                                 foreach ($paginaEmpresa as $pagina)
                                 {
                                     $nombre = ucwords(mb_strtolower( $pagina->getPagina()->getNombre(),"UTF-8" ));
@@ -352,8 +352,8 @@ class CertificadoController extends Controller
                                 }
                                 $html .= '  </select>
                                             <span class="fa fa-industry"></span>
-                                          </div>';                    
-                            }                            
+                                          </div>';
+                            }
                         }else
                         {
                             $error = 1;
@@ -370,21 +370,21 @@ class CertificadoController extends Controller
 
                         if(count($entidad_ids) == 0)
                         {
-                            $grupoPaginas = $em->getRepository('LinkComunBundle:CertiGrupo')->findByEmpresa($empresa->getId());  
+                            $grupoPaginas = $em->getRepository('LinkComunBundle:CertiGrupo')->findByEmpresa($empresa->getId());
                         }else
                         {
-                            $query = $em->createQuery('SELECT cg FROM LinkComunBundle:CertiGrupo cg 
+                            $query = $em->createQuery('SELECT cg FROM LinkComunBundle:CertiGrupo cg
                                                        WHERE cg.empresa= :empresa AND cg.id NOT IN (:entidad)')
                                         ->setParameters(array('empresa' => $empresa->getId(),
                                                               'entidad' => $entidad_ids ));
-                            $grupoPaginas = $query->getResult();                            
+                            $grupoPaginas = $query->getResult();
                         }
 
                         if($grupoPaginas)
                         {
                             $html .= '<label for="texto" class="col-2 col-form-label">Entidad</label>';
                             $html .= '<div class="col-14">
-                                        <select class="form-control form_sty_select" name="entidad" id="entidad">';                        
+                                        <select class="form-control form_sty_select" name="entidad" id="entidad">';
                             foreach ($grupoPaginas as $pagina)
                             {
                                 $nombre = ucwords(mb_strtolower( $pagina->getNombre(),"UTF-8" ));
@@ -402,7 +402,7 @@ class CertificadoController extends Controller
                                        </div>';
                         }
                     }
-                }  
+                }
             }
         }
 
@@ -416,7 +416,7 @@ class CertificadoController extends Controller
     {
         $session = new Session();
         $f = $this->get('funciones');
-        
+
         if (!$session->get('ini') || $f->sesionBloqueda($session->get('sesion_id')))
         {
             return $this->redirectToRoute('_loginAdmin');
@@ -431,7 +431,7 @@ class CertificadoController extends Controller
 
         $yml = Yaml::parse(file_get_contents($this->get('kernel')->getRootDir().'/config/parametros.yml'));
         $em = $this->getDoctrine()->getManager();
-     
+
         $fecha = $f->fechaNatural(date('Y-m-d'));
         $contenidoMod = '';
 
@@ -447,9 +447,9 @@ class CertificadoController extends Controller
                 $articulo = $pagina->getCategoria()->getId() == $yml['parameters']['categoria']['materia'] || $pagina->getCategoria()->getId() == $yml['parameters']['categoria']['leccion'] ? $this->get('translator')->trans('de la') : $this->get('translator')->trans('del');
                 $contenidoMod .= '<div style="font-size:21px;text-align:center"> <h1>'.$this->get('translator')->trans('Contenido').' '.$articulo.' '.$pagina->getCategoria()->getNombre().': '.$pagina->getNombre().'</h1>';
 
-                $query = $em->createQuery('SELECT pe FROM LinkComunBundle:CertiPaginaEmpresa pe 
-                                            JOIN pe.pagina p 
-                                            WHERE pe.empresa = :empresa_id AND p.pagina = :pagina_id 
+                $query = $em->createQuery('SELECT pe FROM LinkComunBundle:CertiPaginaEmpresa pe
+                                            JOIN pe.pagina p
+                                            WHERE pe.empresa = :empresa_id AND p.pagina = :pagina_id
                                             ORDER BY pe.orden ASC')
                             ->setParameters(array('empresa_id' => $certificado->getEmpresa()->getId(),
                                                   'pagina_id' => $pagina->getId()));
@@ -474,9 +474,9 @@ class CertificadoController extends Controller
                     $articulo = $pagina->getCategoria()->getId() == $yml['parameters']['categoria']['materia'] || $pagina->getCategoria()->getId() == $yml['parameters']['categoria']['leccion'] ? $this->get('translator')->trans('de la') : $this->get('translator')->trans('del');
                     $contenidoMod .= '<div style="font-size:21px;text-align:center"> <h1>'.$this->get('translator')->trans('Contenido').' '.$articulo.' '.$pagina->getCategoria()->getNombre().': '.$pagina->getNombre().'</h1>';
 
-                    $query = $em->createQuery('SELECT pe FROM LinkComunBundle:CertiPaginaEmpresa pe 
-                                                JOIN pe.pagina p 
-                                                WHERE pe.empresa = :empresa_id AND p.pagina = :pagina_id 
+                    $query = $em->createQuery('SELECT pe FROM LinkComunBundle:CertiPaginaEmpresa pe
+                                                JOIN pe.pagina p
+                                                WHERE pe.empresa = :empresa_id AND p.pagina = :pagina_id
                                                 ORDER BY pe.orden ASC')
                                 ->setParameters(array('empresa_id' => $certificado->getEmpresa()->getId(),
                                                       'pagina_id' => $pagina->getId()));
@@ -494,7 +494,7 @@ class CertificadoController extends Controller
             }
 
         }
-        
+
         $programa = '';
 
         if($certificado->getTipoCertificado()->getId() == $yml['parameters']['tipo_certificado']['empresa'])//por empresa
@@ -522,9 +522,9 @@ class CertificadoController extends Controller
             $reemplazos = array('Programa');
             $descripcion = str_replace($comodines, $reemplazos, $certificado->getDescripcion());
 
-            
+
             $certificado_pdf = new Html2Pdf('L','A4','es','true','UTF-8',array(10, 35, 0, 0));
-            $certificado_pdf->writeHTML('<page pageset="new" backimg="'.$file.'" backimgw="90%" backimgx="center"> 
+            $certificado_pdf->writeHTML('<page pageset="new" backimg="'.$file.'" backimgw="90%" backimgx="center">
                                         <div>
                                             <div style="font-size:22px;margin-top:95px;text-align:center">'.$certificado->getEncabezado().'</div>
                                             <div style="text-align:center; font-size:40px; margin-top:25px; text-transform:uppercase;">'.$session->get('usuario')['nombre'].' '.$session->get('usuario')['apellido'].'</div>
@@ -535,7 +535,7 @@ class CertificadoController extends Controller
                                             <div style="text-align:center; font-size:14px; margin-top:20px;">'.$fecha.'</div>
                                             <div style="margin-top:60px; margin-left:910px; ">'.$ruta.'</div>
                                         </div>
-                                       
+
                                         </page>');
 
             if ($contenidoMod != '')
@@ -572,7 +572,7 @@ class CertificadoController extends Controller
         if (!$session->get('ini') || $f->sesionBloqueda($session->get('sesion_id')))
         {
             return $this->redirectToRoute('_loginAdmin');
-        }else 
+        }else
         {
             $session->set('app_id', $app_id);
             if (!$f->accesoRoles($session->get('usuario')['roles'], $session->get('app_id')) )
@@ -592,11 +592,10 @@ class CertificadoController extends Controller
         $usuario = $this->getDoctrine()->getRepository('LinkComunBundle:AdminUsuario')->find($session->get('usuario')['id']);
 
         $empresas = array();
-        if (!$usuario->getEmpresa())
-        {
-            $empresas = $this->getDoctrine()->getRepository('LinkComunBundle:AdminEmpresa')->findBy(array('activo' => true),
+
+        $empresas = $this->getDoctrine()->getRepository('LinkComunBundle:AdminEmpresa')->findBy(array('activo' => true),
                                                                                                     array('nombre' => 'ASC'));
-        }
+
 
         $resultado= null;
         return $this->render('LinkBackendBundle:Certificado:generarCertificado.html.twig', array('usuario' => $usuario,
@@ -613,7 +612,7 @@ class CertificadoController extends Controller
         $session = new Session();
         $em = $this->getDoctrine()->getManager();
         $f = $this->get('funciones');
-        
+
         $empresa_id = $request->request->get('empresa_id');
         $pagina_id = $request->request->get('programa_id');
         $fechaD = $request->request->get('fechaD');
@@ -651,12 +650,12 @@ class CertificadoController extends Controller
             $zip->open($dirpath.'/certificados-'.$nombrePagina.'.zip', ZipArchive::CREATE);
             $contador = 0;
             foreach($rs as $usuario)
-            {                  
-            
+            {
+
                 //return new response('aqui');
-                $query = $em->createQuery("SELECT pe, p FROM LinkComunBundle:CertiPaginaEmpresa pe 
-                                            JOIN pe.pagina p 
-                                            WHERE pe.empresa = :empresa_id AND p.pagina = :pagina_id 
+                $query = $em->createQuery("SELECT pe, p FROM LinkComunBundle:CertiPaginaEmpresa pe
+                                            JOIN pe.pagina p
+                                            WHERE pe.empresa = :empresa_id AND p.pagina = :pagina_id
                                             ORDER BY p.orden ASC")
                             ->setParameters(array('empresa_id' => $empresa_id,
                                                 'pagina_id' => $pagina_id));
@@ -668,7 +667,7 @@ class CertificadoController extends Controller
                     $fecha_vencimiento = $subpage->getFechaVencimiento()->format('Y/m/d');
                     $modulo_id = $subpage->getId();
                     $subpaginas_ids[] = $subpage->getId();
-                                            
+
                     //return new response(var_dump($subpaginas_ids));
                 }
 
@@ -676,21 +675,21 @@ class CertificadoController extends Controller
                 $categoria = $pagina->getCategoria()->getNombre();
 
                 $contenidoMod = '<div style="font-size:21px;text-align:center"> <h1>'.$this->get('translator')->trans('Contenido del').' '.$categoria.': '.$pagina->getNombre().'</h1>';
-                
+
                 $item = 1;
-                foreach ($subpages as $modulo) 
+                foreach ($subpages as $modulo)
                 {
                     $contenidoMod .= '<h2> * '.$this->get('translator')->trans('Módulo').' '.$item.': '.$modulo->getPagina()->getNombre().'</h2>';
                     $item += 1;
                 }
                 $contenidoMod .= '</div>';
-                
+
 
                 if ($pagina)
                 {
 
                     $certificado = $f->getCertificado($empresa_id, $values['parameters']['tipo_certificado'], $pagina->getId());
-                    
+
                     //return new response (var_dump($certificado->getId()));
 
                     if ($certificado)//si existe certificado imprimimos el documento
@@ -704,7 +703,7 @@ class CertificadoController extends Controller
                         $fecha_vencimiento = "$a-$m-$d";
 
                         $fecha = $f->fechaNatural($fecha_vencimiento);
-                        
+
                         $pagina_log = $em->getRepository('LinkComunBundle:CertiPaginaLog')->findOneBy(array('usuario' => $usuario['id'],
                                                                                                             'pagina' => $pagina->getId() ));
 
@@ -724,10 +723,10 @@ class CertificadoController extends Controller
 
                         if ($certificado->getTipoImagenCertificado()->getId() == $values['parameters']['tipo_imagen_certificado']['certificado'] )
                         {
-                        
+
                             /*certificado numero 2*/
                         if ($pagina_log->getPagina()->getCategoria()->getNombre() == 'Curso') {
-                                
+
                                 $comodines = array('%%categoria%%');
                                 $reemplazos = array('Curso');
                                 $descripcion = str_replace($comodines, $reemplazos, $certificado->getDescripcion());
@@ -739,7 +738,7 @@ class CertificadoController extends Controller
                             }
 
                             $certificado_pdf = new Html2Pdf('L','A4','es','true','UTF-8',array(0, 15, 0, 0));
-                            $certificado_pdf->writeHTML('<page title="Certificado" pageset="new" backimg="'.$file.'" backimgw="90%" backimgx="center"> 
+                            $certificado_pdf->writeHTML('<page title="Certificado" pageset="new" backimg="'.$file.'" backimgw="90%" backimgx="center">
                                                             <div style="margin-left:910px; ">'.$ruta.'</div>
                                                             <div style="font-size:22px; margin-top:90px; text-align:center">'.$certificado->getEncabezado().'</div>
                                                             <div style="text-align:center; font-size:40px; margin-top:25px; text-transform:uppercase;">'.$usuario['nombre'].' '.$usuario['apellido'].'</div>
@@ -754,22 +753,22 @@ class CertificadoController extends Controller
                                                         </page>');
 
                             //Generamos el PDF
-                            
+
                             $certificado_pdf->output($uploads['parameters']['folders']['dir_uploads'].'recursos/tmp/certificado-'.$usuario['id'].'-'.$pagina_log->getId().'.pdf', 'F');
-                            
-                            
-    
-                            
+
+
+
+
 
                             $zip->addFile($dirpath.'/certificado-'.$usuario['id'].'-'.$pagina_log->getId().'.pdf', 'certificado/certificado-'.$usuario['id'].'-'.$pagina_log->getId().'.pdf');
 
 
-                            
-                            
+
+
                             $paginasEmpresa = $em->getRepository('LinkComunBundle:CertiPaginaEmpresa')->findBy(array('empresa' => $empresa_id,
                                                                                                                     'pagina' => $modulo_id));
 
-                            $notas = false;                                                                                  
+                            $notas = false;
                             foreach($paginasEmpresa as $paginaEmpresa)
                             {
                                 $notas = $paginaEmpresa->getPruebaActiva();
@@ -779,11 +778,11 @@ class CertificadoController extends Controller
                             if($notas)
                             {
                                 $nota = 0;
-            
+
                                 //se consulta la informacion de la pagina padre
                                 $query = $em->createQuery('SELECT pl.nota as nota FROM LinkComunBundle:CertiPruebaLog pl
                                                             JOIN pl.prueba p
-                                                            WHERE p.pagina = :pagina 
+                                                            WHERE p.pagina = :pagina
                                                             and pl.estado = :estado
                                                             and pl.usuario = :usuario')
                                                 ->setParameters(array('usuario' => $usuario['id'],
@@ -791,7 +790,7 @@ class CertificadoController extends Controller
                                                                     'estado' => $values['parameters']['estado_prueba']['aprobado']))
                                                 ->setMaxResults(1);
                                 $nota_programa = $query->getResult();
-                                
+
                                 //return new response(var_dump($nota_programa));
 
                                 foreach ($nota_programa as $n)
@@ -803,7 +802,7 @@ class CertificadoController extends Controller
                                 $cantidad_intentos = '';
                                 $query = $em->createQuery('SELECT count(pl.id) FROM LinkComunBundle:CertiPruebaLog pl
                                                         JOIN pl.prueba p
-                                                        WHERE p.pagina = :pagina 
+                                                        WHERE p.pagina = :pagina
                                                         and pl.usuario = :usuario')
                                             ->setParameters(array('usuario' => $usuario['id'],
                                                                 'pagina' => $pagina_id));
@@ -815,7 +814,7 @@ class CertificadoController extends Controller
                                                         'categoria' => $values['parameters']['categoria']['programa'],
                                                         'nota' => $nota,
                                                         'cantidad_intentos' => $cantidad_intentos ? $cantidad_intentos : '');
-                                
+
                                 if (count($subpaginas_ids))
                                 {
                                     //$subpaginas_ids = $f->hijas($subpages);
@@ -823,9 +822,9 @@ class CertificadoController extends Controller
 
                                     //return new response(var_dump($pagina->getId()));
 
-                                    
+
                                     $programa_aprobado = $f->notasPrograma($subpaginas_ids, $usuario['id'], $values['parameters']['estado_prueba']['aprobado']);
-                                    
+
                                 }
 
                                 if ($programa_aprobado)
@@ -834,10 +833,10 @@ class CertificadoController extends Controller
                                     if($session->get('empresa')['logo']!='')
                                     {
                                         $file = $uploads['parameters']['folders']['dir_uploads'].$session->get('empresa')['logo'];
-                                        
+
                                     }
                                     else {
-                                        $file =  $uploads['parameters']['folders']['dir_project'].'web/img/logo_formacion_smart.png'; 
+                                        $file =  $uploads['parameters']['folders']['dir_project'].'web/img/logo_formacion_smart.png';
                                     }
 
                                     //return new response($file);
@@ -857,7 +856,7 @@ class CertificadoController extends Controller
                                                     .constancia {
                                                         padding: 2px 0px; }
                                                     .constancia .imgConst {
-                                                        width: 250px; 
+                                                        width: 250px;
                                                         height: 72px; }
                                                     .constancia .tituloConst {
                                                         color: #5CAEE6;
@@ -888,7 +887,7 @@ class CertificadoController extends Controller
                                                         font-size: 1.125rem;
                                                         line-height: 10px;
                                                         font-weight: 300;
-                                                        text-align: left; }	
+                                                        text-align: left; }
                                                     .table-notas thead th {
                                                         line-height: 10px;
                                                         color: #212529;
@@ -900,7 +899,7 @@ class CertificadoController extends Controller
                                                     .table-notas tbody td {
                                                         border-bottom:1px solid #CFD1D2;
                                                         padding: 4px;
-                                                        cellpadding: 0; 
+                                                        cellpadding: 0;
                                                         cellspacing: 0; }
                                                     hr {
                                                         color: #99c51b;
@@ -962,7 +961,7 @@ class CertificadoController extends Controller
                                                                     </tr>";
                                                             foreach ($programa_aprobado as $programa)
                                                             {
-                                                                
+
                                                                 if ($programa['categoria'] == $values['parameters']['categoria']['modulo'])
                                                                 {
                                                                     $valor = 20;
@@ -1007,7 +1006,7 @@ class CertificadoController extends Controller
                                                         }
                                                         else {
                                                             $puntaje = $programa_aprobado['nota'];
-                                                            if ($programa_aprobado['nota'] != 0) 
+                                                            if ($programa_aprobado['nota'] != 0)
                                                             {
                                                                 $nota = $programa_aprobado['nota'];
                                                             }
@@ -1056,21 +1055,21 @@ class CertificadoController extends Controller
                                     $constancia_pdf->output($uploads['parameters']['folders']['dir_uploads'].'recursos/tmp/notas-'.$usuario['id'].'-'.$pagina_log->getId().'.pdf', 'F');
 
                                     $zip->addFile($dirpath.'/notas-'.$usuario['id'].'-'.$pagina_log->getId().'.pdf', 'notas/notas-'.$usuario['id'].'-'.$pagina_log->getId().'.pdf');
-                                    
+
                                 }
-                                
+
                             }
-                                                                                                    
+
                         }
-                        
+
                     }
                     else {
                         return $this->redirectToRoute('_authExceptionEmpresa', array('tipo' => 'certificado'));
                     }
                 }
-            
-                    
-                
+
+
+
             }
             //return new response ($contador);
             $zip->close();
@@ -1089,23 +1088,23 @@ class CertificadoController extends Controller
             $empresas = $this->getDoctrine()->getRepository('LinkComunBundle:AdminEmpresa')->findBy(array('activo' => true),
                                                                                                     array('nombre' => 'ASC'));
             $resultado = true;
-            
+
             return $this->render('LinkBackendBundle:Certificado:generarCertificado.html.twig', array('usuario' => $usuario,
                                                                                                     'empresas' => $empresas,
                                                                                                     'empresa_select' => $empresa_id,
                                                                                                     'pagina_select' => $pagina_id,
                                                                                                     'resultado' => $resultado,
                                                                                                     'pagina' => $nombrePagina,
-                                                                                                    'ruta' => $ruta_zip)); 
+                                                                                                    'ruta' => $ruta_zip));
         }else{
-            
+
             $resultado = false;
 
             $usuario = $this->getDoctrine()->getRepository('LinkComunBundle:AdminUsuario')->find($session->get('usuario')['id']);
             $empresas = $this->getDoctrine()->getRepository('LinkComunBundle:AdminEmpresa')->findBy(array('activo' => true),
                                                                                                     array('nombre' => 'ASC'));
-        
-         
+
+
             return $this->render('LinkBackendBundle:Certificado:generarCertificado.html.twig', array('usuario' => $usuario,
                                                                                                     'empresas' => $empresas,
                                                                                                     'empresa_select' => $empresa_id,
@@ -1114,8 +1113,8 @@ class CertificadoController extends Controller
                                                                                                     'pagina' => $nombrePagina));
 
         }
-    
-       
+
+
     }
 
     public function DescargarZipAction($ruta)

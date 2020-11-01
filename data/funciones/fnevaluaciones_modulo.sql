@@ -29,6 +29,7 @@ begin
     WHERE u.empresa_id = pempresa_id
     AND (LOWER(n.nombre) NOT LIKE 'revisor%' AND LOWER(n.nombre) NOT LIKE 'tutor%')
     AND u.id IN (SELECT ru.usuario_id FROM admin_rol_usuario ru WHERE ru.rol_id = 2)
+    AND u.activo
     AND prl.fecha_inicio BETWEEN pdesde AND phasta
     AND pr.pagina_id IN (SELECT p.id FROM certi_pagina p WHERE p.pagina_id = ppagina_id)
     ORDER BY u.codigo ASC, u.login ASC, prl.id ASC;

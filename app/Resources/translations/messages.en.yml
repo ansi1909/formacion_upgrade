@@ -780,6 +780,7 @@ Participantes registrados: Registered participants
 Participantes cursando: Participants taking part
 Participantes culminados: Finished participants
 Participantes conectados: Connected participants
+Participantes sin acceso: Participants without access
 Participantes que aunque tienen usuario y clave nunca se han logueado en la plataforma: Participants who, although they have username and password, have never logged on the platform
 Participantes que han aprobado el último módulo del programa o curso: Participants who have approved the last module of the program or course
 Participantes que han ingresado al programa o curso asignado: Participants who have entered the assigned program or course
@@ -944,6 +945,10 @@ Sólo archivos con extensión .mp3: Only files with extension .mp3
 Sólo archivos con extensión mp4 o webm.: Only files with mp4 or webm extension.
 Solo es necesaria una columna que tendrá los nombres de los niveles: Only it is necessary one column for levels name
 Soporte virtual: Virtual support
+Son todos los usuarios inscritos por una empresa, que tienen acceso a la plataforma y que se han logueado al menos una vez.: They are all users registered by a company, who have access to the platform and who have logged in at least once.
+Son todos los usuarios inscritos por una empresa, que tienen acceso a la plataforma y que no se han logueado.: They are all users registered by a company, who have access to the platform and who have not logged in.
+Son todos los usuarios inscritos por una empresa.: They are all users registered by a company.
+Son todos los usuarios inscritos por una empresa que no tienen acceso a la plataforma.: They are all users registered by a company who do not have access to the platform.
 Su registro ha sido eliminado: The item has been deleted
 Subir archivo: Upload file
 Subir Archivo de Niveles: Upload Levels File

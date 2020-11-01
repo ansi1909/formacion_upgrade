@@ -110,6 +110,7 @@ class DefaultController extends Controller
             $usuarios_activos = 0;
             $usuarios_inactivos = 0;
             $usuarios_registrados = 0;
+            $usuarios_sin_acceso = 0;
 
             $query = $em->getConnection()->prepare('SELECT
                                             fnreporte_general2(:re, :pempresa_id) as
@@ -121,15 +122,17 @@ class DefaultController extends Controller
             $r = $query->fetchAll();
 
             foreach ($r as $re) {
-                if ($re['logueado'] > 0) {
-                    $usuarios_activos++;
-                }
-                else {
-                    $usuarios_inactivos++;
+                if($re['acceso']){
+                    if($re['logueado']){
+                        $usuarios_activos++;
+                    }else{
+                        $usuarios_inactivos++;
+                    }
+                }else{
+                    $usuarios_sin_acceso++;
                 }
             }
-
-            $usuarios_registrados = $usuarios_activos + $usuarios_inactivos;
+            $usuarios_registrados = count($r);
 
             $query = $em->getConnection()->prepare('SELECT
                                                     fnreporte_general(:re, :pempresa_id) as
@@ -139,12 +142,13 @@ class DefaultController extends Controller
             $query->bindValue(':pempresa_id', $usuario->getEmpresa()->getId(), \PDO::PARAM_INT);
             $query->execute();
             $r = $query->fetchAll();
-
+            //var_dump($r);die();
             foreach($r as $re)
             {
                 $paginas[] = array('pagina' => $re['nombre'],
-                                   'fecha_i' => $re['fecha_inicio'],
-                                   'fecha_f' => $re['fecha_vencimiento'],
+                                   'fecha_i' => ($re['fecha_inicio_nivel'])? $re['fecha_inicio_nivel']:$re['fecha_inicio'],
+                                   'fecha_f' => ($re['fecha_vencimiento_nivel'])? $re['fecha_vencimiento_nivel']:$re['fecha_vencimiento'],
+                                   'nivel'  =>  ($re['nombre_nivel'])? $re['nombre_nivel']:'',
                                    'usuariosT' => $re['registrados'],
                                    'usuariosCur' => $re['cursando'],
                                    'usuariosF' => $re['culminado'],
@@ -155,6 +159,7 @@ class DefaultController extends Controller
 
             $response = $this->render('LinkBackendBundle:Default:index.html.twig', array('activos' => $usuarios_activos,
                                                                                          'inactivos' => $usuarios_inactivos,
+                                                                                         'sin_acceso' => $usuarios_sin_acceso,
                                                                                          'total' => $usuarios_registrados,
                                                                                          'paginas' => $paginas,
                                                                                          'usuario' => $usuario));
@@ -199,6 +204,7 @@ class DefaultController extends Controller
         $usuarios_activos = 0;
         $usuarios_inactivos = 0;
         $usuarios_registrados = 0;
+        $usuarios_sin_acceso = 0;
 
         $query = $em->getConnection()->prepare('SELECT
                                         fnreporte_general2(:re, :pempresa_id) as
@@ -209,29 +215,36 @@ class DefaultController extends Controller
         $query->execute();
         $r = $query->fetchAll();
 
-        foreach ($r as $re)
-        {
-            if ($re['logueado'] > 0) {
-                $usuarios_activos++;
+        foreach ($r as $re) {
+            if($re['acceso']){
+                if($re['logueado']){
+                    $usuarios_activos++;
+                }else{
+                    $usuarios_inactivos++;
+                }
             }else{
-                $usuarios_inactivos++;
+                $usuarios_sin_acceso++;
             }
         }
-        $usuarios_registrados = $usuarios_activos + $usuarios_inactivos;
+
+        $usuarios_registrados = count($r);
+
 
         $html = '<table class="table">
                     <thead class="sty__title">
                         <tr>
-                            <th class="hd__title text-center">'.$this->get('translator')->trans('Usuarios registrados').'</th>
-                            <th class="hd__title text-center">'.$this->get('translator')->trans('Usuarios activos').'</th>
-                            <th class="hd__title text-center">'.$this->get('translator')->trans('Usuarios inactivos').'</th>
+                            <th class="hd__title text-center" >'.$this->get('translator')->trans('Usuarios registrados').'</th>
+                            <th class="hd__title text-center" >'.$this->get('translator')->trans('Usuarios activos').'</th>
+                            <th class="hd__title text-center"  >'.$this->get('translator')->trans('Usuarios inactivos').'</th>
+                            <th class="hd__title text-center" >'.$this->get('translator')->trans('Usuarios sin acceso').'</th>
                         </tr>
                     </thead>
                     <tbody>
                         <tr>
-                            <td class="text-center"><a href="'.$this->generateUrl('_participantesEmpresa', array('app_id' => 20, 'pagina_id' => 0, 'empresa_id' => $empresa_id)).'"><span>'. $usuarios_registrados .'<i class="fa fa-user"></i></span></a></td>
-                            <td class="text-center"><span>'. $usuarios_activos .'<i class="fa fa-user"></i></span></td>
-                            <td class="text-center"><span>'. $usuarios_inactivos .'<i class="fa fa-user"></i></span></td>
+                            <td class="text-center"><a href="'.$this->generateUrl('_participantesEmpresa', array('app_id' => 20, 'pagina_id' => 0, 'empresa_id' => $empresa_id)).'"><span data-toggle="tooltip" data-placement="bottom" title="'.$this->get('translator')->trans('Son todos los usuarios inscritos por una empresa.').'" >'. $usuarios_registrados .'<i class="fa fa-user"></i></span></a></td>
+                            <td class="text-center"><span data-toggle="tooltip" data-placement="bottom" title="'.$this->get('translator')->trans('Son todos los usuarios inscritos por una empresa, que tienen acceso a la plataforma y que se han logueado al menos una vez.').'">'. $usuarios_activos .'<i class="fa fa-user"></i></span></td>
+                            <td class="text-center"><span data-toggle="tooltip" data-placement="bottom" title="'.$this->get('translator')->trans('Son todos los usuarios inscritos por una empresa, que tienen acceso a la plataforma y que no se han logueado.').'">'. $usuarios_inactivos .'<i class="fa fa-user"></i></span></td>
+                            <td class="text-center"><span  data-toggle="tooltip" data-placement="bottom" title="'.$this->get('translator')->trans('Son todos los usuarios inscritos por una empresa que no tienen acceso a la plataforma.').'">'. $usuarios_sin_acceso .'<i class="fa fa-user"></i></span></td>
                         </tr>
                     </tbody>
                 </table>
@@ -496,7 +509,7 @@ class DefaultController extends Controller
        $em = $this->getDoctrine()->getManager();
        $rs = $this->get('reportes');
        $yml = Yaml::parse(file_get_contents($this->get('kernel')->getRootDir().'/config/parametros.yml'));
-     
+
 
        $empresa_id = (integer) $request->request->get('empresa_id');
 
@@ -512,7 +525,7 @@ class DefaultController extends Controller
                             <th class="hd__title">'.$this->get('translator')->trans('Dispositivo').'</th>';
                        if (!$empresa_id) {
                             $html .= '<th class="hd__title">'.$this->get('translator')->trans('Empresa').'</th>';
-                            
+
                         }
                         $html .= '<th class="hd__title">'.$this->get('translator')->trans('País').'</th>';
                         $html.='</tr>
@@ -528,7 +541,7 @@ class DefaultController extends Controller
                         <td>'.$registro['dispositivo'].'</td>';
                         if (!$empresa_id) {
                             $html .= '<td>'.$registro['empresa'].'</td>';
-                            
+
                         }
                         $html .= '<td>'.$registro['ubicacion'].'</td>';
                     $html .= '</tr>';
@@ -572,7 +585,7 @@ class DefaultController extends Controller
 
         // Encabezado
         $objWorksheet->setCellValue('A1', $this->get('translator')->trans('Listado de usuarios conectados'));
-        
+
         if (!count($listado))
         {
             $objWorksheet->mergeCells('A5:S5');
@@ -625,7 +638,7 @@ class DefaultController extends Controller
         // Envia la respuesta del controlador
         $response = $this->get('phpexcel')->createStreamedResponse($writer);
         // Agrega los headers requeridos
-        
+
             $dispositionHeader = $response->headers->makeDisposition(
                 ResponseHeaderBag::DISPOSITION_ATTACHMENT,
                     'Usuarios conectados'.$hoy.'.xlsx'
@@ -637,7 +650,7 @@ class DefaultController extends Controller
         $response->headers->set('Content-Disposition', $dispositionHeader);
 
         return $response;
-        
+
 
     }
 
