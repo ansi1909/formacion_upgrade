@@ -780,6 +780,7 @@ Participantes registrados: Participantes registrados
 Participantes cursando: Participantes cursando
 Participantes culminados: Participantes culminados
 Participantes conectados: Participantes conectados
+Participantes sin acceso: Participantes sin acceso
 Participantes que aunque tienen usuario y clave nunca se han logueado en la plataforma: Participantes que aunque tienen usuario y clave nunca se han logueado en la plataforma
 Participantes que han aprobado el último módulo del programa o curso: Participantes que han aprobado el último módulo del programa o curso
 Participantes que han ingresado al programa o curso asignado: Participantes que han ingresado al programa o curso asignado
@@ -944,6 +945,10 @@ Sólo archivos con extensión .mp3: Sólo archivos con extensión .mp3
 Sólo archivos con extensión mp4 o webm.: Sólo archivos con extensión mp4 o webm.
 Solo es necesaria una columna que tendrá los nombres de los niveles: Solo es necesaria una columna que tendrá los nombres de los niveles
 Soporte virtual: Soporte virtual
+Son todos los usuarios inscritos por una empresa, que tienen acceso a la plataforma y que se han logueado al menos una vez.: Son todos los usuarios inscritos por una empresa, que tienen acceso a la plataforma y que se han logueado al menos una vez.
+Son todos los usuarios inscritos por una empresa, que tienen acceso a la plataforma y que no se han logueado.: Son todos los usuarios inscritos por una empresa, que tienen acceso a la plataforma y que no se han logueado.
+Son todos los usuarios inscritos por una empresa.: Son todos los usuarios inscritos por una empresa.
+Son todos los usuarios inscritos por una empresa que no tienen acceso a la plataforma.: Son todos los usuarios inscritos por una empresa que no tienen acceso a la plataforma.
 Su registro ha sido eliminado: Su registro ha sido eliminado
 Subir archivo: Subir archivo
 Subir Archivo de Niveles: Subir Archivo de Niveles

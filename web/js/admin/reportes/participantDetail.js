@@ -1,7 +1,7 @@
 $(document).ready(function() {
 
 	observeList();
-	  
+
 });
 
 function setDetails(data)
@@ -18,6 +18,7 @@ function setDetails(data)
 		img.attr("src", $('#profilePhoto').val());
 	}
 	$('#login').val(data.usuario.login);
+	$('#clave').val(data.usuario.clave);
 	$('#nombre').val(data.usuario.nombre);
 	$('#apellido').val(data.usuario.apellido);
 	$('#correoPersonal').val(data.usuario.correoPersonal);
@@ -44,7 +45,7 @@ function setDetails(data)
 function progressCircle()
 {
 
-	$('.progress-success').circleProgress({ 
+	$('.progress-success').circleProgress({
 		fill: {gradient: ["#2dc1c9", "#0d769f"]},
 		lineCap: 'butt'
 	}).on('circle-animation-progress', function(event, progress,stepValue) {
@@ -57,7 +58,7 @@ function progressCircle()
     	$(this).find('strong').html(Math.round(100 * progress * stepValue) + '<i>%</i>');
   	});
 
-	$('.progress-warning').circleProgress({ 
+	$('.progress-warning').circleProgress({
     	fill: {gradient: ["#ff9300", "#ff5800"]},
     	lineCap: 'butt'
 	}).on('circle-animation-progress', function(event, progress,stepValue) {

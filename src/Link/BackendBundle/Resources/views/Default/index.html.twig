@@ -1,8 +1,8 @@
 {% extends '::admin.html.twig' %}
-
 {% block stylesheets %}
     {{ parent() }}
     <link rel="stylesheet" href="{{ asset('assets/vendor/jstree/dist/themes/default/style.min.css') }}" type="text/css">
+
 {% endblock %}
 
 {% block body %}
@@ -175,9 +175,9 @@
     {# cuando no se tiene rol administrador o se tiene una empresa asignada #}
         <div class="emp_dash">
             <input type="hidden" id="error-msg" name="error-msg" value="{{ 'Ha ocurrido un error al cargar los participantes conectados, verifique su conexión a internet o contacte al administrador del sistema.'|trans }}">
-            <div class="row">
-                <div class="col-md-4 col-sm-4 col-lg-4 col-xl-4 offset-md-1 offset-sm-1 offset-lg-1 offset-xl-1">
-                    <div class="activity-block linkg1">
+            <div class="row row-tarjetas-dashboard">
+                <div class="col-md-3 col-sm-3 col-lg-3 col-xl-3 ">
+                    <div class="activity-block linkg1" data-toggle="tooltip" data-placement="bottom" title="{{ 'Son todos los usuarios inscritos por una empresa.'|trans }}">
                         <div class="media">
                             <div class="media-body">
                                 <h5><span class="spincreament">{{ total }}</span></h5>
@@ -189,26 +189,38 @@
                         <i class="bg-icon text-center fa fa-pencil"></i>
                     </div>
                 </div>
-                <div class="col-md-4 col-sm-4 col-lg-4 col-xl-4 offset-md-1 offset-sm-1 offset-lg-1 offset-xl-1">
-                    <div class="activity-block linkg2">
+                <div class="col-md-3 col-sm-3 col-lg-3 col-xl-3 ">
+                    <div class="activity-block linkg2" data-toggle="tooltip" data-placement="bottom" title="{{ 'Son todos los usuarios inscritos por una empresa, que tienen acceso a la plataforma y que se han logueado al menos una vez.'|trans }}">
                         <div class="media">
                             <div class="media-body">
                                 <h5><span class="spincreament">{{ activos }}</span></h5>
-                                <p>{{ 'Participantes activos'|trans }}</p>
+                                <p>{{ 'Participantes activos'|trans }}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</p>
                             </div>
                             <i class="fa fa-user"></i> </div>
                         <br>
-                        <i class="bg-icon text-center fa fa-check" style="margin-top: 0px;"></i>
+                        <i class="bg-icon text-center fa fa-check-square-o" style="margin-top: 0px;"></i>
                     </div>
                 </div>
-                <div class="col-md-4 col-sm-4 col-lg-4 col-xl-4 offset-md-1 offset-sm-1 offset-lg-1 offset-xl-1">
-                    <div class="activity-block danger">
+                <div class="col-md-3 col-sm-3 col-lg-3 col-xl-3 ">
+                    <div class="activity-block warning" data-toggle="tooltip" data-placement="bottom" title="{{ 'Son todos los usuarios inscritos por una empresa, que tienen acceso a la plataforma y que no se han logueado.'|trans }}">
                         <div class="media">
                             <div class="media-body">
                                 <h5><span class="spincreament">{{ inactivos }}</span></h5>
-                                <p>{{ 'Participantes inactivos'|trans }}</p>
+                                <p>{{ 'Participantes inactivos'|trans }}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</p>
                             </div>
-                            <i class="fa fa-user-times"></i> </div>
+                            <i class="fa fa-user" ></i> </div>
+                        <br>
+                        <i class="bg-icon text-center fa fa-exclamation-circle" style="margin-top: 0px;"></i>
+                    </div>
+                </div>
+                <div class="col-md-3 col-sm-3 col-lg-3 col-xl-3 ">
+                    <div class="activity-block danger"  data-toggle="tooltip" data-placement="bottom" title="{{ 'Son todos los usuarios inscritos por una empresa que no tienen acceso a la plataforma.'|trans }}">
+                        <div class="media">
+                            <div class="media-body">
+                                <h5><span class="spincreament">{{ sin_acceso }}</span></h5>
+                                <p>{{ 'Participantes sin acceso'|trans }}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</p>
+                            </div>
+                            <i class="fa fa-user"></i> </div>
                         <br>
                         <i class="bg-icon text-center fa fa-times" style="margin-top: 0px;"></i>
                     </div>
@@ -227,6 +239,7 @@
                                 <thead class="sty__title">
                                     <tr>
                                         <th class="hd__title">{{ 'Nombre'|trans }}</th>
+                                        <th class="hd__title">{{ 'Nivel'|trans }}</th>
                                         <th class="hd__title">{{ 'Fecha inicio'|trans }}</th>
                                         <th class="hd__title">{{ 'Fecha fin'|trans }}</th>
                                         <th class="hd__title text-center">{{ 'Participantes no iniciados'|trans }}</th>
@@ -241,6 +254,7 @@
                                         {% set eo = cycle(['odd', 'even'], loop.index) %}
                                         <tr class="{{ eo }}">
                                             <td>{{ pagina.pagina }}</td>
+                                            <td>{{ pagina.nivel }}</td>
                                             <td>{{ pagina.fecha_i }}</td>
                                             <td>{{ pagina.fecha_f }}</td>
                                             <td class="text-center"><a href="{{ path('_participantesNoIniciados',{'app_id': 34, 'pagina_id': pagina.id, 'empresa_id': usuario.empresa.id }) }}"><span>{{ pagina.usuariosN }} <i class="fa fa-user"></i></span></a></td>

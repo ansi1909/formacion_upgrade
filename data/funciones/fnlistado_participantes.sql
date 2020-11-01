@@ -71,7 +71,8 @@ begin
 		    ON u.nivel_id = n.id
 		    LEFT JOIN admin_sesion a ON u.id = a.usuario_id
 		    WHERE u.empresa_id = pempresa_id
-			AND pe.activo = true
+			AND pe.activo
+            AND u.activo
 			AND (LOWER(n.nombre) NOT LIKE 'revisor%' AND LOWER(n.nombre) NOT LIKE 'tutor%')
 			AND u.id IN (SELECT ru.usuario_id FROM admin_rol_usuario ru WHERE ru.rol_id = 2)
 		    GROUP BY u.id,u.codigo,u.nombre,u.apellido,u.login,u.correo_personal,u.correo_corporativo,u.activo,u.fecha_registro,u.fecha_nacimiento,u.pais_id,n.nombre,u.campo1
@@ -136,7 +137,8 @@ begin
                     ON u.nivel_id = n.id
                     LEFT JOIN admin_sesion a ON u.id = a.usuario_id
                     WHERE u.empresa_id = pempresa_id AND pe.pagina_id = ppagina_id
-			        AND pe.activo = true
+			        AND pe.activo
+                    AND u.activo
                     AND (LOWER(n.nombre) NOT LIKE 'revisor%' AND LOWER(n.nombre) NOT LIKE 'tutor%')
                     AND u.id IN (SELECT ru.usuario_id FROM admin_rol_usuario ru WHERE ru.rol_id = 2)
                     GROUP BY u.id,u.codigo,u.nombre,u.apellido,u.login,u.correo_personal,u.correo_corporativo,u.activo,u.fecha_registro,u.fecha_nacimiento,u.pais_id,n.nombre,u.campo1,u.campo2,u.campo3,u.campo4
@@ -167,7 +169,8 @@ begin
 			ON n.id = np.nivel_id) ON u.nivel_id = n.id
                 LEFT JOIN admin_sesion a ON u.id = a.usuario_id
                 WHERE u.empresa_id = pempresa_id
-		AND pe.activo = true
+		         AND pe.activo
+                 AND u.activo
                     AND u.id IN
                         (SELECT pl.usuario_id FROM certi_pagina_log pl
                         WHERE pl.pagina_id = ppagina_id AND pl.estatus_pagina_id != 3 )
@@ -224,6 +227,7 @@ begin
                 FROM admin_usuario u INNER JOIN admin_nivel n ON u.nivel_id = n.id
                 LEFT JOIN admin_sesion a ON u.id = a.usuario_id
                 WHERE u.empresa_id = pempresa_id
+                AND u.activo
                     AND u.id IN
                         (SELECT pl.usuario_id FROM certi_pagina_log pl
                             WHERE pl.pagina_id = ppagina_id AND pl.estatus_pagina_id = 3 )
@@ -259,7 +263,8 @@ begin
                     ON u.nivel_id = n.id
                 LEFT JOIN admin_sesion a ON u.id = a.usuario_id
                 WHERE u.empresa_id = pempresa_id
-		AND pe.activo = true
+		        AND pe.activo
+                AND u.activo
                     AND NOT EXISTS
                         (SELECT * FROM certi_pagina_log pl
                         WHERE  pl.usuario_id = u.id AND pl.pagina_id = ppagina_id )
@@ -267,7 +272,6 @@ begin
                     AND u.id IN (SELECT ru.usuario_id FROM admin_rol_usuario ru WHERE ru.rol_id = 2)
                     AND u.id IN (SELECT DISTINCT(s.usuario_id) FROM admin_sesion s )
                     AND pe.pagina_id = ppagina_id
-                   -- Voy por aca
                 GROUP BY u.id,u.codigo,u.nombre,u.apellido,u.login,u.correo_personal,u.correo_corporativo,u.activo,u.fecha_registro,u.fecha_nacimiento,u.pais_id,n.nombre,u.campo1,u.campo2,u.campo3,u.campo4
                 ORDER BY u.nombre ASC;
 

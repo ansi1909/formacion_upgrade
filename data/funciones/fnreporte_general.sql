@@ -28,6 +28,7 @@ begin
                AND (LOWER(n.nombre) NOT LIKE 'revisor%' AND LOWER(n.nombre) NOT LIKE 'tutor%')
                AND u.empresa_id = pempresa_id
                AND u.id IN (SELECT pl.usuario_id FROM certi_pagina_log pl WHERE pl.pagina_id = pe.pagina_id AND pl.estatus_pagina_id != 3)
+               AND u.activo
        ) as cursando,
        (SELECT COUNT(u.id) AS culminado FROM admin_usuario u
         INNER JOIN admin_nivel n ON n.id = u.nivel_id
@@ -35,6 +36,7 @@ begin
         WHERE pl.pagina_id = pe.pagina_id  AND pl.estatus_pagina_id = 3
         AND u.empresa_id = pe.empresa_id
         AND n.id = ne.id
+        AND u.activo
         AND (LOWER(n.nombre) NOT LIKE 'revisor%' AND LOWER(n.nombre) NOT LIKE 'tutor%')
         ) as culminado,
        (SELECT COUNT(u.id) AS no_iniciados FROM admin_usuario u INNER JOIN
@@ -47,6 +49,7 @@ begin
                AND u.id IN (SELECT DISTINCT(s.usuario_id) FROM admin_sesion s)
                AND u.id NOT IN (SELECT pl.usuario_id FROM certi_pagina_log pl WHERE pl.pagina_id = pe.pagina_id)
                AND n.id = ne.id
+               AND u.activo
        ) as no_iniciados,
        (SELECT COUNT(u.id) AS activos FROM admin_usuario u INNER JOIN
            (admin_nivel n INNER JOIN certi_nivel_pagina np ON n.id = np.nivel_id)
@@ -57,9 +60,10 @@ begin
                AND u.empresa_id = pempresa_id
                AND u.id IN (SELECT DISTINCT(s.usuario_id) FROM admin_sesion s )
                AND n.id = ne.id
+               AND u.activo
        ) as activos
        FROM certi_pagina_empresa pe INNER JOIN certi_pagina p ON pe.pagina_id = p.id
-        INNER JOIN (certi_nivel_pagina np INNER JOIN admin_nivel ne ON np.nivel_id = ne.id) 
+        INNER JOIN (certi_nivel_pagina np INNER JOIN admin_nivel ne ON np.nivel_id = ne.id)
         ON pe.id = np.pagina_empresa_id
        WHERE p.pagina_id IS NULL
            AND pe.empresa_id = pempresa_id
