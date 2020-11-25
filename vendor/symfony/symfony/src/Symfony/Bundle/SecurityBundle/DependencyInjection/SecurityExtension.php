@@ -374,6 +374,7 @@ class SecurityExtension extends Extension
         $listeners[] = new Reference('security.channel_listener');
 
         $contextKey = null;
+        $contextListenerId = null;
         // Context serializer listener
         if (false === $firewall['stateless']) {
             $contextKey = $id;
@@ -382,15 +383,15 @@ class SecurityExtension extends Extension
             }
 
             if (!$logoutOnUserChange = $firewall['logout_on_user_change']) {
-                @trigger_error(sprintf('Not setting "logout_on_user_change" to true on firewall "%s" is deprecated as of 3.4, it will always be true in 4.0.', $id), E_USER_DEPRECATED);
+                @trigger_error(sprintf('Not setting "logout_on_user_change" to true on firewall "%s" is deprecated as of 3.4, it will always be true in 4.0.', $id), \E_USER_DEPRECATED);
             }
 
             if (isset($this->logoutOnUserChangeByContextKey[$contextKey]) && $this->logoutOnUserChangeByContextKey[$contextKey][1] !== $logoutOnUserChange) {
-                throw new InvalidConfigurationException(sprintf('Firewalls "%s" and "%s" need to have the same value for option "logout_on_user_change" as they are sharing the context "%s"', $this->logoutOnUserChangeByContextKey[$contextKey][0], $id, $contextKey));
+                throw new InvalidConfigurationException(sprintf('Firewalls "%s" and "%s" need to have the same value for option "logout_on_user_change" as they are sharing the context "%s".', $this->logoutOnUserChangeByContextKey[$contextKey][0], $id, $contextKey));
             }
 
             $this->logoutOnUserChangeByContextKey[$contextKey] = [$id, $logoutOnUserChange];
-            $listeners[] = new Reference($this->createContextListener($container, $contextKey, $logoutOnUserChange));
+            $listeners[] = new Reference($contextListenerId = $this->createContextListener($container, $contextKey, $logoutOnUserChange));
             $sessionStrategyId = 'security.authentication.session_strategy';
         } else {
             $this->statelessFirewallKeys[] = $id;
@@ -463,7 +464,7 @@ class SecurityExtension extends Extension
         $configuredEntryPoint = isset($firewall['entry_point']) ? $firewall['entry_point'] : null;
 
         // Authentication listeners
-        list($authListeners, $defaultEntryPoint) = $this->createAuthenticationListeners($container, $id, $firewall, $authenticationProviders, $defaultProvider, $providerIds, $configuredEntryPoint);
+        list($authListeners, $defaultEntryPoint) = $this->createAuthenticationListeners($container, $id, $firewall, $authenticationProviders, $defaultProvider, $providerIds, $configuredEntryPoint, $contextListenerId);
 
         $config->replaceArgument(7, $configuredEntryPoint ?: $defaultEntryPoint);
 
@@ -519,7 +520,7 @@ class SecurityExtension extends Extension
         return $this->contextListeners[$contextKey] = $listenerId;
     }
 
-    private function createAuthenticationListeners($container, $id, $firewall, &$authenticationProviders, $defaultProvider = null, array $providerIds, $defaultEntryPoint)
+    private function createAuthenticationListeners($container, $id, $firewall, &$authenticationProviders, $defaultProvider, array $providerIds, $defaultEntryPoint, $contextListenerId = null)
     {
         $listeners = [];
         $hasListeners = false;
@@ -537,6 +538,9 @@ class SecurityExtension extends Extension
                     } elseif ('remember_me' === $key) {
                         // RememberMeFactory will use the firewall secret when created
                         $userProvider = null;
+                        if ($contextListenerId) {
+                            $container->getDefinition($contextListenerId)->addTag('security.remember_me_aware', ['id' => $id, 'provider' => 'none']);
+                        }
                     } else {
                         $userProvider = $defaultProvider ?: $this->getFirstProvider($id, $key, $providerIds);
                     }
@@ -585,7 +589,7 @@ class SecurityExtension extends Extension
     {
         $encoderMap = [];
         foreach ($encoders as $class => $encoder) {
-            $encoderMap[$class] = $this->createEncoder($encoder, $container);
+            $encoderMap[$class] = $this->createEncoder($encoder);
         }
 
         $container
@@ -594,7 +598,7 @@ class SecurityExtension extends Extension
         ;
     }
 
-    private function createEncoder($config, ContainerBuilder $container)
+    private function createEncoder($config)
     {
         // a custom encoder service
         if (isset($config['id'])) {
@@ -697,7 +701,7 @@ class SecurityExtension extends Extension
             return $name;
         }
 
-        throw new InvalidConfigurationException(sprintf('Unable to create definition for "%s" user provider', $name));
+        throw new InvalidConfigurationException(sprintf('Unable to create definition for "%s" user provider.', $name));
     }
 
     private function getUserProviderId($name)
@@ -729,7 +733,7 @@ class SecurityExtension extends Extension
 
         // in 4.0, ignore the `switch_user.stateless` key if $stateless is `true`
         if ($stateless && false === $config['stateless']) {
-            @trigger_error(sprintf('Firewall "%s" is configured as "stateless" but the "switch_user.stateless" key is set to false. Both should have the same value, the firewall\'s "stateless" value will be used as default value for the "switch_user.stateless" key in 4.0.', $id), E_USER_DEPRECATED);
+            @trigger_error(sprintf('Firewall "%s" is configured as "stateless" but the "switch_user.stateless" key is set to false. Both should have the same value, the firewall\'s "stateless" value will be used as default value for the "switch_user.stateless" key in 4.0.', $id), \E_USER_DEPRECATED);
         }
 
         $switchUserListenerId = 'security.authentication.switchuser_listener.'.$id;
@@ -833,7 +837,7 @@ class SecurityExtension extends Extension
      */
     private function getFirstProvider($firewallName, $listenerName, array $providerIds)
     {
-        @trigger_error(sprintf('Listener "%s" on firewall "%s" has no "provider" set but multiple providers exist. Using the first configured provider (%s) is deprecated since Symfony 3.4 and will throw an exception in 4.0, set the "provider" key on the firewall instead.', $listenerName, $firewallName, $first = array_keys($providerIds)[0]), E_USER_DEPRECATED);
+        @trigger_error(sprintf('Listener "%s" on firewall "%s" has no "provider" set but multiple providers exist. Using the first configured provider (%s) is deprecated since Symfony 3.4 and will throw an exception in 4.0, set the "provider" key on the firewall instead.', $listenerName, $firewallName, $first = array_keys($providerIds)[0]), \E_USER_DEPRECATED);
 
         return $providerIds[$first];
     }

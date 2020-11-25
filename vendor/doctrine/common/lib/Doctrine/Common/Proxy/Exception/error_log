@@ -1,1 +1,0 @@
-[19-Oct-2019 01:08:48 America/Caracas] PHP Fatal error:  Interface 'Doctrine\Common\Proxy\Exception\ProxyException' not found in /home/smrtfrmcn/public_html/aulavirtual/vendor/doctrine/common/lib/Doctrine/Common/Proxy/Exception/InvalidArgumentException.php on line 33

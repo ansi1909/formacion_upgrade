@@ -22,7 +22,7 @@ into the account can either be of positive or negative money
 values. Each account has a credit limit and the account is never
 allowed to have a balance below that value.
 
-For simplicity we live in a world were money is composed of
+For simplicity we live in a world where money is composed of
 integers only. Also we omit the receiver/sender name, stated reason
 for transfer and the execution date. These all would have to be
 added on the ``Entry`` object.
@@ -322,7 +322,7 @@ The aggregate field ``Account::$balance`` is now -200, however the
 SUM over all entries amounts yields -400. A violation of our max
 credit rule.
 
-You can use both optimistic or pessimistic locking to save-guard
+You can use both optimistic or pessimistic locking to safe-guard
 your aggregate fields against this kind of race-conditions. Reading
 Eric Evans DDD carefully he mentions that the "Aggregate Root"
 (Account in our example) needs a locking mechanism.

@@ -37,8 +37,11 @@ Index
 -  :ref:`@ColumnResult <annref_column_result>`
 -  :ref:`@Cache <annref_cache>`
 -  :ref:`@ChangeTrackingPolicy <annref_changetrackingpolicy>`
+-  :ref:`@CustomIdGenerator <annref_customidgenerator>`
 -  :ref:`@DiscriminatorColumn <annref_discriminatorcolumn>`
 -  :ref:`@DiscriminatorMap <annref_discriminatormap>`
+-  :ref:`@Embeddable <annref_embeddable>`
+-  :ref:`@Embedded <annref_embedded>`
 -  :ref:`@Entity <annref_entity>`
 -  :ref:`@EntityResult <annref_entity_result>`
 -  :ref:`@FieldResult <annref_field_result>`
@@ -96,7 +99,7 @@ Optional attributes:
 
 -  **length**: Used by the "string" type to determine its maximum
    length in the database. Doctrine does not validate the length of a
-   string values for you.
+   string value for you.
 
 -  **precision**: The precision for a decimal (exact numeric) column
    (applies only for decimal column), which is the maximum number of
@@ -110,7 +113,7 @@ Optional attributes:
 -  **unique**: Boolean value to determine if the value of the column
    should be unique across all rows of the underlying entities table.
 
--  **nullable**: Determines if NULL values allowed for this column.
+-  **nullable**: Determines if NULL values allowed for this column. If not specified, default value is false.
 
 -  **options**: Array of additional options:
 
@@ -130,6 +133,9 @@ Optional attributes:
       be supported by all vendors).
 
    -  ``collation``: The collation of the column (only supported by Drizzle, Mysql, PostgreSQL>=9.1, Sqlite and SQLServer).
+
+   -  ``check``: Adds a check constraint type to the column (might not
+      be supported by all vendors).
 
 -  **columnDefinition**: DDL SQL snippet that starts after the column
    name and specifies the complete (non-portable!) column definition.
@@ -175,7 +181,7 @@ Examples:
     protected $initials;
 
     /**
-     * @Column(type="integer", name="login_count" nullable=false, options={"unsigned":true, "default":0})
+     * @Column(type="integer", name="login_count", nullable=false, options={"unsigned":true, "default":0})
      */
     protected $loginCount;
 
@@ -231,15 +237,42 @@ Example:
      */
     class User {}
 
+.. _annref_customidgenerator:
+
+@CustomIdGenerator
+~~~~~~~~~~~~~~~~~~~~~
+
+This annotations allows you to specify a user-provided class to generate identifiers. This annotation only works when both :ref:`@Id <annref_id>` and :ref:`@GeneratedValue(strategy="CUSTOM") <annref_generatedvalue>` are specified.
+
+Required attributes:
+
+-  **class**: name of the class which should extend Doctrine\ORM\Id\AbstractIdGenerator
+
+Example:
+
+.. code-block:: php
+
+    <?php
+    /**
+     * @Id 
+     * @Column(type="integer")
+     * @GeneratedValue(strategy="CUSTOM")
+     * @CustomIdGenerator(class="My\Namespace\MyIdGenerator")
+     */
+    public $id;
+
 .. _annref_discriminatorcolumn:
 
 @DiscriminatorColumn
 ~~~~~~~~~~~~~~~~~~~~~
 
-This annotation is a required annotation for the topmost/super
+This annotation is an optional annotation for the topmost/super
 class of an inheritance hierarchy. It specifies the details of the
 column which saves the name of the class, which the entity is
 actually instantiated as.
+
+If this annotation is not specified, the discriminator column defaults
+to a string column of length 255 called ``dtype``.
 
 Required attributes:
 
@@ -278,6 +311,67 @@ depending on whether the classes are in the namespace or not.
     {
         // ...
     }
+
+
+.. _annref_embeddable:
+
+@Embeddable
+~~~~~~~~~~~~~~~~~~~~~
+
+The embeddable annotation is required on a class, in order to make it
+embeddable inside an entity. It works together with the :ref:`@Embedded <annref_embedded>`
+annotation to establish the relationship between the two classes.
+
+.. code-block:: php
+
+    <?php
+
+    /**
+     * @Embeddable
+     */
+    class Address
+    {
+    // ...
+    class User
+    {
+        /**
+         * @Embedded(class = "Address")
+         */
+        private $address;
+
+
+.. _annref_embedded:
+
+@Embedded
+~~~~~~~~~~~~~~~~~~~~~
+
+The embedded annotation is required on an entity's member variable,
+in order to specify that it is an embedded class.
+
+Required attributes:
+
+-  **class**: The embeddable class
+
+
+.. code-block:: php
+
+    <?php
+
+    // ...
+    class User
+    {
+        /**
+         * @Embedded(class = "Address")
+         */
+        private $address;
+
+    /**
+     * @Embeddable
+     */
+    class Address
+    {
+    // ...
+
 
 .. _annref_entity:
 
@@ -357,11 +451,12 @@ conjunction with @Id.
 If this annotation is not specified with @Id the NONE strategy is
 used as default.
 
-Required attributes:
+Optional attributes:
 
 
 -  **strategy**: Set the name of the identifier generation strategy.
    Valid values are AUTO, SEQUENCE, TABLE, IDENTITY, UUID, CUSTOM and NONE.
+   If not specified, default value is AUTO.
 
 Example:
 
@@ -524,22 +619,17 @@ Examples:
 This annotation is used in the context of relations in
 :ref:`@ManyToOne <annref_manytoone>`, :ref:`@OneToOne <annref_onetoone>` fields
 and in the Context of :ref:`@JoinTable <annref_jointable>` nested inside
-a @ManyToMany. This annotation is not required. If it is not
-specified the attributes *name* and *referencedColumnName* are
-inferred from the table and primary key names.
+a @ManyToMany. If this annotation or both *name* and *referencedColumnName*
+are missing they will be computed considering the field's name and the current
+:doc:`naming strategy <namingstrategy>`.
 
-Required attributes:
-
+Optional attributes:
 
 -  **name**: Column name that holds the foreign key identifier for
    this relation. In the context of @JoinTable it specifies the column
    name in the join table.
 -  **referencedColumnName**: Name of the primary key identifier that
-   is used for joining of this relation.
-
-Optional attributes:
-
-
+   is used for joining of this relation. Defaults to *id*.
 -  **unique**: Determines whether this relation is exclusive between the
    affected entities and should be enforced as such on the database
    constraint level. Defaults to false.
@@ -1211,12 +1301,13 @@ Example with partial indexes:
 .. _annref_version:
 
 @Version
-~~~~~~~~~~~~~~
+~~~~~~~~
 
-Marker annotation that defines a specified column as version
-attribute used in an optimistic locking scenario. It only works on
-:ref:`@Column <annref_column>` annotations that have the type integer or
-datetime. Combining @Version with :ref:`@Id <annref_id>` is not supported.
+Marker annotation that defines a specified column as version attribute used in
+an :ref:`optimistic locking <transactions-and-concurrency_optimistic-locking>`
+scenario. It only works on :ref:`@Column <annref_column>` annotations that have
+the type ``integer`` or ``datetime``. Combining ``@Version`` with
+:ref:`@Id <annref_id>` is not supported.
 
 Example:
 

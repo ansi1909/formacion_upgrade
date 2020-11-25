@@ -1,3 +1,0 @@
-[15-Jun-2019 12:26:13 America/Caracas] PHP Fatal error:  Class 'PHPExcel_Shared_OLE_PPS' not found in /home/smrtfrmcn/public_html/aulavirtual/vendor/phpoffice/phpexcel/Classes/PHPExcel/Shared/OLE/PPS/File.php on line 31
-[15-Jun-2019 12:26:43 America/Caracas] PHP Fatal error:  Class 'PHPExcel_Shared_OLE_PPS' not found in /home/smrtfrmcn/public_html/aulavirtual/vendor/phpoffice/phpexcel/Classes/PHPExcel/Shared/OLE/PPS/File.php on line 31
-[18-Oct-2019 15:03:20 America/Caracas] PHP Fatal error:  Class 'PHPExcel_Shared_OLE_PPS' not found in /home/smrtfrmcn/public_html/aulavirtual/vendor/phpoffice/phpexcel/Classes/PHPExcel/Shared/OLE/PPS/Root.php on line 31
