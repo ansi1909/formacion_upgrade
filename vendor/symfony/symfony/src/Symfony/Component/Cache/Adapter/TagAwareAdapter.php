@@ -46,7 +46,6 @@ class TagAwareAdapter implements TagAwareAdapterInterface, PruneableInterface, R
                 $item = new CacheItem();
                 $item->key = $key;
                 $item->value = $value;
-                $item->defaultLifetime = $protoItem->defaultLifetime;
                 $item->expiry = $protoItem->expiry;
                 $item->poolHash = $protoItem->poolHash;
 
@@ -90,8 +89,7 @@ class TagAwareAdapter implements TagAwareAdapterInterface, PruneableInterface, R
         $this->invalidateTags = \Closure::bind(
             static function (AdapterInterface $tagsAdapter, array $tags) {
                 foreach ($tags as $v) {
-                    $v->defaultLifetime = 0;
-                    $v->expiry = null;
+                    $v->expiry = 0;
                     $tagsAdapter->saveDeferred($v);
                 }
 
@@ -280,6 +278,16 @@ class TagAwareAdapter implements TagAwareAdapterInterface, PruneableInterface, R
     public function commit()
     {
         return $this->invalidateTags([]);
+    }
+
+    public function __sleep()
+    {
+        throw new \BadMethodCallException('Cannot serialize '.__CLASS__);
+    }
+
+    public function __wakeup()
+    {
+        throw new \BadMethodCallException('Cannot unserialize '.__CLASS__);
     }
 
     public function __destruct()

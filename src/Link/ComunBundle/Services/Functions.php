@@ -3521,20 +3521,22 @@ public function obtenerEstructuraJson($pagina_id){
 
         $em = $this->em;
         $timeZone = 0;
+        $session = new session();
 
         // buscando las últimas 3 interacciones del usuario donde la página no esté completada
         $query = $em->createQuery('SELECT pl FROM LinkComunBundle:CertiPaginaLog pl
+                                    JOIN LinkComunBundle:CertiPaginaEmpresa pe WITH pe.pagina = pl.pagina
                                     JOIN pl.pagina p
-                                    JOIN LinkComunBundle:CertiPaginaEmpresa pe
                                     WHERE pl.usuario = :usuario_id
                                         AND pl.estatusPagina != :completada
                                         AND p.pagina IS NULL
-                                        AND pe.pagina = p.id
                                         AND pe.activo = :activo
+                                        AND pe.empresa = :empresa
                                     ORDER BY pl.id DESC')
                     ->setParameters(array('usuario_id' => $usuario_id,
                                           'completada' => $yml['parameters']['estatus_pagina']['completada'],
-                                          'activo' => true));
+                                          'activo' => true,
+                                         'empresa' => $session->get('empresa')['id']) );
         $actividadreciente_padre = $query->getResult();
 
         $actividad_reciente = array();

@@ -1,4 +1,40 @@
 $(document).ready(function() {
+		var table = $('#dt').DataTable( {
+		destroy: true,
+        rowReorder: true,
+        responsive: false,
+        pageLength:10,
+        sPaginationType: "full_numbers",
+        lengthChange: false,
+        info: false,
+        fnDrawCallback: function(){
+         observe();
+        },
+        oLanguage: {
+            "sProcessing":    "Procesando...",
+            "sLengthMenu":    "'Mostrar _MENU_ registros",
+            "sZeroRecords":   "No se encontraron resultados",
+            "sEmptyTable":    "Ningún dato disponible en esta tabla",
+            "sInfo":          "Mostrando registros del _START_ al _END_ de un total de _TOTAL_.",
+            "sInfoEmpty":     "Mostrando registros del 0 al 0 de un total de 0 registros",
+            "sInfoFiltered":  "(filtrado de un total de _MAX_ registros)",
+            "sInfoPostFix":   "",
+            "sSearch":        "Buscar:",
+            "sUrl":           "",
+            "sInfoThousands":  ",",
+            "sLoadingRecords": "Cargando...",
+            oPaginate: {
+                sFirst: "<<",
+                sPrevious: "<",
+                sNext: ">",
+                sLast: ">>"
+            },
+            "oAria": {
+                "sSortAscending":  ": Activar para ordenar la columna de manera ascendente",
+                "sSortDescending": ": Activar para ordenar la columna de manera descendente"
+            }
+        }
+	} );
 
 	afterPaginate();
 
@@ -14,15 +50,7 @@ $(document).ready(function() {
 function observe()
 {
 
-/*	$('#tbody-pages tr').each(function(){
-		var tr = $(this).attr('id');
-		if (!(typeof tr === 'undefined' || tr === null)){
-			var tr_arr = tr.split('tr-');
-			var pagina_empresa_id = tr_arr[1];
-			//treePaginas(pagina_empresa_id);
-		}
-	});
-*/
+
     $('#input_orden').focus(function(event) {
     	$('#error-orden').hide();
     	$('#validar-orden').hide();

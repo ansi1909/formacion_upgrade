@@ -1,19 +1,35 @@
+
 # This file is a "template" of what your parameters.yml file should look like
 # Set parameters here that may be different on each deployment target of the app, e.g. development, staging, production.
 # http://symfony.com/doc/current/best_practices/configuration.html#infrastructure-related-configuration
 parameters:
-    database_host:     127.0.0.1
-    database_port:     ~
-    database_name:     symfony
-    database_user:     root
-    database_password: ~
-    # You should uncomment this if you want use pdo_sqlite
-    # database_path: "%kernel.root_dir%/data.db3"
-
-    mailer_transport:  smtp
-    mailer_host:       127.0.0.1
-    mailer_user:       ~
-    mailer_password:   ~
-
-    # A secret key that's used to generate certain security-related tokens
-    secret:            ThisTokenIsNotSoSecretChangeIt
+    database_host: 127.0.0.1
+    database_driver: pdo_pgsql
+    database_path: null
+    database_port: 5433 # 5432 p9.4 5433 p12 5434 p9.5
+    database_name: smart_p12
+    database_user: desa
+    database_password: desa1234
+    mailer_transport: smtp
+    mailer_host: atenas.venred.com
+    mailer_user: tutorvirtual@formacion2puntocero.com
+    mailer_password: UKyhCzWcq29EDKJ7!!
+    secret: ThisTokenIsNotSoSecretChangeIt
+    mailer_port: 465
+    mailer_encryption: ssl
+    mailer_auth_mode: login
+    mailer_user_name: Soporte Formación Smart
+    mailer_user_tutor: tutorvirtual@formacionsmart.com
+    mailer_user_tutor_name: Tutor Virtual Formación Smart
+    mailer_password_tutor: S{NlRk,ExZ]]
+    sendmail: 1
+    folders:
+        uploads: 'http://localhost/uploads/'
+        dir_uploads: 'C:/wamp/www/uploads/'
+        dir_project: 'C:/wamp/www/formacion2.0/'
+        verificar_codigo_qr: 'http://localhost:8080/formacion2.0/web/validar_codigoQR.php'
+        tmp: 'C:/wamp/tmp/'
+    comandos:
+        sass: 'C:\Ruby24-x64\bin\sass'
+    base_url: 'http://localhost/formacion2.0/web/app_dev.php'
+    link_plataforma: 'http://localhost/formacion2.0/web/login/'

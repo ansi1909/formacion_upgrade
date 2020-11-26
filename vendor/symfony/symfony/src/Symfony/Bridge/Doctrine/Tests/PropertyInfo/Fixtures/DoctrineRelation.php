@@ -30,7 +30,7 @@ class DoctrineRelation
     public $id;
 
     /**
-     * @Column(type="guid")
+     * @Column(type="guid", name="rguid_column")
      */
     protected $rguid;
 
@@ -39,4 +39,14 @@ class DoctrineRelation
      * @ManyToOne(targetEntity="DoctrineDummy", inversedBy="indexedFoo")
      */
     protected $foo;
+
+    /**
+     * @Column(type="datetime")
+     */
+    private $dt;
+
+    /**
+     * @Column(type="foo")
+     */
+    private $customType;
 }

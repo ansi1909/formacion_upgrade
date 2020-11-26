@@ -1,8 +1,0 @@
-[04-Apr-2019 13:47:14 America/Caracas] PHP Fatal error:  Class 'PHPUnit_Framework_TestCase' not found in /home/smrtfrmcn/public_html/aulavirtual/vendor/monolog/monolog/tests/Monolog/TestCase.php on line 15
-[04-Apr-2019 14:06:10 America/Caracas] PHP Fatal error:  Class 'Psr\Log\Test\LoggerInterfaceTest' not found in /home/smrtfrmcn/public_html/aulavirtual/vendor/monolog/monolog/tests/Monolog/PsrLogCompatTest.php on line 20
-[04-Apr-2019 14:25:09 America/Caracas] PHP Fatal error:  Class 'PHPUnit_Framework_TestCase' not found in /home/smrtfrmcn/public_html/aulavirtual/vendor/monolog/monolog/tests/Monolog/LoggerTest.php on line 18
-[04-Apr-2019 15:12:26 America/Caracas] PHP Fatal error:  Class 'PHPUnit_Framework_TestCase' not found in /home/smrtfrmcn/public_html/aulavirtual/vendor/monolog/monolog/tests/Monolog/RegistryTest.php on line 15
-[04-Apr-2019 17:06:02 America/Caracas] PHP Fatal error:  Class 'PHPUnit_Framework_TestCase' not found in /home/smrtfrmcn/public_html/aulavirtual/vendor/monolog/monolog/tests/Monolog/ErrorHandlerTest.php on line 17
-[06-Apr-2019 15:21:16 America/Caracas] PHP Fatal error:  Class 'PHPUnit_Framework_TestCase' not found in /home/smrtfrmcn/public_html/aulavirtual/vendor/monolog/monolog/tests/Monolog/RegistryTest.php on line 15
-[06-Apr-2019 17:31:17 America/Caracas] PHP Fatal error:  Class 'PHPUnit_Framework_TestCase' not found in /home/smrtfrmcn/public_html/aulavirtual/vendor/monolog/monolog/tests/Monolog/ErrorHandlerTest.php on line 17
-[06-Apr-2019 19:41:55 America/Caracas] PHP Fatal error:  Class 'PHPUnit_Framework_TestCase' not found in /home/smrtfrmcn/public_html/aulavirtual/vendor/monolog/monolog/tests/Monolog/TestCase.php on line 15
