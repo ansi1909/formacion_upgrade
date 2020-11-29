@@ -9,7 +9,4 @@ return array(
     'Twig_' => array($vendorDir . '/twig/twig/lib'),
     'PHPQRCode' => array($vendorDir . '/aferrandini/phpqrcode/lib'),
     'PHPExcel' => array($vendorDir . '/phpoffice/phpexcel/Classes'),
-    'Doctrine\\ORM\\' => array($vendorDir . '/doctrine/orm/lib'),
-    'Doctrine\\DBAL\\' => array($vendorDir . '/doctrine/dbal/lib'),
-    'Doctrine\\Common\\Collections\\' => array($vendorDir . '/doctrine/collections/lib'),
 );

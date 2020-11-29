@@ -1,4 +1,0 @@
-[18-Oct-2019 06:18:36 America/Caracas] PHP Fatal error:  Class 'Spipu\Html2Pdf\Exception\Html2PdfException' not found in /home/smrtfrmcn/public_html/aulavirtual/vendor/spipu/html2pdf/src/Exception/HtmlParsingException.php on line 19
-[19-Oct-2019 02:39:38 America/Caracas] PHP Fatal error:  Class 'Spipu\Html2Pdf\Exception\Html2PdfException' not found in /home/smrtfrmcn/public_html/aulavirtual/vendor/spipu/html2pdf/src/Exception/ImageException.php on line 19
-[19-Oct-2019 05:27:47 America/Caracas] PHP Fatal error:  Class 'Spipu\Html2Pdf\Exception\Html2PdfException' not found in /home/smrtfrmcn/public_html/aulavirtual/vendor/spipu/html2pdf/src/Exception/TableException.php on line 19
-[19-Oct-2019 20:43:34 America/Caracas] PHP Fatal error:  Class 'Spipu\Html2Pdf\Exception\Html2PdfException' not found in /home/smrtfrmcn/public_html/aulavirtual/vendor/spipu/html2pdf/src/Exception/LocaleException.php on line 19

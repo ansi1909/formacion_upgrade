@@ -31,6 +31,13 @@ Truncating a string:
     {{ 'Lorem ipsum'|u.truncate(8, '...') }}
     Lorem...
 
+The ``truncate`` method also accepts a third argument to preserve whole words:
+
+.. code-block:: twig
+
+    {{ 'Lorem ipsum dolor'|u.truncate(10, '...', false) }}
+    Lorem ipsum...
+
 Converting a string to *snake* case or *camelCase*:
 
 .. code-block:: twig
@@ -70,7 +77,7 @@ For large strings manipulation, use the ``apply`` tag:
         $ composer req twig/string-extra
 
     Then, use the ``twig/extra-bundle`` on Symfony projects or add the extension
-    explictly on the Twig environment::
+    explicitly on the Twig environment::
 
         use Twig\Extra\String\StringExtension;
 

@@ -1,1 +1,0 @@
-[16-Oct-2019 02:47:54 America/Caracas] PHP Fatal error:  Interface 'Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface' not found in /home/smrtfrmcn/public_html/aulavirtual/vendor/doctrine/doctrine-bundle/DependencyInjection/Compiler/EntityListenerPass.php on line 26

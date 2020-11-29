@@ -1,1 +1,0 @@
-[19-Oct-2019 00:07:14 America/Caracas] PHP Fatal error:  Class 'Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand' not found in /home/smrtfrmcn/public_html/aulavirtual/vendor/doctrine/doctrine-bundle/Command/DoctrineCommand.php on line 29

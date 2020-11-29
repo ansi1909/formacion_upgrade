@@ -239,11 +239,7 @@ abstract class AbstractDoctrineExtension extends Extension
         }
 
         if (!\in_array($mappingConfig['type'], ['xml', 'yml', 'annotation', 'php', 'staticphp'])) {
-            throw new \InvalidArgumentException(sprintf('Can only configure "xml", "yml", "annotation", "php" or '.
-                '"staticphp" through the DoctrineBundle. Use your own bundle to configure other metadata drivers. '.
-                'You can register them by adding a new driver to the '.
-                '"%s" service definition.', $this->getObjectManagerElementName($objectManagerName.'_metadata_driver')
-            ));
+            throw new \InvalidArgumentException(sprintf('Can only configure "xml", "yml", "annotation", "php" or "staticphp" through the DoctrineBundle. Use your own bundle to configure other metadata drivers. You can register them by adding a new driver to the "%s" service definition.', $this->getObjectManagerElementName($objectManagerName.'_metadata_driver')));
         }
     }
 
@@ -260,11 +256,11 @@ abstract class AbstractDoctrineExtension extends Extension
         $configPath = $this->getMappingResourceConfigDirectory();
         $extension = $this->getMappingResourceExtension();
 
-        if (glob($dir.'/'.$configPath.'/*.'.$extension.'.xml', GLOB_NOSORT)) {
+        if (glob($dir.'/'.$configPath.'/*.'.$extension.'.xml', \GLOB_NOSORT)) {
             $driver = 'xml';
-        } elseif (glob($dir.'/'.$configPath.'/*.'.$extension.'.yml', GLOB_NOSORT)) {
+        } elseif (glob($dir.'/'.$configPath.'/*.'.$extension.'.yml', \GLOB_NOSORT)) {
             $driver = 'yml';
-        } elseif (glob($dir.'/'.$configPath.'/*.'.$extension.'.php', GLOB_NOSORT)) {
+        } elseif (glob($dir.'/'.$configPath.'/*.'.$extension.'.php', \GLOB_NOSORT)) {
             $driver = 'php';
         } else {
             // add the closest existing directory as a resource
@@ -469,7 +465,7 @@ abstract class AbstractDoctrineExtension extends Extension
             }
 
             if (null !== $autoMappedManager) {
-                throw new \LogicException(sprintf('You cannot enable "auto_mapping" on more than one manager at the same time (found in "%s" and %s").', $autoMappedManager, $name));
+                throw new \LogicException(sprintf('You cannot enable "auto_mapping" on more than one manager at the same time (found in "%s" and "%s"").', $autoMappedManager, $name));
             }
 
             $autoMappedManager = $name;

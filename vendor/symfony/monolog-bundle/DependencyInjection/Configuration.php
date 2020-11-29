@@ -177,6 +177,15 @@ use Monolog\Logger;
  *   - [bubble]: bool, defaults to true
  *   - [headers]: optional array containing additional headers: ['Foo: Bar', '...']
  *
+ * - symfony_mailer:
+ *   - from_email: optional if email_prototype is given
+ *   - to_email: optional if email_prototype is given
+ *   - subject: optional if email_prototype is given
+ *   - [email_prototype]: service id of a message, defaults to a default message with the three fields above
+ *   - [mailer]: mailer service id, defaults to mailer.mailer
+ *   - [level]: level name or int value, defaults to DEBUG
+ *   - [bubble]: bool, defaults to true
+ *
  * - socket:
  *   - connection_string: string
  *   - [timeout]: float
@@ -194,13 +203,14 @@ use Monolog\Logger;
  *   - [timeout]: float
  *   - [connection_timeout]: float
  *
- * - raven:
+ * - raven / sentry:
  *   - dsn: connection string
  *   - client_id: Raven client custom service id (optional)
  *   - [release]: release number of the application that will be attached to logs, defaults to null
  *   - [level]: level name or int value, defaults to DEBUG
  *   - [bubble]: bool, defaults to true
  *   - [auto_log_stacks]: bool, defaults to false
+ *   - [environment]: string, default to null (no env specified)
  *
  * - newrelic:
  *   - [level]: level name or int value, defaults to DEBUG
@@ -293,6 +303,13 @@ use Monolog\Logger;
  *   - [bubble]: bool, defaults to true
  *   - [timeout]: float
  *   - [connection_timeout]: float
+ *
+ * - insightops:
+ *   - token: Log token supplied by InsightOps
+ *   - region: Region where InsightOps account is hosted. Could be 'us' or 'eu'. Defaults to 'us'
+ *   - [use_ssl]: whether or not SSL encryption should be used, defaults to true
+ *   - [level]: level name or int value, defaults to DEBUG
+ *   - [bubble]: bool, defaults to true
  *
  * - flowdock:
  *   - token: flowdock api token
@@ -413,10 +430,10 @@ class Configuration implements ConfigurationInterface
                                              */
 
                                             if (is_array($value)) {
-                                                return isset($value['code']) ? $value : array('code' => key($value), 'urls' => current($value));
+                                                return isset($value['code']) ? $value : ['code' => key($value), 'urls' => current($value)];
                                             }
 
-                                            return array('code' => $value, 'urls' => array());
+                                            return ['code' => $value, 'urls' => []];
                                         }, $values);
                                     })
                                 ->end()
@@ -454,9 +471,10 @@ class Configuration implements ConfigurationInterface
                             ->scalarNode('team')->end() // slackbot
                             ->scalarNode('notify')->defaultFalse()->end() // hipchat
                             ->scalarNode('nickname')->defaultValue('Monolog')->end() // hipchat
-                            ->scalarNode('token')->end() // pushover & hipchat & loggly & logentries & flowdock & rollbar & slack & slackbot
+                            ->scalarNode('token')->end() // pushover & hipchat & loggly & logentries & flowdock & rollbar & slack & slackbot & insightops
+                            ->scalarNode('region')->end() // insightops
                             ->scalarNode('source')->end() // flowdock
-                            ->booleanNode('use_ssl')->defaultTrue()->end() // logentries & hipchat
+                            ->booleanNode('use_ssl')->defaultTrue()->end() // logentries & hipchat & insightops
                             ->variableNode('user') // pushover
                                 ->validate()
                                     ->ifTrue(function ($v) {
@@ -472,7 +490,7 @@ class Configuration implements ConfigurationInterface
                                 ->canBeUnset()
                                 ->beforeNormalization()
                                     ->ifString()
-                                    ->then(function ($v) { return array('id' => $v); })
+                                    ->then(function ($v) { return ['id' => $v]; })
                                 ->end()
                                 ->children()
                                     ->scalarNode('id')->end()
@@ -491,7 +509,7 @@ class Configuration implements ConfigurationInterface
                                 ->canBeUnset()
                                 ->beforeNormalization()
                                     ->ifString()
-                                    ->then(function ($v) { return array('id' => $v); })
+                                    ->then(function ($v) { return ['id' => $v]; })
                                 ->end()
                                 ->children()
                                     ->scalarNode('id')->end()
@@ -519,7 +537,7 @@ class Configuration implements ConfigurationInterface
                                 ->canBeUnset()
                                 ->beforeNormalization()
                                     ->ifString()
-                                    ->then(function ($v) { return array('id' => $v); })
+                                    ->then(function ($v) { return ['id' => $v]; })
                                 ->end()
                                 ->children()
                                     ->scalarNode('id')->end()
@@ -543,7 +561,7 @@ class Configuration implements ConfigurationInterface
                                 ->canBeUnset()
                                 ->beforeNormalization()
                                     ->ifString()
-                                    ->then(function ($v) { return array('id' => $v); })
+                                    ->then(function ($v) { return ['id' => $v]; })
                                 ->end()
                                 ->children()
                                     ->scalarNode('id')->end()
@@ -564,7 +582,7 @@ class Configuration implements ConfigurationInterface
                                 ->canBeUnset()
                                 ->beforeNormalization()
                                     ->ifString()
-                                    ->then(function ($v) { return array('id' => $v); })
+                                    ->then(function ($v) { return ['id' => $v]; })
                                 ->end()
                                 ->children()
                                     ->scalarNode('id')->end()
@@ -586,26 +604,26 @@ class Configuration implements ConfigurationInterface
                                 ->performNoDeepMerging()
                                 ->prototype('scalar')->end()
                             ->end()
-                            ->scalarNode('from_email')->end() // swift_mailer, native_mailer and flowdock
-                            ->arrayNode('to_email') // swift_mailer and native_mailer
+                            ->scalarNode('from_email')->end() // swift_mailer, native_mailer, symfony_mailer and flowdock
+                            ->arrayNode('to_email') // swift_mailer, native_mailer and symfony_mailer
                                 ->prototype('scalar')->end()
                                 ->beforeNormalization()
                                     ->ifString()
-                                    ->then(function ($v) { return array($v); })
+                                    ->then(function ($v) { return [$v]; })
                                 ->end()
                             ->end()
-                            ->scalarNode('subject')->end() // swift_mailer and native_mailer
-                            ->scalarNode('content_type')->defaultNull()->end() // swift_mailer
+                            ->scalarNode('subject')->end() // swift_mailer, native_mailer and symfony_mailer
+                            ->scalarNode('content_type')->defaultNull()->end() // swift_mailer and symfony_mailer
                             ->arrayNode('headers') // native_mailer
                                 ->canBeUnset()
                                 ->scalarPrototype()->end()
                             ->end()
-                            ->scalarNode('mailer')->defaultValue('mailer')->end() // swift_mailer
-                            ->arrayNode('email_prototype') // swift_mailer
+                            ->scalarNode('mailer')->defaultNull()->end() // swift_mailer and symfony_mailer
+                            ->arrayNode('email_prototype') // swift_mailer and symfony_mailer
                                 ->canBeUnset()
                                 ->beforeNormalization()
                                     ->ifString()
-                                    ->then(function ($v) { return array('id' => $v); })
+                                    ->then(function ($v) { return ['id' => $v]; })
                                 ->end()
                                 ->children()
                                     ->scalarNode('id')->isRequired()->end()
@@ -620,11 +638,11 @@ class Configuration implements ConfigurationInterface
                             ->scalarNode('store')->defaultNull()->end() // deduplication
                             ->scalarNode('connection_timeout')->end() // socket_handler, logentries, pushover, hipchat & slack
                             ->booleanNode('persistent')->end() // socket_handler
-                            ->scalarNode('dsn')->end() // raven_handler
-                            ->scalarNode('client_id')->defaultNull()->end() // raven_handler
+                            ->scalarNode('dsn')->end() // raven_handler, sentry_handler
+                            ->scalarNode('client_id')->defaultNull()->end() // raven_handler, sentry_handler
                             ->scalarNode('auto_log_stacks')->defaultFalse()->end() // raven_handler
-                            ->scalarNode('release')->defaultNull()->end() // raven_handler
-                            ->scalarNode('environment')->defaultNull()->end() // raven_handler
+                            ->scalarNode('release')->defaultNull()->end() // raven_handler, sentry_handler
+                            ->scalarNode('environment')->defaultNull()->end() // raven_handler, sentry_handler
                             ->scalarNode('message_type')->defaultValue(0)->end() // error_log
                             ->arrayNode('tags') // loggly
                                 ->beforeNormalization()
@@ -651,8 +669,8 @@ class Configuration implements ConfigurationInterface
                                 ->beforeNormalization()
                                     ->ifArray()
                                     ->then(function ($v) {
-                                        $map = array();
-                                        $verbosities = array('VERBOSITY_QUIET', 'VERBOSITY_NORMAL', 'VERBOSITY_VERBOSE', 'VERBOSITY_VERY_VERBOSE', 'VERBOSITY_DEBUG');
+                                        $map = [];
+                                        $verbosities = ['VERBOSITY_QUIET', 'VERBOSITY_NORMAL', 'VERBOSITY_VERBOSE', 'VERBOSITY_VERY_VERBOSE', 'VERBOSITY_DEBUG'];
                                         // allow numeric indexed array with ascendning verbosity and lowercase names of the constants
                                         foreach ($v as $verbosity => $level) {
                                             if (is_int($verbosity) && isset($verbosities[$verbosity])) {
@@ -674,7 +692,7 @@ class Configuration implements ConfigurationInterface
                                 ->end()
                                 ->validate()
                                     ->always(function ($v) {
-                                        $map = array();
+                                        $map = [];
                                         foreach ($v as $verbosity => $level) {
                                             $verbosityConstant = 'Symfony\Component\Console\Output\OutputInterface::'.$verbosity;
 
@@ -709,11 +727,11 @@ class Configuration implements ConfigurationInterface
                                 ->canBeUnset()
                                 ->beforeNormalization()
                                     ->ifString()
-                                    ->then(function ($v) { return array('elements' => array($v)); })
+                                    ->then(function ($v) { return ['elements' => [$v]]; })
                                 ->end()
                                 ->beforeNormalization()
                                     ->ifTrue(function ($v) { return is_array($v) && is_numeric(key($v)); })
-                                    ->then(function ($v) { return array('elements' => $v); })
+                                    ->then(function ($v) { return ['elements' => $v]; })
                                 ->end()
                                 ->validate()
                                     ->ifTrue(function ($v) { return empty($v); })
@@ -726,7 +744,7 @@ class Configuration implements ConfigurationInterface
                                             $isExclusive = 'exclusive' === $v['type'];
                                         }
 
-                                        $elements = array();
+                                        $elements = [];
                                         foreach ($v['elements'] as $element) {
                                             if (0 === strpos($element, '!')) {
                                                 if (false === $isExclusive) {
@@ -747,13 +765,13 @@ class Configuration implements ConfigurationInterface
                                             return null;
                                         }
 
-                                        return array('type' => $isExclusive ? 'exclusive' : 'inclusive', 'elements' => $elements);
+                                        return ['type' => $isExclusive ? 'exclusive' : 'inclusive', 'elements' => $elements];
                                     })
                                 ->end()
                                 ->children()
                                     ->scalarNode('type')
                                         ->validate()
-                                            ->ifNotInArray(array('inclusive', 'exclusive'))
+                                            ->ifNotInArray(['inclusive', 'exclusive'])
                                             ->thenInvalid('The type of channels has to be inclusive or exclusive')
                                         ->end()
                                     ->end()
@@ -814,6 +832,10 @@ class Configuration implements ConfigurationInterface
                             ->thenInvalid('The sender, recipient and subject have to be specified to use a NativeMailerHandler')
                         ->end()
                         ->validate()
+                            ->ifTrue(function ($v) { return 'symfony_mailer' === $v['type'] && empty($v['email_prototype']) && (empty($v['from_email']) || empty($v['to_email']) || empty($v['subject'])); })
+                            ->thenInvalid('The sender, recipient and subject or an email prototype have to be specified to use the Symfony MailerHandler')
+                        ->end()
+                        ->validate()
                             ->ifTrue(function ($v) { return 'service' === $v['type'] && !isset($v['id']); })
                             ->thenInvalid('The id has to be specified to use a service as handler')
                         ->end()
@@ -838,15 +860,19 @@ class Configuration implements ConfigurationInterface
                             ->thenInvalid('The DSN has to be specified to use a RavenHandler')
                         ->end()
                         ->validate()
+                            ->ifTrue(function ($v) { return 'sentry' === $v['type'] && !array_key_exists('dsn', $v) && null === $v['client_id']; })
+                            ->thenInvalid('The DSN has to be specified to use Sentry\'s handler')
+                        ->end()
+                        ->validate()
                             ->ifTrue(function ($v) { return 'hipchat' === $v['type'] && (empty($v['token']) || empty($v['room'])); })
                             ->thenInvalid('The token and room have to be specified to use a HipChatHandler')
                         ->end()
                         ->validate()
-                            ->ifTrue(function ($v) { return 'hipchat' === $v['type'] && !in_array($v['message_format'], array('text', 'html')); })
+                            ->ifTrue(function ($v) { return 'hipchat' === $v['type'] && !in_array($v['message_format'], ['text', 'html']); })
                             ->thenInvalid('The message_format has to be "text" or "html" in a HipChatHandler')
                         ->end()
                         ->validate()
-                            ->ifTrue(function ($v) { return 'hipchat' === $v['type'] && null !== $v['api_version'] && !in_array($v['api_version'], array('v1', 'v2'), true); })
+                            ->ifTrue(function ($v) { return 'hipchat' === $v['type'] && null !== $v['api_version'] && !in_array($v['api_version'], ['v1', 'v2'], true); })
                             ->thenInvalid('The api_version has to be "v1" or "v2" in a HipChatHandler')
                         ->end()
                         ->validate()
@@ -893,6 +919,10 @@ class Configuration implements ConfigurationInterface
                             ->thenInvalid('The token has to be specified to use a LogEntriesHandler')
                         ->end()
                         ->validate()
+                            ->ifTrue(function ($v) { return 'insightops' === $v['type'] && empty($v['token']); })
+                            ->thenInvalid('The token has to be specified to use a InsightOpsHandler')
+                        ->end()
+                        ->validate()
                             ->ifTrue(function ($v) { return 'flowdock' === $v['type'] && empty($v['token']); })
                             ->thenInvalid('The token has to be specified to use a FlowdockHandler')
                         ->end()
@@ -921,25 +951,25 @@ class Configuration implements ConfigurationInterface
                         ->ifTrue(function ($v) { return isset($v['debug']); })
                         ->thenInvalid('The "debug" name cannot be used as it is reserved for the handler of the profiler')
                     ->end()
-                    ->example(array(
-                        'syslog' => array(
+                    ->example([
+                        'syslog' => [
                             'type' => 'stream',
                             'path' => '/var/log/symfony.log',
                             'level' => 'ERROR',
                             'bubble' => 'false',
                             'formatter' => 'my_formatter',
-                            ),
-                        'main' => array(
+                        ],
+                        'main' => [
                             'type' => 'fingers_crossed',
                             'action_level' => 'WARNING',
                             'buffer_size' => 30,
                             'handler' => 'custom',
-                            ),
-                        'custom' => array(
+                        ],
+                        'custom' => [
                             'type' => 'service',
                             'id' => 'my_handler',
-                            )
-                        ))
+                        ]
+                    ])
                 ->end()
             ->end()
         ;
