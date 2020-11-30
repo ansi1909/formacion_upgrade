@@ -585,7 +585,7 @@ class CertificadoController extends Controller
 
         $em = $this->getDoctrine()->getManager();
         $app_id = $session->get('app_id');
-        $empresa_select = null;
+        $empresa_select = $session->get('usuario')['empresa'];
         $pagina_select = null;
         $pagina = 0;
 

@@ -13,9 +13,9 @@
 <input type="hidden" id="pagina_select" name="pagina_select" value="{{ pagina_select }}">
 <input type="hidden" id="url_descarga" name="url_descarga" value="{{ path('_DescargarZip', {'ruta':pagina }) }} ">
 <form id="form" name="form" action="{{ path( '_GenerarCertificadosZip', { 'app_id': app.session.get('app_id') })}}"  method="POST">
-    
+
     <br><br>
-   
+
     <div class="row">
         <div class="col-sm-16 col-md-16 col-lg-16 col-xl-16">
             <div class="card">
@@ -27,11 +27,11 @@
                         <label for="texto" class="col-sm-7 col-md-7 col-lg-7 offset-sm-4 offset-md-4 offset-lg-4">{{'Empresa' | trans }}</label>
                         <div class="row">
                             <div class="col-sm-7 col-md-7 col-lg-7 offset-sm-4 offset-md-4 offset-lg-4">
-                                <select class="form_sty_sel form-control" style="border-radius: 5px" id="empresa_id" name="empresa_id">
+                                <select class="form_sty_sel form-control" style="border-radius: 5px" id="empresa_id" name="empresa_id" {% if empresa_select %} {{'disabled'}} {% endif %}>
                                     <option value=""></option>
                                     {% for empresa in empresas %}
                                         {% if empresa.id == empresa_select %}
-                                            <option value="{{ empresa.id }}" selected >{{ empresa.nombre }}</option>
+                                            <option value="{{ empresa.id }}" selected  >{{ empresa.nombre }}</option>
                                         {% else%}
                                         <option value="{{ empresa.id }}"  >{{ empresa.nombre }}</option>
                                         {%endif%}
@@ -42,7 +42,7 @@
                             </div>
                         </div>
                         <br>
-                    
+
                     <label for="texto" class="col-sm-7 col-md-7 col-lg-7 offset-sm-4 offset-md-4 offset-lg-4">{{'Programas' |trans}}</label>
                     <div class="row">
                         <div class="col-sm-7 col-md-7 col-lg-7 offset-sm-4 offset-md-4 offset-lg-4">
@@ -58,15 +58,15 @@
                         <div class="col-sm-8 col-md-8 col-lg-8">
                             <label for="texto" class="col-6 col-form-label">{{ 'Fecha inicio'|trans }}</label>
                             <div class="col-14">
-                               
+
                                 <input type="text" class="form-control form_sty1 date_picker" name="fechaD" id="fechaD"  placeholder="DD/MM/YYYY">
                                 <span class="fa fa-calendar"></span>
                             </div>
                         </div>
-                        <div class="col-sm-8 col-md-8 col-lg-8">                                            
+                        <div class="col-sm-8 col-md-8 col-lg-8">
                             <label for="texto" class="col-6 col-form-label">{{ 'Fecha fin'|trans }}</label>
                             <div class="col-14">
-                               
+
                                 <input type="text" class="form-control form_sty1 date_picker" name="fechaH" id="fechaH"  placeholder="DD/MM/YYYY">
                                 <span class="fa fa-calendar"></span>
                             </div>
@@ -84,7 +84,7 @@
     <div class="row" id="cargando" style="display: none;" >
         <div class="col-sm-16">
             <div class="card">
-                <div class="card-block">  
+                <div class="card-block">
                     <div class="load1 load-wrapper">
                         <div class="loader">
                             Loading...
@@ -98,7 +98,7 @@
         <div class="row" >
             <div class="col-sm-16">
                 <div class="card">
-                    <div class="card-block">  
+                    <div class="card-block">
                         <div id="resultado" style=" cursor:pointer">
                             <div class="list-unstyled member-list row">
                                 <div class="col-lg-4 col-sm-8 col-xs-16 offset-sm-4 offset-md-4 offset-lg-6">
@@ -119,7 +119,7 @@
         <div class="row" >
             <div class="col-sm-16">
                 <div class="card">
-                    <div class="card-block">  
+                    <div class="card-block">
                         <div id="resultado1" >
                             <div class="list-unstyled member-list row">
                                 <div class="col-lg-4 col-sm-8 col-xs-16 offset-sm-4 offset-md-4 offset-lg-6">
@@ -150,13 +150,13 @@
     <script type="text/javascript" src="{{ asset('jq/jquery-validation-1.15.0/dist/jquery.validate.js') }}"></script>
     <script type="text/javascript" src="{{ asset('jq/jquery-validation-1.15.0/dist/additional-methods.min.js') }}"></script>
     <script type="text/javascript" src="{{ asset('assets/vendor/bootstrap-datepicker-1.6.4-dist/js/bootstrap-datepicker.min.js') }}"></script>
-    <script type="text/javascript" src="{{ asset('assets/vendor/bootstrap-datepicker-1.6.4-dist/locales/bootstrap-datepicker.es.min.js') }}" charset="UTF-8"></script> 
+    <script type="text/javascript" src="{{ asset('assets/vendor/bootstrap-datepicker-1.6.4-dist/locales/bootstrap-datepicker.es.min.js') }}" charset="UTF-8"></script>
     <script type="text/javascript" src="{{ asset('js/admin/reportes/generarCertificados.js') }}"></script>
     <script type="text/javascript">
 
         $('#search').click(function(){
             var valid = $("#form").valid();
-            if (!valid) 
+            if (!valid)
             {
                 notify($('#div-error').html());
             }
@@ -189,7 +189,7 @@
             messages: {
                 'fechaD': {
                     required: "- {{ 'La fecha inicio es requerida.'|trans }}",
-                   
+
                 },
                 'fechaH': {
                     required: "- {{ 'La fehca fin es requerida.'|trans }}"

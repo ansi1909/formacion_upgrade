@@ -2,7 +2,7 @@
 -- PostgreSQL database dump
 --
 
-SET client_encoding = 'UTF8';
+SET client_encoding = 'SQL_ASCII';
 SET check_function_bodies = false;
 SET client_min_messages = warning;
 
@@ -392,7 +392,7 @@ INSERT INTO admin_tipo_correo (id, nombre) VALUES (3, 'Muro');
 ------------------------------------------------------------------------------------------------------------------------
 
 
---- Zonas horarias 
+--- Zonas horarias
 
 INSERT INTO "admin_zona_horaria" VALUES (2, 'ARG', 'America/Argentina/Buenos_Aires');
 INSERT INTO "admin_zona_horaria" VALUES (3, 'ARG', 'America/Argentina/Catamarcas');
@@ -428,29 +428,29 @@ INSERT INTO "admin_zona_horaria" VALUES (45, 'URY', 'America/Montevideo');
 INSERT INTO "admin_zona_horaria" VALUES (46, 'VEN', 'America/Caracas');
 INSERT INTO "admin_zona_horaria" VALUES (47, 'ABW', 'America/Aruba');
 INSERT INTO "admin_zona_horaria" VALUES (48, 'BHS', 'America/Nassau');
-INSERT INTO "admin_zona_horaria" VALUES (49, 'BLZ', 'America/Belize');                                
-INSERT INTO "admin_zona_horaria" VALUES (50, 'ATG', 'America/Antigua');    
-INSERT INTO "admin_zona_horaria" VALUES (51, 'BMU', 'Atlantic/Bermuda');      
-INSERT INTO "admin_zona_horaria" VALUES (52, 'BRB', 'Atlantic/Barbados');      
-INSERT INTO "admin_zona_horaria" VALUES (53, 'CAN', 'America/Toronto'); 
-INSERT INTO "admin_zona_horaria" VALUES (54, 'CAN', 'America/Vancouver'); 
-INSERT INTO "admin_zona_horaria" VALUES (55, 'CRI', 'America/Costa_Rica'); 
-INSERT INTO "admin_zona_horaria" VALUES (56, 'CUB', 'America/Havana'); 
-INSERT INTO "admin_zona_horaria" VALUES (57, 'DMA', 'America/Dominica'); 
-INSERT INTO "admin_zona_horaria" VALUES (58, 'DOM', 'America/Santo_Domingo');      
-INSERT INTO "admin_zona_horaria" VALUES (59, 'GTM', 'America/Guatemala');                                                  
-INSERT INTO "admin_zona_horaria" VALUES (60, 'HND', 'America/Tegucigalpa'); 
-INSERT INTO "admin_zona_horaria" VALUES (61, 'MEX', 'America/Mexico_City'); 
-INSERT INTO "admin_zona_horaria" VALUES (62, 'MEX', 'America/Cancun'); 
-INSERT INTO "admin_zona_horaria" VALUES (63, 'MEX', 'America/Hermosillo'); 
-INSERT INTO "admin_zona_horaria" VALUES (64, 'MEX', 'America/Matamoros'); 
-INSERT INTO "admin_zona_horaria" VALUES (65, 'MEX', 'America/Mazatlan'); 
-INSERT INTO "admin_zona_horaria" VALUES (66, 'MEX', 'America/Merida'); 
-INSERT INTO "admin_zona_horaria" VALUES (67, 'MEX', 'America/Monterrey'); 
-INSERT INTO "admin_zona_horaria" VALUES (68, 'NIC', 'America/Managua'); 
-INSERT INTO "admin_zona_horaria" VALUES (69, 'PAN', 'America/Panama'); 
-INSERT INTO "admin_zona_horaria" VALUES (70, 'PRI', 'America/Puerto_Rico'); 
-INSERT INTO "admin_zona_horaria" VALUES (71, 'SLV', 'America/El_Salvador'); 
+INSERT INTO "admin_zona_horaria" VALUES (49, 'BLZ', 'America/Belize');
+INSERT INTO "admin_zona_horaria" VALUES (50, 'ATG', 'America/Antigua');
+INSERT INTO "admin_zona_horaria" VALUES (51, 'BMU', 'Atlantic/Bermuda');
+INSERT INTO "admin_zona_horaria" VALUES (52, 'BRB', 'Atlantic/Barbados');
+INSERT INTO "admin_zona_horaria" VALUES (53, 'CAN', 'America/Toronto');
+INSERT INTO "admin_zona_horaria" VALUES (54, 'CAN', 'America/Vancouver');
+INSERT INTO "admin_zona_horaria" VALUES (55, 'CRI', 'America/Costa_Rica');
+INSERT INTO "admin_zona_horaria" VALUES (56, 'CUB', 'America/Havana');
+INSERT INTO "admin_zona_horaria" VALUES (57, 'DMA', 'America/Dominica');
+INSERT INTO "admin_zona_horaria" VALUES (58, 'DOM', 'America/Santo_Domingo');
+INSERT INTO "admin_zona_horaria" VALUES (59, 'GTM', 'America/Guatemala');
+INSERT INTO "admin_zona_horaria" VALUES (60, 'HND', 'America/Tegucigalpa');
+INSERT INTO "admin_zona_horaria" VALUES (61, 'MEX', 'America/Mexico_City');
+INSERT INTO "admin_zona_horaria" VALUES (62, 'MEX', 'America/Cancun');
+INSERT INTO "admin_zona_horaria" VALUES (63, 'MEX', 'America/Hermosillo');
+INSERT INTO "admin_zona_horaria" VALUES (64, 'MEX', 'America/Matamoros');
+INSERT INTO "admin_zona_horaria" VALUES (65, 'MEX', 'America/Mazatlan');
+INSERT INTO "admin_zona_horaria" VALUES (66, 'MEX', 'America/Merida');
+INSERT INTO "admin_zona_horaria" VALUES (67, 'MEX', 'America/Monterrey');
+INSERT INTO "admin_zona_horaria" VALUES (68, 'NIC', 'America/Managua');
+INSERT INTO "admin_zona_horaria" VALUES (69, 'PAN', 'America/Panama');
+INSERT INTO "admin_zona_horaria" VALUES (70, 'PRI', 'America/Puerto_Rico');
+INSERT INTO "admin_zona_horaria" VALUES (71, 'SLV', 'America/El_Salvador');
 
 
 
