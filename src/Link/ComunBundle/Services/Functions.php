@@ -2504,12 +2504,14 @@ public function obtenerEstructuraJson($pagina_id){
                         else {
 
                             // Se setea la sesion y se prepara el menu
-                            $datosUsuario = array('id' => $usuario->getId(),
-                                                  'nombre' => $usuario->getNombre(),
+                            $datosUsuario = array('id'       => $usuario->getId(),
+                                                  'nombre'   => $usuario->getNombre(),
                                                   'apellido' => $usuario->getApellido(),
-                                                  'correo' => $usuario->getCorreoPersonal(),
-                                                  'foto' => $usuario->getFoto(),
-                                                  'roles' => $roles_usuario);
+                                                  'correo'   => $usuario->getCorreoPersonal(),
+                                                  'foto'     => $usuario->getFoto(),
+                                                  'roles'    => $roles_usuario,
+                                                  'empresa'  => ($usuario->getEmpresa())? $usuario->getEmpresa()->getId(): false
+                                                );
 
                             // Opciones del menu
                             $query = $em->createQuery("SELECT p FROM LinkComunBundle:AdminPermiso p JOIN p.aplicacion a
