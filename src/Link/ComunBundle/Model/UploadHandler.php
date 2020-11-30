@@ -16,6 +16,7 @@ namespace Link\ComunBundle\Model;
 class UploadHandler
 {
 
+
     protected $options;
 
     // PHP File Upload error message codes:
