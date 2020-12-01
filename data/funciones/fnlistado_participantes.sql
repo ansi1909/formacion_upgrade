@@ -63,7 +63,8 @@ begin
 			u.campo2 as campo2,
 			u.campo3 as campo3,
 			u.campo4 as campo4,
-			u.id as id
+			u.id as id,
+            u.clave as clave
 		    FROM admin_usuario u INNER JOIN
 			(admin_nivel n INNER JOIN
 			    (certi_nivel_pagina np INNER JOIN certi_pagina_empresa pe ON np.pagina_empresa_id = pe.id)
@@ -75,7 +76,7 @@ begin
             AND u.activo
 			AND (LOWER(n.nombre) NOT LIKE 'revisor%' AND LOWER(n.nombre) NOT LIKE 'tutor%')
 			AND u.id IN (SELECT ru.usuario_id FROM admin_rol_usuario ru WHERE ru.rol_id = 2)
-		    GROUP BY u.id,u.codigo,u.nombre,u.apellido,u.login,u.correo_personal,u.correo_corporativo,u.activo,u.fecha_registro,u.fecha_nacimiento,u.pais_id,n.nombre,u.campo1
+		    GROUP BY u.id,u.codigo,u.nombre,u.apellido,u.login,u.correo_personal,u.correo_corporativo,u.activo,u.fecha_registro,u.fecha_nacimiento,u.pais_id,n.nombre,u.campo1,u.clave
 		    ORDER BY u.nombre ASC;
 
 	End if;
@@ -100,12 +101,13 @@ begin
                 u.campo2 as campo2,
                 u.campo3 as campo3,
                 u.campo4 as campo4,
-                u.id as id
+                u.id as id,
+                u.clave as clave
             FROM admin_usuario u INNER JOIN admin_nivel n ON u.nivel_id = n.id
             LEFT JOIN admin_sesion a ON u.id = a.usuario_id
             WHERE u.empresa_id = pempresa_id AND u.nivel_id = pnivel_id
                 AND u.id IN (SELECT ru.usuario_id FROM admin_rol_usuario ru WHERE ru.rol_id = 2)
-            GROUP BY u.id,u.codigo,u.nombre,u.apellido,u.login,u.correo_personal,u.correo_corporativo,u.activo,u.fecha_registro,u.fecha_nacimiento,u.pais_id,n.nombre,u.campo1,u.campo2,u.campo3,u.campo4
+            GROUP BY u.id,u.codigo,u.nombre,u.apellido,u.login,u.correo_personal,u.correo_corporativo,u.activo,u.fecha_registro,u.fecha_nacimiento,u.pais_id,n.nombre,u.campo1,u.campo2,u.campo3,u.campo4,u.clave
             ORDER BY u.nombre ASC;
     --- Al seleccionar todos los niveles se excluye el nivel revisor
     ElsIf pnivel_id = 0 AND ppagina_id > 0 Then
@@ -129,7 +131,8 @@ begin
                         u.campo2 as campo2,
                         u.campo3 as campo3,
                         u.campo4 as campo4,
-                        u.id as id
+                        u.id as id,
+                        u.clave as clave
                     FROM admin_usuario u INNER JOIN
                         (admin_nivel n INNER JOIN
                             (certi_nivel_pagina np INNER JOIN certi_pagina_empresa pe ON np.pagina_empresa_id = pe.id)
@@ -141,7 +144,7 @@ begin
                     AND u.activo
                     AND (LOWER(n.nombre) NOT LIKE 'revisor%' AND LOWER(n.nombre) NOT LIKE 'tutor%')
                     AND u.id IN (SELECT ru.usuario_id FROM admin_rol_usuario ru WHERE ru.rol_id = 2)
-                    GROUP BY u.id,u.codigo,u.nombre,u.apellido,u.login,u.correo_personal,u.correo_corporativo,u.activo,u.fecha_registro,u.fecha_nacimiento,u.pais_id,n.nombre,u.campo1,u.campo2,u.campo3,u.campo4
+                    GROUP BY u.id,u.codigo,u.nombre,u.apellido,u.login,u.correo_personal,u.correo_corporativo,u.activo,u.fecha_registro,u.fecha_nacimiento,u.pais_id,n.nombre,u.campo1,u.campo2,u.campo3,u.campo4,u.clave
                     ORDER BY u.nombre ASC;
 
         ElsIf preporte = 3 Then
@@ -163,7 +166,8 @@ begin
                     u.campo2 as campo2,
                     u.campo3 as campo3,
                     u.campo4 as campo4,
-                    u.id as id
+                    u.id as id,
+                    u.clave as clave
                 FROM admin_usuario u INNER JOIN (admin_nivel n INNER JOIN
 			    (certi_nivel_pagina np INNER JOIN certi_pagina_empresa pe ON np.pagina_empresa_id = pe.id)
 			ON n.id = np.nivel_id) ON u.nivel_id = n.id
@@ -176,7 +180,7 @@ begin
                         WHERE pl.pagina_id = ppagina_id AND pl.estatus_pagina_id != 3 )
                     AND u.id IN (SELECT ru.usuario_id FROM admin_rol_usuario ru WHERE ru.rol_id = 2)
                     AND (LOWER(n.nombre) NOT LIKE 'revisor%' AND LOWER(n.nombre) NOT LIKE 'tutor%')
-                GROUP BY u.id,u.codigo,u.nombre,u.apellido,u.apellido,u.login,u.correo_personal,u.correo_corporativo,u.activo,u.fecha_registro,u.fecha_nacimiento,u.pais_id,n.nombre,u.campo1,u.campo2,u.campo3,u.campo4
+                GROUP BY u.id,u.codigo,u.nombre,u.apellido,u.apellido,u.login,u.correo_personal,u.correo_corporativo,u.activo,u.fecha_registro,u.fecha_nacimiento,u.pais_id,n.nombre,u.campo1,u.campo2,u.campo3,u.campo4,u.clave
                 ORDER BY u.nombre ASC;
 
         ElsIf preporte = 4 Then
@@ -199,6 +203,7 @@ begin
                     u.campo3 as campo3,
                     u.campo4 as campo4,
                     u.id as id,
+                    u.clave as clave,
                     (SELECT ROUND(AVG(prl.nota)::numeric,2) AS promedio FROM certi_prueba_log prl INNER JOIN certi_prueba pr ON prl.prueba_id = pr.id
                         WHERE prl.estado = 'APROBADO'
                             AND prl.usuario_id = u.id
@@ -233,7 +238,7 @@ begin
                             WHERE pl.pagina_id = ppagina_id AND pl.estatus_pagina_id = 3 )
                     AND (LOWER(n.nombre) NOT LIKE 'revisor%' AND LOWER(n.nombre) NOT LIKE 'tutor%')
                     AND u.id IN (SELECT ru.usuario_id FROM admin_rol_usuario ru WHERE ru.rol_id = 2)
-                GROUP BY u.id,u.codigo,u.nombre,u.apellido,u.login,u.correo_personal,u.correo_corporativo,u.activo,u.fecha_registro,u.fecha_nacimiento,u.pais_id,n.nombre,u.campo1,u.campo2,u.campo3,u.campo4
+                GROUP BY u.id,u.codigo,u.nombre,u.apellido,u.login,u.correo_personal,u.correo_corporativo,u.activo,u.fecha_registro,u.fecha_nacimiento,u.pais_id,n.nombre,u.campo1,u.campo2,u.campo3,u.campo4,u.clave
                 ORDER BY u.nombre ASC;
 
         ElsIf preporte = 5 Then
@@ -255,7 +260,8 @@ begin
                     u.campo2 as campo2,
                     u.campo3 as campo3,
                     u.campo4 as campo4,
-                    u.id as id
+                    u.id as id,
+                    u.clave as clave
                 FROM admin_usuario u INNER JOIN
                     (admin_nivel n INNER JOIN
                         (certi_nivel_pagina np INNER JOIN certi_pagina_empresa pe ON np.pagina_empresa_id = pe.id)
@@ -272,7 +278,7 @@ begin
                     AND u.id IN (SELECT ru.usuario_id FROM admin_rol_usuario ru WHERE ru.rol_id = 2)
                     AND u.id IN (SELECT DISTINCT(s.usuario_id) FROM admin_sesion s )
                     AND pe.pagina_id = ppagina_id
-                GROUP BY u.id,u.codigo,u.nombre,u.apellido,u.login,u.correo_personal,u.correo_corporativo,u.activo,u.fecha_registro,u.fecha_nacimiento,u.pais_id,n.nombre,u.campo1,u.campo2,u.campo3,u.campo4
+                GROUP BY u.id,u.codigo,u.nombre,u.apellido,u.login,u.correo_personal,u.correo_corporativo,u.activo,u.fecha_registro,u.fecha_nacimiento,u.pais_id,n.nombre,u.campo1,u.campo2,u.campo3,u.campo4,u.clave
                 ORDER BY u.nombre ASC;
 
         End If;
