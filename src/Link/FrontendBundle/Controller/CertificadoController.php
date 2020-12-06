@@ -14,15 +14,15 @@ class CertificadoController extends Controller
 
 	public function certificadoAction($programa_id)
     {
-    	
+
         $session = new Session();
         $f = $this->get('funciones');
-        
+
         if (!$session->get('iniFront') || $f->sesionBloqueda($session->get('sesion_id')))
         {
         	return $this->redirectToRoute('_authExceptionEmpresa', array('tipo' => 'sesion'));
         }
-        
+
         $f->setRequest($session->get('sesion_id'));
 
         $uploads = Yaml::parse(file_get_contents($this->get('kernel')->getRootDir().'/config/parameters.yml'));
@@ -34,9 +34,9 @@ class CertificadoController extends Controller
         $categoria = $pagina->getCategoria()->getNombre();
 
         $contenidoMod = '<div style="font-size:21px;text-align:center"> <h1>'.$this->get('translator')->trans('Contenido del').' '.$categoria.': '.$pagina->getNombre().'</h1>';
-        
+
         $item = 1;
-        foreach ($session->get('paginas')[$programa_id]['subpaginas'] as $modulo) 
+        foreach ($session->get('paginas')[$programa_id]['subpaginas'] as $modulo)
         {
         	$contenidoMod .= '<h2> * '.$this->get('translator')->trans('Módulo').' '.$item.': '.$modulo['nombre'].'</h2>';
         	$item += 1;
@@ -59,7 +59,7 @@ class CertificadoController extends Controller
 	            $fecha_vencimiento = "$a-$m-$d";
 
 	        	$fecha = $f->fechaNatural($fecha_vencimiento);
-				
+
 				$pagina_log = $em->getRepository('LinkComunBundle:CertiPaginaLog')->findOneBy(array('usuario' => $session->get('usuario')['id'],
                                                                                                 	'pagina' => $pagina->getId() ));
 
@@ -78,10 +78,10 @@ class CertificadoController extends Controller
 
 		        if ($certificado->getTipoImagenCertificado()->getId() == $values['parameters']['tipo_imagen_certificado']['certificado'] )
 		        {
-		           
+
 		            /*certificado numero 2*/
 		            if ($pagina_log->getPagina()->getCategoria()->getNombre() == 'Curso') {
-		            	
+
 		            	$comodines = array('%%categoria%%');
 			            $reemplazos = array('Curso');
 			            $descripcion = str_replace($comodines, $reemplazos, $certificado->getDescripcion());
@@ -93,7 +93,7 @@ class CertificadoController extends Controller
 		            }
 
             		$certificado_pdf = new Html2Pdf('L','A4','es','true','UTF-8',array(0, 15, 0, 0));
-		            $certificado_pdf->writeHTML('<page title="Certificado" pageset="new" backimg="'.$file.'" backimgw="90%" backimgx="center"> 
+		            $certificado_pdf->writeHTML('<page title="Certificado" pageset="new" backimg="'.$file.'" backimgw="90%" backimgx="center">
 		            								<div style="margin-left:910px; ">'.$ruta.'</div>
 		                                            <div style="font-size:22px; margin-top:90px; text-align:center">'.$certificado->getEncabezado().'</div>
                                             		<div style="text-align:center; font-size:40px; margin-top:25px; text-transform:uppercase;">'.$session->get('usuario')['nombre'].' '.$session->get('usuario')['apellido'].'</div>
@@ -113,7 +113,7 @@ class CertificadoController extends Controller
 		        }
 		        else {
 		            if ($certificado->getTipoImagenCertificado()->getId() == $values['parameters']['tipo_imagen_certificado']['constancia'] )
-		            {                 
+		            {
                 		$constancia_pdf = new Html2Pdf('P','A4','es','true','UTF-8',array(5, 60, 10, 5));
 		                $constancia_pdf->writeHTML('<page  orientation="portrait" format="A4" pageset="new" backimg="'.$file.'" backtop="20mm" backbottom="20mm" backleft="0mm" backright="0mm">
 		                                                <div style=" text-align:center; font-size:20px;">'.$certificado->getEncabezado().'</div>
@@ -139,13 +139,13 @@ class CertificadoController extends Controller
     {
         $session = new Session();
         $f = $this->get('funciones');
-        
+
         if (!$session->get('iniFront') || $f->sesionBloqueda($session->get('sesion_id')))
         {
         	return $this->redirectToRoute('_authExceptionEmpresa', array('tipo' => 'sesion'));
         }
-        
-        $f->setRequest($session->get('sesion_id'));	
+
+        $f->setRequest($session->get('sesion_id'));
 
         $uploads = Yaml::parse(file_get_contents($this->get('kernel')->getRootDir().'/config/parameters.yml'));
         $values = Yaml::parse(file_get_contents($this->get('kernel')->getRootDir().'/config/parametros.yml'));
@@ -153,11 +153,11 @@ class CertificadoController extends Controller
         $em = $this->getDoctrine()->getManager();
 
 		$nota = 0;
-		
+
 		//se consulta la informacion de la pagina padre
 		$query = $em->createQuery('SELECT pl.nota as nota FROM LinkComunBundle:CertiPruebaLog pl
                                    JOIN pl.prueba p
-                                   WHERE p.pagina = :pagina 
+                                   WHERE p.pagina = :pagina
                                    and pl.estado = :estado
                                    and pl.usuario = :usuario')
                     ->setParameters(array('usuario' => $session->get('usuario')['id'],
@@ -165,7 +165,7 @@ class CertificadoController extends Controller
                                           'estado' => $values['parameters']['estado_prueba']['aprobado']))
                     ->setMaxResults(1);
 		$nota_programa = $query->getResult();
-		
+
 		//return new response(var_dump($nota_programa));
 
 		foreach ($nota_programa as $n)
@@ -177,7 +177,7 @@ class CertificadoController extends Controller
 		$cantidad_intentos = '';
 		$query = $em->createQuery('SELECT count(pl.id) FROM LinkComunBundle:CertiPruebaLog pl
                                    JOIN pl.prueba p
-                                   WHERE p.pagina = :pagina 
+                                   WHERE p.pagina = :pagina
                                    and pl.usuario = :usuario')
                     ->setParameters(array('usuario' => $session->get('usuario')['id'],
                 						  'pagina' => $session->get('paginas')[$programa_id]['id']));
@@ -193,25 +193,26 @@ class CertificadoController extends Controller
         if (count($session->get('paginas')[$programa_id]['subpaginas']))
         {
 			$subpaginas_ids = $f->hijas($session->get('paginas')[$programa_id]['subpaginas']);
-			
-			
+
+
 			$programa_aprobado = $f->notasPrograma($subpaginas_ids, $session->get('usuario')['id'], $values['parameters']['estado_prueba']['aprobado']);
         }
 
 		if ($programa_aprobado)
 		{
-            
-	        				
+
+
 		    $pagina_log = $em->getRepository('LinkComunBundle:CertiPaginaLog')->findOneBy(array('usuario' => $session->get('usuario')['id'],'pagina'=>$programa_id));
-		    
+
 	        if($session->get('empresa')['logo']!='')
 	        {
             	$file = $uploads['parameters']['folders']['dir_uploads'].$session->get('empresa')['logo'];
-				
+
 	        }
             else {
-            	$file =  $uploads['parameters']['folders']['dir_project'].'web/img/logo_formacion_smart.png'; 
+            	$file =  $uploads['parameters']['folders']['dir_project'].'web/img/logo_formacion_smart.png';
             }
+            $firma =  $uploads['parameters']['folders']['dir_project'].'web/img/firma.png';
 
 			//return new response($file);
 
@@ -230,8 +231,12 @@ class CertificadoController extends Controller
 							.constancia {
 						    	padding: 2px 0px; }
 							.constancia .imgConst {
-								width: 250px; 
+								width: 250px;
 								height: 72px; }
+						    .constancia .imgFirma{
+								width: 650px;
+								height: 110px;
+							}
 							.constancia .tituloConst {
 							    color: #5CAEE6;
 							    font-size: 2.25rem;
@@ -261,7 +266,7 @@ class CertificadoController extends Controller
 					        	font-size: 1.125rem;
 					        	line-height: 10px;
 					        	font-weight: 300;
-					        	text-align: left; }	
+					        	text-align: left; }
 						    .table-notas thead th {
 						    	line-height: 10px;
 						    	color: #212529;
@@ -273,7 +278,7 @@ class CertificadoController extends Controller
 							.table-notas tbody td {
 							    border-bottom:1px solid #CFD1D2;
 							    padding: 4px;
-								cellpadding: 0; 
+								cellpadding: 0;
 								cellspacing: 0; }
 							hr {
 								color: #99c51b;
@@ -330,12 +335,11 @@ class CertificadoController extends Controller
 			                            </thead>
 			                            <tbody>
 											<tr style='font-size: 14px; font-weight: 300;'>
-								               <td style='padding-left:10px;'>".$session->get('paginas')[$programa_id]['nombre']."</td>
-								               <td class='center'>".$nota."</td>
+
 								            </tr>";
 									foreach ($programa_aprobado as $programa)
 							        {
-							        	
+
 							        	if ($programa['categoria'] == $values['parameters']['categoria']['modulo'])
 							        	{
 							        		$valor = 20;
@@ -381,7 +385,7 @@ class CertificadoController extends Controller
 								}
 								else {
 									$puntaje = $programa_aprobado['nota'];
-									if ($programa_aprobado['nota'] != 0) 
+									if ($programa_aprobado['nota'] != 0)
 									{
 										$nota = $programa_aprobado['nota'];
 									}
@@ -406,16 +410,12 @@ class CertificadoController extends Controller
 								}
         					$html .= "</div>
 		                	<div class='row' style='margin-top:".$margin."px;'>
-								<table text-align='center' width='600' border=0' height='50'>
+								<table text-align='center' width='800' border=0' height='150'>
 									<tr>
-										<td width='150' class='center'>_____________________</td>
-										<td width='150'></td>
-										<td width='150' class='center'>_____________________</td>
+									    <td><img class='imgFirma' src='".$firma."'/> </td>
 									</tr>
 									<tr>
-										<td width='150' class='center'>".$this->get('translator')->trans('Firma del Participante')."</td>
-										<td width='150'></td>
-										<td width='150' class='center'>".$this->get('translator')->trans('Firma del Supervisor')."</td>
+
 									</tr>
 								</table>
 							</div>
@@ -428,7 +428,7 @@ class CertificadoController extends Controller
 
 			$constancia_pdf->WriteHTML($html);
             $constancia_pdf->output('notas.pdf');
-		    
+
 		}
 		else {
 			return $this->redirectToRoute('_authExceptionEmpresa', array('tipo' => 'prueba'));

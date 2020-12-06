@@ -134,28 +134,29 @@ class ReportesController extends Controller
                     $acceso = $re['activo'] ? 'Sí' : 'No';
                     $logueado = $re['logueado'] > 0 ? 'Sí' : 'No';
                     $fecha = $f->converDate($re['fecha_registro'],$yml['parameters']['time_zone']['default'],$timeZoneEmpresa);
-                    $objWorksheet->getStyle("A$row:O$row")->applyFromArray($styleThinBlackBorderOutline); //bordes
-                    $objWorksheet->getStyle("A$row:O$row")->getFont()->setSize($font_size); // Tamaño de las letras
-                    $objWorksheet->getStyle("A$row:O$row")->getFont()->setName($font); // Tipo de letra
-                    $objWorksheet->getStyle("A$row:O$row")->getAlignment()->setHorizontal($horizontal_aligment); // Alineado horizontal
-                    $objWorksheet->getStyle("A$row:O$row")->getAlignment()->setVertical($vertical_aligment); // Alineado vertical
+                    $objWorksheet->getStyle("A$row:P$row")->applyFromArray($styleThinBlackBorderOutline); //bordes
+                    $objWorksheet->getStyle("A$row:P$row")->getFont()->setSize($font_size); // Tamaño de las letras
+                    $objWorksheet->getStyle("A$row:P$row")->getFont()->setName($font); // Tipo de letra
+                    $objWorksheet->getStyle("A$row:P$row")->getAlignment()->setHorizontal($horizontal_aligment); // Alineado horizontal
+                    $objWorksheet->getStyle("A$row:P$row")->getAlignment()->setVertical($vertical_aligment); // Alineado vertical
                     $objWorksheet->getRowDimension($row)->setRowHeight(40); // Altura de la fila
                     // Datos de las columnas comunes
                     $objWorksheet->setCellValue('A'.$row, $re['codigo']);
                     $objWorksheet->setCellValue('B'.$row, $re['login']);
-                    $objWorksheet->setCellValue('C'.$row, $re['nombre']);
-                    $objWorksheet->setCellValue('D'.$row, $re['apellido']);
-                    $objWorksheet->setCellValue('E'.$row, $fecha->fecha);
-                    $objWorksheet->setCellValue('F'.$row, $fecha->hora);
-                    $objWorksheet->setCellValue('G'.$row, $correo);
-                    $objWorksheet->setCellValue('H'.$row, $acceso);
-                    $objWorksheet->setCellValue('I'.$row, $logueado);
-                    $objWorksheet->setCellValue('J'.$row, $re['pais']);
-                    $objWorksheet->setCellValue('K'.$row, $re['nivel']);
-                    $objWorksheet->setCellValue('L'.$row, $re['campo1']);
-                    $objWorksheet->setCellValue('M'.$row, $re['campo2']);
-                    $objWorksheet->setCellValue('N'.$row, $re['campo3']);
-                    $objWorksheet->setCellValue('O'.$row, $re['campo4']);
+                    $objWorksheet->setCellValue('C'.$row, $re['clave']);
+                    $objWorksheet->setCellValue('D'.$row, $re['nombre']);
+                    $objWorksheet->setCellValue('E'.$row, $re['apellido']);
+                    $objWorksheet->setCellValue('F'.$row, $fecha->fecha);
+                    $objWorksheet->setCellValue('G'.$row, $fecha->hora);
+                    $objWorksheet->setCellValue('H'.$row, $correo);
+                    $objWorksheet->setCellValue('I'.$row, $acceso);
+                    $objWorksheet->setCellValue('J'.$row, $logueado);
+                    $objWorksheet->setCellValue('K'.$row, $re['pais']);
+                    $objWorksheet->setCellValue('L'.$row, $re['nivel']);
+                    $objWorksheet->setCellValue('M'.$row, $re['campo1']);
+                    $objWorksheet->setCellValue('N'.$row, $re['campo2']);
+                    $objWorksheet->setCellValue('O'.$row, $re['campo3']);
+                    $objWorksheet->setCellValue('P'.$row, $re['campo4']);
                     $row++;
 
                 }
@@ -596,6 +597,7 @@ class ReportesController extends Controller
                         <thead class="sty__title">
                             <tr>
                                 <th class="hd__title">'.$this->get('translator')->trans('Nombre').'</th>
+                                <th class="hd__title">'.$this->get('translator')->trans('Clave').'</th>
                                 <th class="hd__title">'.$this->get('translator')->trans('Login').'</th>
                                 <th class="hd__title">'.$this->get('translator')->trans('Nivel').'</th>
                                 <th class="hd__title">'.$this->get('translator')->trans('Correo').'</th>
@@ -608,9 +610,11 @@ class ReportesController extends Controller
 
             foreach ($r as $ru)
             {
+
                 $activo = $ru['logueado'] > 0 ? $this->get('translator')->trans('Sí') : 'No';
                 $html .= '<tr>
                             <td><a class="detail" data-toggle="modal" data-target="#detailModal" data="'.$ru['login'].'" empresa_id="'.$empresa_id.'" href="#">'.$ru['nombre'].' '.$ru['apellido'] .'</a></td>
+                            <td>'.$ru['clave'].'</td>
                             <td>'.$ru['login'].'</td>
                             <td>'.$ru['nivel'].'</td>
                             <td>'.$ru['correo'].'</td>
