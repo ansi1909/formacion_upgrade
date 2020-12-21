@@ -754,7 +754,7 @@ class CertificadoController extends Controller
 
                             //Generamos el PDF
 
-                            $certificado_pdf->output($uploads['parameters']['folders']['dir_uploads'].'recursos/tmp/certificado-'.$usuario['id'].'-'.$pagina_log->getId().'.pdf', 'F');
+                            $certificado_pdf->output($uploads['parameters']['folders']['dir_uploads'].'recursos/tmp/certificado-'.$usuario['nombre'],'_'.$usuario['apellido'].'_'.$pagina_log->getId().'.pdf', 'F');
 
 
 
