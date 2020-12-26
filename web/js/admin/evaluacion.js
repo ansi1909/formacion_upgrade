@@ -1,6 +1,10 @@
 $(document).ready(function() {
 	var estatus_activo = 2;
-    $('#form_estatusContenido option[value='+ estatus_activo +']').attr("selected",true);
+	var prueba_id = $('#prueba_id').val();
+	if(!prueba_id){
+		$('#form_estatusContenido option[value='+ estatus_activo +']').attr("selected",true);
+	}
+
 	$('.timePicker').timepicker({
 	    timeFormat: 'H:mm',
 	    interval: 15,
