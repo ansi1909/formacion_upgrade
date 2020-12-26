@@ -92,11 +92,16 @@ class EvaluacionController extends Controller
         $em = $this->getDoctrine()->getManager();
         $pagina_evaluada = 0;
         $pagina_id = '';
+        $asignada = false;
 
         if ($prueba_id)
         {
             $prueba = $em->getRepository('LinkComunBundle:CertiPrueba')->find($prueba_id);
             $selects = $f->obtnerPadres($prueba->getPagina(),$yml);
+            $pempresa = $em->getRepository('LinkComunBundle:CertiPaginaEmpresa')->findOneByPagina($prueba->getPagina());
+            if($pempresa){
+                $asignada = true;
+            }
         }
         else {
             $prueba = new CertiPrueba();
@@ -131,24 +136,6 @@ class EvaluacionController extends Controller
 
             $pagina_id = $request->request->get('pagina_id');
             $pagina_evaluada = null;
-
-            // Verificamos si la página asociada ya había sido seleccionada
-            // $qb = $em->createQueryBuilder();
-            // $qb->select('COUNT(p.id)')
-            //    ->from('LinkComunBundle:CertiPrueba', 'p')
-            //    ->where('p.pagina = :pagina_id');
-            // $parametros['pagina_id'] = $pagina_id;
-
-            // if ($prueba_id)
-            // {
-            //     $qb->andWhere('p.id != :prueba_id');
-            //     $parametros['prueba_id'] = $prueba_id;
-            // }
-
-            // $qb->setParameters($parametros);
-            // $query = $qb->getQuery();
-            // $pagina_evaluada = $query->getSingleScalarResult();
-
             $pagina = $em->getRepository('LinkComunBundle:CertiPagina')->find($pagina_id);
             $prueba->setPagina($pagina);
 
@@ -200,7 +187,8 @@ class EvaluacionController extends Controller
                                                                                   'categorias' => $categorias,
                                                                                   'pagina_evaluada' => $pagina_evaluada,
                                                                                   'pagina_id' => $pagina_id,
-                                                                                  'selects'=>$selects
+                                                                                  'selects'=>$selects,
+                                                                                  'asignada'=>$asignada
                                                                                   ));
 
     }

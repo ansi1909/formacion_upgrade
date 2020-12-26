@@ -169,14 +169,19 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-sm-10 col-md-10 col-lg-10 col-xl-10">
-                        <div class="form-group">
-                            <label for="form_estatusContenido" class="col-16 col-form-label">{{ form_label(form.estatusContenido) }}</label>
-                            <div class="col-8">
+                    <div class="col-sm-10 col-md-10 col-lg-10 col-xl-10" >
+                        <div class="form-group" >
+                            <label for="form_estatusContenido" class="col-16 col-form-label" >{{ form_label(form.estatusContenido) }}</label>
+                            <div class="col-8" >
                                 {{ form_widget(form.estatusContenido, { 'attr': { 'class': 'form-control form_sty_sel', 'style': 'border-radius: 5px;' } }) }}
                                 <span class="fa fa-list-ol"></span>
                                 <span class="bttn_d"><img src="{{ asset('img/down-arrowwht.png') }}" alt=""></span>
                             </div>
+                            {% if asignada  %}
+                                <div class="col-8" >
+                                    <span class="fa fa-exclamation-circle" style="color: #DE541E;font-size:17px;fon">&nbsp;&nbsp; {{ 'Evaluación asignada, cualquier modificación debe ser consultada con el equipo de soporte'|trans }}.</span>
+                                </div>
+                            {% endif %}
                         </div>
                     </div>
                 </div>
