@@ -34,6 +34,7 @@
     <div class="col-sm-4 col-md-4 col-lg-4">
         <a href="{{ path('_paginasEvaluacion', { 'app_id': app.session.get('app_id') })}}" class="bttn__bck2"><span class="fa fa-clipboard"></span><span class="text__bck2">{{ 'Ir al listado de evaluaciones'|trans }}</span></a>
         {% if prueba.id %}
+             <input type="hidden" id="prueba_id" name="prueba_id" value="prueba.id">
             <a href="{{ path('_preguntas', { 'prueba_id': prueba.id })}}" class="bttn__bck2"><span class="fa fa-list-ol"></span><span class="text__bck2">{{ 'Ir al listado de preguntas'|trans }}</span></a>
         {% endif %}
     </div>

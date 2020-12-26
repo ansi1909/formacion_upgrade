@@ -193,7 +193,7 @@ class EvaluacionController extends Controller
                                     ORDER BY c.id ASC");
         $categorias = $query->getResult();
 
-        //return new response(var_dump($selects));
+        //return new response(var_dump($form['class']));
         return $this->render('LinkBackendBundle:Evaluacion:edit.html.twig', array('form' => $form->createView(),
                                                                                   'prueba' => $prueba,
                                                                                   'paginas' => $paginas,
