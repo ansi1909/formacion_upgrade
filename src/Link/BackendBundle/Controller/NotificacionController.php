@@ -68,7 +68,8 @@ class NotificacionController extends Controller
 
         foreach ($notificacionesdb as $notificacion)
         {
-            $notificaciones[] = array('id' => $notificacion->getId(),
+           $notificaciones[] = array('id' => $notificacion->getId(),
+                                      'fecha' =>$notificacion->getFecha(),
                                       'asunto' => $notificacion->getAsunto(),
                                       'empresa' => $notificacion->getEmpresa()->getNombre(),
                                       'tipo_notificacion' => $notificacion->getTipoNotificacion()->getNombre(),
@@ -124,9 +125,11 @@ class NotificacionController extends Controller
 
         foreach ($notificacionesdb as $notificacion)
         {
-            $notificaciones[] = array('id' => $notificacion->getId(),
-                                      'asunto' => $notificacion->getAsunto(),
-                                      'empresa' => $notificacion->getEmpresa()->getNombre(),
+            //print_r($notificacion);exit();
+            $notificaciones[] = array('id'        => $notificacion->getId(),
+                                      'asunto'    => $notificacion->getAsunto(),
+                                      'fecha'     => $notificacion->getFecha(),
+                                      'empresa'   => $notificacion->getEmpresa()->getNombre(),
                                       'tipo_notificacion' => $notificacion->getTipoNotificacion()->getNombre(),
                                       'delete_disabled' => $f->linkEliminar($notificacion->getId(),'AdminNotificacion'));
         }

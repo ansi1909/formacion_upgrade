@@ -60,7 +60,7 @@
                     <thead class="sty__title">
                         <tr>
                             <th class="hd__title alignment_ big_th">{{ 'Destinado a'|trans }}</th>
-                            <th class="hd__title alignment_ bigth">{{ 'Grupo seleccionado'|trans }}</th>
+                            {#<th class="hd__title alignment_ bigth">{{ 'Grupo seleccionado'|trans }}</th>#}
                             <th class="hd__title alignment_ small_th">{{ 'Programado para'|trans }}</th>
                             <th class="hd__title alignment_ smallth">{{ 'Enviado'|trans }}</th>
                             <th class="hd__title alignment_ smallth">{{ 'Enviados'|trans }}</th>
@@ -72,7 +72,7 @@
 
                             <tr id="tr-{{ np['id'] }}">
                                 <td class="alignment">{{ np['destino'] }}</td>
-                                <td class="alignment click" id="td-{{ np['id'] }}" data= "{{np['id']}}"> &nbsp;</td>
+                               {# <td class="alignment click" id="td-{{ np['id'] }}" data= "{{np['id']}}"> &nbsp;</td>#}
                                 <td class="alignment_" style="text-align: center">{{ np['fecha_difusion']|date('d/m/Y') }}</td>
                                 {% set enviado = np['enviado'] ? 'Sí'|trans : 'No' %}
                                 <td class="alignment alignment" style="text-align: center;">{{ enviado }}</td>

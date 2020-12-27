@@ -8,7 +8,7 @@ $(document).ready(function() {
 
 	$( "#programados" ).on( "click",".delete" , function (){
         var programada_id = $(this).attr('data');
-		sweetAlertDelete(programada_id,'AdminNotificacionProgramada');	
+		sweetAlertDelete(programada_id,'AdminNotificacionProgramada');
 	});
 
 	$('.usuariosCorreos').click(function(){
@@ -47,7 +47,7 @@ function observe()
 		if (!(typeof tr === 'undefined' || tr === null)){
 			var tr_arr = tr.split('tr-');
 			var notificacion_programada_id = tr_arr[1];
-			treeGrupoProgramado(notificacion_programada_id);
+			//treeGrupoProgramado(notificacion_programada_id);
 		}
 	});
 
@@ -108,7 +108,7 @@ function observe()
 }
 
 
-function treeGrupoProgramado(notificacion_programada_id)
+/*function treeGrupoProgramado(notificacion_programada_id)
 {
     $('#td-'+notificacion_programada_id).jstree({
         'core' : {
@@ -119,7 +119,7 @@ function treeGrupoProgramado(notificacion_programada_id)
         }
 	});
 	$('#td-'+notificacion_programada_id).attr('data-cantidad');
-}
+}*/
 
 function afterPaginate()
 {
