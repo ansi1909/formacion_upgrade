@@ -313,15 +313,90 @@ class ReportesController extends Controller
         $pagina_selected = $request->request->get('pagina_selected');
         $preseleccion = $request->request->get('preseleccion');
 
+
+        $empresa = $this->getDoctrine()->getRepository('LinkComunBundle:AdminEmpresa')->find($empresa_id);
+        $timeZoneEmpresa = ($empresa->getZonaHoraria())? $empresa->getZonaHoraria()->getNombre():$yml['parameters']['time_zone']['default'];
+        $timeZoneReport = $f->clearNameTimeZone($timeZoneEmpresa,$empresa->getPais()->getNombre(),$yml);
+        
+        $desde = $request->request->get('desde',false);
+        $hasta = $request->request->get('hasta',false);
+        $todos = $request->request->get('check_todos',false);
+        $empresa = $this->getDoctrine()->getRepository('LinkComunBundle:AdminEmpresa')->find($empresa_id);
+        $timeZoneEmpresa = ($empresa->getZonaHoraria())? $empresa->getZonaHoraria()->getNombre():$yml['parameters']['time_zone']['default'];
+        if($todos || (!$todos && !$desde && !$hasta) || (!$todos && !($desde && $hasta))){
+            $desde ='1900-01-01 00:00:00';
+            $hoy = new \DateTime("NOW");
+            $hasta = $hoy->format("Y-m-d H:i:s");
+        }else if (!is_null($desde) && !is_null($hasta)){
+            $desde_arr = explode(" ", $desde);
+            list($d, $m, $a) = explode("/", $desde_arr[0]);
+            $time = explode(":", $desde_arr[1]);
+            $h = (int) $time[0];
+            $min = $time[1];
+            if ($desde_arr[2] == 'pm')
+            {
+                if ($h != 12)
+                {
+                    // Se le suman 12 horas
+                    $h += 12;
+                }
+            }
+            else {
+                if ($h == 12)
+                {
+                    // Es la hora 0
+                    $h = '00';
+                }
+                elseif ($h < 10) {
+                    // Valor en dos caracteres
+                    $h = '0'.$h;
+                }
+            }
+            $desdef = "$a-$m-$d $h:$min:59";
+    
+            $hasta_arr = explode(" ", $hasta);
+            list($d, $m, $a) = explode("/", $hasta_arr[0]);
+            $time = explode(":", $hasta_arr[1]);
+            $h = (int) $time[0];
+            $min = $time[1];
+            if ($hasta_arr[2] == 'pm')
+            {
+                if ($h != 12)
+                {
+                    // Se le suman 12 horas
+                    $h += 12;
+                }
+            }
+            else {
+                if ($h == 12)
+                {
+                    // Es la hora 0
+                    $h = '00';
+                }
+                elseif ($h < 10) {
+                    // Valor en dos caracteres
+                    $h = '0'.$h;
+                }
+            }
+            $hastaf = "$a-$m-$d $h:$min:59";
+
+            $desdeUtc = $f->converDate($desdef,$timeZoneEmpresa,$yml['parameters']['time_zone']['default'],false);
+            $desde = $desdeUtc->fecha.' '.$desdeUtc->hora;
+    
+            $hastaUtc = $f->converDate($hastaf,$timeZoneEmpresa,$yml['parameters']['time_zone']['default'],false);
+            $hasta = $hastaUtc->fecha.' '.$hastaUtc->hora;
+        }
+        
         if ($preseleccion == '1')
         {
             $paginas_id = array($pagina_selected);
         }
 
+        
         $empresa = $this->getDoctrine()->getRepository('LinkComunBundle:AdminEmpresa')->find($empresa_id);
         $timeZoneEmpresa = ($empresa->getZonaHoraria())? $empresa->getZonaHoraria()->getNombre():$yml['parameters']['time_zone']['default'];
         $timeZoneReport = $f->clearNameTimeZone($timeZoneEmpresa,$empresa->getPais()->getNombre(),$yml);
-        $listado = $rs->participantesAprobados($empresa_id, $paginas_id);
+        $listado = $rs->participantesAprobados($empresa_id, $paginas_id,$desde,$hasta);
 
         $fileWithPath = $this->container->getParameter('folders')['dir_project'].'docs/formatos/ListadoParticipantesAprobados.xlsx';
         $objPHPExcel = \PHPExcel_IOFactory::load($fileWithPath);
