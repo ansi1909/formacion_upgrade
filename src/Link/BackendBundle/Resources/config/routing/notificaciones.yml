@@ -59,3 +59,9 @@ _ajaxExcelUsuariosCorreos:
     defaults: { _controller: LinkBackendBundle:Notificacion:ajaxExcelUsuariosCorreos }
     requirements:
         _method: POST
+
+_ajaxProgramadosEmpresa:
+    path: /_ajaxProgramadosEmpresa
+    defaults: { _controller: LinkBackendBundle:Notificacion:ajaxProgramadosEmpresa }
+    requirements:
+        _method: POST
