@@ -50,12 +50,13 @@ CKEDITOR.editorConfig = function( config ) {
 		{ name: 'colors', items : [ 'TextColor','BGColor' ] },
 		{ name: 'basicstyles', items : [ 'Bold','Italic','Strike','-','RemoveFormat' ] },
 		{ name: 'paragraph', items : [ 'NumberedList','BulletedList','-','Outdent','Indent','-','Blockquote' ] },
+		{ name: 'links', items: [ 'Link' ] },
 		{ name: 'tools', items : [ 'Maximize','-','About' ] }
 	];
 
 	config.removeButtons = 'Form,Checkbox,Radio,TextField,Textarea,Select,Button,ImageButton,HiddenField,BidiLtr,BidiRtl,Language,Anchor,Flash,PageBreak,Iframe,ShowBlocks,About';
-    
+
     config.extraPlugins = 'videoembed,video';
-    
+
     config.extraAllowedContent = 'iframe[*]';
 };
