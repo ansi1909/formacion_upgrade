@@ -515,6 +515,10 @@
                 
                 // Validaciones adicionales
                 var programas = $('#programas').val();
+                var todos = $('input:checkbox[name=check_todos]:checked').val();
+                var desde = $('#desde').val();
+                var hasta = $('#hasta').val();
+                
                 
                 if (programas == null)
                 {
@@ -534,9 +538,16 @@
                     $('#search').show();
                 }
                 else {
-                    // Submit para mostrar el listado
-                    $('#preseleccion').val(0);
-                    getListadoParticipantesA();
+                    if( !todos && (!desde || !hasta)){
+                        $('#div-error ul').html("<li>- {{ 'Debe indicar fecha desde y fecha hasta'|trans }}.</li>");
+                        $('#div-error ul').show();
+                        notify($('#div-error').html());
+                        $('#search').show();
+                    }else{
+                        // Submit para mostrar el listado
+                        $('#preseleccion').val(0);
+                        getListadoParticipantesA();
+                    }
                 }
 
             }
