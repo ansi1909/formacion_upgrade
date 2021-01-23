@@ -2,6 +2,35 @@ $(document).ready(function() {
     applyDataTableProgramados();
 	afterPaginate();
 
+	$('#empresa_id').change(function(){
+		var empresa_id = $(this).val();
+		$('#card-programados').hide();
+		$('#load-programados').show();
+		$.ajax({
+			type: "POST",
+			url: $('#url_programados_empresa').val(),
+			async: true,
+			data: { empresa_id: empresa_id },
+			dataType: "json",
+			success: function(data) {
+				console.log(data.html);
+				$('#card-programados').html(data.html);
+				$('#card-programados').show();
+				$('#load-programados').hide();
+				applyDataTableProgramados();
+				observe();
+
+/* 				$('#downloadUsuarios'+npId).attr('data-href',data);
+				$('#usuariosLoader'+npId).hide();
+				$('#downloadUsuarios'+npId).show(); */
+			},
+			error: function(){
+				console.log('Error de comunicacion');
+			}
+		});
+		
+	})
+
 	$('.paginate_button').click(function(){
 		afterPaginate();
 	});
