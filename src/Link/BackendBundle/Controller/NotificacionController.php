@@ -251,12 +251,96 @@ class NotificacionController extends Controller
                                                                                     'usuario' => $usuario));
 
     }
+    public function ajaxProgramadosEmpresaAction(Request $request){
+        try{
+            $yml = Yaml::parse(file_get_contents($this->get('kernel')->getRootDir().'/config/parameters.yml'));
+            $em = $this->getDoctrine()->getManager();
+            $f = $this->get('funciones');
+            $session = new Session();
+            if (!$session->get('ini') || $f->sesionBloqueda($session->get('sesion_id')))
+            {
+                return $this->redirectToRoute('_loginAdmin');
+            }
+            else {
+                if (!$f->accesoRoles($session->get('usuario')['roles'], $session->get('app_id')))
+                {
+                    return $this->redirectToRoute('_authException');
+                }
+            }
+            $f->setRequest($session->get('sesion_id'));
+            $empresa_id = $request->request->get('empresa_id');
+            $notificacionesdb = $this->getDoctrine()->getRepository('LinkComunBundle:AdminNotificacion')->findByEmpresa($empresa_id);
+            $html = '';
+            foreach ($notificacionesdb as $notificacion)
+            {
 
+                $query = $em->createQuery('SELECT COUNT(np.id) FROM LinkComunBundle:AdminNotificacionProgramada np
+                                            WHERE np.notificacion = :notificacion_id')
+                            ->setParameter('notificacion_id', $notificacion->getId());
+                $tiene_programados = $query->getSingleScalarResult();
+
+                $notificaciones[] = array('id' => $notificacion->getId(),
+                                          'asunto' => $notificacion->getAsunto(),
+                                          'empresa' => $notificacion->getEmpresa()->getNombre(),
+                                          'tipo' => $notificacion->getTipoNotificacion()->getNombre(),
+                                          'fecha' => $notificacion->getFecha()? $notificacion->getFecha()->format("d-m-Y"):'',
+                                          'tiene_programados' => $tiene_programados);
+            }
+
+
+            $html = '<table class="table" id="t-programados-index">
+                        <thead class="sty__title">
+                            <tr>
+                                <th class="hd__title">'.$this->get('translator')->trans('Tipo').'</th>
+                                <th class="hd__title">'.$this->get('translator')->trans('Asunto').'</th>
+                                <th class="hd__title">'.$this->get('translator')->trans('Fecha').'</th>
+                                <th class="hd__title">'.$this->get('translator')->trans('Acciones').'</th>
+                            </tr>
+                        </thead>
+                        <tbody style="font-size: .7rem;">';
+
+            foreach ($notificaciones as $notificacion)
+            {
+                $acciones = '';
+
+                $acciones .= '<a href="'. $this->generateUrl('_editNotificacionProgramada', array('notificacion_id' => $notificacion['id'])).'" title="'.$this->get('translator')->trans('Programar nuevo aviso').'" class="btn btn-link btn-sm" data="'.$notificacion['id'].'" ><span class="fa fa-plus"></span></a>';
+
+                if($notificacion['tiene_programados']){
+                    $acciones .= '<a href="'. $this->generateUrl('_notificacionProgramadas', array('id' => $notificacion['id'])).'" title="'.$this->get('translator')->trans('Ver notificaciones').'" class="btn btn-link btn-sm" data="'.$notificacion['id'].'" ><span class="fa fa-eye"></span></a>';
+
+                }
+
+                 $acciones .= '<a href="'. $this->generateUrl('_previewN', array('id' => $notificacion['id'])).'" title="'.$this->get('translator')->trans('Preview').'" target="_blank" class="btn btn-link btn-sm preview" data="'.$notificacion['id'].'" ><span class="fa fa-picture-o"></span></a>';
+
+
+
+                $html .= '<tr>
+                            <td>'.$notificacion['tipo'].'</td>
+                            <td>'.$notificacion['asunto'].'</td>
+                            <td>'.$notificacion['fecha'].'</td>
+                            <td>'.$acciones.'</td>
+                        </tr>';
+            }
+
+            $html .= '</tbody>
+                    </table>';
+
+
+            $return = json_encode(array( 'html' => $html));
+            return new Response($return, 200, array('Content-Type' => 'application/json'));
+        } catch(\Exception $ex){
+            $return = array('ok'=>0,'msg'=>$ex->getMessage());
+            return new JsonResponse($return);
+        }
+
+
+    }
     public function programadosAction($app_id)
     {
 
         $session = new Session();
         $f = $this->get('funciones');
+        $usuario_empresa = true;
 
         if (!$session->get('ini') || $f->sesionBloqueda($session->get('sesion_id')))
         {
@@ -275,40 +359,49 @@ class NotificacionController extends Controller
         $em = $this->getDoctrine()->getManager();
 
         $usuario = $this->getDoctrine()->getRepository('LinkComunBundle:AdminUsuario')->find($session->get('usuario')['id']);
+        //return new response(var_dump($usuario));
 
         $notificaciones = array();
+        $empresas = array();
 
         if ($usuario->getEmpresa())
         {
-            $notificacionesdb = $this->getDoctrine()->getRepository('LinkComunBundle:AdminNotificacion')->findByEmpresa($usuario->getEmpresa());
+                $notificacionesdb = $this->getDoctrine()->getRepository('LinkComunBundle:AdminNotificacion')->findByEmpresa($usuario->getEmpresa());
+
+                foreach ($notificacionesdb as $notificacion)
+                {
+
+                    $query = $em->createQuery('SELECT COUNT(np.id) FROM LinkComunBundle:AdminNotificacionProgramada np
+                                                WHERE np.notificacion = :notificacion_id')
+                                ->setParameter('notificacion_id', $notificacion->getId());
+                    $tiene_programados = $query->getSingleScalarResult();
+
+                    $notificaciones[] = array('id' => $notificacion->getId(),
+                                              'asunto' => $notificacion->getAsunto(),
+                                              'empresa' => $notificacion->getEmpresa()->getNombre(),
+                                              'tipo' => $notificacion->getTipoNotificacion()->getNombre(),
+                                              'fecha' => $notificacion->getFecha()? $notificacion->getFecha():'',
+                                              'tiene_programados' => $tiene_programados);
+                }
         }
         else {
-            $query = $em->createQuery("SELECT n FROM LinkComunBundle:AdminNotificacion n
-                                       JOIN n.empresa e
-                                       WHERE e.activo = :activo
-                                       ORDER BY n.id DESC")
+            $usuario_empresa = false;
+            $query = $em->createQuery("SELECT e FROM LinkComunBundle:AdminEmpresa e
+                                        INNER JOIN LinkComunBundle:AdminNotificacion n WITH e.id = n.empresa
+                                        INNER JOIN LinkComunBundle:AdminNotificacionProgramada np WITH np.notificacion = n.id
+                                        WHERE e.activo = :activo
+                                        ORDER BY e.nombre ASC")
                          ->setParameter('activo', true);
-            $notificacionesdb = $query->getResult();
+            $empresas = $query->getResult();
+            $notificaciones = array();
         }
 
-        foreach ($notificacionesdb as $notificacion)
-        {
 
-            $query = $em->createQuery('SELECT COUNT(np.id) FROM LinkComunBundle:AdminNotificacionProgramada np
-                                        WHERE np.notificacion = :notificacion_id')
-                        ->setParameter('notificacion_id', $notificacion->getId());
-            $tiene_programados = $query->getSingleScalarResult();
-
-            $notificaciones[] = array('id' => $notificacion->getId(),
-                                      'asunto' => $notificacion->getAsunto(),
-                                      'empresa' => $notificacion->getEmpresa()->getNombre(),
-                                      'tipo' => $notificacion->getTipoNotificacion()->getNombre(),
-                                      'fecha' => $notificacion->getFecha()? $notificacion->getFecha():'',
-                                      'tiene_programados' => $tiene_programados);
-        }
 
         return $this->render('LinkBackendBundle:Notificacion:programados.html.twig', array('notificaciones' => $notificaciones,
-                                                                                           'usuario' => $usuario));
+                                                                                           'usuario' => $usuario,
+                                                                                            'usuario_empresa' => $usuario_empresa,
+                                                                                            'empresas'=> $empresas ));
 
     }
 

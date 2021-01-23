@@ -29,18 +29,44 @@
 <br>
 <input type="hidden" id="url_correos_excel" name="url_correos_excel" value="{{ path('_ajaxExcelCorreos') }}">
 <input type="hidden" id="url_tree" name="url_tree" value="{{ path('_ajaxTreeGrupoProgramado') }}">
+<input type="hidden" id="url_programados_empresa" name="url_programados_empresa" value="{{ path('_ajaxProgramadosEmpresa') }}">
 <div class="row align-items-center justify-content-between">
     <div class="col-12 col-sm-12 page-title">
         <h3>{{ 'Notificaciones programadas'|trans }}</h3>
     </div>
 </div>
+{% if not usuario_empresa %}
+    <div class="row" style="width:100%">
+        <div class="card" style="width:50%">
+            <div class="card-header gradiente">
+                <h5 class="card-title">{{ 'Filtrar por empresa'|trans }}</h5>
+            </div>
+            <div class="card-block">
+                 <label for="texto" class="col-sm-7 col-md-7 col-lg-7 offset-sm-4 offset-md-4 offset-lg-4">{{'Empresa' | trans }}</label>
+                <div class="row">
+                    <div class="col-sm-7 col-md-7 col-lg-7 offset-sm-4 offset-md-4 offset-lg-4">
+                        <select class="form_sty_sel form-control" style="border-radius: 5px" id="empresa_id" name="empresa_id">
+                            <option value="0"></option>
+                            {% for empresa in empresas %}
+                                        <option value="{{ empresa.id }}" >{{ empresa.nombre }}</option>
+                            {% endfor %}
+                        </select>
+                        <span class="fa fa-industry"></span>
+                        <span class="bttn_d"><img src="{{asset ('img/down-arrowbck.png')}}"></span>
+                        </div>
+                </div>
+                <br>
+            </div>
+        </div>
+    </div>
+{% endif %}
 <div class="row">
     <div class="col-sm-16 col-md-16 col-lg-16">
         <div class="card">
             <div class="card-header gradiente">
                 <h5 class="card-title">{{ 'Listado de notificaciones'|trans }}</h5>
             </div>
-            <div class="card-block">
+            <div class="card-block"  id="card-programados">
                 <table class="table" id="t-programados-index">
                     <thead class="sty__title">
                         <tr>
@@ -77,12 +103,18 @@
                     </tbody>
                 </table>
             </div>
+            <div class="load1 load-wrapper" id="load-programados">
+            <div class="loader">
+                Loading...
+            </div>
         </div>
+        </div>
+        
     </div>
-    <div class="col-sm-10 col-md-10 col-lg-10 col-xl-10 col-10" style="display:none;" id="div-programados">
+{#     <div class="col-sm-10 col-md-10 col-lg-10 col-xl-10 col-10" style="display:none;" id="div-programados">
         <div class="card">
             <div class="card-header gradiente">
-                <h5 class="card-title">{{ 'Avisos programados de'|trans }} <span id="notificacionTitle"></span></h5>
+                <h5 class="card-title">{{ 'Avisos programados de dd'|trans }} <span id="notificacionTitle"></span></h5>
             </div>
             <div class="card-block">
                 <div class="row" id="div-programados-alert" style="display: none">
@@ -106,7 +138,7 @@
                 Loading...
             </div>
         </div>
-    </div>
+    </div> #}
 </div>
 
 {% endblock %}
