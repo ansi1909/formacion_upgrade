@@ -60,6 +60,7 @@ class UsersScheduledCommand extends ContainerAwareCommand
                 $query->bindValue(':pfechaAyer', $ayer->format('Y-m-d'), \PDO::PARAM_STR);
 				$query->execute();
 				$r = $query->fetchAll();
+			    $output->writeln(count($r));
 				$notificaciones_id = array();
 
 				//error_log('-------------------CRON JOB DEL DIA '.date('d/m/Y H:i').'---------------------------------------------------');

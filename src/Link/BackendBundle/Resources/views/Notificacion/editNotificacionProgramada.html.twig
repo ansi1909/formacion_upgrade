@@ -196,6 +196,10 @@ function observeSelectChosen()
                 // Validaciones adicionales
                 var entidades = $('#entidades').val();
                 var tipo_destino_id = $('#tipo_destino_id').val();
+                var todos = $('input:checkbox[name=check_todos]:checked').val();
+                var desde = $('#desde').val();
+                var hasta = $('#hasta').val();
+
 
                 if (tipo_destino_id == 3 || tipo_destino_id == 4 || tipo_destino_id == 7 || tipo_destino_id == 8)
                 {
@@ -225,8 +229,21 @@ function observeSelectChosen()
                     $('#finish').show();
                 }
                 else {
-                    $('#finish').hide();
-                    $('#form').submit();
+                    if ( tipo_destino_id == 7 ){
+                        if( !todos && (!desde || !hasta)){
+                            $('#div-error ul').html("<li>- {{ 'Debe indicar fecha desde y fecha hasta'|trans }}.</li>");
+                            $('#div-error ul').show();
+                            notify($('#div-error').html());
+                            $('#search').show();
+                        }else{
+                            $('#finish').hide();
+                            $('#form').submit();
+                        }
+                    }else{
+                        $('#finish').hide();
+                        $('#form').submit();
+                    }
+
                 }
             }
         });
