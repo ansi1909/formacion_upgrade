@@ -17,6 +17,8 @@ BEGIN
           np.fecha_difusion as fecha_difusion ,
           np.grupo_id as grupo_id ,
           np.enviado as enviado ,
+          np.fecha_inicio as fecha_inicio,
+          np.fecha_fin as fecha_fin,
           td.nombre as destino,
           (SELECT COUNT(ac.id) FROM admin_correo ac WHERE (ac.entidad_id = np.id OR ac.entidad_id IN (SELECT id from      admin_notificacion_programada where grupo_id= np.id) )) as enviados
           FROM admin_notificacion_programada np
