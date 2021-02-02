@@ -144,6 +144,8 @@ parameters:
     evaluaciones:
         puntaje_minimo: 75
         intentos: 100
+    fecha_reportes:
+        inicio: '1900-01-01 00:00:00'
 
 
 

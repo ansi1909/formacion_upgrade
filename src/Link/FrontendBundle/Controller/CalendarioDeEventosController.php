@@ -40,7 +40,7 @@ class CalendarioDeEventosController extends Controller
         $usuario = $this->getDoctrine()->getRepository('LinkComunBundle:AdminUsuario')->find($session->get('usuario')['id']); 
 
         $consult_eventos = $em->createQuery('SELECT ae FROM LinkComunBundle:AdminEvento ae
-                                             JOIN LinkComunBundle:AdminEmpresa e 
+                                             JOIN LinkComunBundle:AdminEmpresa e WITH ae.empresa = e.id
                                              WHERE e.id = :empresa_id
                                              AND e.id = ae.empresa
                                              AND ae.nivel IS NULL

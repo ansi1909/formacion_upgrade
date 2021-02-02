@@ -192,7 +192,7 @@ BEGIN
         IF reg.enviado = false THEN
 
             FOR rstp IN
-                SELECT np.id as np_id, np.entidad_id as programa_id
+                SELECT np.id as np_id, np.entidad_id as programa_id,np.fecha_inicio as fecha_inicio,np.fecha_fin as fecha_fin
                 FROM admin_notificacion_programada np
                 WHERE np.grupo_id = reg.id
                 ORDER BY np.id ASC LOOP
@@ -200,13 +200,14 @@ BEGIN
                 FOR rst IN
                     SELECT u.id as id, u.login as login, u.clave as clave, u.nombre as nombre, u.apellido as apellido, u.correo_personal as correo_personal, u.correo_corporativo as correo_corporativo
                     FROM admin_usuario u
+                    INNER JOIN certi_pagina_log cpl ON cpl.usuario_id = u.id
                     INNER JOIN admin_nivel n ON u.nivel_id = n.id
                     WHERE u.empresa_id = reg.empresa_id
                         AND u.activo = true
                         AND (((u.correo_personal<>'') AND (u.correo_personal IS NOT NULL)) OR((u.correo_corporativo<>'')AND(u.correo_corporativo IS NOT NULL)))
                         AND LOWER(n.nombre) NOT LIKE 'revisor%'
                         AND LOWER(n.nombre) NOT LIKE 'tutor%'
-                         AND (n.fecha_fin IS NULL OR n.fecha_fin >= pfechaHoy)
+                        AND (n.fecha_fin IS NULL OR n.fecha_fin >= pfechaHoy)
                         AND u.id IN (SELECT ru.usuario_id FROM admin_rol_usuario ru WHERE ru.rol_id = 2)
                         AND u.nivel_id IN
                             (SELECT np.nivel_id FROM certi_nivel_pagina np WHERE np.pagina_empresa_id IN
@@ -218,6 +219,8 @@ BEGIN
                             )
                         AND u.id IN (SELECT DISTINCT(s.usuario_id) FROM admin_sesion s)
                         AND u.id IN (SELECT pl.usuario_id FROM certi_pagina_log pl WHERE pl.pagina_id = rstp.programa_id AND pl.estatus_pagina_id = 3)
+                        AND cpl.fecha_fin BETWEEN rstp.fecha_inicio AND rstp.fecha_fin
+                        AND cpl.pagina_id = rstp.programa_id
                     ORDER BY u.id ASC LOOP
                     str = rstp.np_id || '__' || rst.id || '__' || rst.login || '__' || rst.clave || '__' || rst.nombre || '__' || rst.apellido || '__' || CASE WHEN rst.correo_corporativo Is Null OR rst.correo_corporativo = '' THEN rst.correo_personal ELSE rst.correo_corporativo END || '__' || reg.asunto || '__' || reg.mensaje || '__' || reg.empresa_id;
                     arr = '{}';

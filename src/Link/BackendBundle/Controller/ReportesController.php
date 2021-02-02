@@ -324,7 +324,7 @@ class ReportesController extends Controller
         $empresa = $this->getDoctrine()->getRepository('LinkComunBundle:AdminEmpresa')->find($empresa_id);
         $timeZoneEmpresa = ($empresa->getZonaHoraria())? $empresa->getZonaHoraria()->getNombre():$yml['parameters']['time_zone']['default'];
         if($todos || (!$todos && !$desde && !$hasta) || (!$todos && !($desde && $hasta))){
-            $desde ='1900-01-01 00:00:00';
+            $desde = $yml['parameters']['fecha_reportes']['inicio'];
             $hoy = new \DateTime("NOW");
             $hasta = $hoy->format("Y-m-d H:i:s");
         }else if (!is_null($desde) && !is_null($hasta)){

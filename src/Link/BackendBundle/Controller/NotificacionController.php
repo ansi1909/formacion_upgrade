@@ -388,7 +388,6 @@ class NotificacionController extends Controller
             $usuario_empresa = false;
             $query = $em->createQuery("SELECT e FROM LinkComunBundle:AdminEmpresa e
                                         INNER JOIN LinkComunBundle:AdminNotificacion n WITH e.id = n.empresa
-                                        INNER JOIN LinkComunBundle:AdminNotificacionProgramada np WITH np.notificacion = n.id
                                         WHERE e.activo = :activo
                                         ORDER BY e.nombre ASC")
                          ->setParameter('activo', true);
@@ -495,6 +494,31 @@ class NotificacionController extends Controller
 
     }
 
+    public function prepararProgramados($notificaciones,$empresa){
+        $f = $this->get('funciones');
+        $yml = Yaml::parse(file_get_contents($this->get('kernel')->getRootDir().'/config/parametros.yml'));
+        $timeZoneEmpresa = ($empresa->getZonaHoraria())? $empresa->getZonaHoraria()->getNombre():$yml['parameters']['time_zone']['default'];
+        $programados = array(); 
+        foreach($notificaciones as $nt){
+            $programado = $nt;
+            if(($nt['fecha_inicio'] && $nt['fecha_fin']) ){
+               if ($yml['parameters']['fecha_reportes']['inicio'] == $nt['fecha_inicio']){
+                    $pintervalo = '<strong>'.$this->get('translator')->trans('Todos').'</strong>';
+                }else{
+                    $desde = $f->converDate($nt['fecha_inicio'],$yml['parameters']['time_zone']['default'],$timeZoneEmpresa);
+                    $hasta = $f->converDate($nt['fecha_fin'],$yml['parameters']['time_zone']['default'],$timeZoneEmpresa);
+                    $pintervalo = '<strong>'.$this->get('translator')->trans('del').':  '.$desde->fecha.' &nbsp;'.$desde->hora.'&nbsp;&nbsp;'. $this->get('translator')->trans('al').': '.$hasta->fecha.'&nbsp;'.$hasta->hora.'&nbsp;'.$timeZoneEmpresa.'</strong>';
+               }
+            }else{
+                $pintervalo = '';
+            }
+            $programado['intervalo'] = $pintervalo;
+            array_push($programados,$programado);
+        }
+
+        return $programados;
+    }
+
     public function notificacionProgramadasAction($id,Request $request)
     {
 
@@ -525,11 +549,13 @@ class NotificacionController extends Controller
         $query->execute();
         $res = $query->fetchAll();
         $nps = $res;
-
+        $empresa = $this->getDoctrine()->getRepository('LinkComunBundle:AdminEmpresa')->find($notificacion->getEmpresa()->getId());
+        $programados = $this->prepararProgramados($nps,$empresa);
+        //return new response(var_dump($programados));
         $failed = $this->failedEmails($nps);
         $titulo =  $this->get('translator')->trans('Avisos programados').': '.$notificacion->getEmpresa()->getNombre().' - '.$notificacion->getAsunto();
 
-        return $this->render('LinkBackendBundle:Notificacion:notificacionProgramadas.html.twig', array('nps' => $nps,
+        return $this->render('LinkBackendBundle:Notificacion:notificacionProgramadas.html.twig', array('nps'     => $programados,
                                                                                                         'failed' => $failed,
                                                                                                         'titulo' => $titulo
                                                                                                       ));
@@ -1041,6 +1067,150 @@ class NotificacionController extends Controller
             list($d, $m, $a) = explode("/", $fecha_difusion);
             $fecha_difusion = "$a-$m-$d";
 
+            if ($tipo_destino_id == $yml['parameters']['tipo_destino']['aprobados']){
+                $empresa = $notificacion_programada->getNotificacion()->getEmpresa();
+
+                $timeZoneEmpresa = ($empresa->getZonaHoraria())? $empresa->getZonaHoraria()->getNombre():$yml['parameters']['time_zone']['default'];
+        
+                $timeZoneReport = $f->clearNameTimeZone($timeZoneEmpresa,$empresa->getPais()->getNombre(),$yml);
+        
+                $desde = $request->request->get('desde',false);
+        
+                $hasta = $request->request->get('hasta',false);
+        
+                $todos = $request->request->get('check_todos',false);
+        
+                $timeZoneEmpresa = ($empresa->getZonaHoraria())? $empresa->getZonaHoraria()->getNombre():$yml['parameters']['time_zone']['default'];
+        
+                if($todos || (!$todos && !$desde && !$hasta) || (!$todos && !($desde && $hasta))){
+        
+                    $desde = new \DateTime($yml['parameters']['fecha_reportes']['inicio']);
+                    $desde = $desde->format("Y-m-d H:i:s");
+        
+                    $hoy = new \DateTime("NOW");
+        
+                    $hasta = $hoy->format("Y-m-d H:i:s");
+        
+                }else if (!is_null($desde) && !is_null($hasta)){
+        
+                    $desde_arr = explode(" ", $desde);
+        
+                    list($d, $m, $a) = explode("/", $desde_arr[0]);
+        
+                    $time = explode(":", $desde_arr[1]);
+        
+                    $h = (int) $time[0];
+        
+                    $min = $time[1];
+        
+                    if ($desde_arr[2] == 'pm')
+        
+                    {
+        
+                        if ($h != 12)
+        
+                        {
+        
+                            // Se le suman 12 horas
+        
+                            $h += 12;
+        
+                        }
+        
+                    }
+        
+                    else {
+        
+                        if ($h == 12)
+        
+                        {
+        
+                            // Es la hora 0
+        
+                            $h = '00';
+        
+                        }
+        
+                        elseif ($h < 10) {
+        
+                            // Valor en dos caracteres
+        
+                            $h = '0'.$h;
+        
+                        }
+        
+                    }
+
+                    $desdef = "$a-$m-$d $h:$min:00";
+        
+            
+        
+                    $hasta_arr = explode(" ", $hasta);
+        
+                    list($d, $m, $a) = explode("/", $hasta_arr[0]);
+        
+                    $time = explode(":", $hasta_arr[1]);
+        
+                    $h = (int) $time[0];
+        
+                    $min = $time[1];
+        
+                    if ($hasta_arr[2] == 'pm')
+        
+                    {
+        
+                        if ($h != 12)
+        
+                        {
+        
+                            // Se le suman 12 horas
+        
+                            $h += 12;
+        
+                        }
+        
+                    }
+        
+                    else {
+        
+                        if ($h == 12)
+        
+                        {
+        
+                            // Es la hora 0
+        
+                            $h = '00';
+        
+                        }
+        
+                        elseif ($h < 10) {
+        
+                            // Valor en dos caracteres
+        
+                            $h = '0'.$h;
+        
+                        }
+        
+                    }
+
+        
+                    $hastaf = "$a-$m-$d $h:$min:00";
+        
+        
+                    $desdeUtc = $f->converDate($desdef,$timeZoneEmpresa,$yml['parameters']['time_zone']['default'],false);
+        
+                    $desde = $desdeUtc->fecha.' '.$desdeUtc->hora;
+        
+            
+        
+                    $hastaUtc = $f->converDate($hastaf,$timeZoneEmpresa,$yml['parameters']['time_zone']['default'],false);
+        
+                    $hasta = $hastaUtc->fecha.' '.$hastaUtc->hora;
+                }
+                $notificacion_programada->setFechaInicio(new \DateTime($desde));
+                $notificacion_programada->setFechaFin(new \DateTime($hasta));
+            }
+
             $entidades_incluidas = array();
 
             // Si estamos editando una notificación programada del tipo destino Grupo de participantes, hay que eliminar primero el grupo
@@ -1089,6 +1259,8 @@ class NotificacionController extends Controller
                 {
                     if (!in_array($entidad, $entidades_incluidas))
                     {
+                        
+
                         $np = new AdminNotificacionProgramada();
                         $np->setNotificacion($notificacion_programada->getNotificacion());
                         $np->setTipoDestino($tipo_destino);
@@ -1097,6 +1269,11 @@ class NotificacionController extends Controller
                         $np->setFechaDifusion(new \DateTime($fecha_difusion));
                         $np->setGrupo($notificacion_programada);
                         $np->setEnviado(false);
+                        //print_r(gettype($desde));die();
+                        if($tipo_destino_id == $yml['parameters']['tipo_destino']['aprobados']){
+                            $np->setFechaInicio(new \DateTime($desde));
+                            $np->setFechaFin(new \DateTime($hasta));
+                        }
                         $em->persist($np);
                         $em->flush();
                     }
@@ -1112,337 +1289,6 @@ class NotificacionController extends Controller
                 }
             }
 
-            // if ($notificacion_programada->getFechaDifusion()->format('Y-m-d') == date('Y-m-d'))
-            // {
-                // $hoy = date('Y-m-d H:i:s');
-                // //return new response($hoy);
-                // // Se envía la notificación de una vez
-                // $query = $em->getConnection()->prepare('SELECT fnnotificacion_programada(:pnotificacion_programada_id, :pfecha_hoy) AS resultado;');
-                // $query->bindValue(':pnotificacion_programada_id', $notificacion_programada->getId(), \PDO::PARAM_INT);
-                // $query->bindValue(':pfecha_hoy', $hoy, \PDO::PARAM_STR);
-                // $query->execute();
-                // $r = $query->fetchAll();
-                // //return new response(count($r));
-                // $notificaciones_id = array();
-
-                // $background = $this->container->getParameter('folders')['uploads'].'recursos/decorate_certificado.png';
-                // $logo = $this->container->getParameter('folders')['uploads'].'recursos/logo_formacion.png';
-                // $footer = $this->container->getParameter('folders')['uploads'].'recursos/footer.bg.form.png';
-                // //$logo = ''; // Por ahora no se colocará el logo de formación en el header del correo
-                // $link_plataforma = $this->container->getParameter('link_plataforma').$notificacion_programada->getNotificacion()->getEmpresa()->getId();
-                // $j = 0; // Contador de correos exitosos
-                // $np_id = 0; // notificacion_programada_id
-                // $ids = array();
-                // $crr = array();
-                // $prueba_usuario= array();
-                // for ($i = 0; $i < count($r); $i++)
-                // {
-                    // if ($j == $yml['parameters']['limite_correos_notificaciones']['controlador'])
-                    // {
-                        // // Cantidad tope de correos en una corrida
-                        // break;
-                    // }
-
-                    // // Limpieza de resultados
-                    // $reg = substr($r[$i]['resultado'], strrpos($r[$i]['resultado'], '{"')+2);
-                    // $reg = str_replace('"}', '', $reg);
-
-                    // // Se descomponen los elementos del resultado
-                    // list($np_id, $usuario_id, $login, $clave, $nombre, $apellido, $correo, $asunto, $mensaje, $fecha, $nivel_id) = explode("__", $reg);
-                    // array_push($ids,$i);
-                    // array_push($prueba_usuario,array('np_id' => $np_id,
-                                                     // 'usuario_id' => $usuario_id,
-                                                     // 'login' => $login,
-                                                     // 'nombre' => $nombre));
-
-                    // if($fecha == 'vacio')
-                    // {
-                        // if ($correo != '')
-                        // {
-
-                            // // Validar que no se haya enviado el correo a este destinatario
-                            // $correo_bd = $em->getRepository('LinkComunBundle:AdminCorreo')->findOneBy(array('tipoCorreo' => $yml['parameters']['tipo_correo']['notificacion_programada'],
-                                                                                                            // 'entidadId' => $np_id,
-                                                                                                            // 'usuario' => $usuario_id,
-                                                                                                            // 'correo' => $correo));
-                            // //return new response(var_dump($correo_bd->getEntidadId()));
-                            // //return new response(var_dump($correo_bd));
-                            // if (!$correo_bd)
-                            // {
-                                // //return new response($hoy);
-                                // // Sustitución de variables en el texto
-                                // $comodines = array('%%usuario%%', '%%clave%%', '%%nombre%%', '%%apellido%%');
-                                // $reemplazos = array($login, $clave, $nombre, $apellido);
-                                // $mensaje = str_replace($comodines, $reemplazos, $mensaje);
-
-                                // $parametros_correo = array('twig' => 'LinkBackendBundle:Notificacion:emailCommand.html.twig',
-                                                        // 'datos' => array('nombre' => $nombre,
-                                                                            // 'apellido' => $apellido,
-                                                                            // 'mensaje' => $mensaje,
-                                                                            // 'background' => $background,
-                                                                            // 'logo' => $logo,
-                                                                            // 'footer' => $footer,
-                                                                            // 'link_plataforma' => $link_plataforma),
-                                                        // 'asunto' => $asunto,
-                                                        // 'remitente' => $this->container->getParameter('mailer_user_tutor'),
-                                                        // 'remitente_name' => $this->container->getParameter('mailer_user_tutor_name'),
-                                                        // 'destinatario' => $correo,
-                                                        // 'mailer' => 'tutor_mailer');
-                                // $ok = $f->sendEmail($parametros_correo);
-                                // //$ok = 1;
-                                // if ($ok)
-                                // {
-
-                                    // $j++;
-
-                                    // // Si es una notificación para un grupo de participantes, se marca como enviado
-                                    // $r_np = $em->getRepository('LinkComunBundle:AdminNotificacionProgramada')->find($np_id);
-                                    // if ($r_np->getTipoDestino()->getId() == $yml['parameters']['tipo_destino']['grupo'] || $r_np->getTipoDestino()->getId() == $yml['parameters']['tipo_destino']['programa'] || $r_np->getTipoDestino()->getId() == $yml['parameters']['tipo_destino']['aprobados']|| $r_np->getTipoDestino()->getId() == $yml['parameters']['tipo_destino']['en_curso'])
-                                    // {
-                                        // $r_np->setEnviado(true);
-                                        // $em->persist($r_np);
-                                        // $em->flush();
-                                        // array_push($notificaciones_id,$np_id);
-                                    // }else{
-                                        // if(count($notificaciones_id) == 0){
-                                            // array_push($notificaciones_id,$np_id);
-                                        // }
-                                    // }
-
-                                    // // Registro del correo recien enviado
-                                    // $tipo_correo = $em->getRepository('LinkComunBundle:AdminTipoCorreo')->find($yml['parameters']['tipo_correo']['notificacion_programada']);
-                                    // $r_usuario = $em->getRepository('LinkComunBundle:AdminUsuario')->find($usuario_id);
-                                    // $email = new AdminCorreo();
-                                    // $email->setTipoCorreo($tipo_correo);
-                                    // $email->setEntidadId($np_id);
-                                    // $email->setUsuario($r_usuario);
-                                    // $email->setCorreo($correo);
-                                    // $email->setFecha(new \DateTime('now'));
-                                    // $em->persist($email);
-                                    // $em->flush();
-
-                                // }
-
-                                // /*return $this->render('LinkBackendBundle:Notificacion:emailCommand.html.twig', array('nombre' => $nombre,
-                                                                            // 'apellido' => $apellido,
-                                                                            // 'mensaje' => $mensaje,
-                                                                            // 'background' => $background,
-                                                                            // 'logo' => $logo,
-                                                                            // 'link_plataforma' => $link_plataforma));*/
-
-                            // }
-
-                        // }
-                    // }else{
-                        // if($fecha == '1900-01-01'){
-                            // $query = $em->createQuery("SELECT np, pe FROM LinkComunBundle:CertiNivelPagina np
-                                                        // JOIN np.paginaEmpresa pe
-                                                        // WHERE np.nivel = :nivel_id
-                                                        // AND pe.fechaVencimiento >= :hoy
-                                                        // AND pe.empresa = :empresa_id")
-                                        // ->setParameters(array('nivel_id'=> $nivel_id,
-                                                            // 'hoy' => $hoy,
-                                                            // 'empresa_id' => $notificacion_programada->getNotificacion()->getEmpresa()->getId()));
-                            // $niveles_f = $query->getResult();
-                            // if($niveles_f)
-                            // {
-                                // if ($correo != '')
-                                // {
-
-                                    // // Validar que no se haya enviado el correo a este destinatario
-                                    // $correo_bd = $em->getRepository('LinkComunBundle:AdminCorreo')->findOneBy(array('tipoCorreo' => $yml['parameters']['tipo_correo']['notificacion_programada'],
-                                                                                                                    // 'entidadId' => $np_id,
-                                                                                                                    // 'usuario' => $usuario_id,
-                                                                                                                    // 'correo' => $correo));
-                                    // //return new response(var_dump($correo_bd->getEntidadId()));
-                                    // //return new response(var_dump($correo_bd));
-                                    // if (!$correo_bd)
-                                    // {
-                                        // //return new response($hoy);
-                                        // // Sustitución de variables en el texto
-                                        // $comodines = array('%%usuario%%', '%%clave%%', '%%nombre%%', '%%apellido%%');
-                                        // $reemplazos = array($login, $clave, $nombre, $apellido);
-                                        // $mensaje = str_replace($comodines, $reemplazos, $mensaje);
-
-                                        // $parametros_correo = array('twig' => 'LinkBackendBundle:Notificacion:emailCommand.html.twig',
-                                                                // 'datos' => array('nombre' => $nombre,
-                                                                                    // 'apellido' => $apellido,
-                                                                                    // 'mensaje' => $mensaje,
-                                                                                    // 'background' => $background,
-                                                                                    // 'logo' => $logo,
-                                                                                    // 'footer' => $footer,
-                                                                                    // 'link_plataforma' => $link_plataforma),
-                                                                // 'asunto' => $asunto,
-                                                                // 'remitente' => $this->container->getParameter('mailer_user_tutor'),
-                                                                // 'remitente_name' => $this->container->getParameter('mailer_user_tutor_name'),
-                                                                // 'destinatario' => $correo,
-                                                                // 'mailer' => 'tutor_mailer');
-                                        // $ok = $f->sendEmail($parametros_correo);
-                                        // //$ok = 1;
-                                        // if ($ok)
-                                        // {
-
-                                            // $j++;
-
-                                            // // Si es una notificación para un grupo de participantes, se marca como enviado
-                                            // $r_np = $em->getRepository('LinkComunBundle:AdminNotificacionProgramada')->find($np_id);
-                                            // if ($r_np->getTipoDestino()->getId() == $yml['parameters']['tipo_destino']['grupo'] || $r_np->getTipoDestino()->getId() == $yml['parameters']['tipo_destino']['programa'] || $r_np->getTipoDestino()->getId() == $yml['parameters']['tipo_destino']['aprobados']|| $r_np->getTipoDestino()->getId() == $yml['parameters']['tipo_destino']['en_curso'])
-                                            // {
-                                                // $r_np->setEnviado(true);
-                                                // $em->persist($r_np);
-                                                // $em->flush();
-                                                // array_push($notificaciones_id,$np_id);
-                                            // }else{
-                                                // if(count($notificaciones_id) == 0){
-                                                    // array_push($notificaciones_id,$np_id);
-                                                // }
-                                            // }
-
-                                            // // Registro del correo recien enviado
-                                            // $tipo_correo = $em->getRepository('LinkComunBundle:AdminTipoCorreo')->find($yml['parameters']['tipo_correo']['notificacion_programada']);
-                                            // $r_usuario = $em->getRepository('LinkComunBundle:AdminUsuario')->find($usuario_id);
-                                            // $email = new AdminCorreo();
-                                            // $email->setTipoCorreo($tipo_correo);
-                                            // $email->setEntidadId($np_id);
-                                            // $email->setUsuario($r_usuario);
-                                            // $email->setCorreo($correo);
-                                            // $email->setFecha(new \DateTime('now'));
-                                            // $em->persist($email);
-                                            // $em->flush();
-
-                                        // }
-
-                                        // /*return $this->render('LinkBackendBundle:Notificacion:emailCommand.html.twig', array('nombre' => $nombre,
-                                                                                    // 'apellido' => $apellido,
-                                                                                    // 'mensaje' => $mensaje,
-                                                                                    // 'background' => $background,
-                                                                                    // 'logo' => $logo,
-                                                                                    // 'link_plataforma' => $link_plataforma));*/
-
-                                    // }
-
-                                // }
-                            // }
-                        // }else{
-                            // if($fecha > $hoy)
-                            // {
-                                // if ($correo != '')
-                                // {
-
-                                    // // Validar que no se haya enviado el correo a este destinatario
-                                    // $correo_bd = $em->getRepository('LinkComunBundle:AdminCorreo')->findOneBy(array('tipoCorreo' => $yml['parameters']['tipo_correo']['notificacion_programada'],
-                                                                                                                    // 'entidadId' => $np_id,
-                                                                                                                    // 'usuario' => $usuario_id,
-                                                                                                                    // 'correo' => $correo));
-                                    // //return new response(var_dump($correo_bd->getEntidadId()));
-                                    // //return new response(var_dump($correo_bd));
-                                    // if (!$correo_bd)
-                                    // {
-                                        // //return new response($hoy);
-                                        // // Sustitución de variables en el texto
-                                        // $comodines = array('%%usuario%%', '%%clave%%', '%%nombre%%', '%%apellido%%');
-                                        // $reemplazos = array($login, $clave, $nombre, $apellido);
-                                        // $mensaje = str_replace($comodines, $reemplazos, $mensaje);
-
-                                        // $parametros_correo = array('twig' => 'LinkBackendBundle:Notificacion:emailCommand.html.twig',
-                                                                // 'datos' => array('nombre' => $nombre,
-                                                                                    // 'apellido' => $apellido,
-                                                                                    // 'mensaje' => $mensaje,
-                                                                                    // 'background' => $background,
-                                                                                    // 'logo' => $logo,
-                                                                                    // 'footer' => $footer,
-                                                                                    // 'link_plataforma' => $link_plataforma),
-                                                                // 'asunto' => $asunto,
-                                                                // 'remitente' => $this->container->getParameter('mailer_user_tutor'),
-                                                                // 'remitente_name' => $this->container->getParameter('mailer_user_tutor_name'),
-                                                                // 'destinatario' => $correo,
-                                                                // 'mailer' => 'tutor_mailer');
-                                        // $ok = $f->sendEmail($parametros_correo);
-                                        // //$ok = 1;
-                                        // if ($ok)
-                                        // {
-
-                                            // $j++;
-
-                                            // // Si es una notificación para un grupo de participantes, se marca como enviado
-                                            // $r_np = $em->getRepository('LinkComunBundle:AdminNotificacionProgramada')->find($np_id);
-                                            // if ($r_np->getTipoDestino()->getId() == $yml['parameters']['tipo_destino']['grupo'] || $r_np->getTipoDestino()->getId() == $yml['parameters']['tipo_destino']['programa'] || $r_np->getTipoDestino()->getId() == $yml['parameters']['tipo_destino']['aprobados']|| $r_np->getTipoDestino()->getId() == $yml['parameters']['tipo_destino']['en_curso'])
-                                            // {
-                                                // $r_np->setEnviado(true);
-                                                // $em->persist($r_np);
-                                                // $em->flush();
-                                                // array_push($notificaciones_id,$np_id);
-                                            // }else{
-                                                // if(count($notificaciones_id) == 0){
-                                                    // array_push($notificaciones_id,$np_id);
-                                                // }
-                                            // }
-
-                                            // // Registro del correo recien enviado
-                                            // $tipo_correo = $em->getRepository('LinkComunBundle:AdminTipoCorreo')->find($yml['parameters']['tipo_correo']['notificacion_programada']);
-                                            // $r_usuario = $em->getRepository('LinkComunBundle:AdminUsuario')->find($usuario_id);
-                                            // $email = new AdminCorreo();
-                                            // $email->setTipoCorreo($tipo_correo);
-                                            // $email->setEntidadId($np_id);
-                                            // $email->setUsuario($r_usuario);
-                                            // $email->setCorreo($correo);
-                                            // $email->setFecha(new \DateTime('now'));
-                                            // $em->persist($email);
-                                            // $em->flush();
-
-                                        // }
-
-                                        // /*return $this->render('LinkBackendBundle:Notificacion:emailCommand.html.twig', array('nombre' => $nombre,
-                                                                                    // 'apellido' => $apellido,
-                                                                                    // 'mensaje' => $mensaje,
-                                                                                    // 'background' => $background,
-                                                                                    // 'logo' => $logo,
-                                                                                    // 'link_plataforma' => $link_plataforma));*/
-
-                                    // }
-
-                                // }
-                            // }
-                        // }
-
-                    // }
-
-                    // //return new response('holaaa');
-
-
-
-                // }
-                // //return new response(var_dump($prueba_usuario));
-                // // Si se enviaron todos los correos, se coloca la notificación como enviada
-                // if ($np_id)
-                // {
-                    // if($tipo_destino_id == $yml['parameters']['tipo_destino']['todos'] || $tipo_destino_id == $yml['parameters']['tipo_destino']['nivel'] ||
-                       // $tipo_destino_id == $yml['parameters']['tipo_destino']['no_ingresado'] || $tipo_destino_id == $yml['parameters']['tipo_destino']['no_ingresado_programa']){
-                           // $np_main = $em->getRepository('LinkComunBundle:AdminNotificacionProgramada')->find($np_id);
-                       // }else{
-                           // $np_hija = $em->getRepository('LinkComunBundle:AdminNotificacionProgramada')->find($np_id);
-                           // $np_main = $em->getRepository('LinkComunBundle:AdminNotificacionProgramada')->find($np_hija->getGrupo());
-
-                       // }
-
-
-                    // $query = $em->createQuery('SELECT COUNT(c.id) FROM LinkComunBundle:AdminCorreo c
-                                                // WHERE c.tipoCorreo = :notificacion_programada
-                                                // AND c.entidadId IN (:np_id)' )
-                                // ->setParameters(array('notificacion_programada' => $yml['parameters']['tipo_correo']['notificacion_programada'],
-                                                      // 'np_id' => $notificaciones_id));
-                    // $emails = $query->getSingleScalarResult();
-
-                    // if($emails == count($r)){
-                        // $np_main->setEnviado(true);
-                        // $em->persist($np_main);
-                        // $em->flush();
-                    // }
-
-
-                // }
-
-            // }
 
             return $this->redirectToRoute('_showNotificacionProgramada', array('notificacion_programada_id' => $notificacion_programada->getId()));
 
@@ -1476,7 +1322,7 @@ class NotificacionController extends Controller
             }
         }
         $f->setRequest($session->get('sesion_id'));
-
+        $filtro_fecha = 0;
         $tipo_destino_id = $request->query->get('tipo_destino_id');
         $notificacion_id = $request->query->get('notificacion_id');
         $notificacion_programada_id = $request->query->get('notificacion_programada_id');
@@ -1506,28 +1352,19 @@ class NotificacionController extends Controller
                 $niveles = $query->getResult();
 
                 $valores = array();
+                //print_r(count($niveles));die();
                 foreach ($niveles as $nivel)
                 {
                     //return new response('aqui1');
                    if($nivel->getFechaFin())
-                   {
-                    //return new response('aqui2');
-                        $query = $em->createQuery("SELECT n FROM LinkComunBundle:AdminNivel n
-                                                WHERE n.id = :nivel_id
-                                                AND n.fechaFin >= :hoy
-                                                ORDER BY n.nombre ASC")
-                                ->setParameters(array('nivel_id'=> $nivel->getId(),
-                                                    'hoy' => $hoy));
-                        $niveles_f = $query->getResult();
-                        if($niveles_f)
-                        {
-                            foreach($niveles_f as $nivel_f)
-                            {
-                                $valores[] = array('id' => $nivel->getId(),
-                                                'nombre' => $nivel->getNombre(),
-                                                'selected' => $notificacion_programada_id ? $nivel->getId() == $notificacion_programada->getEntidadId() ? 'selected' : '' : '');
-                            }
-                        }
+                   {    
+                       if($nivel->getFechaFin() >= $hoy){
+                           $valores[] = array(
+                               'id'       => $nivel->getId(),
+                               'nombre'   => $nivel->getNombre(),
+                               'selected' => $notificacion_programada_id ? $nivel->getId() == $notificacion_programada->getEntidadId() ? 'selected' : '' : ''
+                            );
+                       }
                    }else{
                     //return new response('aqui3');
                         $query = $em->createQuery("SELECT np, pe FROM LinkComunBundle:CertiNivelPagina np
@@ -1542,14 +1379,9 @@ class NotificacionController extends Controller
                         //return new response(var_dump($niveles_f));
                         if($niveles_f)
                         {
-                            //return new response('aqui4');
-
-                            foreach($niveles_f as $nivel_f)
-                            {
                                 $valores[] = array('id' => $nivel->getId(),
                                                 'nombre' => $nivel->getNombre(),
                                                 'selected' => $notificacion_programada_id ? $nivel->getId() == $notificacion_programada->getEntidadId() ? 'selected' : '' : '');
-                            }
                         }
                    }
 
@@ -1568,13 +1400,6 @@ class NotificacionController extends Controller
                         $programas_id[] = $np->getEntidadId();
                     }
                 }
-                /*$query = $em->createQuery("SELECT pe FROM LinkComunBundle:CertiPaginaEmpresa pe
-                                            JOIN pe.pagina p
-                                            WHERE pe.empresa = :empresa_id
-                                            AND p.pagina IS NULL
-                                            ORDER BY pe.orden ASC")
-                            ->setParameter('empresa_id', $notificacion->getEmpresa()->getId());
-                $pes = $query->getResult();*/
                 $hoy = date('Y-m-d');
                 $query = $em->createQuery("SELECT np,pe FROM LinkComunBundle:CertiNivelPagina np
                                             JOIN np.paginaEmpresa pe
@@ -1693,6 +1518,7 @@ class NotificacionController extends Controller
                                    'valores' => $valores);
                 break;
             case $yml['parameters']['tipo_destino']['aprobados']:
+                $filtro_fecha = 1;
                 $programas_id = array();
                 if ($notificacion_programada_id)
                 {
@@ -1776,7 +1602,7 @@ class NotificacionController extends Controller
                 break;
         }
 
-        $html = $this->renderView('LinkBackendBundle:Notificacion:grupoSeleccion.html.twig', array('entidades' => $entidades));
+        $html = $this->renderView('LinkBackendBundle:Notificacion:grupoSeleccion.html.twig', array('entidades' => $entidades,'filtro_fecha'=>$filtro_fecha));
 
         $return = array('html' => $html);
 

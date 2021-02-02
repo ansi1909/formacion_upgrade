@@ -60,6 +60,7 @@ class UsersScheduledCommand extends ContainerAwareCommand
                 $query->bindValue(':pfechaAyer', $ayer->format('Y-m-d'), \PDO::PARAM_STR);
 				$query->execute();
 				$r = $query->fetchAll();
+			    $output->writeln(count($r));
 				$notificaciones_id = array();
 
 				//error_log('-------------------CRON JOB DEL DIA '.date('d/m/Y H:i').'---------------------------------------------------');
@@ -209,14 +210,20 @@ class UsersScheduledCommand extends ContainerAwareCommand
 						            $entidad[$yml2['parameters']['tipo_destino']['grupo']] = $n->getId();
 						            $entidad[$yml2['parameters']['tipo_destino']['no_ingresado']] = 0;
 						            $entidad[$yml2['parameters']['tipo_destino']['no_ingresado_programa']] = $n->getEntidadId();
-
+									
+									$desde = new \DateTime($yml2['parameters']['fecha_reportes']['inicio']);
+									$desde = $desde->format("Y-m-d H:i:s");
+									$hasta = new \DateTime("NOW");
+									$hasta = $hasta->format("Y-m-d H:i:s");
 						            $query = $em->getConnection()->prepare('SELECT
-							    											   fncantidad_programados(:ptipo_destino_id, :pempresa_id, :pentidad_id, :pfecha_hoy) as
+							    											   fncantidad_programados(:ptipo_destino_id, :pempresa_id, :pentidad_id, :pfecha_hoy, :pfecha_inicio, :pfecha_fin ) as
 								                                               resultado;');
 									$query->bindValue(':ptipo_destino_id', $n->getTipoDestino()->getId(), \PDO::PARAM_INT);
 									$query->bindValue(':pempresa_id', $n->getNotificacion()->getEmpresa()->getId(), \PDO::PARAM_INT);
 									$query->bindValue(':pentidad_id', $entidad[$n->getTipoDestino()->getId()], \PDO::PARAM_INT);
 									$query->bindValue(':pfecha_hoy', $hoy, \PDO::PARAM_STR);
+									$query->bindValue(':pfecha_inicio', $desde, \PDO::PARAM_STR);
+									$query->bindValue(':pfecha_fin', $hasta, \PDO::PARAM_STR);
 									$query->execute();
 									$r = $query->fetchAll();
 									$programados = $r[0]['resultado'];
@@ -240,14 +247,20 @@ class UsersScheduledCommand extends ContainerAwareCommand
 						$total = 0;
 						foreach ($na as $nh) {
 
+									$desde = $nh->getFechaInicio()? $nh->getFechaInicio(): new \DateTime($yml2['parameters']['fecha_reportes']['inicio']);
+									$desde = $desde->format("Y-m-d H:i:s");
+									$hasta = $nh->getFechaFin()? $nh->getFechaFin():new \DateTime("NOW");
+									$hasta = $hasta->format("Y-m-d H:i:s");
 
 						            $query = $em->getConnection()->prepare('SELECT
-							    											   fncantidad_programados(:ptipo_destino_id, :pempresa_id, :pentidad_id, :pfecha_hoy) as
+							    											   fncantidad_programados(:ptipo_destino_id, :pempresa_id, :pentidad_id, :pfecha_hoy,:pfecha_inicio,:pfecha_fin) as
 								                                               resultado;');
 									$query->bindValue(':ptipo_destino_id', $nh->getTipoDestino()->getId(), \PDO::PARAM_INT);
 									$query->bindValue(':pempresa_id', $nh->getNotificacion()->getEmpresa()->getId(), \PDO::PARAM_INT);
 									$query->bindValue(':pentidad_id', $nh->getEntidadId(), \PDO::PARAM_INT);
 									$query->bindValue(':pfecha_hoy', $hoy, \PDO::PARAM_STR);
+									$query->bindValue(':pfecha_inicio', $desde, \PDO::PARAM_STR);
+									$query->bindValue(':pfecha_fin', $hasta, \PDO::PARAM_STR);
 									$query->execute();
 									$r = $query->fetchAll();
 									$programados = $r[0]['resultado'];

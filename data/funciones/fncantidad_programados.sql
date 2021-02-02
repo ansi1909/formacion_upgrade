@@ -6,7 +6,9 @@ CREATE OR REPLACE FUNCTION public.fncantidad_programados(
     ptipo_destino_id integer,
     pempresa_id integer,
     pentidad_id integer,
-    pfecha_hoy date)
+    pfecha_hoy date,
+    pfecha_inicio timestamp without time zone,
+    pfecha_fin timestamp without time zone)
   RETURNS integer AS
 $BODY$
 declare
@@ -105,7 +107,10 @@ begin
         SELECT COUNT(u.id) INTO c
         FROM admin_usuario u
         INNER JOIN admin_nivel n ON u.nivel_id = n.id
+        INNER JOIN certi_pagina_log pl ON pl.usuario_id = u.id
         WHERE u.empresa_id = pempresa_id
+            AND pl.pagina_id = pentidad_id
+            AND pl.fecha_fin BETWEEN pfecha_inicio::timestamp AND pfecha_fin::timestamp
             AND u.activo = true
             AND LOWER(n.nombre) NOT LIKE 'revisor%'
             AND LOWER(n.nombre) NOT LIKE 'tutor%'
