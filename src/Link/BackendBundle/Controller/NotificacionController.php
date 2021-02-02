@@ -494,6 +494,31 @@ class NotificacionController extends Controller
 
     }
 
+    public function prepararProgramados($notificaciones,$empresa){
+        $f = $this->get('funciones');
+        $yml = Yaml::parse(file_get_contents($this->get('kernel')->getRootDir().'/config/parametros.yml'));
+        $timeZoneEmpresa = ($empresa->getZonaHoraria())? $empresa->getZonaHoraria()->getNombre():$yml['parameters']['time_zone']['default'];
+        $programados = array(); 
+        foreach($notificaciones as $nt){
+            $programado = $nt;
+            if(($nt['fecha_inicio'] && $nt['fecha_fin']) ){
+               if ($yml['parameters']['fecha_reportes']['inicio'] == $nt['fecha_inicio']){
+                    $pintervalo = '<strong>'.$this->get('translator')->trans('Todos').'</strong>';
+                }else{
+                    $desde = $f->converDate($nt['fecha_inicio'],$yml['parameters']['time_zone']['default'],$timeZoneEmpresa);
+                    $hasta = $f->converDate($nt['fecha_fin'],$yml['parameters']['time_zone']['default'],$timeZoneEmpresa);
+                    $pintervalo = '<strong>'.$this->get('translator')->trans('del').':  '.$desde->fecha.' &nbsp;'.$desde->hora.'&nbsp;&nbsp;'. $this->get('translator')->trans('al').': '.$hasta->fecha.'&nbsp;'.$hasta->hora.'&nbsp;'.$timeZoneEmpresa.'</strong>';
+               }
+            }else{
+                $pintervalo = '';
+            }
+            $programado['intervalo'] = $pintervalo;
+            array_push($programados,$programado);
+        }
+
+        return $programados;
+    }
+
     public function notificacionProgramadasAction($id,Request $request)
     {
 
@@ -524,11 +549,13 @@ class NotificacionController extends Controller
         $query->execute();
         $res = $query->fetchAll();
         $nps = $res;
-
+        $empresa = $this->getDoctrine()->getRepository('LinkComunBundle:AdminEmpresa')->find($notificacion->getEmpresa()->getId());
+        $programados = $this->prepararProgramados($nps,$empresa);
+        //return new response(var_dump($programados));
         $failed = $this->failedEmails($nps);
         $titulo =  $this->get('translator')->trans('Avisos programados').': '.$notificacion->getEmpresa()->getNombre().' - '.$notificacion->getAsunto();
 
-        return $this->render('LinkBackendBundle:Notificacion:notificacionProgramadas.html.twig', array('nps' => $nps,
+        return $this->render('LinkBackendBundle:Notificacion:notificacionProgramadas.html.twig', array('nps'     => $programados,
                                                                                                         'failed' => $failed,
                                                                                                         'titulo' => $titulo
                                                                                                       ));
@@ -1040,6 +1067,150 @@ class NotificacionController extends Controller
             list($d, $m, $a) = explode("/", $fecha_difusion);
             $fecha_difusion = "$a-$m-$d";
 
+            if ($tipo_destino_id == $yml['parameters']['tipo_destino']['aprobados']){
+                $empresa = $notificacion_programada->getNotificacion()->getEmpresa();
+
+                $timeZoneEmpresa = ($empresa->getZonaHoraria())? $empresa->getZonaHoraria()->getNombre():$yml['parameters']['time_zone']['default'];
+        
+                $timeZoneReport = $f->clearNameTimeZone($timeZoneEmpresa,$empresa->getPais()->getNombre(),$yml);
+        
+                $desde = $request->request->get('desde',false);
+        
+                $hasta = $request->request->get('hasta',false);
+        
+                $todos = $request->request->get('check_todos',false);
+        
+                $timeZoneEmpresa = ($empresa->getZonaHoraria())? $empresa->getZonaHoraria()->getNombre():$yml['parameters']['time_zone']['default'];
+        
+                if($todos || (!$todos && !$desde && !$hasta) || (!$todos && !($desde && $hasta))){
+        
+                    $desde = new \DateTime($yml['parameters']['fecha_reportes']['inicio']);
+                    $desde = $desde->format("Y-m-d H:i:s");
+        
+                    $hoy = new \DateTime("NOW");
+        
+                    $hasta = $hoy->format("Y-m-d H:i:s");
+        
+                }else if (!is_null($desde) && !is_null($hasta)){
+        
+                    $desde_arr = explode(" ", $desde);
+        
+                    list($d, $m, $a) = explode("/", $desde_arr[0]);
+        
+                    $time = explode(":", $desde_arr[1]);
+        
+                    $h = (int) $time[0];
+        
+                    $min = $time[1];
+        
+                    if ($desde_arr[2] == 'pm')
+        
+                    {
+        
+                        if ($h != 12)
+        
+                        {
+        
+                            // Se le suman 12 horas
+        
+                            $h += 12;
+        
+                        }
+        
+                    }
+        
+                    else {
+        
+                        if ($h == 12)
+        
+                        {
+        
+                            // Es la hora 0
+        
+                            $h = '00';
+        
+                        }
+        
+                        elseif ($h < 10) {
+        
+                            // Valor en dos caracteres
+        
+                            $h = '0'.$h;
+        
+                        }
+        
+                    }
+
+                    $desdef = "$a-$m-$d $h:$min:00";
+        
+            
+        
+                    $hasta_arr = explode(" ", $hasta);
+        
+                    list($d, $m, $a) = explode("/", $hasta_arr[0]);
+        
+                    $time = explode(":", $hasta_arr[1]);
+        
+                    $h = (int) $time[0];
+        
+                    $min = $time[1];
+        
+                    if ($hasta_arr[2] == 'pm')
+        
+                    {
+        
+                        if ($h != 12)
+        
+                        {
+        
+                            // Se le suman 12 horas
+        
+                            $h += 12;
+        
+                        }
+        
+                    }
+        
+                    else {
+        
+                        if ($h == 12)
+        
+                        {
+        
+                            // Es la hora 0
+        
+                            $h = '00';
+        
+                        }
+        
+                        elseif ($h < 10) {
+        
+                            // Valor en dos caracteres
+        
+                            $h = '0'.$h;
+        
+                        }
+        
+                    }
+
+        
+                    $hastaf = "$a-$m-$d $h:$min:00";
+        
+        
+                    $desdeUtc = $f->converDate($desdef,$timeZoneEmpresa,$yml['parameters']['time_zone']['default'],false);
+        
+                    $desde = $desdeUtc->fecha.' '.$desdeUtc->hora;
+        
+            
+        
+                    $hastaUtc = $f->converDate($hastaf,$timeZoneEmpresa,$yml['parameters']['time_zone']['default'],false);
+        
+                    $hasta = $hastaUtc->fecha.' '.$hastaUtc->hora;
+                }
+                $notificacion_programada->setFechaInicio(new \DateTime($desde));
+                $notificacion_programada->setFechaFin(new \DateTime($hasta));
+            }
+
             $entidades_incluidas = array();
 
             // Si estamos editando una notificación programada del tipo destino Grupo de participantes, hay que eliminar primero el grupo
@@ -1089,146 +1260,7 @@ class NotificacionController extends Controller
                     if (!in_array($entidad, $entidades_incluidas))
                     {
                         
-                        if ($tipo_destino_id == $yml['parameters']['tipo_destino']['aprobados']){
-                            $empresa = $notificacion_programada->getNotificacion()->getEmpresa();
 
-                            $timeZoneEmpresa = ($empresa->getZonaHoraria())? $empresa->getZonaHoraria()->getNombre():$yml['parameters']['time_zone']['default'];
-                    
-                            $timeZoneReport = $f->clearNameTimeZone($timeZoneEmpresa,$empresa->getPais()->getNombre(),$yml);
-                    
-                            $desde = $request->request->get('desde',false);
-                    
-                            $hasta = $request->request->get('hasta',false);
-                    
-                            $todos = $request->request->get('check_todos',false);
-                    
-                            $timeZoneEmpresa = ($empresa->getZonaHoraria())? $empresa->getZonaHoraria()->getNombre():$yml['parameters']['time_zone']['default'];
-                    
-                            if($todos || (!$todos && !$desde && !$hasta) || (!$todos && !($desde && $hasta))){
-                    
-                                $desde ='1900-01-01 00:00:00';
-                    
-                                $hoy = new \DateTime("NOW");
-                    
-                                $hasta = $hoy->format("Y-m-d H:i:s");
-                    
-                            }else if (!is_null($desde) && !is_null($hasta)){
-                    
-                                $desde_arr = explode(" ", $desde);
-                    
-                                list($d, $m, $a) = explode("/", $desde_arr[0]);
-                    
-                                $time = explode(":", $desde_arr[1]);
-                    
-                                $h = (int) $time[0];
-                    
-                                $min = $time[1];
-                    
-                                if ($desde_arr[2] == 'pm')
-                    
-                                {
-                    
-                                    if ($h != 12)
-                    
-                                    {
-                    
-                                        // Se le suman 12 horas
-                    
-                                        $h += 12;
-                    
-                                    }
-                    
-                                }
-                    
-                                else {
-                    
-                                    if ($h == 12)
-                    
-                                    {
-                    
-                                        // Es la hora 0
-                    
-                                        $h = '00';
-                    
-                                    }
-                    
-                                    elseif ($h < 10) {
-                    
-                                        // Valor en dos caracteres
-                    
-                                        $h = '0'.$h;
-                    
-                                    }
-                    
-                                }
-                    
-                                $desdef = "$a-$m-$d $h:$min:59";
-                    
-                        
-                    
-                                $hasta_arr = explode(" ", $hasta);
-                    
-                                list($d, $m, $a) = explode("/", $hasta_arr[0]);
-                    
-                                $time = explode(":", $hasta_arr[1]);
-                    
-                                $h = (int) $time[0];
-                    
-                                $min = $time[1];
-                    
-                                if ($hasta_arr[2] == 'pm')
-                    
-                                {
-                    
-                                    if ($h != 12)
-                    
-                                    {
-                    
-                                        // Se le suman 12 horas
-                    
-                                        $h += 12;
-                    
-                                    }
-                    
-                                }
-                    
-                                else {
-                    
-                                    if ($h == 12)
-                    
-                                    {
-                    
-                                        // Es la hora 0
-                    
-                                        $h = '00';
-                    
-                                    }
-                    
-                                    elseif ($h < 10) {
-                    
-                                        // Valor en dos caracteres
-                    
-                                        $h = '0'.$h;
-                    
-                                    }
-                    
-                                }
-                    
-                                $hastaf = "$a-$m-$d $h:$min:59";
-                    
-                    
-                                $desdeUtc = $f->converDate($desdef,$timeZoneEmpresa,$yml['parameters']['time_zone']['default'],false);
-                    
-                                $desde = $desdeUtc->fecha.' '.$desdeUtc->hora;
-                    
-                        
-                    
-                                $hastaUtc = $f->converDate($hastaf,$timeZoneEmpresa,$yml['parameters']['time_zone']['default'],false);
-                    
-                                $hasta = $hastaUtc->fecha.' '.$hastaUtc->hora;
-                            }
-                    
-                        }
                         $np = new AdminNotificacionProgramada();
                         $np->setNotificacion($notificacion_programada->getNotificacion());
                         $np->setTipoDestino($tipo_destino);
