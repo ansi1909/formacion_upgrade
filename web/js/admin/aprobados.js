@@ -26,10 +26,10 @@ $(document).ready(function() {
         }else{
             habilitarFechas();
             document.getElementById("check_todos").checked = false;
-        }   
+        }
     })
 
-    
+
 });
 
 function desHabilitarFechas(){
