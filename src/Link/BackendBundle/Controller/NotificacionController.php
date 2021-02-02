@@ -498,19 +498,17 @@ class NotificacionController extends Controller
         $f = $this->get('funciones');
         $yml = Yaml::parse(file_get_contents($this->get('kernel')->getRootDir().'/config/parametros.yml'));
         $timeZoneEmpresa = ($empresa->getZonaHoraria())? $empresa->getZonaHoraria()->getNombre():$yml['parameters']['time_zone']['default'];
-        $programados = array();
-        
+        $programados = array(); 
         foreach($notificaciones as $nt){
             $programado = $nt;
             if(($nt['fecha_inicio'] && $nt['fecha_fin']) ){
                if ($yml['parameters']['fecha_reportes']['inicio'] == $nt['fecha_inicio']){
-                 $pintervalo = 'Todos';
+                    $pintervalo = '<strong>'.$this->get('translator')->trans('Todos').'</strong>';
                 }else{
-                 $desde = $f->converDate($nt['fecha_inicio'],$yml['parameters']['time_zone']['default'],$timeZoneEmpresa);
-                 $hasta = $f->converDate($nt['fecha_fin'],$yml['parameters']['time_zone']['default'],$timeZoneEmpresa);
-                 $pintervalo = 'Del:  '.$desde->fecha.' &nbsp;&nbsp;'.$desde->hora.'&nbsp;&nbsp;&nbsp Al: '.$hasta->fecha.'&nbsp;&nbsp;'.$hasta->hora.'&nbsp;'.$timeZoneEmpresa;
+                    $desde = $f->converDate($nt['fecha_inicio'],$yml['parameters']['time_zone']['default'],$timeZoneEmpresa);
+                    $hasta = $f->converDate($nt['fecha_fin'],$yml['parameters']['time_zone']['default'],$timeZoneEmpresa);
+                    $pintervalo = '<strong>'.$this->get('translator')->trans('del').':  '.$desde->fecha.' &nbsp;'.$desde->hora.'&nbsp;&nbsp;'. $this->get('translator')->trans('al').': '.$hasta->fecha.'&nbsp;'.$hasta->hora.'&nbsp;'.$timeZoneEmpresa.'</strong>';
                }
-                
             }else{
                 $pintervalo = '';
             }
