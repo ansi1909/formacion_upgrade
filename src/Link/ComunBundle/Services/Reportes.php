@@ -27,7 +27,16 @@ class Reportes
 		$this->mailer = $container->get('mailer');
         $this->templating = $container->get('templating');
         $this->translator = $container->get('translator');
-	}
+    }
+    
+
+    public function historicoAprobados(){
+        $em = $this->em;
+        $query = $em->getConnection()->prepare('SELECT * FROM view_historico_aprobados');
+        $query->execute();
+        return $query->fetchAll();
+    }
+
 
     public function conexionesUsuario($pempresa_id,$pdesde,$phasta)
     {

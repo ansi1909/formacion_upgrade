@@ -28,6 +28,12 @@ _excelUsuariosConectados:
     requirements:
         _method: POST
 
+_excelHistoricoAprobados:
+    path: /excelHistoricoAprobados
+    defaults:  { _controller: LinkBackendBundle:Default:excelHistoricoAprobados }
+    requirements: 
+        _method: POST
+
 _detalleParticipante:
     path: /detalleParticipante
     defaults: { _controller: LinkBackendBundle:ReportesJT:detalleParticipante }
