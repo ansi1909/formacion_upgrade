@@ -145,6 +145,51 @@
                     </div>
                 </div>
             </div>
+            {% if reporteAprobados %}
+                <div class="row">
+                    <div class="col-md-14 col-sm-14 col-lg-14 col-xl-14 offset-md-1 offset-sm-1 offset-lg-1 offset-xl-1">
+                        <div class="card">
+                            <div class="card-header gradiente">
+                                <div class="card-title" id="labelCursosAprobados">{{ 'Reporte - Histórico de aprobados por programa'|trans }}</div>
+                            </div>
+                            <div class="card-block" id="tablaAprobados">
+                                <table class="table" id="tabla_aprobados">
+                                    <thead class="sty__title">
+                                       <tr>
+                                            <th class="hd__title">Id</th>
+                                            <th class="hd__title">{{'Nombre'|trans}}</th>
+                                            <th class="hd__title">{{'Estatus'|trans}}</th>
+                                            <th class="hd__title">{{'Categoría'|trans}} </th>
+                                            <th class="hd__title">{{'Aprobados'|trans}}</th>
+                                       </tr>
+                                    </thead>
+                                    <tbody>
+                                    {% for curso in reporteAprobados %}
+                                        <tr >
+                                            <td>{{ curso.id }}</td>
+                                            <td>{{ curso.nombre }}</td>
+                                            <td>{{ curso.estatus_pagina }}</td>
+                                            <td>{{ curso.categoria }}</td>
+                                            <td>{{ curso.aprobados }}</td>
+                                        </tr>
+                                    {% endfor %}
+                                    </tbody> 
+                                </table>
+                            </div>
+                            <div class="card-footer" id="footer_aprobados" style="">
+                                <div class="row">
+                                    <div class="col-sm-16 col-md-16 col-lg-16 col-xl-16 text-right">
+                                    <a href="{{ path('_excelHistoricoAprobados') }} "> <button type="button" class="bttn__edit" data-toggle="tooltip" data-placement="bottom" title="Descargar"><span class="fa fa-download"></span></button></a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-8 col-md-8 col-lg-8 alert alert-danger" role="alert" id="div-error-users" style="display:none;">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            {% endif %}
+
 			<form id="form" name="form" action="{{ path ('_ajaxUsuariosConectados') }}" method="POST">
                  <input type="hidden" id="empresa_id" name="empresa_id" value="0">
             </form>
@@ -277,6 +322,50 @@
                     </div> {# fin de la tarjeta #}
                 </div>
             </div>
+            {% if reporteAprobados %}
+                <div class="row">
+                    <div class="col-md-14 col-sm-14 col-lg-14 col-xl-14 offset-md-1 offset-sm-1 offset-lg-1 offset-xl-1">
+                        <div class="card">
+                            <div class="card-header gradiente">
+                                <div class="card-title" id="labelCursosAprobados">{{ 'Reporte - Histórico de aprobados por programa'|trans }}</div>
+                            </div>
+                            <div class="card-block" id="tablaAprobados">
+                                <table class="table" id="tabla_aprobados">
+                                    <thead class="sty__title">
+                                       <tr>
+                                            <th class="hd__title">Id</th>
+                                            <th class="hd__title">{{'Nombre'|trans}}</th>
+                                            <th class="hd__title">{{'Estatus'|trans}}</th>
+                                            <th class="hd__title">{{'Categoría'|trans}} </th>
+                                            <th class="hd__title">{{'Aprobados'|trans}}</th>
+                                       </tr>
+                                    </thead>
+                                    <tbody>
+                                    {% for curso in reporteAprobados %}
+                                        <tr >
+                                            <td>{{ curso.id }}</td>
+                                            <td>{{ curso.nombre }}</td>
+                                            <td>{{ curso.estatus_pagina }}</td>
+                                            <td>{{ curso.categoria }}</td>
+                                            <td>{{ curso.aprobados }}</td>
+                                        </tr>
+                                    {% endfor %}
+                                    </tbody> 
+                                </table>
+                            </div>
+                            <div class="card-footer" id="footer_aprobados" style="">
+                                <div class="row">
+                                    <div class="col-sm-16 col-md-16 col-lg-16 col-xl-16 text-right">
+                                    <a href="{{ path('_excelHistoricoAprobados') }} "> <button type="button" class="bttn__edit" data-toggle="tooltip" data-placement="bottom" title="Descargar"><span class="fa fa-download"></span></button></a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-8 col-md-8 col-lg-8 alert alert-danger" role="alert" id="div-error-users" style="display:none;">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            {% endif %}
             <form id="form" name="form" action="{{ path ('_ajaxUsuariosConectados') }}" method="POST">
                  <input type="hidden" id="empresa_id" name="empresa_id" value="{{ usuario.empresa.id }}">
             </form>
@@ -305,6 +394,7 @@
             </div>
         </div>
     {% endif %}
+
 {% endblock %}
 
 {% block javascripts %}
@@ -336,6 +426,39 @@
                     }
                 ]
             }
+        });
+        
+        $('#tabla_aprobados').DataTable({
+                        responsive: false,
+                        pageLength:10,
+                        sPaginationType: "full_numbers",
+                        lengthChange: false,
+                        info: true,
+                        order: [[ 4, "desc" ]],
+                        oLanguage: {
+                            "sProcessing":    "{{ 'Procesando'|trans }}...",
+                            "sLengthMenu":    "{{ 'Mostrar'|trans }} _MENU_ {{ 'registros'|trans }}",
+                            "sZeroRecords":   "{{ 'No se encontraron resultados'|trans }}",
+                            "sEmptyTable":    "{{ 'Ningún dato disponible en esta tabla'|trans }}",
+                            "sInfo":          "{{ 'Registros del'|trans }} _START_ {{ 'al'|trans }} _END_ {{ ' total'|trans }} _TOTAL_",
+                            "sInfoEmpty":     "{{ 'Registros del'|trans }} 0 al 0 total de 0 ",
+                            "sInfoFiltered":  "",
+                            "sInfoPostFix":   "",
+                            "sSearch":        "{{ 'Buscar'|trans }}:",
+                            "sUrl":           "",
+                            "sInfoThousands":  ",",
+                            "sLoadingRecords": "{{ 'Cargando..'|trans }}.",
+                            oPaginate: {
+                                sFirst: "<<",
+                                sPrevious: "<",
+                                sNext: ">",
+                                sLast: ">>"
+                            },
+                            "oAria": {
+                                "sSortAscending":  ": {{ 'Activar para ordenar la columna de manera ascendente'|trans }}",
+                                "sSortDescending": ": {{ 'Activar para ordenar la columna de manera descendente'|trans }}"
+                            }
+                        }
         });
     </script>
 

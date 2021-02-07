@@ -20,14 +20,36 @@ class DefaultController extends Controller
         $em = $this->getDoctrine()->getManager();
         $session = new Session();
         $f = $this->get('funciones');
+        $rs = $this->get('reportes');
 
         if (!$session->get('ini') || $f->sesionBloqueda($session->get('sesion_id')))
       	{
         	return $this->redirectToRoute('_loginAdmin');
       	}
         $f->setRequest($session->get('sesion_id'));
-
-      	$usuario = $em->getRepository('LinkComunBundle:AdminUsuario')->find($session->get('usuario')['id']);
+        $yml = Yaml::parse(file_get_contents($this->get('kernel')->getRootDir().'/config/parametros.yml'));
+        
+        $reporteAprobados = false;
+        
+        $rolesReporteAprobados = array($yml['parameters']['rol']['administrador'],$yml['parameters']['rol']['tutor']);
+       
+        $usuario = $em->getRepository('LinkComunBundle:AdminUsuario')->find($session->get('usuario')['id']);
+        
+        $query = $em->createQuery('SELECT ru.id as id FROM LinkComunBundle:AdminRolUsuario ru
+                                    WHERE ru.usuario = :usuario_id
+                                    AND   ru.rol IN (:roles) ')
+                                 ->setParameters(
+                                                  array(
+                                                        'roles'      => $rolesReporteAprobados,
+                                                        'usuario_id' => $usuario->getId()
+                                                       )
+                                                );
+        $rolHistAprobados = $query->getResult();
+        //print_r($rolHistAprobados);die();
+        if(count($rolHistAprobados)>0){
+            $reporteAprobados = $rs->historicoAprobados();
+        }
+    
 
         if($session->get('administrador') == 'true' || !$usuario->getEmpresa())
         {
@@ -100,7 +122,9 @@ class DefaultController extends Controller
                                                                                          'inactivas' => count($empresasI),
                                                                                          'paises' => $paises,
                                                                                          'empresasI' => $empresasI,
-                                                                                         'usuario' => $usuario));
+                                                                                         'usuario' => $usuario,
+                                                                                         'reporteAprobados' => $reporteAprobados
+                                                                                        ));
 
             return $response;
 
@@ -162,7 +186,8 @@ class DefaultController extends Controller
                                                                                          'sin_acceso' => $usuarios_sin_acceso,
                                                                                          'total' => $usuarios_registrados,
                                                                                          'paginas' => $paginas,
-                                                                                         'usuario' => $usuario));
+                                                                                         'usuario' => $usuario,
+                                                                                         'reporteAprobados' => $reporteAprobados));
 
             return $response;
 
@@ -606,6 +631,7 @@ class DefaultController extends Controller
             $font = 'Arial';
             $horizontal_aligment = \PHPExcel_Style_Alignment::HORIZONTAL_CENTER;
             $vertical_aligment = \PHPExcel_Style_Alignment::VERTICAL_CENTER;
+            
             //return new response(var_dump($res));
 
             foreach ($listado as $usuario)
@@ -642,6 +668,100 @@ class DefaultController extends Controller
             $dispositionHeader = $response->headers->makeDisposition(
                 ResponseHeaderBag::DISPOSITION_ATTACHMENT,
                     'Usuarios conectados'.$hoy.'.xlsx'
+            );
+
+        $response->headers->set('Content-Type', 'text/vnd.ms-excel; charset=utf-8');
+        $response->headers->set('Pragma', 'public');
+        $response->headers->set('Cache-Control', 'maxage=1');
+        $response->headers->set('Content-Disposition', $dispositionHeader);
+
+        return $response;
+
+
+    }
+
+    
+    public function excelHistoricoAprobadosAction(Request $request)
+    {
+        
+        $session = new Session();
+        $em = $this->getDoctrine()->getManager();
+        $rs = $this->get('reportes');
+        $yml = Yaml::parse(file_get_contents($this->get('kernel')->getRootDir().'/config/parametros.yml'));
+
+        $listado = $rs->historicoAprobados();
+        
+        
+        $fileWithPath = $this->container->getParameter('folders')['dir_project'].'docs/formatos/ListadoHistoricoAprobados.xlsx';
+        $objPHPExcel = \PHPExcel_IOFactory::load($fileWithPath);
+        $objWorksheet = $objPHPExcel->setActiveSheetIndex(0);
+        $columnNames = array('A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z');
+        
+        // Encabezado
+        $objWorksheet->setCellValue('A1', $this->get('translator')->trans('Reporte - Histórico de aprobados por programa'));
+
+        if (!count($listado))
+        {
+            $objWorksheet->mergeCells('A5:S5');
+            $objWorksheet->setCellValue('A5', $this->get('translator')->trans('No existen registros para esta consulta'));
+        }
+        else {
+            $row = 5;
+            $i = 0;
+            $styleThinBlackBorderOutline = array(
+                'borders' => array(
+                    'allborders' => array(
+                        'style' => \PHPExcel_Style_Border::BORDER_THIN,
+                        'color' => array('argb' => 'FF000000'),
+                    ),
+                ),
+            );
+            $font_size = 11;
+            $font = 'Arial';
+            $horizontal_aligment = \PHPExcel_Style_Alignment::HORIZONTAL_CENTER;
+            $vertical_aligment = \PHPExcel_Style_Alignment::VERTICAL_CENTER;
+            $total = 0;
+            foreach ($listado as $curso)
+            {
+
+                $objWorksheet->getStyle("A$row:E$row")->applyFromArray($styleThinBlackBorderOutline); //bordes
+                $objWorksheet->getStyle("A$row:E$row")->getFont()->setSize($font_size); // Tamaño de las letras
+                $objWorksheet->getStyle("A$row:E$row")->getFont()->setName($font); // Tipo de letra
+                $objWorksheet->getStyle("A$row:E$row")->getAlignment()->setHorizontal($horizontal_aligment); // Alineado horizontal
+                $objWorksheet->getStyle("A$row:E$row")->getAlignment()->setVertical($vertical_aligment); // Alineado vertical
+                $objWorksheet->getRowDimension($row)->setRowHeight(40); // Altura de la fila
+                // Datos de las columnas comunes -- ;os valores tipo int estan dando conflicto en la version 7.4 php
+                $objWorksheet->setCellValue('A'.$row, (string) $curso['id']);
+                $objWorksheet->setCellValue('B'.$row, $curso['nombre']);
+                $objWorksheet->setCellValue('C'.$row, $curso['estatus_pagina']);
+                $objWorksheet->setCellValue('D'.$row, $curso['categoria']);
+                $objWorksheet->setCellValue('E'.$row, (string) $curso['aprobados']);
+                $total = $curso['aprobados'] + $total;
+                $row++;
+            }
+
+        }
+        
+        $objWorksheet->getStyle("E$row")->applyFromArray($styleThinBlackBorderOutline); //bordes
+        $objWorksheet->getStyle("E$row")->getFont()->setSize($font_size); // Tamaño de las letras
+        $objWorksheet->getStyle("E$row")->getFont()->setName($font); // Tipo de letra
+        $objWorksheet->getStyle("E$row")->getFont()->setBold(true); // Tipo de letra
+        $objWorksheet->getStyle("E$row")->getAlignment()->setHorizontal($horizontal_aligment); // Alineado horizontal
+        $objWorksheet->getStyle("E$row")->getAlignment()->setVertical($vertical_aligment); // Alineado vertical
+        $objWorksheet->setCellValue('E'.$row,'Total: '.(string) $total);
+        
+
+        // Crea el writer
+        $writer = $this->get('phpexcel')->createWriter($objPHPExcel, 'Excel2007');
+        $hoy = date('y-m-d');
+
+        // Envia la respuesta del controlador
+        $response = $this->get('phpexcel')->createStreamedResponse($writer);
+        // Agrega los headers requeridos
+
+            $dispositionHeader = $response->headers->makeDisposition(
+                ResponseHeaderBag::DISPOSITION_ATTACHMENT,
+                    'Historico de aprobados'.$hoy.'.xlsx'
             );
 
         $response->headers->set('Content-Type', 'text/vnd.ms-excel; charset=utf-8');
