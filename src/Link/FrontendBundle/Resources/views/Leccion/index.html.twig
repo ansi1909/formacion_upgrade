@@ -87,16 +87,18 @@ bg-white
       <h6 class="mt-0 color-grey" >{{ subtitulo }}</h6>
 </div>
 
-{% if wizard and lecciones.subpaginas|length > 1 %}
+{% if wizard and lecciones.subpaginas|length > 1  %}
 <input type="hidden" id="tab_activo" name="tab_activo" value="one-tab">
 {# NAVEGACION LECCION #}
 {# La clase .circle-less-viendo es por donde va el usuario y coloca el scroll en esa posicion con el JS ScrollTo #}
 
 <div class="wraper-nav-less" id="wraperNavLess">
-   <h4 class="text-center mt-4 mb-0 color-grey">{{ 'Lecciones'|trans }}</h4>
+   {% if lecciones.subpaginas[0].categoria == 'Lección' %}
+      <h4 class="text-center mt-4 mb-0 color-grey">{{ 'Lecciones'|trans }}</h4>
+   {% endif %}
    <div  name="button" class="btn-lessons" id="btnLessLeft"><i class="material-icons">keyboard_arrow_left</i></div>
    <div  name="button" class="btn-lessons" id="btnLessRight"><i class="material-icons">keyboard_arrow_right</i></div>
-   <div class=" nav-less-container text-center lesson-nav py-0 mb-1 mt-0" id="NavLess">
+   <div class=" nav-less-container text-center lesson-nav py-0 mb-1 mt-0" id="NavLess" {% if lecciones.subpaginas[0].categoria != 'Lección' %} style="display: none;" {% endif %}>
       <ul class="nav nav-tabs justify-content-center" id="navlesson" role="tablist">
          {% for subpagina in lecciones.subpaginas %}
          <input type="hidden" style="width: 5%;" id="muroActivo{{ subpagina.id }}" name="muroActivo{{ subpagina.id }}" value="{{ subpagina.muro_activo ? '1' : '0' }}">
