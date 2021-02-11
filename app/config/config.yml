@@ -44,9 +44,9 @@ twig:
     globals:
         minlenght_bienvenida: 5
         root_path: %kernel.root_dir%
-        uploads: 'https://formacionsmart.com/uploads/'
-        sesion_time: 8000000
-        sesion_front_time: 8000000
+        uploads: 'https://develop.formacion2puntocero.com/uploads/'
+        sesion_time: 6000000
+        sesion_front_time: 6000000
         remaining_time: 10
         tipo_elemento_imagen: 2
         email_soporte: soporte@formacionsmart.com
