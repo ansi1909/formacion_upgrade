@@ -9,11 +9,11 @@ imports:
 # Put parameters here that don't need to change on each machine where the app is deployed
 # http://symfony.com/doc/current/best_practices/configuration.html#application-related-configuration
 parameters:
-    locale: es
+    locale: en
 
 framework:
     #esi:             ~
-    translator:      { fallbacks: ["%locale%"] }
+    #translator:      { fallbacks: ["%locale%"] }
     secret:          "%secret%"
     router:
         resource: "%kernel.root_dir%/config/routing.yml"
@@ -44,9 +44,9 @@ twig:
     globals:
         minlenght_bienvenida: 5
         root_path: %kernel.root_dir%
-        uploads: 'http://localhost/uploads/'
-        sesion_time: 6000000
-        sesion_front_time: 6000000
+        uploads: 'https://formacionsmart.com/uploads/'
+        sesion_time: 8000000
+        sesion_front_time: 8000000
         remaining_time: 10
         tipo_elemento_imagen: 2
         email_soporte: soporte@formacionsmart.com
