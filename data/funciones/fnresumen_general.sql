@@ -67,7 +67,7 @@ begin
     SELECT COUNT(u.id) INTO no_iniciados FROM admin_usuario u
     INNER JOIN admin_nivel n ON n.id = u.nivel_id
     WHERE u.activo
-    AND u.login NOT LIKE 'temp%'
+    AND (LOWER(n.nombre) NOT LIKE 'revisor%' AND LOWER(n.nombre) NOT LIKE 'tutor%')
     AND u.id IN (SELECT DISTINCT(s.usuario_id) FROM admin_sesion s WHERE s.fecha_ingreso <= pfecha)
     AND u.id IN (SELECT ru.usuario_id FROM admin_rol_usuario ru WHERE ru.rol_id = 2)
     AND u.empresa_id = pempresa_id
