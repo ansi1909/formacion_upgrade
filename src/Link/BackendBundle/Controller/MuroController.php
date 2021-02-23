@@ -18,6 +18,7 @@ class MuroController extends Controller
 
    public function indexAction($app_id, $empresa_id, Request $request)
     {
+        
         $session = new Session();
         $f = $this->get('funciones');
         $rs = $this->get('reportes');
@@ -59,8 +60,8 @@ class MuroController extends Controller
                                         ORDER BY p.nombre ASC")
                         ->setParameter('empresa_id', $usuario->getEmpresa()->getId());
             $pages = $query->getResult();
-
-
+            //Query probado
+            
             foreach ($pages as $page)
             {
                 $total = 0;
@@ -76,6 +77,7 @@ class MuroController extends Controller
                // $cantidad_comentarios = $this->cantidadComentarios($page->getPagina()->getId(), $usuario->getEmpresa()->getId());
                 $str .= '<li data-jstree=\'{ "icon": "fa fa-angle-double-right" }\' p_id="'.$page->getPagina()->getId().'" p_str="'.$page->getPagina()->getCategoria()->getNombre().': '.$page->getPagina()->getNombre().'">'.$page->getPagina()->getCategoria()->getNombre().': '.$page->getPagina()->getNombre().' ('.$total.' '.$this->get('translator')->trans('comentarios').')';
                 $subPaginas = $this->subPaginasEmpresa($page->getPagina()->getId(), $usuario->getEmpresa()->getId());
+                
                 if ($subPaginas['tiene'] > 0)
                 {
                     $str .= '<ul>';
@@ -87,9 +89,9 @@ class MuroController extends Controller
 
             $paginas = array('tiene' => $tiene,
                              'str' => $str);
-
+            
             $query2 = $em->createQuery("SELECT m FROM LinkComunBundle:CertiMuro m
-                                       JOIN LinkComunBundle:CertiPaginaEmpresa e
+                                       JOIN LinkComunBundle:CertiPaginaEmpresa e WITH m.empresa = e.empresa
                                        WHERE e.activo = 'true'
                                        AND e.pagina = m.pagina
                                        AND e.empresa = m.empresa
@@ -98,6 +100,7 @@ class MuroController extends Controller
                                        ORDER BY m.id ASC")
                          ->setParameter('empresa_id', $usuario->getEmpresa()->getId());
             $coments = $query2->getResult();
+           //Join modificado
 
         }
         else {
@@ -124,7 +127,7 @@ class MuroController extends Controller
 
         foreach ($coments as $coment)
         {
-
+            
             $query3 = $em->createQuery("SELECT COUNT (m.id) FROM LinkComunBundle:CertiMuro m
                                        WHERE m.muro = :muro_id")
                          ->setParameters(array('muro_id' => $coment->getId()));
@@ -141,21 +144,21 @@ class MuroController extends Controller
                                   'hijos' => $hijos);
 
         }
-
+        
         if ($empresa_id)
         {
-
+            
             $str = '';
             $tiene = 0;
             $query = $em->createQuery("SELECT pe FROM LinkComunBundle:CertiPaginaEmpresa pe 
-                                        JOIN pe.pagina p
+                                        JOIN LinkComunBundle:CertiPagina p WITH pe.pagina = p.id
                                         WHERE p.pagina IS NULL
                                         AND pe.empresa = :empresa_id 
                                         ORDER BY p.nombre ASC")
                         ->setParameter('empresa_id', $empresa_id);
             $pages = $query->getResult();
-
-
+            //$query modificado
+            
             foreach ($pages as $page)
             {
                 $total = 0;
