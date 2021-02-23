@@ -31,7 +31,7 @@ class DefaultController extends Controller
         
         $reporteAprobados = false;
         
-        $rolesReporteAprobados = array($yml['parameters']['rol']['administrador'],$yml['parameters']['rol']['tutor']);
+        $rolesReporteAprobados = array($yml['parameters']['rol']['administrador']);
        
         $usuario = $em->getRepository('LinkComunBundle:AdminUsuario')->find($session->get('usuario')['id']);
         
