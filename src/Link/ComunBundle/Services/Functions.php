@@ -327,6 +327,7 @@ class Functions
                         ->setParameters(array('pagina_id' => $categoria['programa_id'],
                                               'nivel_id' => $tutor->getNivel()->getId()));
             $nivel_asignado = $query->getSingleScalarResult();
+            //query revisado
 
             //verificar si el usuario es tutor, en caso de ser falso envia el correo al tutor
             if($muro->getUsuario()->getId()!= $tutor->getId() && $nivel_asignado && $correo)
@@ -984,7 +985,6 @@ public function obtenerEstructuraJson($pagina_id){
     $subpaginas = array();
     $tiene = 0;
     $return = $json ? array() : '';
-
     $query = $em->createQuery("SELECT pe, p FROM LinkComunBundle:CertiPaginaEmpresa pe
                                     JOIN pe.pagina p
                                     WHERE pe.empresa = :empresa_id AND p.pagina = :pagina_id
@@ -992,6 +992,7 @@ public function obtenerEstructuraJson($pagina_id){
                     ->setParameters(array('empresa_id' => $empresa_id,
                                 'pagina_id' => $pagina_id));
         $subpages = $query->getResult();
+    //Query probado
 
     foreach ($subpages as $subpage)
     {
@@ -1153,7 +1154,6 @@ public function obtenerEstructuraJson($pagina_id){
   // Retorna un arreglo multidimensional de las subpaginas asignadas a una empresa dada pagina_id, empresa_id
   public function subPaginasNivel($pagina_id, $estatus_contenido, $empresa_id)
   {
-
     $em = $this->em;
     $subpaginas = array();
     $orden = 0;
