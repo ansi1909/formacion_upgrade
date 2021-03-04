@@ -31,7 +31,7 @@ class DefaultController extends Controller
         
         $reporteAprobados = false;
         
-        $rolesReporteAprobados = array($yml['parameters']['rol']['administrador'],$yml['parameters']['rol']['tutor']);
+        $rolesReporteAprobados = array($yml['parameters']['rol']['administrador']);
        
         $usuario = $em->getRepository('LinkComunBundle:AdminUsuario')->find($session->get('usuario')['id']);
         
@@ -135,6 +135,7 @@ class DefaultController extends Controller
             $usuarios_inactivos = 0;
             $usuarios_registrados = 0;
             $usuarios_sin_acceso = 0;
+            $usuarios_con_acceso = 0;
 
             $query = $em->getConnection()->prepare('SELECT
                                             fnreporte_general2(:re, :pempresa_id) as
@@ -147,6 +148,7 @@ class DefaultController extends Controller
 
             foreach ($r as $re) {
                 if($re['acceso']){
+                    $usuarios_con_acceso++;
                     if($re['logueado']){
                         $usuarios_activos++;
                     }else{
@@ -178,12 +180,14 @@ class DefaultController extends Controller
                                    'usuariosF' => $re['culminado'],
                                    'usuariosN' => $re['no_iniciados'],
                                    'usuariosA' => $re['activos'],
+                                   'nivel_id'  => $re['nivel_id'],
                                    'id' => $re['id']);
             }
 
             $response = $this->render('LinkBackendBundle:Default:index.html.twig', array('activos' => $usuarios_activos,
                                                                                          'inactivos' => $usuarios_inactivos,
                                                                                          'sin_acceso' => $usuarios_sin_acceso,
+                                                                                         'con_acceso' => $usuarios_con_acceso,
                                                                                          'total' => $usuarios_registrados,
                                                                                          'paginas' => $paginas,
                                                                                          'usuario' => $usuario,
@@ -230,6 +234,7 @@ class DefaultController extends Controller
         $usuarios_inactivos = 0;
         $usuarios_registrados = 0;
         $usuarios_sin_acceso = 0;
+        $usuarios_con_acceso = 0;
 
         $query = $em->getConnection()->prepare('SELECT
                                         fnreporte_general2(:re, :pempresa_id) as
@@ -242,6 +247,7 @@ class DefaultController extends Controller
 
         foreach ($r as $re) {
             if($re['acceso']){
+                $usuarios_con_acceso++;
                 if($re['logueado']){
                     $usuarios_activos++;
                 }else{
@@ -259,17 +265,21 @@ class DefaultController extends Controller
                     <thead class="sty__title">
                         <tr>
                             <th class="hd__title text-center" >'.$this->get('translator')->trans('Usuarios registrados').'</th>
+                            <th class="hd__title text-center" >'.$this->get('translator')->trans('Usuarios sin acceso').'</th>
+                            <th class="hd__title text-center" >'.$this->get('translator')->trans('Usuarios con acceso').'</th>
                             <th class="hd__title text-center" >'.$this->get('translator')->trans('Usuarios activos').'</th>
                             <th class="hd__title text-center"  >'.$this->get('translator')->trans('Usuarios inactivos').'</th>
-                            <th class="hd__title text-center" >'.$this->get('translator')->trans('Usuarios sin acceso').'</th>
+
                         </tr>
                     </thead>
                     <tbody>
                         <tr>
-                            <td class="text-center"><a href="'.$this->generateUrl('_participantesEmpresa', array('app_id' => 20, 'pagina_id' => 0, 'empresa_id' => $empresa_id)).'"><span data-toggle="tooltip" data-placement="bottom" title="'.$this->get('translator')->trans('Son todos los usuarios inscritos por una empresa.').'" >'. $usuarios_registrados .'<i class="fa fa-user"></i></span></a></td>
-                            <td class="text-center"><span data-toggle="tooltip" data-placement="bottom" title="'.$this->get('translator')->trans('Son todos los usuarios inscritos por una empresa, que tienen acceso a la plataforma y que se han logueado al menos una vez.').'">'. $usuarios_activos .'<i class="fa fa-user"></i></span></td>
-                            <td class="text-center"><span data-toggle="tooltip" data-placement="bottom" title="'.$this->get('translator')->trans('Son todos los usuarios inscritos por una empresa, que tienen acceso a la plataforma y que no se han logueado.').'">'. $usuarios_inactivos .'<i class="fa fa-user"></i></span></td>
-                            <td class="text-center"><span  data-toggle="tooltip" data-placement="bottom" title="'.$this->get('translator')->trans('Son todos los usuarios inscritos por una empresa que no tienen acceso a la plataforma.').'">'. $usuarios_sin_acceso .'<i class="fa fa-user"></i></span></td>
+                            <td class="text-center"><a href="'.$this->generateUrl('_participantesEmpresa', array('app_id' => 20, 'pagina_id' => 0, 'empresa_id' => $empresa_id)).'"><span data-toggle="tooltip" data-placement="bottom" title="'.$this->get('translator')->trans('Son todos los usuarios inscritos históricamente por la empresa').'." >'. $usuarios_registrados .'<i class="fa fa-user"></i></span></a></td>
+                            <td class="text-center"><span  data-toggle="tooltip" data-placement="bottom" title="'.$this->get('translator')->trans('Son todos los usuarios que han sido desincorporados a solicitud de la empresa y que ya no tienen acceso a la plataforma').'.">'. $usuarios_sin_acceso .'<i class="fa fa-user"></i></span></td>
+                            <td class="text-center"><span  data-toggle="tooltip" data-placement="bottom" title="'.$this->get('translator')->trans('Son todos los usuarios inscritos por la empresa que actualmente tienen acceso a la plataforma').'.">'. $usuarios_con_acceso .'<i class="fa fa-user"></i></span></td>
+                            <td class="text-center"><span data-toggle="tooltip" data-placement="bottom" title="'.$this->get('translator')->trans('Son todos los usuarios inscritos por la empresa, que tienen acceso a la plataforma y que se han logueado al menos una vez').'.">'. $usuarios_activos .'<i class="fa fa-user"></i></span></td>
+                            <td class="text-center"><span data-toggle="tooltip" data-placement="bottom" title="'.$this->get('translator')->trans(' Son todos los usuarios inscritos por la empresa, que tienen acceso a la plataforma y que no se han logueado').'.">'. $usuarios_inactivos .'<i class="fa fa-user"></i></span></td>
+
                         </tr>
                     </tbody>
                 </table>
@@ -310,11 +320,11 @@ class DefaultController extends Controller
                         <td >'. $re['nombre_nivel'] .'</td>
                         <td >'. $fecha_inicio .'</td>
                         <td >'. $fecha_vencimiento.'</td>
-                        <td class="text-center"><a href="'.$this->generateUrl('_participantesNoIniciados', array('app_id' => 34, 'pagina_id' => $re['id'], 'empresa_id' => $empresa_id )).'"><span>'. $re['no_iniciados'] .' <i class="fa fa-user"></i></span></a></td>
-                        <td class="text-center"><a href="'.$this->generateUrl('_participantesCursando', array('app_id' => 21, 'pagina_id' => $re['id'], 'empresa_id' => $empresa_id )).'"><span>'. $re['cursando'] .'<i class="fa fa-user"></i></span></a></td>
-                        <td class="text-center"><a href="'.$this->generateUrl('_participantesAprobados', array('app_id' => 22, 'pagina_id' => $re['id'], 'empresa_id' => $empresa_id )).'"><span>'. $re['culminado'] .' <i class="fa fa-user"></i></span></a></td>
+                        <td class="text-center"><a href="'.$this->generateUrl('_participantesNoIniciados', array('app_id' => 34, 'pagina_id' => $re['id'], 'empresa_id' => $empresa_id,'nivel_id' => $re['nivel_id']  )).'"><span>'. $re['no_iniciados'] .' <i class="fa fa-user"></i></span></a></td>
+                        <td class="text-center"><a href="'.$this->generateUrl('_participantesCursando', array('app_id' => 21, 'pagina_id' => $re['id'], 'empresa_id' => $empresa_id,'nivel_id' => $re['nivel_id'] )).'"><span>'. $re['cursando'] .'<i class="fa fa-user"></i></span></a></td>
+                        <td class="text-center"><a href="'.$this->generateUrl('_participantesAprobados', array('app_id' => 22, 'pagina_id' => $re['id'], 'empresa_id' => $empresa_id,'nivel_id' => $re['nivel_id'] )).'"><span>'. $re['culminado'] .' <i class="fa fa-user"></i></span></a></td>
                         <td class="text-center"><span>'. $re['activos'] .'<i class="fa fa-user"></i></span></td>
-                        <td class="text-center"><a href="'.$this->generateUrl('_participantesRegistrados', array('app_id' => 20, 'pagina_id' => $re['id'], 'empresa_id' => $empresa_id )).'"><span>'. $re['registrados'] .'<i class="fa fa-user"></i></span></a></td>
+                        <td class="text-center"><a href="'.$this->generateUrl('_participantesRegistrados', array('app_id' => 20, 'pagina_id' => $re['id'], 'empresa_id' => $empresa_id ,'nivel_id' => $re['nivel_id'] )).'"><span>'. $re['registrados'] .'<i class="fa fa-user"></i></span></a></td>
                       </tr>';
         }
 
