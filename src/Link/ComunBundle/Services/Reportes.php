@@ -540,9 +540,10 @@ class Reportes
 	}
 
     // Cálculo del reporte Evaluaciones por Módulo de una Empresa en un período determinado
-    public function participantesAprobados($empresa_id, $paginas_id,$desde,$hasta)
+    public function participantesAprobados($empresa_id, $paginas_id,$desde,$hasta,$nivel_id)
     {
 
+        
         $em = $this->em;
         $listado = array();
         $paginas = array();
@@ -555,12 +556,13 @@ class Reportes
         {
 
             $query = $em->getConnection()->prepare('SELECT
-                                                    fnlistado_aprobados(:re, :ppagina_id, :pempresa_id, :pfecha_inicio, :pfecha_fin) as
+                                                    fnlistado_aprobados(:re, :ppagina_id, :pempresa_id,:pnivel_id ,:pfecha_inicio, :pfecha_fin) as
                                                     resultado; fetch all from re;');
             $re = 're';
             $query->bindValue(':re', $re, \PDO::PARAM_STR);
             $query->bindValue(':ppagina_id', $pagina_id, \PDO::PARAM_INT);
             $query->bindValue(':pempresa_id', $empresa_id, \PDO::PARAM_INT);
+            $query->bindValue(':pnivel_id', $nivel_id, \PDO::PARAM_INT);
             $query->bindValue(':pfecha_inicio', $desde, \PDO::PARAM_STR);
             $query->bindValue(':pfecha_fin', $hasta, \PDO::PARAM_STR);
             $query->execute();
