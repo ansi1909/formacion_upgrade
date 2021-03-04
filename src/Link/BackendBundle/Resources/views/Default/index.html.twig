@@ -315,11 +315,11 @@
                                             <td>{{ pagina.nivel }}</td>
                                             <td>{{ pagina.fecha_i }}</td>
                                             <td>{{ pagina.fecha_f }}</td>
-                                            <td class="text-center"><a href="{{ path('_participantesNoIniciados',{'app_id': 34, 'pagina_id': pagina.id, 'empresa_id': usuario.empresa.id }) }}"><span>{{ pagina.usuariosN }} <i class="fa fa-user"></i></span></a></td>
-                                            <td class="text-center"><a href="{{ path('_participantesCursando',{'app_id': 21 , 'pagina_id': pagina.id, 'empresa_id': usuario.empresa.id}) }}"><span>{{ pagina.usuariosCur }} <i class="fa fa-user"></i></span></a></td>
-                                            <td class="text-center"><a href="{{ path('_participantesAprobados',{'app_id': 22,'pagina_id': pagina.id, 'empresa_id': usuario.empresa.id }) }}"><span>{{ pagina.usuariosF }} <i class="fa fa-user"></i></span></a></td>
+                                            <td class="text-center"><a href="{{ path('_participantesNoIniciados',{'app_id': 34, 'pagina_id': pagina.id, 'empresa_id': usuario.empresa.id, 'nivel_id': pagina.nivel_id }) }}"><span>{{ pagina.usuariosN }} <i class="fa fa-user"></i></span></a></td>
+                                            <td class="text-center"><a href="{{ path('_participantesCursando',{'app_id': 21 , 'pagina_id': pagina.id, 'empresa_id': usuario.empresa.id, 'nivel_id': pagina.nivel_id }) }}"><span>{{ pagina.usuariosCur }} <i class="fa fa-user"></i></span></a></td>
+                                            <td class="text-center"><a href="{{ path('_participantesAprobados',{'app_id': 22,'pagina_id': pagina.id, 'empresa_id': usuario.empresa.id, 'nivel_id': pagina.nivel_id }) }}"><span>{{ pagina.usuariosF }} <i class="fa fa-user"></i></span></a></td>
                                             <td class="text-center"><span>{{ pagina.usuariosA }} <i class="fa fa-user"></i></span></td>
-                                            <td class="text-center"><a href="{{ path('_participantesRegistrados',{'app_id': 20, 'pagina_id': pagina.id, 'empresa_id': usuario.empresa.id }) }}"><span>{{ pagina.usuariosT }} <i class="fa fa-user"></i></span></a></td>
+                                            <td class="text-center"><a href="{{ path('_participantesRegistrados',{'app_id': 20, 'pagina_id': pagina.id, 'empresa_id': usuario.empresa.id, 'nivel_id': pagina.nivel_id }) }}"><span>{{ pagina.usuariosT }} <i class="fa fa-user"></i></span></a></td>
                                         </tr>
                                     {% endfor %}
                                 </tbody>
