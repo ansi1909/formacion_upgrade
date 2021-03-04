@@ -14,7 +14,7 @@ use Symfony\Component\Yaml\Yaml;
 
 class ReportesController extends Controller
 {
-    public function indexAction($app_id, $r, $pagina_id, $empresa_id, Request $request)
+    public function indexAction($app_id, $r, $pagina_id, $empresa_id,$nivel_id, Request $request)
     {
         $session = new Session();
         $f = $this->get('funciones');
@@ -216,6 +216,7 @@ class ReportesController extends Controller
                                                                                  'usuario' => $usuario,
                                                                                  'reporte' => $r,
                                                                                  'pagina_id' => $pagina_id,
+                                                                                 'nivel_id'  => $nivel_id,
                                                                                  'empresa_dashboard' => $empresa_id));
     }
 
@@ -302,6 +303,7 @@ class ReportesController extends Controller
     public function ajaxListadoAprobadosAction(Request $request)
     {
 
+        
         $session = new Session();
         $em = $this->getDoctrine()->getManager();
         $f = $this->get('funciones');
@@ -312,6 +314,8 @@ class ReportesController extends Controller
         $paginas_id = $request->request->get('programas');
         $pagina_selected = $request->request->get('pagina_selected');
         $preseleccion = $request->request->get('preseleccion');
+        $nivel_id = $request->request->get('nivel_id');
+        
 
 
         $empresa = $this->getDoctrine()->getRepository('LinkComunBundle:AdminEmpresa')->find($empresa_id);
@@ -396,7 +400,7 @@ class ReportesController extends Controller
         $empresa = $this->getDoctrine()->getRepository('LinkComunBundle:AdminEmpresa')->find($empresa_id);
         $timeZoneEmpresa = ($empresa->getZonaHoraria())? $empresa->getZonaHoraria()->getNombre():$yml['parameters']['time_zone']['default'];
         $timeZoneReport = $f->clearNameTimeZone($timeZoneEmpresa,$empresa->getPais()->getNombre(),$yml);
-        $listado = $rs->participantesAprobados($empresa_id, $paginas_id,$desde,$hasta);
+        $listado = $rs->participantesAprobados($empresa_id, $paginas_id,$desde,$hasta,$nivel_id);
 
         $fileWithPath = $this->container->getParameter('folders')['dir_project'].'docs/formatos/ListadoParticipantesAprobados.xlsx';
         $objPHPExcel = \PHPExcel_IOFactory::load($fileWithPath);
