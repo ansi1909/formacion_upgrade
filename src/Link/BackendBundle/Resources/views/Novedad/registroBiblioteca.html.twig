@@ -400,7 +400,8 @@
                 },
                 'titulo': {
                     required: true,
-                    minlength: 3
+                    minlength: 3,
+                    maxlength: 45
                 },
                 'tipo_biblioteca_id': {
                     required: true
@@ -457,7 +458,8 @@
                 },
                 'titulo': {
                     required: "- {{ 'El título es requerido.'|trans }}",
-                    minlength: "- {{ 'El título debe ser mínimo de 3 caracteres.'|trans }}"
+                    minlength: "- {{ 'El título debe ser mínimo de 3 caracteres.'|trans }}",
+                    maxlength: "- {{ 'El título debe tener máximo  45 caracteres.'|trans }}"
                 },
                 'tipo_biblioteca_id': {
                     required: "- {{ 'El tipo de recurso es requerido'|trans }}."
