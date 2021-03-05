@@ -42,7 +42,7 @@ class NoticiasController extends Controller
                                    AND n.tipoBiblioteca IS NULL')
                     ->setParameter('empresa_id', $empresa_id);
         $noticias_db = $query->getResult();
-
+        
         foreach($noticias_db as $noticia)
         {
             $fecha_i = strtotime($noticia->getFechaPublicacion()->format('d-m-Y'));
@@ -54,7 +54,9 @@ class NoticiasController extends Controller
                                    'fecha'=>$noticia->getFechaPublicacion()->format('d/m/Y'),
                                    'tipo'=>$noticia->getTipoNoticia()->getNombre(),
                                    'imagen'=>$noticia->getImagen(),
-                                   'tid'=>$noticia->getTipoNoticia()->getId());
+                                   'tid'=>$noticia->getTipoNoticia()->getId(),
+                                   'imagen_default'=> ($noticia->getTipoNoticia()->getId() == $yml['parameters']['tipo_noticias']['noticia'])? $yml['parameters']['tipo_noticias']['noticia_default'] : $yml['parameters']['tipo_noticias']['novedad_default']
+                                   );
 
                 if($noticia->getTipoNoticia()->getId() == $yml['parameters']['tipo_noticias']['noticia'])
                 {
@@ -63,7 +65,9 @@ class NoticiasController extends Controller
                                    'fecha'=>$noticia->getFechaPublicacion()->format('d/m/Y'),
                                    'tipo'=>$noticia->getTipoNoticia()->getNombre(),
                                    'imagen'=>$noticia->getImagen(),
-                                   'tid'=>$noticia->getTipoNoticia()->getId());
+                                   'tid'=>$noticia->getTipoNoticia()->getId(),
+                                   'imagen_default'=> $yml['parameters']['tipo_noticias']['noticia_default']
+                                );
 
                 }elseif ($noticia->getTipoNoticia()->getId() == $yml['parameters']['tipo_noticias']['novedad']) 
                 {
@@ -72,7 +76,9 @@ class NoticiasController extends Controller
                                    'fecha'=>$noticia->getFechaPublicacion()->format('d/m/Y'),
                                    'tipo'=>$noticia->getTipoNoticia()->getNombre(),
                                    'imagen'=>$noticia->getImagen(),
-                                   'tid'=>$noticia->getTipoNoticia()->getId());
+                                   'tid'=>$noticia->getTipoNoticia()->getId(),
+                                   'imagen_default'=> $yml['parameters']['tipo_noticias']['novedad_default']
+                                   );
                 }
             }
         }
@@ -127,7 +133,12 @@ class NoticiasController extends Controller
         }
 
         return $this->render('LinkFrontendBundle:Noticias:detalle.html.twig', array('noticia' => $noticia,
-                                                                                    'noticias'=> $noticias));
+                                                                                    'noticias'=> $noticias,
+                                                                                     'nt' => $yml['parameters']['tipo_noticias']['noticia'],
+                                                                                     'nv' => $yml['parameters']['tipo_noticias']['novedad'],
+                                                                                     'nt_default' =>  $yml['parameters']['tipo_noticias']['noticia_default'],
+                                                                                     'nv_default' =>  $yml['parameters']['tipo_noticias']['novedad_default']
+                                                                                    ));
 
     }
 
