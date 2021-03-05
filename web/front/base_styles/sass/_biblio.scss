@@ -10,7 +10,8 @@
     .img-recurso{
         box-sizing: border-box;	
         height: auto;	
-        width: 18rem;	
+        width: 100%;
+        max-width: 18rem;	
         border: 1px solid $gray-850;
         box-shadow: 5px 5px 15px rgba(58, 58, 58, .5);
         border-radius: calc(1rem - 8px);
