@@ -371,7 +371,8 @@
                 },
                 'titulo': {
                     required: true,
-                    minlength: 3
+                    minlength: 3,
+                    maxlength: 45
                 },
                 'autor': {
                     required: true,
@@ -399,7 +400,8 @@
                 },                
                 'titulo': {
                     required: "- {{ 'El título es requerido.'|trans }}",
-                    minlength: "- {{ 'El título debe ser mínimo de 3 caracteres.'|trans }}"
+                    minlength: "- {{ 'El título debe ser mínimo de 3 caracteres.'|trans }}",
+                    maxlength: "- {{ 'El título debe tener máximo  45 caracteres.'|trans }}"
                 },
                 'autor': {
                     required: "- {{ 'El autor es requerido.'|trans }}",
