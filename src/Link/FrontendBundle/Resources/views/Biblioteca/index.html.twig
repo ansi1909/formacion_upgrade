@@ -62,10 +62,9 @@
             </div>
         </div>
     </div>
-    <div class="row">
         <div id="wrapper">
             <div class="cards-section container d-flex justify-content-between justify-content-sm-center flex-wrap mt-3">
-                <div class="contents">
+                <div class="contents container">
                     {% set division = todos|length / 3 %}
                     {% set filas = division|round(0,'ceil') %}
                     {% set row = 0 %}
@@ -74,12 +73,12 @@
                         {% set recurso = recurso + 1 %}
                         {% if loop.first %}
                             {% set row = row + 1 %}
-                            {% set dimension = recurso == 3 ? 'justify-content-between' : ' ' %}
+                            {% set dimension = recurso == 3 ? 'justify-content-center' : ' ' %}
                             {% set recurso = recurso == 3 ? 0 : recurso %}
-                                <div class="row rowDimension {{dimension}} ">
+                                <div class="row justify-content-center {{dimension}} ">
                         {% endif %}
                         {% if todo.tid == '1' %}
-                        <div class="col-4 col-lg-4 col-xl-4 col-md-6 col-sm-6 col-xs-6">
+                        <div class="col-12 col-sm-6 col-lg-4">
                             <a href="{{ path('_bibliotecaDetalle', { 'biblioteca_id': todo.id}) }}">
                                 <div class="card_biblio">
                                     <div class="card_biblio-left">
@@ -99,7 +98,7 @@
                             </a>
                         </div>
                         {% elseif todo.tid == '2' %}
-                        <div class="col-4 col-lg-4 col-xl-4 col-md-6 col-sm-6 col-xs-6">
+                        <div class="col-12 col-sm-6 col-lg-4">
                             <a href="{{ path('_bibliotecaDetalle', { 'biblioteca_id': todo.id}) }}">
                                 <div class="card_biblio">
                                     <div class="card_biblio-left">
@@ -119,7 +118,7 @@
                             </a>
                         </div>
                         {% elseif todo.tid == '3' %}
-                        <div class="col-4 col-lg-4 col-xl-4 col-md-6 col-sm-6 col-xs-6">
+                        <div class="col-12 col-sm-6 col-lg-4">
                             <a href="{{ path('_bibliotecaDetalle', { 'biblioteca_id': todo.id}) }}">
                                 <div class="card_biblio">
                                     <div class="card_biblio-left">
@@ -139,7 +138,7 @@
                             </a>
                         </div>
                         {% elseif todo.tid == '4' %}
-                        <div class="col-4 col-lg-4 col-xl-4 col-md-6 col-sm-6 col-xs-6">
+                        <div class="col-12 col-sm-6 col-lg-4">
                             <a href="{{ path('_bibliotecaDetalle', { 'biblioteca_id': todo.id}) }}">
                                 <div class="card_biblio">
                                     <div class="card_biblio-left">
@@ -163,8 +162,8 @@
                             </div>
                             {% if not loop.last %}
                                 {% set row = row + 1 %}
-                                {% set dimension = row != filas ? 'justify-content-between' : ' ' %}
-                                <div class="row rowDimension {{dimension}}">
+                                {% set dimension = row != filas ? 'justify-content-center' : ' ' %}
+                                <div class="row justify-content-center {{dimension}}">
                             {% endif %}
                         {% else %}
                             {% if loop.last %}
@@ -173,7 +172,7 @@
                         {% endif %}
                     {% endfor %}
                 </div>
-                <div class="contents">
+                <div class="contents container">
                     {% set division = videos|length / 3 %}
                     {% set filas = division|round(0,'ceil') %}
                     {% set row = 0 %}
@@ -182,11 +181,11 @@
                         {% set recurso = recurso + 1 %}
                         {% if loop.first %}
                             {% set row = row + 1 %}
-                            {% set dimension = recurso == 3 ? 'justify-content-between' : ' ' %}
+                            {% set dimension = recurso == 3 ? 'justify-content-center' : ' ' %}
                             {% set recurso = recurso == 3 ? 0 : recurso %}
-                                <div class="row rowDimension {{dimension}} ">
+                                <div class="row justify-content-center {{dimension}} ">
                         {% endif %}
-                        <div class="col-4 col-lg-4 col-xl-4 col-md-6 col-sm-6 col-xs-6">
+                        <div class="col-12 col-sm-6 col-lg-4">
                             <a href="{{ path('_bibliotecaDetalle', { 'biblioteca_id': video.id}) }}">
                                 <div class="card_biblio">
                                     <div class="card_biblio-left">
@@ -209,8 +208,8 @@
                             </div>
                             {% if not loop.last %}
                                 {% set row = row + 1 %}
-                                {% set dimension = row != filas ? 'justify-content-between' : ' ' %}
-                                <div class="row rowDimension {{dimension}}">
+                                {% set dimension = row != filas ? 'justify-content-center' : ' ' %}
+                                <div class="row justify-content-center {{dimension}}">
                             {% endif %}
                         {% else %}
                             {% if loop.last %}
@@ -219,7 +218,7 @@
                         {% endif %}
                     {% endfor %}
                 </div>
-                <div class="contents">
+                <div class="contents container">
                     {% set division = podcasts|length / 3 %}
                     {% set filas = division|round(0,'ceil') %}
                     {% set row = 0 %}
@@ -228,11 +227,11 @@
                         {% set recurso = recurso + 1 %}
                         {% if loop.first %}
                             {% set row = row + 1 %}
-                            {% set dimension = recurso == 3 ? 'justify-content-between' : ' ' %}
+                            {% set dimension = recurso == 3 ? 'justify-content-center' : ' ' %}
                             {% set recurso = recurso == 3 ? 0 : recurso %}
-                                <div class="row rowDimension">
+                                <div class="row justify-content-center">
                         {% endif %}
-                        <div class="col-4 col-lg-4 col-xl-4 col-md-6 col-sm-6 col-xs-6">
+                        <div class="col-12 col-sm-6 col-lg-4">
                             <a href="{{ path('_bibliotecaDetalle', { 'biblioteca_id': podcast.id}) }}">
                                 <div class="card_biblio">
                                     <div class="card_biblio-left">
@@ -255,8 +254,8 @@
                             </div>
                             {% if not loop.last %}
                                 {% set row = row + 1 %}
-                                {% set dimension = row != filas ? 'justify-content-between' : ' ' %}
-                                <div class="row rowDimension {{dimension}}">
+                                {% set dimension = row != filas ? 'justify-content-center' : ' ' %}
+                                <div class="row justify-content-center {{dimension}}">
                             {% endif %}
                         {% else %}
                             {% if loop.last %}
@@ -265,7 +264,7 @@
                         {% endif %}
                     {% endfor %}
                 </div>
-                <div class="contents">
+                <div class="contents container">
                     {% set division = libros|length / 3 %}
                     {% set filas = division|round(0,'ceil') %}
                     {% set row = 0 %}
@@ -274,11 +273,11 @@
                         {% set recurso = recurso + 1 %}
                         {% if loop.first %}
                             {% set row = row + 1 %}
-                            {% set dimension = recurso == 3 ? 'justify-content-between' : ' ' %}
+                            {% set dimension = recurso == 3 ? 'justify-content-center' : ' ' %}
                             {% set recurso = recurso == 3 ? 0 : recurso %}
-                                <div class="row rowDimension">
+                                <div class="row justify-content-center">
                         {% endif %}
-                        <div class="col-4 col-lg-4 col-xl-4 col-md-6 col-sm-6 col-xs-6">
+                        <div class="col-12 col-sm-6 col-lg-4">
                             <a href="{{ path('_bibliotecaDetalle', { 'biblioteca_id': libro.id}) }}">
                                 <div class="card_biblio">
                                     <div class="card_biblio-left">
@@ -301,8 +300,8 @@
                             </div>
                             {% if not loop.last %}
                                 {% set row = row + 1 %}
-                                {% set dimension = row != filas ? 'justify-content-between' : ' ' %}
-                                <div class="row rowDimension {{dimension}}">
+                                {% set dimension = row != filas ? 'justify-content-center' : ' ' %}
+                                <div class="row justify-content-center {{dimension}}">
                             {% endif %}
                         {% else %}
                             {% if loop.last %}
@@ -311,7 +310,7 @@
                         {% endif %}
                     {% endfor %}
                 </div>
-                <div class="contents">
+                <div class="contents container">
                     {% set division = articulos|length / 3 %}
                     {% set filas = division|round(0,'ceil') %}
                     {% set row = 0 %}
@@ -320,11 +319,11 @@
                         {% set recurso = recurso + 1 %}
                         {% if loop.first %}
                             {% set row = row + 1 %}
-                            {% set dimension = recurso == 3 ? 'justify-content-between' : ' ' %}
+                            {% set dimension = recurso == 3 ? 'justify-content-center' : ' ' %}
                             {% set recurso = recurso == 3 ? 0 : recurso %}
-                                <div class="row rowDimension">
+                                <div class="row justify-content-center">
                         {% endif %}
-                        <div class="col-4 col-lg-4 col-xl-4 col-md-6 col-sm-6 col-xs-6">
+                        <div class="col-12 col-sm-6 col-lg-4">
                             <a href="{{ path('_bibliotecaDetalle', { 'biblioteca_id': articulo.id}) }}">
                                 <div class="card_biblio">
                                     <div class="card_biblio-left">
@@ -347,8 +346,8 @@
                             </div>
                             {% if not loop.last %}
                                 {% set row = row + 1 %}
-                                {% set dimension = row != filas ? 'justify-content-between' : ' ' %}
-                                <div class="row rowDimension {{ dimension }}">
+                                {% set dimension = row != filas ? 'justify-content-center' : ' ' %}
+                                <div class="row justify-content-center {{ dimension }}">
                             {% endif %}
                         {% else %}
                             {% if loop.last %}
@@ -359,7 +358,7 @@
                 </div>
             </div>
         </div>
-    </div>
+    
 </div>
 
 

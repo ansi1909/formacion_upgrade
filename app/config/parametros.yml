@@ -22,6 +22,8 @@ parameters:
         noticia: 1
         novedad: 2
         biblioteca_virtual: 3
+        noticia_default: 'noticia_default.png'
+        novedad_default: 'novedad_default.png'
     tipo_biblioteca:
         video: 1
         podcast: 2

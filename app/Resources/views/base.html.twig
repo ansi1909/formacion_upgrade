@@ -47,7 +47,7 @@
         {# HEADER #}
         <header>
             {% block header %}
-            <nav class="navbar justify-content-between py-0 fixed-top bg-white">
+            <nav class="navbar justify-content-between py-0 fixed-top bg-white {{app.session.get('usuario').nombre}}">
                 <div class="logo d-sm-block d-md-block">
                     <a class="navbar-brand" href="{{ path('_inicio') }}">
                         {% set img_logo = app.session.get('empresa').logo is defined ? app.session.get('empresa').logo is not null and app.session.get('empresa').logo != '' ? uploads~app.session.get('empresa').logo : asset('front/assets/img/logo_formacion_smart.png') : asset('front/assets/img/logo_formacion_smart.png') %}
@@ -58,8 +58,8 @@
                     <div class="d-flex flex-column">
                         <div class="wrapperDdApps">
                             <a href="#" id="apps" title="{{ 'Ayuda'|trans }}" data-toggle="tooltip" data-placement="bottom">
-                                <div class="appFun">
-                                    <i class="material-icons mr-3 color-light-grey" >contact_support</i>
+                                <div class="appFun mr-3 d-flex align-items-center">
+                                    <i class="material-icons color-light-grey" >contact_support</i>
                                 </div>
                             </a>
                             <span class="markApps"></span>
@@ -142,6 +142,15 @@
                         </div>
                     </div>
                     {{ include('LinkFrontendBundle:Default:notificaciones.html.twig') }}
+                        {% set username = app.session.get('usuario').nombre is defined and app.session.get('usuario').nombre is not null and app.session.get('usuario').nombre != '' ?  app.session.get('usuario').nombre : false %}
+                        {% if username  %}
+                        <div class="navbar_username mr-3 d-none d-sm-flex pl-2">
+                                <p>
+                                {{ 'Hola'|trans }},
+                                {{username}}
+                                </p>
+                            </div>
+                        {% endif %}
                     <div class="d-flex flex-column">
                         <div class="wrapperDdMenu">
                             <a href="#" class="perfil no-decorate" id="config" title="{{ 'Perfil del participante'|trans }}" data-toggle="tooltip" data-placement="bottom">

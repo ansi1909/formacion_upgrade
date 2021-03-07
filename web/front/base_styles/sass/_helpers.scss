@@ -131,3 +131,23 @@ a.active-line, .active-line {
         justify-content: space-evenly !important;
     }
 }
+
+.navbar_username {
+    position: relative;
+    text-align: center;
+
+    &::before {
+        content: "";
+        position: absolute;
+        top: -109%;
+        left: 0;
+        width: 0.1rem;
+        height: 297%;
+        background-color: $gray-500;
+    }
+    p {
+        font-size: 0.8rem;
+        margin-bottom: 0;
+        font-weight: 600;
+    }
+}

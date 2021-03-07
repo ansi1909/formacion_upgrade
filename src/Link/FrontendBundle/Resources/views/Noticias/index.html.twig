@@ -56,195 +56,207 @@
             </div>
         </div>
     </div>
-    <div class="row">
-        <div id="wrapper">
-            <div class="cards-section container d-flex justify-content-between justify-content-sm-center flex-wrap mt-3">
-                <div class="contents">
-                    {% set division = todos|length / 4 %}
-                    {% set filas = division|round(0,'ceil') %}
-                    {% set row = 0 %}
-                    {% for todo in todos %}
-                        {% if loop.first %}
-                            {% set row = row + 1 %}
-                            {% set dimension = row == filas ? 'rowDimension' : ' ' %}
-                            <div class="row {{dimension}}">
-                        {% endif %}
-                        <div class="col-3 col-lg-3 col-xl-3 col-md-4 col-sm-6 col-xs-6">
-                            <a href="{{ path('_noticiaDetalle', { 'noticia_id': todo.id}) }}">
-                                <div class="card-anuncio">
-                                    <div class="card_header">
-                                        {% set img = uploads~todo.imagen %}
-                                        <img class="card_img" src="{{img}}" alt="Card image cap">
-                                    </div>
-                                    <div class="card_body">
-                                        <h5 class="titulo_anuncio">{{ todo.titulo }}</h5>
-                                    </div>
-                                    <div class="card_footer">
-                                        <hr class="separador">
-                                        <div class="row mb-3">
-                                            <div class="col-5 offset-1
-                                                        col-lg-5 offset-lg-1 
-                                                        col-xl-5 offset-xl-1 
-                                                        col-md-5 offset-md-1 
-                                                        col-sm-5 offset-sm-1 
-                                                        col-xs-5 offset-xs-1 
-                                                        px-0">
-                                                <span class="fecha_anuncio">{{ todo.fecha }}</span>
-                                            </div>
-                                            <div class="col-5 
-                                                        col-lg-5 
-                                                        col-xl-5 
-                                                        col-md-5 
-                                                        col-sm-5 
-                                                        col-xs-5 
-                                                        text-right 
-                                                        px-0">
-                                                <span class="tipo_anuncio{{todo.tid}}">{{ todo.tipo }}</span>
-                                            </div>
+    <div id="wrapper">
+        <div class="cards-section container d-flex justify-content-between justify-content-sm-center flex-wrap mt-3">
+            <div class="contents container">
+                {% set division = todos|length / 4 %}
+                {% set filas = division|round(0,'ceil') %}
+                {% set row = 0 %}
+                {% for todo in todos %}
+                    {% if loop.first %}
+                        {% set row = row + 1 %}
+                        {% set dimension = row == filas ? '' : ' ' %}
+                        <div class="row {{dimension}}">
+                    {% endif %}
+                    <div class="col-12 col-sm-6 col-md-3">
+                        <a href="{{ path('_noticiaDetalle', { 'noticia_id': todo.id}) }}">
+                            <div class="card-anuncio mx-auto">
+                                <div class="card_header">
+                                {% if todo.imagen %}
+                                    {% set img = uploads~todo.imagen %}    
+                                {% else %}
+                                     {% set img = asset('front/assets/img/'~todo.imagen_default) %}
+                                {% endif %}
+                                   
+                                    <img class="card_img" src="{{img}}" alt="Card image cap">
+                                </div>
+                                <div class="card_body">
+                                    <h5 class="titulo_anuncio">{{ todo.titulo }}</h5>
+                                </div>
+                                <div class="card_footer">
+                                    <hr class="separador">
+                                    <div class="row mb-3">
+                                        <div class="col-5 offset-1
+                                                    col-lg-5 offset-lg-1 
+                                                    col-xl-5 offset-xl-1 
+                                                    col-md-5 offset-md-1 
+                                                    col-sm-5 offset-sm-1 
+                                                    col-xs-5 offset-xs-1 
+                                                    px-0">
+                                            <span class="fecha_anuncio">{{ todo.fecha }}</span>
+                                        </div>
+                                        <div class="col-5 
+                                                    col-lg-5 
+                                                    col-xl-5 
+                                                    col-md-5 
+                                                    col-sm-5 
+                                                    col-xs-5 
+                                                    text-right 
+                                                    px-0">
+                                            <span class="tipo_anuncio{{todo.tid}}">{{ todo.tipo }}</span>
                                         </div>
                                     </div>
                                 </div>
-                            </a>
-                        </div>
-                        {% if loop.index is divisible by(4) %}
                             </div>
-                            {% if not loop.last %}
-                                {% set row = row + 1 %}
-                                {% set dimension = row == filas ? 'rowDimension' : ' ' %}
-                                <div class="row {{dimension}}">
-                            {% endif %}
-                        {% else %}
-                            {% if loop.last %}
-                                </div>
-                            {% endif %}
-                        {% endif %}
-                    {% endfor %}
-                </div>
-                <div class="contents">
-                    {% set division = noticias|length / 4 %}
-                    {% set filas = division|round(0,'ceil') %}
-                    {% set row = 0 %}
-                    {% for noticia in noticias %}
-                        {% if loop.first %}
+                        </a>
+                    </div>
+                    {% if loop.index is divisible by(4) %}
+                        </div>
+                        {% if not loop.last %}
                             {% set row = row + 1 %}
-                            {% set dimension = row == filas ? 'rowDimension' : ' ' %}
+                            {% set dimension = row == filas ? '' : ' ' %}
                             <div class="row {{dimension}}">
                         {% endif %}
-                        <div class="col-3 col-lg-3 col-xl-3 col-md-4 col-sm-6 col-xs-6">
-                            <a href="{{ path('_noticiaDetalle', { 'noticia_id': noticia.id}) }}">
-                                <div class="card-anuncio">
-                                    <div class="card_header">
-                                        {% set img = uploads~noticia.imagen %}
-                                        <img class="card_img" src="{{img}}" alt="Card image cap">
-                                    </div>
-                                    <div class="card_body">
-                                        <h5 class="titulo_anuncio">{{ noticia.titulo }}</h5>
-                                    </div>
-                                    <div class="card_footer">
-                                        <hr class="separador">
-                                        <div class="row mb-3">
-                                            <div class="col-5 offset-1
-                                                        col-lg-5 offset-lg-1 
-                                                        col-xl-5 offset-xl-1 
-                                                        col-md-5 offset-md-1 
-                                                        col-sm-5 offset-sm-1 
-                                                        col-xs-5 offset-xs-1 
-                                                        px-0">
-                                                <span class="fecha_anuncio">{{ noticia.fecha }}</span>
-                                            </div>
-                                            <div class="col-5 
-                                                        col-lg-5 
-                                                        col-xl-5 
-                                                        col-md-5 
-                                                        col-sm-5 
-                                                        col-xs-5 
-                                                        text-right 
-                                                        px-0">
-                                                <span class="tipo_anuncio{{noticia.tid}}">{{ noticia.tipo|trans }}</span>
-                                            </div>
+                    {% else %}
+                        {% if loop.last %}
+                            </div>
+                        {% endif %}
+                    {% endif %}
+                {% endfor %}
+            </div>
+            <div class="contents container">
+                {% set division = noticias|length / 4 %}
+                {% set filas = division|round(0,'ceil') %}
+                {% set row = 0 %}
+                {% for noticia in noticias %}
+                    {% if loop.first %}
+                        {% set row = row + 1 %}
+                        {% set dimension = row == filas ? '' : ' ' %}
+                        <div class="row {{dimension}}">
+                    {% endif %}
+                    <div class="col-12 col-sm-6 col-md-3">
+                        <a href="{{ path('_noticiaDetalle', { 'noticia_id': noticia.id}) }}">
+                            <div class="card-anuncio mx-auto">
+                                <div class="card_header">
+                                {% if noticia.imagen %}
+                                    {% set img = uploads~noticia.imagen %}    
+                                {% else %}
+                                     {% set img = asset('front/assets/img/'~noticia.imagen_default) %}
+                                {% endif %}    
+                                <img class="card_img" src="{{img}}" alt="Card image cap">
+                                </div>
+                                <div class="card_body">
+                                    <h5 class="titulo_anuncio">{{ noticia.titulo }}</h5>
+                                </div>
+                                <div class="card_footer">
+                                    <hr class="separador">
+                                    <div class="row mb-3">
+                                        <div class="col-5 offset-1
+                                                    col-lg-5 offset-lg-1 
+                                                    col-xl-5 offset-xl-1 
+                                                    col-md-5 offset-md-1 
+                                                    col-sm-5 offset-sm-1 
+                                                    col-xs-5 offset-xs-1 
+                                                    px-0">
+                                            <span class="fecha_anuncio">{{ noticia.fecha }}</span>
+                                        </div>
+                                        <div class="col-5 
+                                                    col-lg-5 
+                                                    col-xl-5 
+                                                    col-md-5 
+                                                    col-sm-5 
+                                                    col-xs-5 
+                                                    text-right 
+                                                    px-0">
+                                            <span class="tipo_anuncio{{noticia.tid}}">{{ noticia.tipo|trans }}</span>
                                         </div>
                                     </div>
                                 </div>
-                            </a>
-                        </div>
-                        {% if loop.index is divisible by(4) %}
                             </div>
-                            {% if not loop.last %}
-                                {% set row = row + 1 %}
-                                {% set dimension = row == filas ? 'rowDimension' : ' ' %}
-                                <div class="row {{dimension}}">
-                            {% endif %}
-                        {% else %}
-                            {% if loop.last %}
-                                </div>
-                            {% endif %}
-                        {% endif %}
-                    {% endfor %}
-                </div>
-                <div class="contents">
-                    {% set division = novedades|length / 4 %}
-                    {% set filas = division|round(0,'ceil') %}
-                    {% set row = 0 %}
-                    {% for novedad in novedades %}
-                        {% if loop.first %}
+                        </a>
+                    </div>
+                    {% if loop.index is divisible by(4) %}
+                        </div>
+                        {% if not loop.last %}
                             {% set row = row + 1 %}
-                            {% set dimension = row == filas ? 'rowDimension' : ' ' %}
+                            {% set dimension = row == filas ? '' : ' ' %}
                             <div class="row {{dimension}}">
                         {% endif %}
-                        <div class="col-3 col-lg-3 col-xl-3 col-md-4 col-sm-6 col-xs-6">
-                            <a href="{{ path('_noticiaDetalle', { 'noticia_id': novedad.id}) }}">
-                                <div class="card-anuncio">
-                                    <div class="card_header">
-                                        {% set img = uploads~novedad.imagen %}
-                                        <img class="card_img" src="{{img}}" alt="Card image cap">
-                                    </div>
-                                    <div class="card_body">
-                                        <h5 class="titulo_anuncio">{{ novedad.titulo }}</h5>
-                                    </div>
-                                    <div class="card_footer">
-                                        <hr class="separador">
-                                        <div class="row mb-3">
-                                            <div class="col-5 offset-1
-                                                        col-lg-5 offset-lg-1 
-                                                        col-xl-5 offset-xl-1 
-                                                        col-md-5 offset-md-1 
-                                                        col-sm-5 offset-sm-1 
-                                                        col-xs-5 offset-xs-1 
-                                                        px-0">
-                                                <span class="fecha_anuncio">{{ novedad.fecha }}</span>
-                                            </div>
-                                            <div class="col-5 
-                                                        col-lg-5 
-                                                        col-xl-5 
-                                                        col-md-5 
-                                                        col-sm-5 
-                                                        col-xs-5 
-                                                        text-right 
-                                                        px-0">
-                                                <span class="tipo_anuncio{{novedad.tid}}">{{ novedad.tipo }}</span>
-                                            </div>
+                    {% else %}
+                        {% if loop.last %}
+                            </div>
+                        {% endif %}
+                    {% endif %}
+                {% endfor %}
+            </div>
+            <div class="contents container">
+                {% set division = novedades|length / 4 %}
+                {% set filas = division|round(0,'ceil') %}
+                {% set row = 0 %}
+                {% for novedad in novedades %}
+                    {% if loop.first %}
+                        {% set row = row + 1 %}
+                        {% set dimension = row == filas ? '' : ' ' %}
+                        <div class="row {{dimension}}">
+                    {% endif %}
+                    <div class="col-12 col-sm-6 col-md-3">
+                        <a href="{{ path('_noticiaDetalle', { 'noticia_id': novedad.id}) }}">
+                            <div class="card-anuncio mx-auto">
+                                <div class="card_header">
+                                {% if novedad.imagen %}
+                                    {% set img = uploads~novedad.imagen %}    
+                                {% else %}
+                                     {% set img = asset('front/assets/img/'~novedad.imagen_default) %}
+                                {% endif %}
+                                <img class="card_img" src="{{img}}" alt="Card image cap">
+                                </div>
+                                <div class="card_body">
+                                    <h5 class="titulo_anuncio">{{ novedad.titulo }}</h5>
+                                </div>
+                                <div class="card_footer">
+                                    <hr class="separador">
+                                    <div class="row mb-3">
+                                        <div class="col-5 offset-1
+                                                    col-lg-5 offset-lg-1 
+                                                    col-xl-5 offset-xl-1 
+                                                    col-md-5 offset-md-1 
+                                                    col-sm-5 offset-sm-1 
+                                                    col-xs-5 offset-xs-1 
+                                                    px-0">
+                                            <span class="fecha_anuncio">{{ novedad.fecha }}</span>
+                                        </div>
+                                        <div class="col-5 
+                                                    col-lg-5 
+                                                    col-xl-5 
+                                                    col-md-5 
+                                                    col-sm-5 
+                                                    col-xs-5 
+                                                    text-right 
+                                                    px-0">
+                                            <span class="tipo_anuncio{{novedad.tid}}">{{ novedad.tipo }}</span>
                                         </div>
                                     </div>
                                 </div>
-                            </a>
-                        </div>
-                        {% if loop.index is divisible by(4) %}
                             </div>
-                            {% if not loop.last %}
-                                {% set row = row + 1 %}
-                                {% set dimension = row == filas ? 'rowDimension' : ' ' %}
-                                <div class="row {{dimension}}">
-                            {% endif %}
-                        {% else %}
-                            {% if loop.last %}
-                                </div>
-                            {% endif %}
+                        </a>
+                    </div>
+                    {% if loop.index is divisible by(4) %}
+                        </div>
+                        {% if not loop.last %}
+                            {% set row = row + 1 %}
+                            {% set dimension = row == filas ? '' : ' ' %}
+                            <div class="row {{dimension}}">
                         {% endif %}
-                    {% endfor %}
-                </div>
+                    {% else %}
+                        {% if loop.last %}
+                            </div>
+                        {% endif %}
+                    {% endif %}
+                {% endfor %}
             </div>
         </div>
     </div>
+    
 </div>
 
 

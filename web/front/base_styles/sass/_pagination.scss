@@ -30,30 +30,35 @@
 #jquery-tab-pager-navi {
     height: 3rem;
     width: auto;
-    border: 2px solid $gray-400;	
     border-radius: calc(2rem - 4px);	
     background-color: transparent;
     display: flex;
     flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
     margin: 0;
     padding: 0;
     position: relative;
     li {
         margin: 0;
+        margin-bottom: 0.1rem;
         padding: calc(1rem - 6px) 1rem;
         position: relative;
         left: 0;
         list-style-type: none;
+        border-color:  $gray-400;
+        border-style: solid;
+        border-top-width: 3px;
+        border-bottom-width: 3px;
+        border-left-width: 1px;
+        border-right-width: 1px;
         &:last-child{
             border-radius: 0 calc(2rem - 4px) calc(2rem - 4px) 0;
-            border-left: 1px solid $gray-400; 
+            border-right-width: 3px; 
         }
         &:first-child{
             border-radius: calc(2rem - 4px) 0 0 calc(2rem - 4px);
-            border-right: 1px solid $gray-400;
-        }
-        &:nth-child(n){
-            border: 1px solid $gray-400;
+            border-left-width: 3px; 
         }
         &:hover{
             background: $blue;

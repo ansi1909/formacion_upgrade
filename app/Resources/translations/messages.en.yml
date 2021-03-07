@@ -343,6 +343,7 @@ El tipo de pregunta es requerido.: Question type is required.
 El tipo de recurso es requerido: Type of resource is required
 El título debe contener al menos 10 caracteres: Title must have at least 10 characters
 El título es requerido.: The title is required.
+El título debe tener máximo  45 caracteres.: The title must have a maximum of 45 characters.
 El título debe ser mínimo de 3 caracteres.: The title must be at least 3 characters.
 El tutor virtual aún no ha creado un tema de discusión: Virtual tutor has not yet created a topic of discussion
 El tutorial ha sido almacenado con éxito: The tutorial has been stored successfully
