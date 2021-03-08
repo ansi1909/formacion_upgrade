@@ -4,7 +4,7 @@ $(document).ready(function() {
 	var empresa_id = $("#usuario_empresa").val();
 	var pagina_selected = $("#pagina_selected").val();
 	var empresa_selected = $('#empresa_selected').val();
-	var nivel_id =  $('#nivel_id').val();
+	var nivel_id =  $('#nivel_id_dashboard').val();
 	var pagina_id = 0;
 
 	$('#resultado').click(function(){

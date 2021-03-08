@@ -73,7 +73,6 @@ begin
 		    LEFT JOIN admin_sesion a ON u.id = a.usuario_id
 		    WHERE u.empresa_id = pempresa_id
 			AND pe.activo
-            AND u.activo
 			AND (LOWER(n.nombre) NOT LIKE 'revisor%' AND LOWER(n.nombre) NOT LIKE 'tutor%')
 			AND u.id IN (SELECT ru.usuario_id FROM admin_rol_usuario ru WHERE ru.rol_id = 2)
 		    GROUP BY u.id,u.codigo,u.nombre,u.apellido,u.login,u.correo_personal,u.correo_corporativo,u.activo,u.fecha_registro,u.fecha_nacimiento,u.pais_id,n.nombre,u.campo1,u.clave
@@ -110,7 +109,6 @@ begin
 		    LEFT JOIN admin_sesion a ON u.id = a.usuario_id
 		    WHERE u.empresa_id = pempresa_id
 			AND pe.activo
-            AND u.activo
             AND u.nivel_id = pnivel_id
 			AND (LOWER(n.nombre) NOT LIKE 'revisor%' AND LOWER(n.nombre) NOT LIKE 'tutor%')
 			AND u.id IN (SELECT ru.usuario_id FROM admin_rol_usuario ru WHERE ru.rol_id = 2)
