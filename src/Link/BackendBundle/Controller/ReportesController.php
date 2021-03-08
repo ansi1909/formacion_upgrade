@@ -41,7 +41,7 @@ class ReportesController extends Controller
             $empresa_id = $request->request->get('empresa_id');
             $reporte = $request->request->get('reporte');
             $pagina_id = $request->request->get('programa_id');
-            $nivel_id = $request->request->get('nivel_id');
+            $nivel_id = $request->request->get('nivel_id_dashboard');
             $nivel_id = $nivel_id ? $nivel_id : 0;
             $pagina_id = $pagina_id ? $pagina_id : 0;
             $i = 1;
@@ -314,7 +314,7 @@ class ReportesController extends Controller
         $paginas_id = $request->request->get('programas');
         $pagina_selected = $request->request->get('pagina_selected');
         $preseleccion = $request->request->get('preseleccion');
-        $nivel_id = $request->request->get('nivel_id');
+        $nivel_id = $request->request->get('nivel_id_dashboard');
         
 
 

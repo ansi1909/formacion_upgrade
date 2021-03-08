@@ -20,7 +20,7 @@
 {% block body %}
 
 {% set empresa_id = usuario_empresa ? usuario.empresa.id : 0 %}
-<input type="hidden" id="nivel_id" name="nivel_id" value="{{ nivel_id }}">
+<input type="hidden" id="nivel_id_dashboard" name="nivel_id_dashboard" value="{{ nivel_id }}">
 <input type="hidden" id="reporte" name="reporte" value="{{ reporte }}">
 <input type="hidden" id="usuario_empresa" name="usuario_empresa" value="{{ empresa_id }}">
 <input type="hidden" id="error-msg" name="error-msg" value="{{ 'Ha ocurrido un error en el procesamiento de la consulta. Contacte al administrador del sistema.'|trans }}">
@@ -36,7 +36,7 @@
     <form id="form" name="form" action="{{ path( '_excelReporte', { 'app_id': app.session.get('app_id') })}}"  method="POST">
         {% set encabezado = usuario_empresa ? 'Reporte de participantes de'|trans~' '~usuario.empresa.nombre : 'Reporte de participantes por empresa'|trans %}
         <br><br>
-        <input type="hidden" id="nivel_id" name="nivel_id" value="{{ nivel_id }}">
+        <input type="hidden" id="nivel_id_dashboard" name="nivel_id_dashboard" value="{{ nivel_id }}">
         <input type="hidden" id="url_niveles" name="url_niveles" value="{{ path('_ajaxNiveles') }}">
         <input type="hidden" id="url_participantes" name="url_participantes" value="{{ path ('_ajaxListadoParticipantes') }}">
         <input type="hidden" id="pagina_selected" name="pagina_selected" value="{{ pagina_id }}">
@@ -123,11 +123,10 @@
     </form>
 
 {% elseif reporte == '2' %}
-    probando
     <form id="form" name="form" action="{{ path( '_excelReporte', { 'app_id': app.session.get('app_id') })}}"  method="POST">
         {% set encabezado =  'Reporte de participantes registrados en programa'|trans %}
         <br><br>
-        <input type="hidden" id="nivel_id" name="nivel_id" value="{{ nivel_id }}">
+        <input type="hidden" id="nivel_id_dashboard" name="nivel_id_dashboard" value="{{ nivel_id }}">
         <input type="hidden" id="url_programas" name="url_programas" value="{{ path('_ajaxProgramasE') }}">
         <input type="hidden" id="url_participantes" name="url_participantes" value="{{ path ('_ajaxListadoParticipantes') }}">
         <input type="hidden" id="pagina_selected" name="pagina_selected" value="{{ pagina_id }}">
@@ -219,7 +218,7 @@
     <form id="form" name="form" action="{{ path( '_excelReporte', { 'app_id': app.session.get('app_id') })}}"  method="POST">
         {% set encabezado =  'Reporte de participantes cursando el programa'|trans %}
         <br><br>
-        <input type="hidden" id="nivel_id" name="nivel_id" value="{{ nivel_id }}">
+        <input type="hidden" id="nivel_id_dashboard" name="nivel_id_dashboard" value="{{ nivel_id }}">
         <input type="hidden" id="url_programas" name="url_programas" value="{{ path('_ajaxProgramasE') }}">
         <input type="hidden" id="url_participantes" name="url_participantes" value="{{ path ('_ajaxListadoParticipantes') }}">
         <input type="hidden" id="pagina_selected" name="pagina_selected" value="{{ pagina_id }}">
@@ -311,7 +310,7 @@
     <form id="form" name="form" action="{{ path ('_ajaxListadoAprobados') }}" method="POST">
 
         <br><br>
-        <input type="hidden" id="nivel_id" name="nivel_id" value="{{ nivel_id }}">
+        <input type="hidden" id="nivel_id_dashboard" name="nivel_id_dashboard" value="{{ nivel_id }}">
         <input type="hidden" id="url_programas" name="url_programas" value="{{ path('_ajaxProgramasE') }}">
         <input type="hidden" id="url_participantes" name="url_participantes" value="{{ path ('_ajaxListadoParticipantes') }}">
         <input type="hidden" id="url_grupoA" name="url_grupoA" value="{{ path('_ajaxGrupoSeleccionA') }}">
@@ -403,7 +402,7 @@
         {% set encabezado =  'Reporte de participantes no iniciados en programa'|trans %}
 
         <br><br>
-        <input type="hidden" id="nivel_id" name="nivel_id" value="{{ nivel_id }}">
+        <input type="hidden" id="nivel_id_dashboard" name="nivel_id_dashboard" value="{{ nivel_id }}">
         <input type="hidden" id="url_programas" name="url_programas" value="{{ path('_ajaxProgramasE') }}">
         <input type="hidden" id="url_participantes" name="url_participantes" value="{{ path ('_ajaxListadoParticipantes') }}">
         <input type="hidden" id="pagina_selected" name="pagina_selected" value="{{ pagina_id }}">
