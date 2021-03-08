@@ -59,7 +59,7 @@
     <div id="wrapper">
         <div class="cards-section container d-flex justify-content-between justify-content-sm-center flex-wrap mt-3">
             <div class="contents container">
-                {% set division = todos|length / 4 %}
+                {% set division = todos|length / 3 %}
                 {% set filas = division|round(0,'ceil') %}
                 {% set row = 0 %}
                 {% for todo in todos %}
@@ -68,7 +68,7 @@
                         {% set dimension = row == filas ? '' : ' ' %}
                         <div class="row {{dimension}}">
                     {% endif %}
-                    <div class="col-12 col-sm-6 col-md-3">
+                    <div class="col-12 col-sm-6 col-md-4">
                         <a href="{{ path('_noticiaDetalle', { 'noticia_id': todo.id}) }}">
                             <div class="card-anuncio mx-auto">
                                 <div class="card_header">
@@ -110,7 +110,7 @@
                             </div>
                         </a>
                     </div>
-                    {% if loop.index is divisible by(4) %}
+                    {% if loop.index is divisible by(3) %}
                         </div>
                         {% if not loop.last %}
                             {% set row = row + 1 %}
@@ -125,7 +125,7 @@
                 {% endfor %}
             </div>
             <div class="contents container">
-                {% set division = noticias|length / 4 %}
+                {% set division = noticias|length / 3 %}
                 {% set filas = division|round(0,'ceil') %}
                 {% set row = 0 %}
                 {% for noticia in noticias %}
@@ -175,7 +175,7 @@
                             </div>
                         </a>
                     </div>
-                    {% if loop.index is divisible by(4) %}
+                    {% if loop.index is divisible by(3) %}
                         </div>
                         {% if not loop.last %}
                             {% set row = row + 1 %}
@@ -190,7 +190,7 @@
                 {% endfor %}
             </div>
             <div class="contents container">
-                {% set division = novedades|length / 4 %}
+                {% set division = novedades|length / 3 %}
                 {% set filas = division|round(0,'ceil') %}
                 {% set row = 0 %}
                 {% for novedad in novedades %}
@@ -240,7 +240,7 @@
                             </div>
                         </a>
                     </div>
-                    {% if loop.index is divisible by(4) %}
+                    {% if loop.index is divisible by(3) %}
                         </div>
                         {% if not loop.last %}
                             {% set row = row + 1 %}

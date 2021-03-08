@@ -25,6 +25,15 @@
             <img class="img-fluid py-1 {{ app.session.get('empresa').tipo_logo }}" src="{{ img_logo }}" alt="logo formación smart">
         </a>
         <div class="navbar-brand d-flex justify-content-center align-items-center" href="#">
+        {% set username = app.session.get('usuario').nombre is defined and app.session.get('usuario').nombre is not null and app.session.get('usuario').nombre != '' ?  app.session.get('usuario').nombre : false %}
+        {% if username  %}
+        <div class="navbar_username mr-3 d-none d-sm-flex pl-2">
+                <p>
+                {{ 'Hola'|trans }},
+                {{username}}
+                </p>
+            </div>
+        {% endif %}
             <div class=" d-flex flex-column ">
                 <div class="wrapperDdMenu">
                     <a href="#" class="perfil no-decorate" id="config">
