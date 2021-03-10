@@ -1224,7 +1224,7 @@ class UsuarioController extends Controller
         $highestColumnIndex = \PhpOffice\PhpSpreadsheet\Cell\Coordinate::columnIndexFromString($highestColumn);
 
         // Nuevo objeto Excel para el CSV
-        $phpExcelObject = $this->get('phpoffice.spreadsheet')->createPHPExcelObject();
+        $phpExcelObject = $this->get('phpoffice.spreadsheet')->createSpreadsheet();
         $phpExcelObject->getProperties()->setCreator("formacion")
                        ->setLastModifiedBy($usuario->getNombre().' '.$usuario->getApellido())
                        ->setTitle("CSV Autogenerado")
@@ -1240,7 +1240,7 @@ class UsuarioController extends Controller
             $r = $row-1; // Se empieza desde la fila 1 el archivo CSV
 
             // Código del empleado
-            $col = 0;
+            $col = 1;
             $col_name = 'A';
             $cell = $objWorksheet->getCellByColumnAndRow($col, $row);
             $codigo = trim($cell->getValue());
@@ -1392,7 +1392,7 @@ class UsuarioController extends Controller
         }
 
         // Crea el writer
-        $writer = $this->get('phpoffice.spreadsheet')->createWriter($phpExcelObject, 'CSV')
+        $writer = $this->get('phpoffice.spreadsheet')->createWriter($phpExcelObject, 'Csv')
                                         ->setDelimiter('|')
                                         ->setEnclosure('');
         $writer->setUseBOM(true);
