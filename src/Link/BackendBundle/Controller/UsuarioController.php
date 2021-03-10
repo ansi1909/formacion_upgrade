@@ -860,17 +860,19 @@ class UsuarioController extends Controller
             }
             else {
 
-                $objPHPExcel = \PHPExcel_IOFactory::load($fileWithPath);
+                $readerXlsx  = $this->get('phpoffice.spreadsheet')->createReader('Xlsx');
+
+                $spreadsheet = $readerXlsx->load($fileWithPath);
 
                 // Se obtienen las hojas, el nombre de las hojas y se pone activa la primera hoja
-                $total_sheets = $objPHPExcel->getSheetCount();
-                $allSheetName = $objPHPExcel->getSheetNames();
-                $objWorksheet = $objPHPExcel->setActiveSheetIndex(0);
+                $total_sheets = $spreadsheet->getSheetCount();
+                $allSheetName = $spreadsheet->getSheetNames();
+                $objWorksheet = $spreadsheet->setActiveSheetIndex(0);
 
                 // Se obtiene el número máximo de filas y columnas
                 $highestRow = $objWorksheet->getHighestRow();
                 $highestColumn = $objWorksheet->getHighestColumn();
-                $highestColumnIndex = \PHPExcel_Cell::columnIndexFromString($highestColumn);
+                $highestColumnIndex = $readerXlsx->columnIndexFromString($highestColumn);
 
                 //return new Response($highestRow);
 
@@ -1390,7 +1392,7 @@ class UsuarioController extends Controller
         }
 
         // Crea el writer
-        $writer = $this->get('phpexcel')->createWriter($phpExcelObject, 'CSV')
+        $writer = $this->get('phpoffice.spreadsheet')->createWriter($phpExcelObject, 'CSV')
                                         ->setDelimiter('|')
                                         ->setEnclosure('');
         $writer->setUseBOM(true);
