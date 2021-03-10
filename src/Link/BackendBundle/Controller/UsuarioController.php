@@ -872,7 +872,7 @@ class UsuarioController extends Controller
                 // Se obtiene el número máximo de filas y columnas
                 $highestRow = $objWorksheet->getHighestRow();
                 $highestColumn = $objWorksheet->getHighestColumn();
-                $highestColumnIndex = $readerXlsx->columnIndexFromString($highestColumn);
+                $highestColumnIndex = \PhpOffice\PhpSpreadsheet\Cell\Coordinate::columnIndexFromString($highestColumn);
 
                 //return new Response($highestRow);
 
@@ -979,7 +979,7 @@ class UsuarioController extends Controller
                                 $particulares[$this->get('translator')->trans('Línea').' '.$row][$this->get('translator')->trans('Columna').' '.$col_name] = $this->get('translator')->trans('La fecha de registro debe ser del tipo texto en formato DD/MM/AAAA').'.';
                             }
                             else {
-                                if (\PHPExcel_Shared_Date::isDateTime($cell))
+                                if (\PhpOffice\PhpSpreadsheet\Shared\Date::isDateTime($cell))
                                 {
                                     $particulares[$this->get('translator')->trans('Línea').' '.$row][$this->get('translator')->trans('Columna').' '.$col_name] = $this->get('translator')->trans('La fecha de registro debe ser del tipo texto en formato DD/MM/AAAA').'.';
                                 }
@@ -1221,7 +1221,7 @@ class UsuarioController extends Controller
         // Se obtiene el número máximo de filas y columnas
         $highestRow = $objWorksheet->getHighestRow();
         $highestColumn = $objWorksheet->getHighestColumn();
-        $highestColumnIndex = $readerXlsx->columnIndexFromString($highestColumn);
+        $highestColumnIndex = \PhpOffice\PhpSpreadsheet\Cell\Coordinate::columnIndexFromString($highestColumn);
 
         // Nuevo objeto Excel para el CSV
         $phpExcelObject = $this->get('phpoffice.spreadsheet')->createPHPExcelObject();
