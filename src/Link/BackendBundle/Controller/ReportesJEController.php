@@ -108,7 +108,7 @@ class ReportesJEController extends Controller
                 $objWorksheet->setCellValue('A'.$r, $conexiones[$f][0]);
                 if (in_array($f, $filas_mayores))
                 {
-                    $objPHPExcel->getActiveSheet()->getStyle('A'.$r)->getFill()->setFillType(\PHPExcel_Style_Fill::FILL_SOLID)->getStartColor()->setRGB('8FC9F0');
+                    $spreadsheet->getActiveSheet()->getStyle('A'.$r)->getFill()->setFillType(\PHPExcel_Style_Fill::FILL_SOLID)->getStartColor()->setRGB('8FC9F0');
                 }
             }
 
@@ -122,10 +122,10 @@ class ReportesJEController extends Controller
                     $objWorksheet->setCellValue($col.$row, $conexiones[$f][$c]);
                     if (in_array($f, $filas_mayores) || in_array($c, $columnas_mayores))
                     {
-                        $objPHPExcel->getActiveSheet()->getStyle($col.$row)->getFill()->setFillType(\PHPExcel_Style_Fill::FILL_SOLID)->getStartColor()->setRGB('8FC9F0');
+                        $spreadsheet->getActiveSheet()->getStyle($col.$row)->getFill()->setFillType(\PHPExcel_Style_Fill::FILL_SOLID)->getStartColor()->setRGB('8FC9F0');
                         if (in_array($c, $columnas_mayores))
                         {
-                            $objPHPExcel->getActiveSheet()->getStyle($col.'3')->getFill()->setFillType(\PHPExcel_Style_Fill::FILL_SOLID)->getStartColor()->setRGB('8FC9F0');
+                            $spreadsheet->getActiveSheet()->getStyle($col.'3')->getFill()->setFillType(\PHPExcel_Style_Fill::FILL_SOLID)->getStartColor()->setRGB('8FC9F0');
                         }
                     }
                 }

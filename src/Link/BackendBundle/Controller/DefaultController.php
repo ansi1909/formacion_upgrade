@@ -612,10 +612,10 @@ class DefaultController extends Controller
         //return new response(var_dump($listado));
 
 
-
+        $readerXlsx  = $this->get('phpoffice.spreadsheet')->createReader('Xlsx');
         $fileWithPath = $this->container->getParameter('folders')['dir_project'].'docs/formatos/ListadoUsuariosConectados.xlsx';
-        $objPHPExcel = \PHPExcel_IOFactory::load($fileWithPath);
-        $objWorksheet = $objPHPExcel->setActiveSheetIndex(0);
+        $spreadsheet = $readerXlsx->load($fileWithPath);
+        $objWorksheet = $spreadsheet->setActiveSheetIndex(0);
         $columnNames = array('A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z');
 
         // Encabezado
@@ -668,11 +668,15 @@ class DefaultController extends Controller
         }
 
         // Crea el writer
-        $writer = $this->get('phpexcel')->createWriter($objPHPExcel, 'Excel2007');
+        $writer = $this->get('phpoffice.spreadsheet')->createWriter($spreadsheet, 'Xlsx');
         $hoy = date('y-m-d');
 
         // Envia la respuesta del controlador
-        $response = $this->get('phpexcel')->createStreamedResponse($writer);
+        $response =  new StreamedResponse(
+            function () use ($writer) {
+                $writer->save('php://output');
+            }
+        );
         // Agrega los headers requeridos
 
             $dispositionHeader = $response->headers->makeDisposition(
@@ -701,10 +705,10 @@ class DefaultController extends Controller
 
         $listado = $rs->historicoAprobados();
         
-        
+        $readerXlsx  = $this->get('phpoffice.spreadsheet')->createReader('Xlsx');
         $fileWithPath = $this->container->getParameter('folders')['dir_project'].'docs/formatos/ListadoHistoricoAprobados.xlsx';
-        $objPHPExcel = \PHPExcel_IOFactory::load($fileWithPath);
-        $objWorksheet = $objPHPExcel->setActiveSheetIndex(0);
+        $spreadsheet = $readerXlsx->load($fileWithPath);
+        $objWorksheet = $spreadsheet->setActiveSheetIndex(0);
         $columnNames = array('A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z');
         
         // Encabezado
@@ -762,11 +766,15 @@ class DefaultController extends Controller
         
 
         // Crea el writer
-        $writer = $this->get('phpexcel')->createWriter($objPHPExcel, 'Excel2007');
+        $writer = $this->get('phpoffice.spreadsheet')->createWriter($spreadsheet, 'Xlsx');
         $hoy = date('y-m-d');
 
         // Envia la respuesta del controlador
-        $response = $this->get('phpexcel')->createStreamedResponse($writer);
+        $response =  new StreamedResponse(
+            function () use ($writer) {
+                $writer->save('php://output');
+            }
+        );
         // Agrega los headers requeridos
 
             $dispositionHeader = $response->headers->makeDisposition(
