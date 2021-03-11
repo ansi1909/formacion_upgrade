@@ -19,6 +19,7 @@ class AppKernel extends Kernel
             new Link\ComunBundle\LinkComunBundle(),
             new Link\BackendBundle\LinkBackendBundle(),
             new Link\FrontendBundle\LinkFrontendBundle(),
+            new Yectep\PhpSpreadsheetBundle\PhpSpreadsheetBundle(),
         ];
 
         if (in_array($this->getEnvironment(), ['dev', 'test'], true)) {
