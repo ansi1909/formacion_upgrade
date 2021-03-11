@@ -92,9 +92,10 @@ class ReportesJEController extends Controller
 
 
             //return new response($hastaf);
+            $readerXlsx  = $this->get('phpoffice.spreadsheet')->createReader('Xlsx');
             $fileWithPath = $this->container->getParameter('folders')['dir_project'].'docs/formatos/horasConexion.xlsx';
-            $objPHPExcel = \PHPExcel_IOFactory::load($fileWithPath);
-            $objWorksheet = $objPHPExcel->setActiveSheetIndex(0);
+            $spreadsheet = $readerXlsx->load($fileWithPath);
+            $objWorksheet = $spreadsheet->setActiveSheetIndex(0);
             $columnNames = array('A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z');
 
             // Encabezado
@@ -107,7 +108,7 @@ class ReportesJEController extends Controller
                 $objWorksheet->setCellValue('A'.$r, $conexiones[$f][0]);
                 if (in_array($f, $filas_mayores))
                 {
-                    $objPHPExcel->getActiveSheet()->getStyle('A'.$r)->getFill()->setFillType(\PHPExcel_Style_Fill::FILL_SOLID)->getStartColor()->setRGB('8FC9F0');
+                    $spreadsheet->getActiveSheet()->getStyle('A'.$r)->getFill()->setFillType(\PHPExcel_Style_Fill::FILL_SOLID)->getStartColor()->setRGB('8FC9F0');
                 }
             }
 
@@ -121,10 +122,10 @@ class ReportesJEController extends Controller
                     $objWorksheet->setCellValue($col.$row, $conexiones[$f][$c]);
                     if (in_array($f, $filas_mayores) || in_array($c, $columnas_mayores))
                     {
-                        $objPHPExcel->getActiveSheet()->getStyle($col.$row)->getFill()->setFillType(\PHPExcel_Style_Fill::FILL_SOLID)->getStartColor()->setRGB('8FC9F0');
+                        $spreadsheet->getActiveSheet()->getStyle($col.$row)->getFill()->setFillType(\PHPExcel_Style_Fill::FILL_SOLID)->getStartColor()->setRGB('8FC9F0');
                         if (in_array($c, $columnas_mayores))
                         {
-                            $objPHPExcel->getActiveSheet()->getStyle($col.'3')->getFill()->setFillType(\PHPExcel_Style_Fill::FILL_SOLID)->getStartColor()->setRGB('8FC9F0');
+                            $spreadsheet->getActiveSheet()->getStyle($col.'3')->getFill()->setFillType(\PHPExcel_Style_Fill::FILL_SOLID)->getStartColor()->setRGB('8FC9F0');
                         }
                     }
                 }
@@ -134,7 +135,7 @@ class ReportesJEController extends Controller
             $empresaName = $fun->eliminarAcentos($empresa->getNombre());
             $empresaName = strtoupper($empresaName);
             $hoy = date('y-m-d h i');
-            $writer = $this->get('phpexcel')->createWriter($objPHPExcel, 'Excel2007');
+            $writer = $this->get('phpoffice.spreadsheet')->createWriter($spreadsheet, 'Xlsx');
             $path = 'recursos/reportes/HORAS CONEXION '.$empresaName.''.$hoy.'.xlsx';
             $xls = $this->container->getParameter('folders')['dir_uploads'].$path;
             $writer->save($xls);
@@ -368,9 +369,10 @@ class ReportesJEController extends Controller
 
         $listado = $rs->evaluacionesModulo($empresa_id, $pagina_id, $desde, $hasta);
 
+        $readerXlsx  = $this->get('phpoffice.spreadsheet')->createReader('Xlsx');
         $fileWithPath = $this->container->getParameter('folders')['dir_project'].'docs/formatos/evaluacionesModulo.xlsx';
-        $objPHPExcel = \PHPExcel_IOFactory::load($fileWithPath);
-        $objWorksheet = $objPHPExcel->setActiveSheetIndex(0);
+        $spreadsheet = $readerXlsx->load($fileWithPath);
+        $objWorksheet = $spreadsheet->setActiveSheetIndex(0);
         $columnNames = array('A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z');
 
         // Encabezado
@@ -471,7 +473,7 @@ class ReportesJEController extends Controller
         $empresaName = strtoupper($empresaName);
         $paginaName = strtoupper($paginaName);
         $hoy = date('y-m-d h i');
-        $writer = $this->get('phpexcel')->createWriter($objPHPExcel, 'Excel2007');
+        $writer = $this->get('phpoffice.spreadsheet')->createWriter($spreadsheet, 'Xlsx');
         $path = 'recursos/reportes/EVALUACIONES '.$paginaName.' '.$empresaName.' '.$hoy.'.xlsx';
         $xls = $this->container->getParameter('folders')['dir_uploads'].$path;
         $writer->save($xls);
