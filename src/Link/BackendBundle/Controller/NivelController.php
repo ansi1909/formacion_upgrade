@@ -324,7 +324,7 @@ class NivelController extends Controller
                 // Se obtiene el número máximo de filas y columnas
                 $highestRow = $objWorksheet->getHighestRow();
                 $highestColumn = $objWorksheet->getHighestColumn();
-                $highestColumnIndex = $readerXlsx->columnIndexFromString($highestColumn);
+                $highestColumnIndex = \PhpOffice\PhpSpreadsheet\Cell\Coordinate::columnIndexFromString($highestColumn);
               
                 // $headingsArray contiene las cabeceras de la hoja excel. Los titulos de columnas
                 $headingsArray = $objWorksheet->rangeToArray('A1:'.$highestColumn.'1',null, true, true, true);
