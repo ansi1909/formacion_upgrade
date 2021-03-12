@@ -74,7 +74,7 @@ class UsuarioController extends Controller
                 $rol = 'rol_'.strtolower($rol[0]);
                 //return new response ($rol);
             }
-           
+
            $query_final.= ($query_final==$query_base)?  $where."$rol <> 0":$and."$rol <> 0";
         }
         if ($empresa_id)
@@ -860,17 +860,19 @@ class UsuarioController extends Controller
             }
             else {
 
-                $objPHPExcel = \PHPExcel_IOFactory::load($fileWithPath);
+                $readerXlsx  = $this->get('phpoffice.spreadsheet')->createReader('Xlsx');
+
+                $spreadsheet = $readerXlsx->load($fileWithPath);
 
                 // Se obtienen las hojas, el nombre de las hojas y se pone activa la primera hoja
-                $total_sheets = $objPHPExcel->getSheetCount();
-                $allSheetName = $objPHPExcel->getSheetNames();
-                $objWorksheet = $objPHPExcel->setActiveSheetIndex(0);
+                $total_sheets = $spreadsheet->getSheetCount();
+                $allSheetName = $spreadsheet->getSheetNames();
+                $objWorksheet = $spreadsheet->setActiveSheetIndex(0);
 
                 // Se obtiene el número máximo de filas y columnas
                 $highestRow = $objWorksheet->getHighestRow();
                 $highestColumn = $objWorksheet->getHighestColumn();
-                $highestColumnIndex = \PHPExcel_Cell::columnIndexFromString($highestColumn);
+                $highestColumnIndex = \PhpOffice\PhpSpreadsheet\Cell\Coordinate::columnIndexFromString($highestColumn);
 
                 //return new Response($highestRow);
 
@@ -977,7 +979,7 @@ class UsuarioController extends Controller
                                 $particulares[$this->get('translator')->trans('Línea').' '.$row][$this->get('translator')->trans('Columna').' '.$col_name] = $this->get('translator')->trans('La fecha de registro debe ser del tipo texto en formato DD/MM/AAAA').'.';
                             }
                             else {
-                                if (\PHPExcel_Shared_Date::isDateTime($cell))
+                                if (\PhpOffice\PhpSpreadsheet\Shared\Date::isDateTime($cell))
                                 {
                                     $particulares[$this->get('translator')->trans('Línea').' '.$row][$this->get('translator')->trans('Columna').' '.$col_name] = $this->get('translator')->trans('La fecha de registro debe ser del tipo texto en formato DD/MM/AAAA').'.';
                                 }
@@ -1208,20 +1210,21 @@ class UsuarioController extends Controller
         $r = $query->fetchAll();
         $max = $r[0]['max'] != '' ? $r[0]['max'] : 0;
 
-        $objPHPExcel = \PHPExcel_IOFactory::load($fileWithPath);
+        $readerXlsx  = $this->get('phpoffice.spreadsheet')->createReader('Xlsx');
+        $spreadsheet = $readerXlsx->load($fileWithPath);
 
         // Se obtienen las hojas, el nombre de las hojas y se pone activa la primera hoja
-        $total_sheets = $objPHPExcel->getSheetCount();
-        $allSheetName = $objPHPExcel->getSheetNames();
-        $objWorksheet = $objPHPExcel->setActiveSheetIndex(0);
+        $total_sheets = $spreadsheet->getSheetCount();
+        $allSheetName = $spreadsheet->getSheetNames();
+        $objWorksheet = $spreadsheet->setActiveSheetIndex(0);
 
         // Se obtiene el número máximo de filas y columnas
         $highestRow = $objWorksheet->getHighestRow();
         $highestColumn = $objWorksheet->getHighestColumn();
-        $highestColumnIndex = \PHPExcel_Cell::columnIndexFromString($highestColumn);
+        $highestColumnIndex = \PhpOffice\PhpSpreadsheet\Cell\Coordinate::columnIndexFromString($highestColumn);
 
         // Nuevo objeto Excel para el CSV
-        $phpExcelObject = $this->get('phpexcel')->createPHPExcelObject();
+        $phpExcelObject = $this->get('phpoffice.spreadsheet')->createSpreadsheet();
         $phpExcelObject->getProperties()->setCreator("formacion")
                        ->setLastModifiedBy($usuario->getNombre().' '.$usuario->getApellido())
                        ->setTitle("CSV Autogenerado")
@@ -1237,7 +1240,7 @@ class UsuarioController extends Controller
             $r = $row-1; // Se empieza desde la fila 1 el archivo CSV
 
             // Código del empleado
-            $col = 0;
+            $col = 1;
             $col_name = 'A';
             $cell = $objWorksheet->getCellByColumnAndRow($col, $row);
             $codigo = trim($cell->getValue());
@@ -1389,7 +1392,7 @@ class UsuarioController extends Controller
         }
 
         // Crea el writer
-        $writer = $this->get('phpexcel')->createWriter($phpExcelObject, 'CSV')
+        $writer = $this->get('phpoffice.spreadsheet')->createWriter($phpExcelObject, 'Csv')
                                         ->setDelimiter('|')
                                         ->setEnclosure('');
         $writer->setUseBOM(true);
@@ -1418,13 +1421,13 @@ class UsuarioController extends Controller
             $query->execute();
             $r = $query->fetchAll();
 
-            // La respuesta viene formada por Inserts__Updates
+            // La respuesta viene Inserts__Updates
             $r_arr = explode("__", $r[0]['resultado']);
 
             $return = array('inserts' => $r_arr[0],
                             'updates' => $r_arr[1]);
 
-            // Se borra el archivo CSV
+            // Se borra el CSV
             unlink($csv);
 
         }

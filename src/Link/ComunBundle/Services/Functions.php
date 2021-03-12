@@ -3712,9 +3712,10 @@ public function obtenerEstructuraJson($pagina_id){
 
         public function ExcelMails($mails,$encabezado,$pex,$yml,$sufijo){
         $em = $this->em;
+        $readerXlsx  = $this->get('phpoffice.spreadsheet')->createReader('Xlsx');
         $fileWithPath = $this->container->getParameter('folders')['dir_project'].'docs/formatos/correosFallidos.xlsx';
-        $objPHPExcel = \PHPExcel_IOFactory::load($fileWithPath);
-        $objWorksheet = $objPHPExcel->setActiveSheetIndex(0);
+        $spreadsheet = $readerXlsx->load($fileWithPath);
+        $objWorksheet = $spreadsheet->setActiveSheetIndex(0);
         $columnNames = array('A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z');
         $styleThinBlackBorderOutline = array(
                     'borders' => array(
@@ -3744,7 +3745,7 @@ public function obtenerEstructuraJson($pagina_id){
 
         }
         $hoy = date('d-m-Y');
-        $writer = $pex->createWriter($objPHPExcel, 'Excel5');
+        $writer = $this->get('phpoffice.spreadsheet')->createWriter($spreadsheet, 'Xlsx');
         $path = 'recursos/notificaciones/'.'correosNoentregados_'.$encabezado['empresa'].'_'.$hoy.'_'.$sufijo.'.xls';
         $xls = $yml['parameters']['folders']['dir_uploads'].$path;
         $writer->save($xls);
