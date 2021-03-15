@@ -896,7 +896,7 @@ class UsuarioController extends Controller
                        $filas_analizadas++;
 
                         // Código del empleado
-                        $col = 0;
+                        $col = 1;
                         $col_name = 'A';
                         $cell = $objWorksheet->getCellByColumnAndRow($col, $row);
                         $codigo = trim($cell->getValue());
