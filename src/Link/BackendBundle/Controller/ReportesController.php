@@ -242,7 +242,8 @@ class ReportesController extends Controller
 
             $options = '<option value=" "></option>';
             if($reporte_id){
-                $options .= '<option value="0">Todos los programas</option>';
+                $options .= '<option value="0">'.$this->get('translator')->trans('Todos los programas').'</option>';
+                
             }
 
             foreach ($paginas as $pagina)

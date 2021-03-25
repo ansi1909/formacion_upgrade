@@ -52,6 +52,7 @@ class ProgramaController extends Controller
         $porcentaje_avance = round($pagina_log->getPorcentajeAvance());
 
         $pagina = $this->getDoctrine()->getRepository('LinkComunBundle:CertiPagina')->find($programa_id);
+        $categoria =  $this->get('translator')->trans($pagina->getCategoria()->getNombre());
 
         $pagina_sesion = $session->get('paginas')[$programa_id];
 
@@ -315,6 +316,7 @@ class ProgramaController extends Controller
         $cancelar_intro = $intro_del_usuario[0]->getCancelado();
 
         return $this->render('LinkFrontendBundle:Programa:index.html.twig', array('pagina' => $pagina,
+                                                                                  'categoria' => $categoria,
                                                                                   'modulos' =>$modulos,
                                                                                   'porcentaje_avance' =>$porcentaje_avance,
                                                                                   'lis_mods' =>$lis_mods,

@@ -75,6 +75,7 @@ Avance en el módulo: Module avance
 Avance en el programa: Program avance
 Avance en programas: Advance in programs
 Aviso de cierre de sesión: Notice of session closure
+Avisos programados: Programmed notifications
 Avisos programados de: Programmed notifications of
 Ayer: Yesterday
 Ayuda: Help
@@ -82,6 +83,7 @@ Biblioteca: Library
 Biblioteca virtual: Virtual library
 Bienvenida: Welcome
 Bienvenido: Welcome
+Bienvenido al: welcome to
 Bien hecho: Well done
 Buen trabajo: Good job
 Buscar: Search
@@ -122,6 +124,7 @@ Cerrar sesión: Log out
 Certificado: Certificate
 Certificado inexistente para este contenido: No certificate for this content
 Certificado no encontrado: Certificate not found
+Clave: Key code
 Código: Code
 Código del empleado repetido: Employee code repeated
 Columna: Column
@@ -139,8 +142,8 @@ Comparativo hasta el: Comparative until
 Competencia debe ser un valor entero: Competition must be an integer value
 Competencia debe tener como valor 0 o 1: Competition must have 0 or 1 as value
 Competencia requerida. Valores válidos 0 o 1.: Competition required. Valid values 0 or 1.
-Conexiones por usuario: Connections per user
-Conexiones por participante: Connections per participant
+Conexiones por usuario: Connections by user
+Conexiones por participante: Connections by participant
 Conceder: Grant
 Conceder Permisos: Grant Access
 Conceder permisos de acceso: Granting access for
@@ -186,6 +189,8 @@ Correo secundario: Secondary email
 Creado el: Created at
 Crear evento: Create event
 Crear nuevo tema: Create new subject
+Curso / Programa: Course / Program
+Curso: Course
 Customización: Customization
 Dato en nulo.: Null value
 Datos Básicos: Basic data
@@ -206,6 +211,7 @@ Datos del Tipo de Destino: Destinity Type Details
 Datos del tutorial: Tutorial data
 Datos evento: Event data
 Dar acceso: Provide access
+de: of
 de la: of the
 de la evaluación: of the test
 de un total de: of total of
@@ -214,10 +220,12 @@ Debe elegir una empresa: You must choose a company
 Debe elegir un programa: You must choose a program
 Debe escribir su respuesta: You must write your response
 Debe indicar el orden de la pagina: You must indicate the order of the page
+Debe indicar fecha desde y fecha hasta: You must indicate the since date and the end date
 Debes ingresar el correo electrónico: You must enter the email
 Debes ingresar el correo personal o el correo corporativo: You must enter either personal email or corporate email
 Debe seleccionar al menos un programa: You must select at least one program
 Debe seleccionar al menos un rol: You must select at least one role
+Debe seleccionar categoria.: You must select category.
 Debe seleccionar el grupo: You must select the group
 Debe seleccionar el tipo de pregunta o agregar una nueva: You must select the question type or add a new one
 Debe seleccionar la fecha inicial: You must select the initial date
@@ -233,6 +241,7 @@ Descarga el archivo a través del siguiente enlace: Download file through follow
 Descargar: Download
 Descargas: Downloads
 Descargar archivo: Download file
+Descargar Excel: Download Excel
 Descargue material complementario: Download complementary content
 Descripción: Description
 Desde: Since
@@ -250,9 +259,11 @@ días: days
 Dimensiones recomendadas: Recommended dimensions
 Diseño: Design
 Dispositivo: Divice
-Dispositivo - Navegador - Sistema Operativo: Dispositivo - Navegador - Sistema Operativo
+Dispositivo - Navegador - Sistema Operativo: Device - Browser - Operating System
+Dispositivo - Navegador - Sistema Operativo: Device - Browser - Operating System
 Domingo: Sunday
 Duplicar página y sub-páginas: Duplicate page and sub-pages
+Duplicar página y sub-páginas 1: Duplicate page and sub-pages 1
 Duplicar evaluación: Duplicate test
 Editar: Edit
 Editar asignación: Edit assignment
@@ -433,16 +444,18 @@ Estimado participante, si decides salir de la evaluación en este momento, perde
 Estimado participante, si usted decide salir antes de terminar la evaluación perderá todas las respuestas que haya contestado hasta los momentos: Dear participant, if you decide leave the page before finish the evaluation, you will lose all answers
 Estos son los resultados que has obtenido: This are the results you got
 Estructura: Structure
+Estructura de la página: Page structure
 Evaluación: Test
 Evaluación activa: Enabled test
 Evaluación asignada, cualquier modificación debe ser consultada con el equipo de soporte: Assigned evaluation, any modification must be consulted with the support team
 Evaluación del módulo: Module evaluation
 Evaluación no encontrada: Evaluation not found
 Evaluaciones de las materias: Evaluations of the subjects
-Evaluaciones por módulo: Evaluations per module
+Evaluaciones por módulo: Evaluations by module
 Evento guardado: Saved event
 Evento no guardado: Unsaved event
 Excelente: Excelent
+Excel usuarios: Users Excel
 Existe actividad en el espacio colaborativo, a continuación te presento los detalles: There is activity in the collaborative space, below I present the details
 Existe actividad en uno de los muros monitoreados por ti, a continuación te presento los detalles: There is an activity in one of the walls monitored by you, these are the details
 Experimenta la potencialidad de la capacitación online: Experience the potential of online training
@@ -487,6 +500,7 @@ Formato de correo inválido: invalid email format
 Formato sugerido se especifica en: Suggested format, see
 Foto de la página: Page picture
 Generar: Generate
+Generar certificados: Certificate generator
 Gráfica: Graph
 Gráfica horas de conexión: Graph connection hours
 Gráfica conexiones por dispositivo: Connections by device graph
@@ -521,7 +535,7 @@ Hora fin: End time
 Horas académicas: Academic hours
 Horas de conexión: Conection hours
 Horas de conexión de la empresa: Connection hours of the company
-Horas de conexión por empresa: Connection hours per company
+Horas de conexión por empresa: Connection hours by company
 Hoy a las: Today at
 Huso horario: Time zone
 Huso horario requerido: Required time zone
@@ -533,6 +547,7 @@ Imprimir certificado: Print certificate
 Imprimir constancia de notas: Print proof of notes
 Inactivos: Inactive
 Índice: Index
+Ingrese su correo: Enter your email
 Ingrese un correo valido: Enter a valid email
 Indice del contenido: Content index
 Indique el asunto de su mensaje: Indicate the subject of your message
@@ -553,7 +568,7 @@ Inicio del programa: Program start
 tu usuario y clave. Ingresa tu correo.: your username and password. Enter your email.
 Interacción: Interaction
 Interacción en los muros: Wall interactions
-Interacción en los muros por empresa: Wall interactions per company
+Interacción en los muros por empresa: Wall interactions by company
 Ir a detalles de la página: Go to page details
 Ir al inicio: Go to home
 Ir al listado: Go to list
@@ -645,6 +660,7 @@ Listado de tutoriales: List of tutorials
 Listado de usuarios: List of users
 Listado de participantes por empresa: List of participants per company
 Lo sentimos. Sesión expirada.: We are sorry. Session is expired.
+Logo: Logo
 Logueado: Logged in
 Login repetido: Login repeated
 Login requerido: Login required
@@ -658,6 +674,7 @@ Mantener abierta la sesión: Keep this session opened
 Martes: Tuesday
 Más recientes: Most recent
 Más valorados: Most valued
+Materia: Subject
 Material complementario: Complementary content
 Materias vistas: Subjects seen
 Mensaje: Message
@@ -703,6 +720,7 @@ No iniciados: Without starting
 No Iniciado: Not started
 no posee participantes registrados: does not have registered participants
 No se encontraron resultados: No found results
+No se encontro la fecha de inicio: No found the starter date
 No se encontró información para este usuario: No data found for this username
 No se ha registrado ninguna actividad... Se cerrará su sesión en los próximos 5 segundos: No activity has been recorded ... Your session will be closed in the next 5 seconds
 No se mostrará en la página de login: It will not be shown in login page
@@ -870,9 +888,11 @@ Reporte de participantes aprobados por programas: Report of participants approve
 Reporte de participantes aprobados en programas: Report of approved participants in programs
 Reporte de participantes cursando por programas: Report of participants studying through programs
 Reporte de participantes cursando el programa: Report of participants attending the program
+Reporte de participantes de: Report of participants of
 Reporte de participantes no iniciados en programa: Report of participants not initiated in program
-Reporte de participantes registrados en programas: Report of registered participants
-Reporte de participantes por empresa: Participant report by company
+Reporte de participantes registrados en programa: Report of registered participants in program
+Reporte de participantes registrados en programas: Report of registered participants in programs
+Reporte de participantes por empresa: Report of participants by company
 Reportar un problema: Report a problem
 Reporte - Histórico de aprobados por programa: Report - History of approved by program
 Responder: Answer
@@ -894,8 +914,8 @@ Resumen: Summary
 Resumen de registros de participantes del: Summary of records of participants of the
 Resumen de registros de participantes en el: Summary of records of participants in the
 Resumen general de registros: General summary of records
-Resumen general de registros por empresa: General summary of records per company
-Resumen general por empresa: General summary per company
+Resumen general de registros por empresa: General summary of records by company
+Resumen general por empresa: General summary by company
 Rol: Role
 Rol de empresa: Company role
 Roles: Roles
@@ -914,6 +934,7 @@ Seleccione la empresa para mostrar los niveles: Select the company to show its l
 Seleccione la empresa para mostrar las páginas asignadas: Select the company in order to show its assigned pages
 Seleccione la fecha difusión: Select broadcasting date
 Sesión expirada: Expired session
+Enviados: Sent
 Si: Yes
 Sí: Yes
 Si acepta no puede revertir el cambio: If you accept, you can not revert this change
@@ -990,6 +1011,7 @@ Todos: All
 Todos los derechos reservados: All rights reserved
 Todos los empleados de la empresa: All of the employees of the company
 Todos los niveles: All levels
+Todos los programas: All programs
 TODOS LOS TEMAS: ALL SUBJECTS
 Tomar evaluación: Take test
 Total aprobados: Total approved
@@ -998,6 +1020,7 @@ Tu calificación: Your score
 Tu comentario: Your comment
 Tu respuesta: Your answer
 Tutoriales: Tutorials
+Tu progreso en el: Your progress in the
 Última conexión: Last connection
 Últimos 12: Last 12
 Url de la empresa no existe: Url for this company not found

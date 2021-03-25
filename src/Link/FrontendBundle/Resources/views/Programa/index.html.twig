@@ -17,13 +17,13 @@
 <div id="message" class="for-message well-message-prog text-center container py-6 px-6 mb-1">
     <i id="arrowDown" class="material-icons mr-2" >keyboard_arrow_down</i>
     <div id="tuto-step1">
-        <h4>Bienvenido al {{ pagina.categoria.nombre|lower }} de </h4>
+        <h4>{{'Bienvenido al'|trans}} {{ categoria }} {{'de'|trans}} </h4>
         <h1 class="mb-5">{{ pagina.nombre}}</h1>
     </div>
     {{ pagina.contenido|raw }}
     <!-- MAPA DE PROGRESO -->
     <div id="tuto-step2">
-        <h4 class="color-light-black my-3 mt-5">Tu progreso en el {{ pagina.categoria.nombre|lower }}</h4>
+        <h4 class="color-light-black my-3 mt-5">{{'Tu progreso en el'|trans}} {{ categoria }}</h4>
         <!--?xml version="1.0" encoding="UTF-8"?-->
         <div class="d-block d-sm-none small-advance-check">
             <p class="text-center percentage-number-advance my-4">
@@ -78,7 +78,7 @@
 
         {% if modulos == 1 %}
         <!-- MODULOS -->
-        <h4 class="mt-6 pt-4 mb-0 pb-1 title-grey sub-line container ">Módulos</h4>
+        <h4 class="mt-6 pt-4 mb-0 pb-1 title-grey sub-line container ">{{'Módulos'|trans}}</h4>
 
         <!--CONTENDOR DE LAS CARDS  -->
         <div class="container d-flex flex-column justify-content-center align-items-center" id="tuto-step3">

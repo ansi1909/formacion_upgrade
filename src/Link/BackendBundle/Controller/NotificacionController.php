@@ -1296,6 +1296,7 @@ class NotificacionController extends Controller
 
         // Tipos de destino
         $tds = $em->getRepository('LinkComunBundle:AdminTipoDestino')->findAll();
+        //return new response(var_dump($tds));
 
         return $this->render('LinkBackendBundle:Notificacion:editNotificacionProgramada.html.twig', array('notificacion_programada' => $notificacion_programada,
                                                                                                           'tds' => $tds,
