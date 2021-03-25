@@ -354,6 +354,7 @@ El tipo de pregunta es requerido.: Question type is required.
 El tipo de recurso es requerido: Type of resource is required
 El título debe contener al menos 10 caracteres: Title must have at least 10 characters
 El título es requerido.: The title is required.
+El título debe tener máximo  45 caracteres.: The title must have a maximum of 45 characters.
 El título debe ser mínimo de 3 caracteres.: The title must be at least 3 characters.
 El tutor virtual aún no ha creado un tema de discusión: Virtual tutor has not yet created a topic of discussion
 El tutorial ha sido almacenado con éxito: The tutorial has been stored successfully
@@ -969,10 +970,15 @@ Sólo archivos con extensión .mp3: Only files with extension .mp3
 Sólo archivos con extensión mp4 o webm.: Only files with mp4 or webm extension.
 Solo es necesaria una columna que tendrá los nombres de los niveles: Only it is necessary one column for levels name
 Soporte virtual: Virtual support
+Son todos los usuarios inscritos históricamente por la empresa: They are all users historically registered by the company
 Son todos los usuarios inscritos por una empresa, que tienen acceso a la plataforma y que se han logueado al menos una vez.: They are all users registered by a company, who have access to the platform and who have logged in at least once.
 Son todos los usuarios inscritos por una empresa, que tienen acceso a la plataforma y que no se han logueado.: They are all users registered by a company, who have access to the platform and who have not logged in.
 Son todos los usuarios inscritos por una empresa.: They are all users registered by a company.
 Son todos los usuarios inscritos por una empresa que no tienen acceso a la plataforma.: They are all users registered by a company who do not have access to the platform.
+Son todos los usuarios que han sido desincorporados a solicitud de la empresa y que ya no tienen acceso a la plataforma: They are all users who have been removed at the request of the company and who no longer have access to the platform 
+Son todos los usuarios inscritos por la empresa que actualmente tienen acceso a la plataforma: They are all users registered by the company who currently have access to the platform 
+Son todos los usuarios inscritos por la empresa, que tienen acceso a la plataforma y que se han logueado al menos una vez: They are all users registered by the company, who have access to the platform and who have logged in at least once
+Son todos los usuarios inscritos por la empresa, que tienen acceso a la plataforma y que no se han logueado: They are all users registered by the company, who have access to the platform and who have not logged in
 Su registro ha sido eliminado: The item has been deleted
 Subir archivo: Upload file
 Subir Archivo de Niveles: Upload Levels File
@@ -1041,6 +1047,7 @@ Usuarios no iniciados: Uninitiated users
 Usuarios Notificados: Notified Users
 Usuarios reg.: Reg users
 Usuarios registrados: Registered users
+Usuarios con acceso: Users with access
 Validar: Validate
 Valor de la pregunta: Question weighing
 Variables de colores que se aplican a la plantilla: Color variables that are applied to the template

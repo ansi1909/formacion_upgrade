@@ -69,6 +69,7 @@ class ProgramaController extends Controller
             {
                 $nota = 0;
                 $contador = $contador + 1;
+                $pruebaLog = false;
 
                 if ($subpagina['tiene_evaluacion'])
                 {

@@ -9,7 +9,7 @@ begin
 
     -- Para el reporte 1
     OPEN resultado FOR
-       SELECT p.id AS id, p.nombre as nombre, TO_CHAR(pe.fecha_inicio, 'DD/MM/YYYY') as fecha_inicio, TO_CHAR(pe.fecha_vencimiento, 'DD/MM/YYYY') as fecha_vencimiento, TO_CHAR(ne.fecha_inicio, 'DD/MM/YYYY') as fecha_inicio_nivel,  TO_CHAR(ne.fecha_fin, 'DD/MM/YYYY') as fecha_vencimiento_nivel, ne.nombre as nombre_nivel,
+       SELECT p.id AS id, p.nombre as nombre, TO_CHAR(pe.fecha_inicio, 'DD/MM/YYYY') as fecha_inicio, TO_CHAR(pe.fecha_vencimiento, 'DD/MM/YYYY') as fecha_vencimiento, TO_CHAR(ne.fecha_inicio, 'DD/MM/YYYY') as fecha_inicio_nivel,  TO_CHAR(ne.fecha_fin, 'DD/MM/YYYY') as fecha_vencimiento_nivel, ne.nombre as nombre_nivel,ne.id as nivel_id,
        (SELECT COUNT(u.id) AS registrados FROM admin_usuario u INNER JOIN
            (admin_nivel n INNER JOIN certi_nivel_pagina np ON n.id = np.nivel_id)
            ON u.nivel_id = n.id

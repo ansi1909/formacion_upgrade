@@ -216,9 +216,10 @@ class EmpresaController extends Controller
         $query->execute();
         $registrados = $query->fetchAll();
 
+        $readerXlsx  = $this->get('phpoffice.spreadsheet')->createReader('Xlsx');
         $fileWithPath = $this->container->getParameter('folders')['dir_project'].'docs/formatos/participantesEmpresa.xlsx';
-        $objPHPExcel = \PHPExcel_IOFactory::load($fileWithPath);
-        $objWorksheet = $objPHPExcel->setActiveSheetIndex(0);
+        $spreadsheet = $readerXlsx->load($fileWithPath);
+        $objWorksheet = $spreadsheet->setActiveSheetIndex(0);
 
         $columnNames = array('A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L','M','N','O');
 
@@ -293,7 +294,7 @@ class EmpresaController extends Controller
          $empresaName = $a->eliminarAcentos($empresa->getNombre());
          $empresaName = strtoupper($empresaName);
          $hoy = date('y-m-d h i');
-         $writer = $this->get('phpexcel')->createWriter($objPHPExcel, 'Excel5');
+         $writer = $this->get('phpoffice.spreadsheet')->createWriter($spreadsheet, 'Xlsx');
          $path = 'recursos/reportes/PARTICIPANTES '.$empresaName.' '.$hoy.'.xls';
          $xls = $this->container->getParameter('folders')['dir_uploads'].$path;
          $writer->save($xls);

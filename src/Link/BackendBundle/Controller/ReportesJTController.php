@@ -173,9 +173,10 @@ class ReportesJTController extends Controller
         if ($excel==1)
         {
 
+           $readerXlsx  = $this->get('phpoffice.spreadsheet')->createReader('Xlsx');
            $fileWithPath = $this->container->getParameter('folders')['dir_project'].'docs/formatos/avanceProgramas.xlsx';
-           $objPHPExcel = \PHPExcel_IOFactory::load($fileWithPath);
-           $objWorksheet = $objPHPExcel->setActiveSheetIndex(0);
+           $spreadsheet = $readerXlsx->load($fileWithPath);
+           $objWorksheet = $spreadsheet->setActiveSheetIndex(0);
            $columnNames = array('A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z');
 
             // Encabezado
@@ -278,7 +279,7 @@ class ReportesJTController extends Controller
                 }
             }
 
-            $writer = $this->get('phpexcel')->createWriter($objPHPExcel, 'Excel2007');
+            $writer = $this->get('phpoffice.spreadsheet')->createWriter($spreadsheet, 'Xlsx');
             $empresaName = $fun->eliminarAcentos($empresa->getNombre());
             $empresaName = strtoupper($empresaName);
             $hoy = date('y-m-d h i');
@@ -402,9 +403,10 @@ class ReportesJTController extends Controller
         if($excel==1)
         {
 
+            $readerXlsx  = $this->get('phpoffice.spreadsheet')->createReader('Xlsx');
             $fileWithPath = $this->container->getParameter('folders')['dir_project'].'docs/formatos/conexionesUsuarios.xlsx';
-            $objPHPExcel = \PHPExcel_IOFactory::load($fileWithPath);
-            $objWorksheet = $objPHPExcel->setActiveSheetIndex(0);
+            $spreadsheet = $readerXlsx->load($fileWithPath);
+            $objWorksheet = $spreadsheet->setActiveSheetIndex(0);
             $columnNames = array('A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z');
 
             // Encabezado
@@ -493,7 +495,7 @@ class ReportesJTController extends Controller
             $empresaName = $fun->eliminarAcentos($empresa->getNombre());
             $empresaName = strtoupper($empresaName);
             $hoy = date('y-m-d h i');
-            $writer = $this->get('phpexcel')->createWriter($objPHPExcel, 'Excel2007');
+            $writer = $this->get('phpoffice.spreadsheet')->createWriter($spreadsheet, 'Xlsx');
             $path = 'recursos/reportes/CONEXIONES POR USUARIO '.$empresaName.' '.$hoy.'.xlsx';
             $xls = $this->container->getParameter('folders')['dir_uploads'].$path;
             $writer->save($xls);

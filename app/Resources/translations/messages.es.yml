@@ -354,6 +354,7 @@ El tipo de pregunta es requerido.: El tipo de pregunta es requerido.
 El tipo de recurso es requerido: El tipo de recurso es requerido
 El título debe contener al menos 10 caracteres: El título debe contener al menos 10 caracteres
 El título es requerido.: El título es requerido.
+El título debe tener máximo  45 caracteres.: El título debe tener máximo  45 caracteres.
 El título debe ser mínimo de 3 caracteres.: El título debe ser mínimo de 3 caracteres.
 El tutor virtual aún no ha creado un tema de discusión: El tutor virtual aún no ha creado un tema de discusión
 El tutorial ha sido almacenado con éxito: El tutorial ha sido almacenado con éxito
@@ -969,10 +970,15 @@ Sólo archivos con extensión .mp3: Sólo archivos con extensión .mp3
 Sólo archivos con extensión mp4 o webm.: Sólo archivos con extensión mp4 o webm.
 Solo es necesaria una columna que tendrá los nombres de los niveles: Solo es necesaria una columna que tendrá los nombres de los niveles
 Soporte virtual: Soporte virtual
+Son todos los usuarios inscritos históricamente por la empresa: Son todos los usuarios inscritos históricamente por la empresa
 Son todos los usuarios inscritos por una empresa, que tienen acceso a la plataforma y que se han logueado al menos una vez.: Son todos los usuarios inscritos por una empresa, que tienen acceso a la plataforma y que se han logueado al menos una vez.
 Son todos los usuarios inscritos por una empresa, que tienen acceso a la plataforma y que no se han logueado.: Son todos los usuarios inscritos por una empresa, que tienen acceso a la plataforma y que no se han logueado.
 Son todos los usuarios inscritos por una empresa.: Son todos los usuarios inscritos por una empresa.
 Son todos los usuarios inscritos por una empresa que no tienen acceso a la plataforma.: Son todos los usuarios inscritos por una empresa que no tienen acceso a la plataforma.
+Son todos los usuarios que han sido desincorporados a solicitud de la empresa y que ya no tienen acceso a la plataforma: Son todos los usuarios que han sido desincorporados a solicitud de la empresa y que ya no tienen acceso a la plataforma
+Son todos los usuarios inscritos por la empresa que actualmente tienen acceso a la plataforma: Son todos los usuarios inscritos por la empresa que actualmente tienen acceso a la plataforma
+Son todos los usuarios inscritos por la empresa, que tienen acceso a la plataforma y que se han logueado al menos una vez: Son todos los usuarios inscritos por la empresa, que tienen acceso a la plataforma y que se han logueado al menos una vez
+Son todos los usuarios inscritos por la empresa, que tienen acceso a la plataforma y que no se han logueado: Son todos los usuarios inscritos por la empresa, que tienen acceso a la plataforma y que no se han logueado
 Su registro ha sido eliminado: Su registro ha sido eliminado
 Subir archivo: Subir archivo
 Subir Archivo de Niveles: Subir Archivo de Niveles
@@ -1041,6 +1047,7 @@ Usuarios no iniciados: Usuarios no iniciados
 Usuarios Notificados: Usuarios Notificados
 Usuarios reg.: Usuarios reg.
 Usuarios registrados: Usuarios registrados
+Usuarios con acceso: Usuarios con acceso
 Validar: Validar
 Valor de la pregunta: Valor de la pregunta
 Variables de colores que se aplican a la plantilla: Variables de colores que se aplican a la plantilla
