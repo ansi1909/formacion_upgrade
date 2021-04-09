@@ -9,9 +9,11 @@ CREATE OR REPLACE FUNCTION fnavance_total_time(
   RETURNS text AS
 $BODY$
 declare
-    str text;			-- Cadena para debug
-    reg  record;		-- Se almacena la cantidad de conexiones y el promedio de conexión
+    str time;			-- Cadena para debug
+    reg  record;		-- almacena las horas de conexión durante la fecha inicio y fin del programa
+	
 begin
+
         SELECT INTO reg  sum(s.fecha_request - s.fecha_ingreso) AS promedio 
 		FROM admin_sesion s
         WHERE s.fecha_ingreso between pfecha_inicio and pfecha_fin
