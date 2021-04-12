@@ -2134,9 +2134,16 @@ public function obtenerEstructuraJson($pagina_id){
     $em = $this->em;
 
     $query = $em->createQuery('SELECT u FROM LinkComunBundle:AdminUsuario u
-                  WHERE LOWER(u.login) = :login AND u.clave = :clave')
-                    ->setParameters(array('login' => strtolower($datos['login']),
-                                'clave' => $datos['clave']));
+                               WHERE LOWER(u.login) = :login
+                              AND u.clave = :clave
+                              AND u.empresa =:empresa
+                              ORDER BY u.id ASC'
+        )
+            ->setParameters(array(
+                'login' => strtolower($datos['login']),
+                'clave' => $datos['clave'],
+                'empresa' => $datos['empresa']['id'],
+            ));
         $usuarios = $query->getResult();
 
         if ($usuarios)
@@ -3781,6 +3788,29 @@ public function obtenerEstructuraJson($pagina_id){
         $fecha_fin_total = new \DateTime(date('Y/m/d H:i:s', strtotime($date_fin)));
         $interval = date_diff($fecha_inicio_total, $fecha_fin_total);
         return $interval->format('%h:%i:%s');
+    }
+
+    public function AvancetotalTime($date_inicio,$date_fin,$usuario_id){
+      $fecha_inicio = new \DateTime(date('Y-m-d 00:00:00', strtotime($date_inicio)));
+      $fecha_fin = new \DateTime(date('Y-m-d 23:59:59', strtotime($date_fin)));
+      $fecha_inicio = $fecha_inicio->format('Y-m-d H:i:s');
+      $fecha_fin = $fecha_fin->format('Y-m-d H:i:s');
+      
+      $em = $this->em;
+
+        $query = $em->getConnection()->prepare('SELECT
+                                                fnavance_total_time(:pfecha_inicio, :pfecha_fin, :pusuario_id) as
+                                                resultado;');
+        
+        $query->bindValue(':pfecha_inicio', $fecha_inicio, \PDO::PARAM_STR);
+        $query->bindValue(':pfecha_fin', $fecha_fin, \PDO::PARAM_STR);
+        $query->bindValue(':pusuario_id', $usuario_id, \PDO::PARAM_INT);
+        $query->execute();
+        $rs = $query->fetchAll();
+
+        return $rs[0]['resultado'];
+
+      
     }
 
     public function clearNameTimeZone($timeZone,$pais,$yml){

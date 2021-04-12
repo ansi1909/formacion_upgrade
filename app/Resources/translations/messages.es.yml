@@ -75,6 +75,7 @@ Avance en el módulo: Avance en el módulo
 Avance en el programa: Avance en el programa
 Avance en programas: Avance en programas
 Aviso de cierre de sesión: Aviso de cierre de sesión
+Avisos programados: Avisos programados
 Avisos programados de: Avisos programados de
 Ayer: Ayer
 Ayuda: Ayuda
@@ -82,6 +83,7 @@ Biblioteca: Biblioteca
 Biblioteca virtual: Biblioteca virtual
 Bienvenida: Bienvenida
 Bienvenido: Bienvenido
+Bienvenido al: Bienvenido al
 Bien hecho: Bien hecho
 Buen trabajo: Buen trabajo
 Buscar: Buscar
@@ -122,6 +124,7 @@ Cerrar sesión: Cerrar sesión
 Certificado: Certificado
 Certificado inexistente para este contenido: Certificado inexistente para este contenido
 Certificado no encontrado: Certificado no encontrado
+Clave: Clave
 Código: Código
 Código del empleado repetido: Código del empleado repetido
 Columna: Columna
@@ -186,6 +189,8 @@ Correo secundario: Correo secundario
 Creado el: Creado el
 Crear evento: Crear evento
 Crear nuevo tema: Crear nuevo tema
+Curso / Programa: Curso / Programa
+Curso: Curso
 Customización: Customización
 Dato en nulo.: Dato en nulo.
 Datos Básicos: Datos Básicos
@@ -206,6 +211,7 @@ Datos del Tipo de Destino: Datos del Tipo de Destino
 Datos del tutorial: Datos del tutorial
 Datos evento: Datos evento
 Dar acceso: Dar acceso
+de: de
 de la: de la
 de la evaluación: de la evaluación
 de un total de: de un total de
@@ -214,10 +220,12 @@ Debes elegir una empresa: Debes elegir una empresa
 Debe elegir un programa: Debe elegir un programa
 Debe escribir su respuesta: Debe escribir su respuesta
 Debe indicar el orden de la pagina: Debe indicar el orden de la pagina
+Debe indicar fecha desde y fecha hasta: Debe indicar fecha desde y fecha hasta
 Debes ingresar el correo electrónico: Debes ingresar el correo electrónico
 Debes ingresar el correo personal o el correo corporativo: Debes ingresar el correo personal o el correo corporativo
 Debe seleccionar al menos un programa: Debe seleccionar al menos un programa
 Debe seleccionar al menos un rol: Debe seleccionar al menos un rol
+Debe seleccionar categoria.: Debe seleccionar categoria.
 Debe seleccionar el grupo: Debe seleccionar el grupo
 Debe seleccionar el tipo de pregunta o agregar una nueva: Debe seleccionar el tipo de pregunta o agregar una nueva
 Debe seleccionar la fecha inicial: Debe seleccionar la fecha inicial
@@ -233,6 +241,7 @@ Descarga el archivo a través del siguiente enlace: Descarga el archivo a travé
 Descargar: Descargar
 Descargas: Descargas
 Descargar archivo: Descargar archivo
+Descargar Excel: Descargar Excel
 Descargue material complementario: Descargue material complementario
 Descripción: Descripción
 Desde: Desde
@@ -250,9 +259,11 @@ días: días
 Dimensiones recomendadas: Dimensiones recomendadas
 Diseño: Diseño
 Dispositivo: Dispositivo
-Dispositivo - Navegador - Sistema Operativo: Device - Browser - Operating System
+Dispositivo - Navegador - Sistema Operativo: Dispositivo - Navegador - Sistema Operativo
+Dispositivo - Navegador - Sistema Operativo: Dispositivo - Navegador - Sistema Operativo
 Domingo: Domingo
 Duplicar página y sub-páginas: Duplicar página y sub-páginas
+Duplicar página y sub-páginas 1: Duplicar página y sub-páginas 1
 Duplicar evaluación : Duplicar evaluación
 Editar: Editar
 Editar asignación: Editar asignación
@@ -434,6 +445,7 @@ Estimado participante, si decides salir de la evaluación en este momento, perde
 Estimado participante, si usted decide salir antes de terminar la evaluación perderá todas las respuestas que haya contestado hasta los momentos: Estimado participante, si usted decide salir antes de terminar la evaluación perderá todas las respuestas que haya contestado hasta los momentos
 Estos son los resultados que has obtenido: Estos son los resultados que has obtenido
 Estructura: Estructura
+Estructura de la página: Estructura de la página
 Evaluación: Evaluación
 Evaluación activa: Evaluación activa
 Evaluación asignada, cualquier modificación debe ser consultada con el equipo de soporte: Evaluación asignada, cualquier modificación debe ser consultada con el equipo de soporte
@@ -444,6 +456,7 @@ Evaluaciones por módulo: Evaluaciones por módulo
 Evento guardado: Evento guardado
 Evento no guardado: Evento no guardado
 Excelente: Excelente
+Excel usuarios: Excel usuarios
 Existe actividad en el espacio colaborativo, a continuación te presento los detalles: Existe actividad en el espacio colaborativo, a continuación te presento los detalles
 Existe actividad en uno de los muros monitoreados por ti, a continuación te presento los detalles: Existe actividad en uno de los muros monitoreados por ti, a continuación te presento los detalles
 Experimenta la potencialidad de la capacitación online: Experimenta la potencialidad de la capacitación online
@@ -488,6 +501,7 @@ Formato de correo inválido: Formato de correo inválido
 Formato sugerido se especifica en: Formato sugerido se especifica en
 Foto de la página: Foto de la página
 Generar: Generar
+Generar certificados: Generar certificados
 Gráfica: Gráfica
 Gráfica horas de conexión: Gráfica horas de conexión
 Gráfica conexiones por dispositivo: Gráfica conexiones por dispositivo
@@ -534,6 +548,7 @@ Imprimir certificado: Imprimir certificado
 Imprimir constancia de notas: Imprimir constancia de notas
 Inactivos: Inactivos
 Índice: Índice
+Ingrese su correo: Ingrese su correo
 Ingrese un correo valido: Ingrese un correo valido
 Indice del contenido: Indice del contenido
 Indique el asunto de su mensaje: Indique el asunto de su mensaje
@@ -646,6 +661,7 @@ Listado de tutoriales: Listado de tutoriales
 Listado de usuarios: Listado de usuarios
 Listado de participantes por empresa: Listado de participantes por empresa
 Lo sentimos. Sesión expirada.: Lo sentimos. Sesión expirada.
+Logo: Logo
 Logueado: Logueado
 Login repetido: Login repetido
 Login requerido: Login requerido
@@ -659,6 +675,7 @@ Mantener abierta la sesión: Mantener abierta la sesión
 Martes: Martes
 Más recientes: Más recientes
 Más valorados: Más valorados
+Materia: Materia
 Material complementario: Material complementario
 Materias vistas: Materias vistas
 Mensaje: Mensaje
@@ -704,6 +721,7 @@ No iniciados: No iniciados
 No Iniciado: No Iniciado
 no posee participantes registrados: no posee participantes registrados
 No se encontraron resultados: No se encontraron resultados
+No se encontro la fecha de inicio: No se encontro la fecha de inicio
 No se encontró información para este usuario: No se encontró información para este usuario
 No se ha registrado ninguna actividad... Se cerrará su sesión en los próximos 5 segundos: No se ha registrado ninguna actividad... Se cerrará su sesión en los próximos 5 segundos
 No se mostrará en la página de login: No se mostrará en la página de login
@@ -823,6 +841,7 @@ Procesando: Procesando
 Procesar: Procesar
 Programa: Programa
 Programación del aviso: Programación del aviso
+Reporte de participantes registrados en programa: Reporte de participantes registrados en programa
 Programado para: Programado para
 Programar nuevo aviso: Programar nuevo aviso
 Programas: Programas
@@ -871,6 +890,7 @@ Reporte de participantes aprobados por programas: Reporte de participantes aprob
 Reporte de participantes aprobados en programas: Reporte de participantes aprobados en programas
 Reporte de participantes cursando por programas: Reporte de participantes cursando por programas
 Reporte de participantes cursando el programa: Reporte de participantes cursando el programa
+Reporte de participantes de: Reporte de participantes de
 Reporte de participantes no iniciados en programa: Reporte de participantes no iniciados en programa
 Reporte de participantes registrados en programas: Reporte de participantes registrados en programas
 Reporte de participantes por empresa: Reporte de participantes por empresa
@@ -915,6 +935,7 @@ Seleccione la empresa para mostrar los niveles: Seleccione la empresa para mostr
 Seleccione la empresa para mostrar las páginas asignadas: Seleccione la empresa para mostrar las páginas asignadas
 Seleccione la fecha difusión: Seleccione la fecha difusión
 Sesión expirada: Sesión expirada
+Enviados: Enviados
 Si: Si
 Sí: Sí
 Si acepta no puede revertir el cambio: Si acepta no puede revertir el cambio
@@ -996,6 +1017,7 @@ Todos: Todos
 Todos los derechos reservados: Todos los derechos reservados
 Todos los empleados de la empresa: Todos los empleados de la empresa
 Todos los niveles: Todos los niveles
+Todos los programas: Todos los programas
 TODOS LOS TEMAS: TODOS LOS TEMAS
 Tomar evaluación: Tomar evaluación
 Total aprobados: Total aprobados
@@ -1003,6 +1025,7 @@ Total de registros: Total de registros
 Tu calificación: Tu calificación
 Tu comentario: Tu comentario
 Tu respuesta: Tu respuesta
+Tu progreso en el: Tu progreso en el
 Tutoriales: Tutoriales
 Última conexión: Última conexión
 Últimos 12: Últimos 12
@@ -1017,6 +1040,7 @@ Usuarios conectados: Usuarios conectados
 Usuario inactivo. Contacte al administrador del sistema.: Usuario inactivo. Contacte al administrador del sistema.
 Usuario o clave incorrecta.: Usuario o clave incorrecta.
 Usuarios activos: Usuarios activos
+Usuarios aprobados: Usuarios aprobados
 Usuarios culminados: Usuarios culminados
 Usuarios cursando: Usuarios cursando
 Usuarios inactivos: Usuarios inactivos

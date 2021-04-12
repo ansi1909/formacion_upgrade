@@ -38,8 +38,9 @@ $(document).ready(function() {
 		});
     });
 
-    $('#pdf').click(function(){
+    $('#pdf, #pdf1').click(function(){
     	$('#pdf').hide();
+		$('#pdf1').hide();
     	$('#pdf-loader').show();
     	renderIntoImage();
     });
@@ -275,7 +276,11 @@ function mostrarReporte(data)
 
    	$('#grafico').show();
    	$('#dispositivos').show();
-   	$('#dispositivos_os').show();
+   	var rol = $('#rol').val();
+	if (rol == 'true'){
+   		$('#dispositivos_os').show();
+		$('#pdf1').hide();
+	}
    	$('#desdef').val(data.desdef);
    	$('#hastaf').val(data.hastaf);
 
@@ -290,8 +295,13 @@ const renderIntoImage = () => {
   	const canvas2 = document.getElementById('myChart2');
   	var src_img2 = getImgFromCanvas(canvas2);
 
-    const canvas3 = document.getElementById('myChart3');
-  	var src_img3 = getImgFromCanvas(canvas3);
+	var rol = $('#rol').val();
+	if (rol == 'true'){
+		const canvas3 = document.getElementById('myChart3');
+		var src_img3 = getImgFromCanvas(canvas3);
+	}else{
+		var src_img3 = null;
+	}
 
 
   	// Se almacena la imagen en el servidor
@@ -299,11 +309,11 @@ const renderIntoImage = () => {
 		type: "POST",
 		url: $('#url_img').val(),
 		async: true,
-		data:{img1: src_img1,img2:src_img2, img3: src_img3 },
+		data:{img1: src_img1,img2:src_img2, img3: src_img3, rol: rol },
 		dataType: "json",
 		success: function(response) {
 			$('#pdf-loader').hide();
-			var href = $("#url_pdf").val()+'/'+$('#empresa_id').val()+'/'+$('#desdef').val()+'/'+$('#hastaf').val();
+			var href = $("#url_pdf").val()+'/'+$('#empresa_id').val()+'/'+$('#desdef').val()+'/'+$('#hastaf').val()+'/'+$('#rol').val();
         	$("#pdf-link").attr("href", href);
         	$('#pdf-link').show();
 		},
