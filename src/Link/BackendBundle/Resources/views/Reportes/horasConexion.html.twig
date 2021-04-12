@@ -6,7 +6,13 @@
 {% endblock %}
 
 {% block body %}
+{% if not usuario.empresa and app.session.get('administrador') %}
+    {% set rol = 'true' %}
+{% else %}
+    {% set rol = 'false' %}
+{% endif %}
 {% set encabezado = usuario.empresa ? 'Horas de conexión'|trans : 'Horas de conexión por empresa'|trans %}
+<input type="hidden" id="rol" name="rol" value="{{ rol }}">
 <input type="hidden" id="error-fecha" name="error-fecha" value="{{ 'No se encontro la fecha de inicio'|trans }}">
 <input type="hidden" id="url_fecha_inicial" name="url_fecha_inicial" value="{{ path('_ajaxUrlpaginaEmpresa') }}">
 <input type="hidden" id="entidad_fecha" name="entidad_fecha" value="AdminSesion">
@@ -111,7 +117,11 @@
                                 </div>
                             </div>
                             <div class="card-footer">
-
+                                <div class="col-sm-16 col-md-16 text-right">
+                                    <button id="pdf1" type="button" class="bttn__saved generable" data-toggle="tooltip" data-placement="bottom" title="{{ 'Generar'|trans }} PDF"><span class="fa fa-file-pdf-o"></span></button>
+                                    <a id="pdf-link" class="descargable" href="#" target="_blank" style="display:none;"><button type="button" class="bttn__saved" data-toggle="tooltip" data-placement="bottom" title="{{ 'Descargar'|trans }} PDF"><span class="fa fa-download"></span></button></a>
+                                    <img id="pdf-loader" class="img-loader descargable" src="{{ asset('img/ui-anim_basic_16x16.gif') }}" style="display:none;">
+                                </div>
                             </div>
                         </div>
                     </div>
