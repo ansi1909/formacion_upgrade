@@ -504,7 +504,7 @@ class NivelController extends Controller
                     <thead class="sty__title">
                         <tr>
                             <th class="hd__title">'.$this->get('translator')->trans('Nombre').'</th>
-                            <th class="hd__title">'.$this->get('translator')->trans('Categoria').'</th>
+                            <th class="hd__title">'.$this->get('translator')->trans('Categoría').'</th>
                             <th class="hd__title">'.$this->get('translator')->trans('Asignar').'</th>
                         </tr>
                     </thead>

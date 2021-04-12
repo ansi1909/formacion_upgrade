@@ -138,7 +138,7 @@ class ReportesJTController extends Controller
     public function ajaxAvanceProgramasAction(Request $request)
     {
 
-        $estatusProragama = ['No Iniciado','En curso','En evaluación','Finalizado'];
+        $estatusProragama = ['No Iniciado','En curso','En evaluación','Aprobado'];
         $session = new Session();
         $em = $this->getDoctrine()->getManager();
         $rs = $this->get('reportes');
@@ -244,8 +244,8 @@ class ReportesJTController extends Controller
                     $fecha_inicio = $fun->converDate($participante['fecha_inicio_programa'],$yml['parameters']['time_zone']['default'],$timeZoneEmpresa);
                     $fecha_fin = $fun->converDate($participante['fecha_fin_programa'],$yml['parameters']['time_zone']['default'],$timeZoneEmpresa);
                     if($status == 3){
-                        $totalTime = $fun->totalTime($participante['fecha_inicio_programa'],$participante['fecha_fin_programa']);
-
+                        $totalTime = $fun->AvancetotalTime($participante['fecha_inicio_programa'],$participante['fecha_fin_programa'],$participante['id']);
+                        //return new response(var_dump($totalTime)); 
                     }
 
                     // Datos de las columnas del reporte
