@@ -6,10 +6,10 @@ CREATE OR REPLACE FUNCTION fnavance_total_time(
     pfecha_inicio timestamp,
     pfecha_fin timestamp,
     pusuario_id integer)
-  RETURNS text AS
+  RETURNS time AS
 $BODY$
 declare
-    str time;			-- Cadena para debug
+    str time;			-- resultado
     reg  record;		-- almacena las horas de conexión durante la fecha inicio y fin del programa
 	
 begin
@@ -20,7 +20,7 @@ begin
         AND s.usuario_id = pusuario_id;
 		--group by s.fecha_request,s.fecha_ingreso ;
 		
-		str = reg;
+		str = reg.promedio;
 
     RETURN str;
 
