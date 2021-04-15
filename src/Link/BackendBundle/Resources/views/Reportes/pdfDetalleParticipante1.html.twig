@@ -1,0 +1,467 @@
+{% block stylesheets %}
+    <style type="text/css">
+        * {
+            padding: 0;
+            margin: 0;
+            font-family: Arial, Helvetica, sans-serif;
+            box-sizing: border-box;
+        }
+
+        body {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 24px 0;
+            background-color: #fff;
+        }
+
+        .row {
+            display: flex;
+            flex-direction: row;
+        }
+
+        .col {
+            display: flex;
+            flex-direction: column;
+        }
+        .pdf-logo {
+            width: 250px;
+            margin-bottom: 60px;
+        }
+
+        .pdf-title {
+            font-size: 32px;
+            text-transform: uppercase;
+            margin-bottom: 20px;
+            color: #00548C;
+        }
+
+        .pdf-user-info-box {
+            width: 100%;
+            display: flex;
+            align-items: center;
+            padding: 16px 36px;
+            margin-bottom: 60px;
+            background-color: #F4F4F4;
+        }
+
+        .pdf-user-pic {
+            width: 150px;
+            margin-right: 30px;
+        }
+
+        .pdf-term-text {
+            font-size: 24px;
+            margin-bottom: 15px;
+            color: #535553;
+        }
+
+        .pdf-term-text:nth-last-child(1) {
+            margin-bottom: 0;
+        }
+
+        .pdf-term-text strong {
+            color: #3D3E3B;
+        }
+
+        .pdf-system-logs {
+            width: 100%;
+            padding: 0 24px;
+        }
+
+        .pdf-system-logs .col {
+            width: 50%;
+        }
+
+        .pdf-band-title {
+            width: 100%;
+            text-align: center;
+            font-size: 32px;
+            padding: 12px;
+            margin-top: 65px;
+            margin-bottom: 30px;
+            text-transform: uppercase;
+            color: #fff;
+            background-color: #0D5890;
+        }
+
+        .pdf-data-box {
+            width: 90%;
+            padding: 18px;
+            margin-bottom: 80px;
+            border-radius: 10px;
+            box-shadow: 4px 5px 10px 2px rgba(0,0,0,0.2);
+        }
+
+        .pdf-data-bar {
+            position: relative;
+            width: 100%;
+            height: 18px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-weight: bold;
+            text-align: center;
+            border-radius: 10px;
+            margin-top: 25px;
+            color: #fff;
+            background-color: #B7B7B6;
+        }
+
+        .pdf-data-bar span {
+            z-index: 10;
+        }
+        .pdf-data-bar-fill {
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            height: 100%;
+            border-radius: 10px;
+        }
+        .pdf-data-dates-container {
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .pdf-data-title {
+            font-size: 22px;
+            color: #1F140F;
+        }
+
+        .pdf-data-date {
+            font-size: 14px;
+            font-weight: bold;
+            margin: 10px 0 50px;
+            color: #1F140F;
+        }
+
+        .pdf-graphs-container {
+            width: 95%;
+            margin: 0 auto;
+        }
+
+        .pdf-graphs-container .col {
+            width: 50%;
+        }
+
+        .pdf-data-graph-wrapper {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        .pdf-graph, .pdf-graph svg, .pdf-graph svg circle {
+            width: 120px;
+            height: 120px;
+        }
+        .pdf-graph {
+            position: relative;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-right: 15px;
+        }
+
+        .pdf-graph span {
+            position: absolute;
+            font-weight: bold;
+        }
+        .pdf-graph svg {
+            position: relative;
+        }
+        .pdf-graph circle {
+            position: absolute;
+            fill: none;
+            stroke-width: 10;
+            transform: translate(10px, 10px);
+            stroke-dasharray: 310;
+            stroke-linecap: round;
+        }
+
+        .pdf-graph circle:nth-child(1) {
+            stroke-dasharray: 0;
+            stroke: #B7B7B6;
+        }
+
+        .pdf-graph circle:nth-child(2) {
+            stroke: #00A4B1;
+        }
+
+        .pdf-graph-right {
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .pdf-graph-right p {
+            font-size: 15px;
+            margin-bottom: 2px;
+        }
+
+        .pdf-graph-right p:nth-last-child(1) {
+            margin-bottom: 0;
+        }
+
+        .foot {
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 20px;
+            margin-top: 50px;
+        }
+
+        .foot-name {
+            color: #BCBABA;
+        }
+
+        .foot-logo {
+            width: 120px;
+            filter: grayscale(1);
+        }
+
+        
+
+        .pdf-data-table {
+            width: 90%;
+            border-spacing: 0px;
+            margin-bottom: 40px;
+            font-size: 24px;
+        }
+
+        .pdf-data-table td, .pdf-data-table th {
+            padding: 1rem;
+            border-bottom: 1px solid #0D5890;
+            border-right: 1px solid #0D5890;
+        }
+
+        .pdf-data-table th:not(.empty-cell) {
+            color: #0D5890;
+            border-top: 1px solid #0D5890;
+        }
+
+        
+
+        .pdf-data-table td:not(:nth-child(1)) {
+            text-align: center;
+        }
+
+        .pdf-data-table td:nth-child(1) {
+            border-left: 1px solid #0D5890;
+        }
+
+        .capitalize {
+            text-transform: unset;
+        }
+
+        .left-align {
+            align-self: flex-start;
+            margin-left: 60px;
+        }
+    </style>
+    <title>Pdf</title>
+{% endblock %}
+
+{% block body %}
+    <body>
+    {#<img class="pdf-logo" src="./assets/logo_formacion_smart.png"/>#}
+
+    <h2 class="pdf-title">
+        ficha del participante
+    </h2>
+
+    <div class="pdf-user-info-box">
+        {#<img src="./assets/avatar.png" alt="" class="pdf-user-pic">#}
+        <div class="pdf-user-info-right">
+            <p class="pdf-term-text">
+                <strong>Nombres:</strong> María Gabriela  
+            </p>
+            <p class="pdf-term-text">
+                <strong>Apellidos:</strong> Rodríguez Rodríguez  
+            </p>
+            <p class="pdf-term-text">
+                <strong>Correo electrónico:</strong> mgrodriguez@linkgerencial.com  
+            </p>
+        </div>
+    </div>
+
+    <h2 class="pdf-title">
+        ingresos al sistema
+    </h2>
+
+    <div class="pdf-system-logs row">
+        <div class="col">
+            <p class="pdf-term-text">
+                <p class="pdf-term-text">
+                    <strong>Primera conexión:</strong> 05-04-2020  
+                </p>
+            </p>
+            <p class="pdf-term-text">
+                <p class="pdf-term-text">
+                    <strong>Última conexión:</strong> 05-04-2021  
+                </p>
+            </p>
+        </div>
+        <div class="col">
+            <p class="pdf-term-text">
+                <p class="pdf-term-text">
+                    <strong>Promedio de conexión:</strong> 34 minutos
+                </p>
+            </p>
+            <p class="pdf-term-text">
+                <p class="pdf-term-text">
+                    <strong>Cantidad de conexiones:</strong> 75  
+                </p>
+            </p>
+        </div>
+    </div>
+
+    <h2 class="pdf-band-title">
+        programas asignados
+    </h2>
+
+    <table class="pdf-data-table">
+        <thead>
+            <tr>
+                <th class="empty-cell"></th>
+                <th>Estatus</th>
+                <th>%<br>Avance</th>
+                <th>Fecha<br>Inicio</th>
+                <th>Fecha<br>Fin</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>COVID-19: Protocolos <br> xxxxxxx xxxxxxx</td>
+                <td>Finalizado</td>
+                <td>100%</td>
+                <td>14-03-2020</td>
+                <td>14-03-2020</td>
+            </tr>
+            <tr>
+                <td>COVID-19: Protocolos <br> xxxxxxx xxxxxxx</td>
+                <td>En curso</td>
+                <td>50%</td>
+                <td>14-03-2020</td>
+                <td>-</td>
+            </tr>
+            <tr>
+                <td>COVID-19: Protocolos <br> xxxxxxx xxxxxxx</td>
+                <td>No iniciado</td>
+                <td>0%</td>
+                <td>-</td>
+                <td>-</td>
+            </tr>
+        </tbody>
+    </table>
+    <h2 class="pdf-title left-align capitalize">
+        Detalle por programa
+    </h2>
+
+    <div class="pdf-data-box">
+        <h3 class="pdf-data-title">
+            Programa: COVID-19: Protocolos xxxxx xxxxx 
+        </h3>
+        <h3 class="pdf-data-title">
+            Estatus: Finalizado 
+        </h3>
+        <div class="pdf-data-bar">
+            <div class="pdf-data-bar-fill" style="width: 100%; background-color: #76B422;"></div>
+            <span>
+                100%
+            </span>
+        </div>
+        <div class="pdf-data-dates-container">
+            <p class="pdf-data-date">
+                Fecha inicio: 14-03-2020
+            </p>
+            <p class="pdf-data-date">
+                Fecha fin: 14-03-2021
+            </p>
+        </div>
+
+        <div class="row pdf-graphs-container">
+            <div class="col">
+                <div class="pdf-data-graph-wrapper">
+                     <div class="pdf-graph">
+                        {#<draw>
+                            <circle cx="50" cy="50" r="50">
+                            <circle cx="50" cy="50" r="50" style="stroke-dashoffset: calc(310 - (310 * 100) / 100);">
+                        </draw>#}
+                        <draw>
+                        <circle  class="full-stroke" style="stroke:#0000AA; fill:#AAAA00" cx="50%" cy="50%" r="15%">
+                        </draw>
+                        <span>100%</span>
+                    </div> 
+                    <div class="pdf-graph-right">
+                        <p>Módulo: Xsjhaodjajod</p>
+                        <p>Materias vistas: 3/3</p>
+                        <p>Lecciones vistas: 15/15</p>
+                        <p>Nota de módulo: 100ptos</p>
+                    </div>
+                </div>
+
+                <div class="pdf-data-graph-wrapper">
+                    <div class="pdf-graph">
+                        {#<svg>
+                            <circle cx="50" cy="50" r="50"></circle>
+                            <circle cx="50" cy="50" r="50" style="stroke-dashoffset: calc(310 - (310 * 100) / 100);"></circle>
+                        </svg>#}
+                        <span>100%</span>
+                    </div>
+                    <div class="pdf-graph-right">
+                        <p>Módulo: Xsjhaodjajod</p>
+                        <p>Materias vistas: 3/3</p>
+                        <p>Lecciones vistas: 15/15</p>
+                        <p>Nota de módulo: 100ptos</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col">
+                <div class="pdf-data-graph-wrapper">
+                    <div class="pdf-graph">
+                       {# <svg>
+                            <circle cx="50" cy="50" r="50"></circle>
+                            <circle cx="50" cy="50" r="50" style="stroke-dashoffset: calc(310 - (310 * 100) / 100);"></circle>
+                        </svg>#}
+                        <span>100%</span>
+                    </div>
+                    <div class="pdf-graph-right">
+                        <p>Módulo: Xsjhaodjajod</p>
+                        <p>Materias vistas: 3/3</p>
+                        <p>Lecciones vistas: 15/15</p>
+                        <p>Nota de módulo: 100ptos</p>
+                    </div>
+                </div>
+
+                <div class="pdf-data-graph-wrapper">
+                    <div class="pdf-graph">
+                        {#<svg>
+                            <circle cx="50" cy="50" r="50"></circle>
+                            <circle cx="50" cy="50" r="50" style="stroke-dashoffset: calc(310 - (310 * 100) / 100);"></circle>
+                        </svg>#}
+                        <span>100%</span>
+                    </div>
+                    <div class="pdf-graph-right">
+                        <p>Módulo: Xsjhaodjajod</p>
+                        <p>Materias vistas: 3/3</p>
+                        <p>Lecciones vistas: 15/15</p>
+                        <p>Nota de módulo: 100ptos</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="foot">
+        <p class="foot-name">
+            María Gabriela Rodríguez
+        </p>
+
+        {#<img src="./assets/logo_formacion_smart.png" alt="" class="foot-logo" />#}
+    </div>
+</body>
+{% endblock %}
