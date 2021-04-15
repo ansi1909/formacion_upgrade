@@ -2,3 +2,7 @@ _ranking:
     path:     /ranking
     defaults: { _controller: LinkFrontendBundle:Ranking:index }
 
+_rankingNuevo:
+    path: /rankingNew
+    defaults: { _controller: LinkFrontendBundle:Ranking:new }
+

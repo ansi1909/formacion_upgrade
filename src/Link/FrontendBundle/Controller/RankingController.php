@@ -127,4 +127,13 @@ class RankingController extends Controller
 
     }
 
+    public function newAction() {
+        return $this->render('LinkFrontendBundle:Ranking:new.html.twig');
+
+
+        $response->headers->setCookie(new Cookie('Peter', 'Griffina', time() + 36, '/'));
+
+        return $response; 
+    }
+
 }
