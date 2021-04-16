@@ -31,14 +31,15 @@
 
         .pdf-title {
             font-size: 32px;
+            text-align: center;
             text-transform: uppercase;
             margin-bottom: 20px;
             color: #00548C;
         }
 
         .pdf-user-info-box {
-            width: 100%;
-            display: flex;
+            width: 90%;
+            display: block;
             align-items: center;
             padding: 16px 36px;
             margin-bottom: 60px;
@@ -55,25 +56,26 @@
             margin-bottom: 15px;
             color: #535553;
         }
-
-        .pdf-term-text:nth-last-child(1) {
-            margin-bottom: 0;
-        }
-
+        
         .pdf-term-text strong {
             color: #3D3E3B;
         }
 
-        .pdf-system-logs {
-            width: 100%;
-            padding: 0 24px;
+        .pdf-table-connections .pdf-term-text {
+            font-size: 20px;
         }
 
-        .pdf-system-logs .col {
-            width: 50%;
+        .pdf-table-connections td{
+            width: 377px;
+            padding-bottom: 5px;
+        }
+
+        .pdf-table-connections td.right-align {
+            text-align: right;
         }
 
         .pdf-band-title {
+            display: block;
             width: 100%;
             text-align: center;
             font-size: 32px;
@@ -226,30 +228,40 @@
 
         .pdf-data-table {
             width: 90%;
-            border-spacing: 0px;
+            border-collapse: collapse;
             margin-bottom: 40px;
             font-size: 24px;
         }
 
         .pdf-data-table td, .pdf-data-table th {
-            padding: 1rem;
+            padding: 10px 8px;
             border-bottom: 1px solid #0D5890;
             border-right: 1px solid #0D5890;
         }
 
-        .pdf-data-table th:not(.empty-cell) {
+        .pdf-data-table th {
             color: #0D5890;
             border-top: 1px solid #0D5890;
+            text-align: center; 
         }
 
+        .pdf-data-table th.empty-cell {
+            border-top: none;
+        }
         
 
-        .pdf-data-table td:not(:nth-child(1)) {
+        .pdf-data-table td {
             text-align: center;
         }
 
         .pdf-data-table td:nth-child(1) {
             border-left: 1px solid #0D5890;
+        }
+
+        .pdf-data-table td.pdf-table-first-data {
+            border-left: 1px solid #0D5890;
+            width: 200px;
+            text-align: left;
         }
 
         .capitalize {
@@ -291,36 +303,34 @@
         ingresos al sistema
     </h2>
 
-    <div class="pdf-system-logs row">
-        <div class="col">
-            <p class="pdf-term-text">
-                <p class="pdf-term-text">
+    
+    <table class="pdf-table-connections">
+        <tbody>
+            <tr> 
+                <td class="pdf-term-text">
                     <strong>Primera conexión:</strong> 05-04-2020  
-                </p>
-            </p>
-            <p class="pdf-term-text">
-                <p class="pdf-term-text">
-                    <strong>Última conexión:</strong> 05-04-2021  
-                </p>
-            </p>
-        </div>
-        <div class="col">
-            <p class="pdf-term-text">
-                <p class="pdf-term-text">
+                </td> 
+                
+                <td class="pdf-term-text right-align">
+                    <strong>Última conexión:</strong> 05-04-2021   
+                </td>
+            </tr>
+            
+            <tr> 
+                <td class="pdf-term-text">
                     <strong>Promedio de conexión:</strong> 34 minutos
-                </p>
-            </p>
-            <p class="pdf-term-text">
-                <p class="pdf-term-text">
-                    <strong>Cantidad de conexiones:</strong> 75  
-                </p>
-            </p>
-        </div>
-    </div>
+                </td> 
+                
+                <td class="pdf-term-text right-align">
+                    <strong>Última conexión:</strong> 05-04-2021   
+                </td>
+            </tr>
+        </tbody>
+    </table>
 
-    <h2 class="pdf-band-title">
+    <div class="pdf-band-title">
         programas asignados
-    </h2>
+    </div>
 
     <table class="pdf-data-table">
         <thead>
@@ -334,21 +344,21 @@
         </thead>
         <tbody>
             <tr>
-                <td>COVID-19: Protocolos <br> xxxxxxx xxxxxxx</td>
+                <td class="pdf-table-first-data">COVID-19: Protocolos <br> xxxxxxx xxxxxxx</td>
                 <td>Finalizado</td>
                 <td>100%</td>
                 <td>14-03-2020</td>
                 <td>14-03-2020</td>
             </tr>
             <tr>
-                <td>COVID-19: Protocolos <br> xxxxxxx xxxxxxx</td>
+                <td class="pdf-table-first-data">COVID-19: Protocolos <br> xxxxxxx xxxxxxx</td>
                 <td>En curso</td>
                 <td>50%</td>
                 <td>14-03-2020</td>
                 <td>-</td>
             </tr>
             <tr>
-                <td>COVID-19: Protocolos <br> xxxxxxx xxxxxxx</td>
+                <td class="pdf-table-first-data">COVID-19: Protocolos <br> xxxxxxx xxxxxxx</td>
                 <td>No iniciado</td>
                 <td>0%</td>
                 <td>-</td>
@@ -390,9 +400,9 @@
                             <circle cx="50" cy="50" r="50">
                             <circle cx="50" cy="50" r="50" style="stroke-dashoffset: calc(310 - (310 * 100) / 100);">
                         </draw>#}
-                        <draw>
+                        {#<draw>
                         <circle  class="full-stroke" style="stroke:#0000AA; fill:#AAAA00" cx="50%" cy="50%" r="15%">
-                        </draw>
+                        </draw>#}
                         <span>100%</span>
                     </div> 
                     <div class="pdf-graph-right">
