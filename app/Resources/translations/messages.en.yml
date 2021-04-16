@@ -607,6 +607,7 @@ La Entidad es requerida.: The Entity is required.
 La faq ha sido almacenada con éxito: The faq has been stored successfully
 La fecha de fin es requerida.: The end date is required.
 La fecha de inicio es requerida.: The start date is required.
+La fecha de registro debe ser menor o igual a la fecha actual: The registration date must be less than or equal to the current date
 La fecha de registro debe ser del tipo texto en formato DD/MM/AAAA: Registration date cell must be of text type in format DD/MM/YYYY
 La fecha de registro debe ser en formato DD/MM/AAAA y ser válida: Registration date must be in format DD/MM/YYYY and a valid date
 La fecha de vencimiento es requerida.: Expiration date is required.
