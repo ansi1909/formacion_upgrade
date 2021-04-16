@@ -203,15 +203,11 @@
         font-weight: $font-weight-medium;
         font-size: 10px;
         @include media-breakpoint-down(sm) {
-            white-space: nowrap;
             position: relative;
-            right: 5%;
             font-size: .625rem;
         }
         @include media-breakpoint-down(xs) {
-            white-space: nowrap;
             position: relative;
-            right: 85%;
             font-size: .625rem;
         }
     }
@@ -223,15 +219,11 @@
         font-weight: $font-weight-medium;
         font-size: 10px;
         @include media-breakpoint-down(sm) {
-            white-space: nowrap;
             position: relative;
-            right: 5%;
             font-size: .625rem;
         }
         @include media-breakpoint-down(xs) {
-            white-space: nowrap;
             position: relative;
-            right: 85%;
             font-size: .625rem;
         }
     }
@@ -243,15 +235,11 @@
         font-weight: $font-weight-medium;
         font-size: 10px;
         @include media-breakpoint-down(sm) {
-            white-space: nowrap;
             position: relative;
-            right: 5%;
             font-size: .625rem;
         }
         @include media-breakpoint-down(xs) {
-            white-space: nowrap;
             position: relative;
-            right: 85%;
             font-size: .625rem;
         }
     }
@@ -336,13 +324,10 @@
             .porcent-xs{
                 font-size: 1.5rem;
                 position: relative;
-                right: .5rem;
             }
         }
         .btn-xs-cont{
             position: relative;
-            right: 50%;
-            transform: translateX(-80%);
         }
     }
 }
@@ -523,6 +508,10 @@
     }
     .datos_user{
         @extend %sty_user;
+
+        &#label-correo_corporativo, &#label-correo {
+            word-break: break-all;
+        }
     }
     .name-titulo{
         font-family: $primary-font;
