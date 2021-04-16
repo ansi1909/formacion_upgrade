@@ -992,7 +992,9 @@ class UsuarioController extends Controller
                                        
                                         $hoy = new \DateTime('now');
                                         $reg = new \DateTime(str_replace("/","-",$fecha_registro));
+                                        
                                         if($reg > $hoy ){
+                                            
                                             $particulares[$this->get('translator')->trans('Línea').' '.$row][$this->get('translator')->trans('Columna').' '.$col_name] = $this->get('translator')->trans('La fecha de registro debe ser menor o igual a la fecha actual').'.';
                                         }
                                         
