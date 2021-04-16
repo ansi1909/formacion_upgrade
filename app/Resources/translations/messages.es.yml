@@ -607,6 +607,7 @@ La Entidad es requerida.: La Entidad es requerida.
 La faq ha sido almacenada con éxito: La faq ha sido almacenada con éxito
 La fecha de fin es requerida.: La fecha de fin es requerida.
 La fecha de inicio es requerida.: La fecha de inicio es requerida.
+La fecha de registro debe ser menor o igual a la fecha actual: La fecha de registro debe ser menor o igual a la fecha actual
 La fecha de registro debe ser del tipo texto en formato DD/MM/AAAA: La fecha de registro debe ser del tipo texto en formato DD/MM/AAAA
 La fecha de registro debe ser en formato DD/MM/AAAA y ser válida: La fecha de registro debe ser en formato DD/MM/AAAA y ser válida
 La fecha de vencimiento es requerida.: La fecha de vencimiento es requerida.

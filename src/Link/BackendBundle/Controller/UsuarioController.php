@@ -973,6 +973,7 @@ class UsuarioController extends Controller
                         $fecha_registro = trim($cell->getValue());
                         if ($fecha_registro)
                         {
+                            
                             $hay_data++;
                             if ($cell->getDataType() != 's')
                             {
@@ -987,6 +988,14 @@ class UsuarioController extends Controller
                                     if (!$f->checkFecha($fecha_registro))
                                     {
                                         $particulares[$this->get('translator')->trans('Línea').' '.$row][$this->get('translator')->trans('Columna').' '.$col_name] = $this->get('translator')->trans('La fecha de registro debe ser en formato DD/MM/AAAA y ser válida').'.';
+                                    }else{
+                                       
+                                        $hoy = new \DateTime('now');
+                                        $reg = new \DateTime(str_replace("/","-",$fecha_registro));
+                                        if($reg > $hoy ){
+                                            $particulares[$this->get('translator')->trans('Línea').' '.$row][$this->get('translator')->trans('Columna').' '.$col_name] = $this->get('translator')->trans('La fecha de registro debe ser menor o igual a la fecha actual').'.';
+                                        }
+                                        
                                     }
                                 }
                             }
