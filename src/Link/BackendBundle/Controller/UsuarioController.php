@@ -800,7 +800,7 @@ class UsuarioController extends Controller
 
     public function uploadParticipantesAction(Request $request)
     {
-
+        
         $session = new Session();
         $f = $this->get('funciones');
 
@@ -989,15 +989,18 @@ class UsuarioController extends Controller
                                     {
                                         $particulares[$this->get('translator')->trans('Línea').' '.$row][$this->get('translator')->trans('Columna').' '.$col_name] = $this->get('translator')->trans('La fecha de registro debe ser en formato DD/MM/AAAA y ser válida').'.';
                                     }else{
-                                       
+                                        
+                                        #Es necesario transformar la hora que obtenemos (UTC) del servidor a la hora de venezuela
+                                        #Ya que a las 8:00 pm de venezuela en UTC serian las 12:00 am del dia siguiente
+                                        
                                         $hoy = new \DateTime('now');
                                         $reg = new \DateTime(str_replace("/","-",$fecha_registro));
-                                        
-                                        if($reg > $hoy ){
-                                            
+                                        $hoy = $f->converDate($hoy->format('d-m-Y H:i:s'),$yml['parameters']['time_zone']['utc'],$yml['parameters']['time_zone']['local']);
+                                        $hoy = new \Datetime(str_replace("/","-",$hoy->fecha));
+
+                                        if($reg > $hoy ){    
                                             $particulares[$this->get('translator')->trans('Línea').' '.$row][$this->get('translator')->trans('Columna').' '.$col_name] = $this->get('translator')->trans('La fecha de registro debe ser menor o igual a la fecha actual').'.';
                                         }
-                                        
                                     }
                                 }
                             }
