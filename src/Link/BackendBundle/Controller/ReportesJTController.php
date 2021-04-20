@@ -726,7 +726,7 @@ class ReportesJTController extends Controller
                 $reporte['ingresos']['ultimaConexion'] = $ultimaConexion->fecha.' '.$ultimaConexion->hora;
             }
 
-            $dataUsuario = array('foto' => trim($usuario->getFoto()) ? $this->container->getParameter('folders')['dir_project'].'web/img/'.trim($usuario->getFoto()) : $this->container->getParameter('folders')['dir_project'].'web/img/user.png',
+            $dataUsuario = array('foto' => trim($usuario->getFoto()) ? $this->container->getParameter('folders')['uploads'].trim($usuario->getFoto()) : $this->container->getParameter('folders')['dir_project'].'web/img/user.png',
                                  'login' => $usuario->getLogin(),
                                  'nombre' => $usuario->getNombre(),
                                  'apellido' => $usuario->getApellido(),
