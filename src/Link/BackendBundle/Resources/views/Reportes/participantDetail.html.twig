@@ -34,6 +34,7 @@
 </style>
 
 <input type="hidden" id="profilePhoto" name="profilePhoto" value="{{ asset('img/user.png') }}">
+<input type="hidden" id="url_pdfdetalle" name="url_pdfdetalle" value="{{ path ('_pdfDetalleParticipante') }}">
 <div class="row" id="reporteDetail" style="display:none;">
     <div class="col-sm-16 col-md-16 col-lg-16">
         <div class="card">
@@ -271,11 +272,12 @@
             </div>
             <div class="card-footer">
                 <div class="col-sm-16 col-md-16 text-right">
-                    <a href="{{ path ('_pdfDetalleParticipante') }}" class="btn">
-                    <button type="submit" class="bttn__edit" data-toggle="tooltip" data-placement="bottom" title="{{'Descargar' |trans}}"><span class="fa fa-download"></span></button>
+                    <a id="pdf-detalle" href="#" target="_blank" class="btn" value="">
+                    <button type="" class="bttn__edit"  data-toggle="tooltip" data-placement="bottom" title="{{'Descargar' |trans}}"><span class="fa fa-download"></span></button>
                     </a>
                 </div>
             </div>
         </div>
     </div>
 </div>
+
