@@ -321,6 +321,7 @@
 {% endblock %}
 
 {% block body %}
+    <page pageset="old">
     <body>
     <img class="pdf-logo head-logo" src="{{logo}}"/>
 
@@ -405,7 +406,8 @@
         {% endfor %}
         </tbody>
     </table>
-    <table class="foot">
+    <page_footer>
+        <table class="foot">
         <tr>
             <td class="foot-name">
                 {{datausuario.nombre}} {{datausuario.apellido}}
@@ -416,5 +418,7 @@
             </td>
         </tr>
     </table>
+    </page_footer>
 </body>
+</page>
 {% endblock %}
