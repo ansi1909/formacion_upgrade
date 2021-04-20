@@ -202,12 +202,16 @@
         }
 
         .foot {
-            width: 100%;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
             padding: 0 20px;
             margin-top: 50px;
+        }
+
+        .foot td {
+            width: 365px;
+        }
+
+        .foot td.foot-image {
+            text-align: right;
         }
 
         .foot-name {
@@ -249,12 +253,7 @@
             text-align: center;
         }
 
-        .pdf-data-table td:nth-child(1) {
-            border-left: 1px solid #0D5890;
-        }
-
         .pdf-data-table td.pdf-table-first-data {
-            border-left: 1px solid #0D5890;
             width: 200px;
             text-align: left;
         }
@@ -290,6 +289,11 @@
 
         .pdf-graphs-table .graph-td {
             width: 310px;
+        }
+
+        .pdf-graphs-table .graph-right-cell {
+            width: 310px ;
+            padding-left: 35px;
         }
 
         .pdf-graphs-table .spacer {
@@ -336,90 +340,43 @@
 
             <table class="pdf-graphs-table">
                 {% for modulo in programa.modulos%}
-                    {% if loop.index is odd%}
-                    <tr>
-                    {% endif %}
-                        <td class="graph-td">
-                            <p><span>Módulo:</span> {{modulo.nombre}}</p>
-                            <p><span>Materias vistas:</span> {{modulo.materias}}</p>
-                            <p><span>Lecciones vistas:</span> {{modulo.lecciones}}</p>
-                            {% if modulo.evaluacion.tiene %}
-                                <p>Nota de módulo: {{ modulo.evaluacion.nota }}ptos</p>
-                            {% else %}
-                                <p>Estatus de módulo: {{ modulo.evaluacion.status }}</p> 
-                            {% endif %}
-
-                            <div class="pdf-data-bar" style="width:100%;">
-                                <div class="pdf-data-bar-fill" style="width: {{modulo.avance}}%; background-color: #76B422;"></div>
-                                <span>
-                                    {{modulo.avance}}%
-                                </span>
-                            </div>
-                        </td>
-                        <td class="middle-space">
-                        
-                        </td>
-                   {# <td class="graph-td">
-                        <p>Módulo: Xsjhaodjajod</p>
-                        <p>Materias vistas: 3/3</p>
-                        <p>Lecciones vistas: 15/15</p>
-                        <p>Nota de módulo: 100ptos</p>
-
-                        <div class="pdf-data-bar" style="width:100%;">
-                            <div class="pdf-data-bar-fill" style="width: 100%; background-color: #76B422;"></div>
-                            <span>
-                                100%
-                            </span>
-                        </div>
-                    </td>
-                </tr>
-
+                {% if loop.index0 is even %}
                 <tr>
-                    <td class="graph-td">
-                        <p>Módulo: Xsjhaodjajod</p>
-                        <p>Materias vistas: 3/3</p>
-                        <p>Lecciones vistas: 15/15</p>
-                        <p>Nota de módulo: 100ptos</p>
+                {% endif %}
+                    <td class="graph-td {% if loop.index0 is odd %} graph-right-cell {% endif %}">
+                        <p><span>Módulo:</span> {{modulo.nombre}}</p>
+                        <p><span>Materias vistas:</span> {{modulo.materias}}</p>
+                        <p><span>Lecciones vistas:</span> {{modulo.lecciones}}</p>
+                        {% if modulo.evaluacion.tiene %}
+                            <p>Nota de módulo: {{ modulo.evaluacion.nota }}ptos</p>
+                        {% else %}
+                            <p> <span> Estatus de módulo: </span> {{ modulo.evaluacion.status }}</p> 
+                        {% endif %}
 
                         <div class="pdf-data-bar" style="width:100%;">
-                            <div class="pdf-data-bar-fill" style="width: 100%; background-color: #76B422;"></div>
+                            <div class="pdf-data-bar-fill" style="width: {{modulo.avance}}%; background-color: #76B422;"></div>
                             <span>
-                                100%
+                                {{modulo.avance}}%
                             </span>
                         </div>
                     </td>
-
-                    <td class="middle-space">
-                    
-                    </td>
-                    <td class="graph-td">
-                        <p>Módulo: Xsjhaodjajod</p>
-                        <p>Materias vistas: 3/3</p>
-                        <p>Lecciones vistas: 15/15</p>
-                        <p>Nota de módulo: 100ptos</p>
-
-                        <div class="pdf-data-bar" style="width:100%;">
-                            <div class="pdf-data-bar-fill" style="width: 100%; background-color: #76B422;"></div>
-                            <span>
-                                100%
-                            </span>
-                        </div>
-                    </td>#}
-
-                    {% if loop.index is odd%}
-                    </tr>
-                    {% endif %}
+                {% if loop.index0 is odd or loop.last %}
+                </tr>
+                {% endif %}
                 {% endfor %}
-                
             </table>
         </div>
     {% endfor %}
-    <div class="foot">
-        <p class="foot-name">
-            {{datausuario.nombre}} {{datausuario.apellido}}
-        </p>
+    <table class="foot">
+        <tr>
+            <td class="foot-name">
+                {{datausuario.nombre}} {{datausuario.apellido}}
+            </td>
 
-        <img src="{{logo}}" alt="" class="foot-logo" />
-    </div>
+            <td class="foot-image">
+                <img src="{{logo}}" alt="" class="foot-logo" />
+            </td>
+        </tr>
+    </table>
 </body>
 {% endblock %}

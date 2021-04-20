@@ -38,12 +38,16 @@
         }
 
         .pdf-user-info-box {
-            width: 90%;
+            width: 80%;
             display: block;
             align-items: center;
             padding: 16px 36px;
             margin-bottom: 60px;
             background-color: #F4F4F4;
+        }
+
+        .pdf-user-info-ptop {
+            padding-top: 25px;
         }
 
         .pdf-user-pic {
@@ -202,12 +206,16 @@
         }
 
         .foot {
-            width: 100%;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
             padding: 0 20px;
             margin-top: 50px;
+        }
+
+        .foot td {
+            width: 365px;
+        }
+
+        .foot td.foot-image {
+            text-align: right;
         }
 
         .foot-name {
@@ -229,7 +237,7 @@
         }
 
         .pdf-data-table td, .pdf-data-table th {
-            padding: 10px 14.5px;
+            padding: 10px 13.5px;
             border-bottom: 1px solid #0D5890;
             border-right: 1px solid #0D5890;
         }
@@ -318,18 +326,25 @@
     </h2>
 
     <div class="pdf-user-info-box">
-        <img src="{{datausuario.foto}}" alt="" class="pdf-user-pic">
-        <div class="pdf-user-info-right">
-            <p class="pdf-term-text">
-                <strong>Nombres:</strong> {{datausuario.nombre}}
-            </p>
-            <p class="pdf-term-text">
-                <strong>Apellidos:</strong> {{datausuario.apellido}}
-            </p>
-            <p class="pdf-term-text">
-                <strong>Correo electrónico:</strong> {{datausuario.correoPersonal}}  
-            </p>
-        </div>
+        <table>
+            <tr>
+                <td>
+                    <img src="{{datausuario.foto}}" alt="" class="pdf-user-pic">        
+                </td>
+
+                <td class="pdf-user-info-ptop">
+                    <p class="pdf-term-text">
+                        <strong>Nombres:</strong> {{datausuario.nombre}}
+                    </p>
+                    <p class="pdf-term-text">
+                        <strong>Apellidos:</strong> {{datausuario.apellido}}
+                    </p>
+                    <p class="pdf-term-text">
+                        <strong>Correo electrónico:</strong> {{datausuario.correoPersonal}}  
+                    </p>
+                </td>
+            </tr>
+        </table>
     </div>
 
     <h2 class="pdf-title">
@@ -387,12 +402,16 @@
         {% endfor %}
         </tbody>
     </table>
-    <div class="foot">
-        <p class="foot-name">
-            {{datausuario.nombre}} {{datausuario.apellido}}
-        </p>
+    <table class="foot">
+        <tr>
+            <td class="foot-name">
+                {{datausuario.nombre}} {{datausuario.apellido}}
+            </td>
 
-        <img src="{{logo}}" alt="" class="foot-logo" />
-    </div>
+            <td class="foot-image">
+                <img src="{{logo}}" alt="" class="foot-logo" />
+            </td>
+        </tr>
+    </table>
 </body>
 {% endblock %}
