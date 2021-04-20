@@ -29,6 +29,11 @@
             margin-bottom: 60px;
         }
 
+        .head-logo {
+            display: block;
+            margin-left: 240px;
+        }
+
         .pdf-title {
             font-size: 28px;
             text-align: center;
@@ -38,16 +43,14 @@
         }
 
         .pdf-user-info-box {
-            width: 80%;
-            display: block;
-            align-items: center;
-            padding: 16px 36px;
+            padding: 16px 22px;
             margin-bottom: 60px;
             background-color: #F4F4F4;
         }
 
         .pdf-user-info-ptop {
             padding-top: 25px;
+            width: 500px;
         }
 
         .pdf-user-pic {
@@ -319,7 +322,7 @@
 
 {% block body %}
     <body>
-    <img class="pdf-logo" src="{{logo}}"/>
+    <img class="pdf-logo head-logo" src="{{logo}}"/>
 
     <h2 class="pdf-title">
         ficha del participante
