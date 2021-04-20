@@ -59,7 +59,7 @@ _ajaxUrlpaginaEmpresa:
         _method: POST 
 
 _pdfDetalleParticipante:
-    path:     /pdfDetalleParticipante
-    defaults: { _controller: LinkBackendBundle:ReportesJT:pdfDetalleParticipante }
-
+    path:     /pdfDetalleParticipante/{empresa_id}/{login}
+    defaults: { _controller: LinkBackendBundle:ReportesJT:pdfDetalleParticipante, empresa_id: 0, login: null }
+    
 

@@ -308,85 +308,107 @@
     </style>
     <title>Pdf</title>
 {% endblock %}
-
 {% block body %}
-    <body>
-    <img class="pdf-logo" src="{{logo}}"/>
-
-    <h2 class="pdf-title">
-        ficha del participante
+<body>
+    <h2 class="pdf-title left-align capitalize">
+        Detalle por programa
     </h2>
+    {% for programa in programas %}
+        <div class="pdf-data-box">
+            <h3 class="pdf-data-title">
+                Programa:{{programa.nombre}} xxxxx xxxxx 
+            </h3>
+            <h3 class="pdf-data-title">
+                Estatus: {{programa.status}}
+            </h3>
+            <div class="pdf-data-bar">
+                <div class="pdf-data-bar-fill" style="width: {{programa.avance}}%; background-color: #76B422;"></div>
+                <span>
+                   {{programa.avance}}%
+                </span>
+            </div>
+            <table class="pdf-data-dates-table">
+                <tr>
+                    <td class="pdf-data-date">Fecha inicio: {{programa.fecha_inicio}}</td>
+                    <td class="pdf-data-date right-align">Fecha fin: {{programa.fecha_fin}} </td>
+                </tr>
+            </table>
 
-    <div class="pdf-user-info-box">
-        <img src="{{datausuario.foto}}" alt="" class="pdf-user-pic">
-        <div class="pdf-user-info-right">
-            <p class="pdf-term-text">
-                <strong>Nombres:</strong> {{datausuario.nombre}}
-            </p>
-            <p class="pdf-term-text">
-                <strong>Apellidos:</strong> {{datausuario.apellido}}
-            </p>
-            <p class="pdf-term-text">
-                <strong>Correo electrónico:</strong> {{datausuario.correoPersonal}}  
-            </p>
+            <table class="pdf-graphs-table">
+                <tr>
+                    {% for modulo in programa.modulos%}
+                        <td class="graph-td">
+                            <p><span>Módulo:</span> {{modulo.nombre}}</p>
+                            <p><span>Materias vistas:</span> {{modulo.materias}}</p>
+                            <p><span>Lecciones vistas:</span> {{modulo.lecciones}}</p>
+                            {% if modulo.evaluacion.tiene %}
+                                <p>Nota de módulo: {{ modulo.evaluacion.nota }}ptos</p>
+                            {% else %}
+                                <p>Estatus de módulo: {{ modulo.evaluacion.status }}</p> 
+                            {% endif %}
+
+                            <div class="pdf-data-bar" style="width:100%;">
+                                <div class="pdf-data-bar-fill" style="width: {{modulo.avance}}%; background-color: #76B422;"></div>
+                                <span>
+                                    {{modulo.avance}}%
+                                </span>
+                            </div>
+                        </td>
+                        <td class="middle-space">
+                        
+                        </td>
+                     {% endfor %}
+                   {# <td class="graph-td">
+                        <p>Módulo: Xsjhaodjajod</p>
+                        <p>Materias vistas: 3/3</p>
+                        <p>Lecciones vistas: 15/15</p>
+                        <p>Nota de módulo: 100ptos</p>
+
+                        <div class="pdf-data-bar" style="width:100%;">
+                            <div class="pdf-data-bar-fill" style="width: 100%; background-color: #76B422;"></div>
+                            <span>
+                                100%
+                            </span>
+                        </div>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="graph-td">
+                        <p>Módulo: Xsjhaodjajod</p>
+                        <p>Materias vistas: 3/3</p>
+                        <p>Lecciones vistas: 15/15</p>
+                        <p>Nota de módulo: 100ptos</p>
+
+                        <div class="pdf-data-bar" style="width:100%;">
+                            <div class="pdf-data-bar-fill" style="width: 100%; background-color: #76B422;"></div>
+                            <span>
+                                100%
+                            </span>
+                        </div>
+                    </td>
+
+                    <td class="middle-space">
+                    
+                    </td>
+                    <td class="graph-td">
+                        <p>Módulo: Xsjhaodjajod</p>
+                        <p>Materias vistas: 3/3</p>
+                        <p>Lecciones vistas: 15/15</p>
+                        <p>Nota de módulo: 100ptos</p>
+
+                        <div class="pdf-data-bar" style="width:100%;">
+                            <div class="pdf-data-bar-fill" style="width: 100%; background-color: #76B422;"></div>
+                            <span>
+                                100%
+                            </span>
+                        </div>
+                    </td>#}
+                </tr>
+                
+            </table>
         </div>
-    </div>
-
-    <h2 class="pdf-title">
-        ingresos al sistema
-    </h2>
-
-    
-    <table class="pdf-table-connections">
-        <tbody>
-            <tr> 
-                <td class="pdf-term-text">
-                    <strong>Primera conexión:</strong> {{datausuario.ingresos.primeraConexion}}
-                </td> 
-                
-                <td class="pdf-term-text right-align">
-                    <strong>Última conexión:</strong> {{datausuario.ingresos.ultimaConexion}}  
-                </td>
-            </tr>
-            
-            <tr> 
-                <td class="pdf-term-text">
-                    <strong>Promedio de conexión:</strong>{{datausuario.ingresos.promedioConexion}}
-                </td> 
-                
-                <td class="pdf-term-text right-align">
-                    <strong>Cantidad de conexiones:</strong> {{datausuario.ingresos.cantidadConexiones}}
-                </td>
-            </tr>
-        </tbody>
-    </table>
-
-    <div class="pdf-band-title">
-        programas asignados
-    </div>
-
-    <table class="pdf-data-table">
-        <thead>
-            <tr>
-                <th class="empty-cell"></th>
-                <th>Estatus</th>
-                <th>%<br>Avance</th>
-                <th>Fecha<br>Inicio</th>
-                <th>Fecha<br>Fin</th>
-            </tr>
-        </thead>
-        <tbody>
-        {% for programa in programas %}
-            <tr>
-                <td class="pdf-table-first-data">{{programa.nombre}} <br> xxxxxxx xxxxxxx</td>
-                <td>{{programa.status}}</td>
-                <td>{{programa.avance}}</td>
-                <td>{{programa.fecha_inicio}}</td>
-                <td>{{programa.fecha_fin}}</td>
-            </tr>
-        {% endfor %}
-        </tbody>
-    </table>
+    {% endfor %}
     <div class="foot">
         <p class="foot-name">
             {{datausuario.nombre}} {{datausuario.apellido}}
