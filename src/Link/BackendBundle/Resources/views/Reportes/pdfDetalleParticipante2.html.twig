@@ -335,8 +335,10 @@
             </table>
 
             <table class="pdf-graphs-table">
-                <tr>
-                    {% for modulo in programa.modulos%}
+                {% for modulo in programa.modulos%}
+                    {% if loop.index is odd%}
+                    <tr>
+                    {% endif %}
                         <td class="graph-td">
                             <p><span>Módulo:</span> {{modulo.nombre}}</p>
                             <p><span>Materias vistas:</span> {{modulo.materias}}</p>
@@ -357,7 +359,6 @@
                         <td class="middle-space">
                         
                         </td>
-                     {% endfor %}
                    {# <td class="graph-td">
                         <p>Módulo: Xsjhaodjajod</p>
                         <p>Materias vistas: 3/3</p>
@@ -404,7 +405,11 @@
                             </span>
                         </div>
                     </td>#}
-                </tr>
+
+                    {% if loop.index is odd%}
+                    </tr>
+                    {% endif %}
+                {% endfor %}
                 
             </table>
         </div>
