@@ -6,222 +6,122 @@
 {% endblock %}
 
 {% block body %}
-
-<section class="card-datos">
-    <div class="row align-items-center justify-content-center">
-        <div class="col-sm-3 col-md-3 col-3 col-lg-3 col-xl-3 text-right">
-            <div class="pic-img">
-                <a href="#" class="fileinput-button" data-toggle="tooltip" data-placement="bottom" title="Cambiar imagen">
-                    <img src="assets/img/user.svg" class="img-user-pic">
-                    <input id="fileupload" type="file" name="files[]">
-                </a>
-            </div>
-        </div>
-        <div class="col-xs-7 col-sm-7 col-md-7 col-7 col-lg-7 col-xl-7">
-            <h2 class="name-titulo text-center">Angela Merkel</h2>
-            <div class="row justify-content-between">
-                <div class="col-6 text-right">
-                    <span class="info_datos">Nombre de usuario</span>
-                </div>
-                <div class="col-6">
-                    <span class="datos_user">amerkel</span>
-                </div>
-            </div>
-            <div class="row justify-content-betwee5">
-                <div class="col-6 text-right">
-                    <span class="info_datos">Correo corporativo</span>
-                </div>
-                <div class="col-6">
-                    <span class="datos_user">amerkel@tuempresa.com</span>
-                </div>
-            </div>
-            <div class="row justify-content-betwee5">
-                <div class="col-6 text-right">
-                    <span class="info_datos">Correo secundario</span>
-                </div>
-                <div class="col-6">
-                    <span class="datos_user">amerkel@gmail.com</span>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-6 text-right">
-                    <span class="info_datos">Fecha de nacimiento </span>
-                </div>
-                <div class="col-6">
-                    <span class="datos_user">02/03/1984</span>
-                </div>
-            </div>
-        </div>
-
-    </div>
-    <div class="row align-items-center justify-content-around mt-12v">
-        <div class="col-sm-auto col-md-auto col-auto col-lg-auto col-xl-auto text-center">
-            <a href="#"><button type="button" class="btn btn-primary">Ver mis certificados</button></a>
-        </div>
-        <div class="col-sm-auto col-md-auto col-auto col-lg-auto col-xl-auto text-center">
-            <a href="#" data-toggle="modal" data-target="#modaledit"><button type="button" class="btn btn-primary">Editar perfil</button></a>
-        </div>
-        <!--<div class="col-xs-auto col-sm-auto col-md-auto col-auto col-lg-auto col-xl-auto text-center">
-            <a href="#"><button type="button" class="btn btn-primary">Ver ranking</button></a>
-        </div>-->
-        <div class="col-sm-auto col-md-auto col-auto col-lg-auto col-xl-auto text-center">
-            <a href="#" data-toggle="modal" data-target="#modalpwd"><button type="button" class="btn btn-primary">Cambiar contraseña</button></a>
-        </div>
-    </div>
-</section>
-
-<div class="for-message  container py-5 px-6 mb-4 ">
-<h4 class="mb-4 title-grey font-bold">Plan de estudio:</h4>
-
-<!-- CURSANDO -->
-<div class="container d-flex flex-column justify-content-center align-items-center ">
-    <div class="card-hrz card-mod d-flex flex-column flex-md-row">
-        <img class="card-hrz-img rounded-left mr-xl-3 d-flex justify-content-center align-items-center px-3 py-3 px-md-6 py-md-6" src="assets/img/liderazgo-hrz.png" alt="">
-        <div class="wraper d-flex flex-column flex-md-row justify-content-center"> 
-            <div class="card-hrz-body">
-                <h5 class="title-grey my-3 font-weight-normal"> Liderazgo </h5>
-                <span class="text-sm title-grey d-lg-block"> Módulo </span>
-                <span class="text-sm color-light-grey d-lg-block"> 04. Liderazgo </span>
-                <div class="progress mt-4 mb-3 mt-md-2">
-                    <div class="progress-bar" role="progressbar" style="width: 25%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
-                </div>
-            </div>
-
-            <div class="card-hrz-right d-flex flex-column justify-content-top mx-3 pb-1 align-item align-items-center">
-            <div class="percent text-center mt-1">
-                <h2 class="color-light-grey mb-0 pb-0 porcent-xs"> 20% </h2>
-                <span class="d-block count mt-0 mb-2 text-xs color-light-grey alertTimeDanger">Finaliza en 08 días</span>
-            </div>
-            <a href="#" class="btn btn-sm btn-continuar mt-0 px-3 mb-3 btn-xs-cont" > Mis logros </a>
-        </div>
-        </div>
-    </div>
-
-    <div class="card-hrz card-current">
-        <img class="card-hrz-img rounded-left d-sm-block" src="assets/img/anuncio1.png" alt="">
-        <div class="card-hrz-body ">
-            <h5 class="title-grey "> Desarrollo sdfsdfsdf sdf sdfsdfsdffgh fghfghfghfghfgh  </h5>
-            <span class="text-sm title-grey d-lg-block"> Módulo </span>
-            <span class="text-sm color-light-grey d-lg-block "> 04. Liderazgo sdsdfsdfsdfsdf  sdfsdfdf stertertertertert erterterterterteeerter </span>
-            <div class="progress mt-3">
-                <div class="progress-bar" role="progressbar" style="width: 50%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
-            </div>
-        </div>
-        <div class="card-hrz-right float-right col-3 ml-4 d-flex flex-wrap align-items-center justify-content-center ">
-            <div class="percent text-center mt-3">
-                <h2 class="color-light-grey mb-0 pb-0 porcent-xs"> 50% </h2>
-                <span class="count mt-0 mb-2 text-xs d-lg-block  color-light-grey alertTimeWarning">Finaliza en 08 días</span>
-            </div>
-            <a href="#" class="btn btn-sm btn-continuar mt-0 px-3 mb-3 btn-xs-cont" > Mis logros </a>
-        </div>
-    </div>
-    
-    <div class="card-hrz card-current">
-        <img class="card-hrz-img rounded-left d-sm-block" src="https://www.codeproject.com/KB/GDI-plus/ImageProcessing2/img.jpg" alt="">
-        <div class="card-hrz-body ">
-            <h5 class="title-grey "> Desarrollo sdfsdfsdf sdf sdfsdfsdffgh fghfghfghfghfgh  </h5>
-            <span class="text-sm title-grey d-lg-block"> Módulo </span>
-            <span class="text-sm color-light-grey d-lg-block "> 04. Liderazgo sdsdfsdfsdfsdf  sdfsdfdf stertertertertert erterterterterteeerter </span>
-            <div class="progress mt-3">
-                <div class="progress-bar" role="progressbar" style="width: 80%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
-            </div>
-        </div>
-        <div class="card-hrz-right float-right col-3 ml-4 d-flex flex-wrap align-items-center justify-content-center ">
-            <div class="percent text-center mt-3">
-                <h2 class="color-light-grey mb-0 mt-0 pb-0 porcent-xs"> 80% </h2>
-                <span class="count mt-0 mb-2 text-xs d-lg-block  color-light-grey alertTimeGood">Finaliza en 08 días</span>
-            </div>
-            <a href="#" class="btn btn-sm btn-continuar mt-0 px-3 mb-3 btn-xs-cont" > Mis logros </a>
-        </div>
+<div class="row align-items-center justify-content-center mt-3">
+    <div class="col-8 col-md-10 col-lg-8 col-xl-8 col-sm-12 col-xs-12 text-center">
+        <h3 class="title-rank title-grey font-bold">Ranking curso Comunicaciòn para la supervisión</h3>
     </div>
 </div>
 
-</div>
-
-        <!-- Modal Editar perfil-->
-        <div class="modal modalEditP" id="modaledit" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-            <div class="container-fluid">
-                <div class="row justify-content-end">
-                    <div class="col-auto">
-                        <a class="close btn_close_modal" data-dismiss="modal" aria-label="Close">
-                            <span class="material-icons ic-close-white" aria-hidden="true">close</span>
-                        </a>
-                    </div>
-                </div>
-                <div class="row align-items-center justify-content-center mt-4">
-                    <div class="col-12">
-                        <h4 class="pb-1 title-grey sub-line"> Editar Perfil </h4>
-                    </div>
-                </div>
-                <form action="">
-                    <div class="row aling-item-center justify-content-center mt-3 mx-auto">
-                        <div class="col-10">
-                            <div class="form-group text-left">
-                                <label for="nameUser">Nombre de usuario</label>
-                                <input  type="password" class="form-control mb-4" id="nameUser">
-                            </div>
-                            <div class="form-group text-left">
-                                <label for="mailP">Correo corporativo</label>
-                                <input type="mail" class="form-control mb-1" id="mailP">
-                            </div>
-                            <div class="form-group text-left">
-                                <label for="mailAd">Correo secundario</label>
-                                <input  type="mail" class="form-control mb-4" id="mailAd">
-                            </div>
-                            <div class="form-group text-left">
-                                <label for="fechaN">Fecha de nacimiento</label>
-                                <input  type="date" class="form-control mb-4" id="fechaN">
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row aling-item-center justify-content-center">
-                        <div class="col-6 text-center">
-                            <button type="submit" class="btn btn-primary">Editar</button>
-                        </div>
-                    </div>
-                </form>
-            </div>
-        </div>
-        
-        <!-- Modal cambiar contraseña-->
-        <div class="modal modalChagePwd" id="modalpwd" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-            <div class="container-fluid">
-                <div class="row justify-content-end mt-3">
-                    <div class="col-auto">
-                        <a class="btn_close_modal" data-dismiss="modal" aria-label="Close">
-                            <span class=" close material-icons ic-close-white" aria-hidden="true">close</span>
-                        </a>
-                    </div>
-                </div>
-                <div class="row align-items-center justify-content-center mt-4">
-                    <div class="col-12">
-                        <h4 class="pb-1 title-grey sub-line "> Cambiar contraseña </h4>
-                    </div>
-                </div>
-                <form action="">
-                    <div class="row aling-item-center justify-content-center mt-5">
-                        <div class="col-10">
-                            <div class="form-group text-left">
-                                <label for="pwd_act">Contraseña actual</label>
-                                <input  type="password" class="form-control mb-4" id="pwd_act">
-                            </div>
-                            <div class="form-group text-left">
-                                <label for="pwd_new">Nueva contraseña</label>
-                                <input type="password" class="form-control mb-1" id="pwd_new">
-                            </div>
-                            <div class="form-group text-left">
-                                <label for="pwd_conf_new">Confirmar nueva contraseña</label>
-                                <input type="password" class="form-control mb-1" id="pwd_conf_new">
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row aling-item-center justify-content-center mt-5">
-                        <div class="col-auto">
-                            <button type="submit" class="btn btn-primary">Cambiar contraseña</button>
-                        </div>
-                    </div>
-                </form>
+<div class="row">
+    <div class="col-12">
+        <div class="card-table">
+            <div class="card_body">
+                <table class="rank-table" cellpadding="0" cellspacing="0" border="0">
+                    <thead class="campo_title">
+                        <tr>
+                            <th></th>
+                            <th>Nombre y apellido</th>
+                            <th>Medallas</th>
+                            <th>Puntos</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>
+                                <img class="rank-badge-number" src="{{ asset('front/assets/img/badge4.png') }}" alt="" />
+                            </td>
+                            
+                            <td><span>Yuan Osaka</span></td>
+                            <td>14</td>
+                            <td>
+                                840
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><img class="rank-badge-number" src="{{ asset('front/assets/img/badge3.png') }}" alt="" /></td>
+                            
+                            <td><span>Donald Malarkey</span></td>
+                            <td>10</td>
+                            <td>
+                                500
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><img class="rank-badge-number" src="{{ asset('front/assets/img/badge2.png') }}" alt="" /></td>
+                            
+                            <td><span>Ronald Spears</span></td>
+                            <td>8</td>
+                            <td>
+                                400
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><img class="rank-badge" src="{{ asset('front/assets/img/badge.png') }}" alt="" /></td>
+                            
+                            <td><span>Jessica Chestain</span></td>
+                            <td>7</td>
+                            <td>
+                                370
+                            </td>
+                        </tr>
+                        <tr class="me-i">
+                            <td><img class="rank-badge" src="{{ asset('front/assets/img/badge.png') }}" alt="" /></td>
+                            
+                            <td><span>Pat Christensen</span></td>
+                            <td>7</td>
+                            <td>
+                                350
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><img class="rank-badge" src="{{ asset('front/assets/img/badge.png') }}" alt="" /></td>
+                            
+                            <td><span>Masaki Oki</span></td>
+                            <td>5</td>
+                            <td>
+                                320
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><img class="rank-badge" src="{{ asset('front/assets/img/badge.png') }}" alt="" /></td>
+                            
+                            <td><span>Alton Moore</span></td>
+                            <td>3</td>
+                            <td>
+                                300
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><img class="rank-badge" src="{{ asset('front/assets/img/badge.png') }}" alt="" /></td>
+                            
+                            <td><span>Rebecca Chambers</span></td>
+                            <td>0</td>
+                            <td>
+                                210
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><img class="rank-badge" src="{{ asset('front/assets/img/badge.png') }}" alt="" /></td>
+                            
+                            <td><span>Ada Wong</span></td>
+                            <td>0</td>
+                            <td>
+                                200
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><img class="rank-badge" src="{{ asset('front/assets/img/badge.png') }}" alt="" /></td>
+                            
+                            <td><span>Natasha Romanov</span></td>
+                            <td>0</td>
+                            <td>
+                                100
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
             </div>
         </div>
     </div>
+</div>
 {% endblock %}

@@ -47,7 +47,7 @@
         {# HEADER #}
         <header>
             {% block header %}
-            <nav class="navbar justify-content-between py-0 fixed-top bg-white {{app.session.get('usuario').nombre}}">
+            <nav class="navbar justify-content-between py-0 fixed-top bg-white">
                 <div class="logo d-sm-block d-md-block">
                     <a class="navbar-brand" href="{{ path('_inicio') }}">
                         {% set img_logo = app.session.get('empresa').logo is defined ? app.session.get('empresa').logo is not null and app.session.get('empresa').logo != '' ? uploads~app.session.get('empresa').logo : asset('front/assets/img/logo_formacion_smart.png') : asset('front/assets/img/logo_formacion_smart.png') %}

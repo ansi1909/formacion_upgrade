@@ -3609,9 +3609,9 @@ p.up {
 
 .card-table {
   position: relative;
-  width: 30rem;
+  width: 100%;
+  max-width: 40rem;
   height: auto;
-  max-height: 45rem;
   display: flex;
   flex-direction: column;
   word-wrap: break-word;
@@ -3622,6 +3622,7 @@ p.up {
   text-align: center;
   border-radius: 1rem;
   box-shadow: 0px 16px 32px -24px rgba(92, 98, 102, 0.32), 0px 24px 43px -9px rgba(92, 98, 102, 0.19);
+  border: 1px solid #e0e0e0;
   overflow-y: hidden;
 }
 .card-table .card_header {
@@ -4346,7 +4347,7 @@ p.up {
   top: 0.15rem;
 }
 
-.rank-table tbody tr td:last-child .img-coin .starShiney, .card-datos .imgExp-coin .starShiney1, .card-datos .imgExp-coin .starShiney2, .card-datos .imgExp-coin .starShiney3, .card-datos .imgExp-coin .starShiney4 {
+.card-datos .imgExp-coin .starShiney1, .card-datos .imgExp-coin .starShiney2, .card-datos .imgExp-coin .starShiney3, .card-datos .imgExp-coin .starShiney4 {
   width: 1rem;
   height: 1rem;
   position: absolute;
@@ -4361,8 +4362,7 @@ p.up {
 }
 
 .rank-table {
-  max-width: 28rem;
-  width: 28rem;
+  width: 100%;
   margin: auto;
   padding: 0 1rem;
 }
@@ -4370,17 +4370,21 @@ p.up {
   border-bottom: 1px solid #DAE1E6;
 }
 .rank-table thead th {
-  color: #AAAFB3;
-  padding: calc(1rem - 8px);
+  color: #5C6266;
+  padding: 1rem;
   text-align: center;
   text-shadow: 0 1px 1px rgba(0, 0, 0, 0.1);
   vertical-align: middle;
 }
 .rank-table thead th:first-child {
-  text-align: center;
+  border-right: none;
 }
-.rank-table thead th:nth-child(4) {
-  padding: calc(1rem - 8px) 0;
+.rank-table thead th:nth-child(2) {
+  text-align: left;
+  padding-left: 0px;
+}
+.rank-table thead th:last-child {
+  border-right: none;
 }
 .rank-table tbody tr {
   color: #5CAEE6;
@@ -4388,6 +4392,9 @@ p.up {
 }
 .rank-table tbody tr td {
   padding: calc(1rem - 7px) 0;
+  height: 5rem;
+  padding: calc(1rem - 7px) 0;
+  border-right: 1px solid #DAE1E6;
 }
 .rank-table tbody tr td:first-child {
   font-family: "Roboto";
@@ -4396,39 +4403,23 @@ p.up {
   line-height: calc(2rem - 4px);
   text-align: center;
   vertical-align: middle;
+  border-right: none;
 }
-.rank-table tbody tr td:nth-child(2) .up {
-  width: 2rem;
-  height: auto;
-  position: relative;
-  left: 0rem;
-  border-radius: calc(3rem + 4px);
-  text-align: center;
+.rank-table tbody tr td:nth-child(2) {
+  text-align: left;
+  font-size: 1.3rem;
 }
 .rank-table tbody tr td:nth-child(3) {
-  text-align: left;
-  padding-left: 2rem;
+  text-align: center;
 }
 .rank-table tbody tr td:last-child {
-  text-align: left;
+  border-right: none;
 }
-.rank-table tbody tr td:last-child .img-coin {
-  position: relative;
+.rank-table tbody tr td .rank-badge-number {
+  width: 3rem;
 }
-.rank-table tbody tr td:last-child .img-coin .starShiney {
-  top: 0.1rem;
-  left: 0rem;
-  opacity: 0;
-}
-.rank-table tbody tr td:last-child .img-coin img {
-  width: 1rem;
-  height: auto;
-  position: relative;
-  top: -0.1rem;
-}
-.rank-table tbody tr td:last-child .img-coin .text-coin {
-  left: 0.1rem;
-  font-weight: 500;
+.rank-table tbody tr td .rank-badge {
+  width: 1.5rem;
 }
 .rank-table tbody tr:hover {
   color: #fff;
@@ -4497,12 +4488,12 @@ p.up {
 
 .rank-table thead th, .rank-table tbody tr td:nth-child(3), .rank-table tbody tr td:nth-child(4) {
   font-family: "Roboto";
-  font-size: 0.87rem;
+  font-size: 1.3rem;
   line-height: 1rem;
   font-weight: 400;
 }
 
-.card-datos .imgExp-coin .starShiney1, .card-datos .imgExp-coin .starShiney2, .card-datos .imgExp-coin .starShiney3, .card-datos .imgExp-coin .starShiney4, .rank-table tbody tr td:last-child .img-coin .starShiney {
+.card-datos .imgExp-coin .starShiney1, .card-datos .imgExp-coin .starShiney2, .card-datos .imgExp-coin .starShiney3, .card-datos .imgExp-coin .starShiney4 {
   width: 0.5rem;
   height: 0.5rem;
   position: absolute;

@@ -409,19 +409,20 @@
 //Card Ranking
 .card-table{
     position: relative;
-    width: 30rem;
+    width: 100%;
+    max-width: 40rem;
     height: auto;
-    max-height: 45rem;
     display: flex;
     flex-direction: column;
     word-wrap: break-word;
-    background-color: $white;
+    background-color: #fff;
     border: none;
     padding-bottom: 1rem;
     margin: 2rem auto;
     text-align: center;
     border-radius: 1rem;
-    box-shadow: 0px 16px 32px -24px rgba(92,98,102,0.32), 0px 24px 43px -9px rgba(92,98,102,0.19);
+    box-shadow: 0px 16px 32px -24px rgb(92 98 102 / 32%), 0px 24px 43px -9px rgb(92 98 102 / 19%);
+    border: 1px solid #e0e0e0;
     overflow-y: hidden;
     .card_header{
         padding: 3rem 0 1rem 0;
