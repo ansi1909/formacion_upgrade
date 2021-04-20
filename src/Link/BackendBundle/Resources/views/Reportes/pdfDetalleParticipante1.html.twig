@@ -30,7 +30,7 @@
         }
 
         .pdf-title {
-            font-size: 32px;
+            font-size: 28px;
             text-align: center;
             text-transform: uppercase;
             margin-bottom: 20px;
@@ -52,7 +52,7 @@
         }
 
         .pdf-term-text {
-            font-size: 24px;
+            font-size: 20px;
             margin-bottom: 15px;
             color: #535553;
         }
@@ -62,15 +62,15 @@
         }
 
         .pdf-table-connections .pdf-term-text {
-            font-size: 20px;
+            font-size: 16px;
         }
 
-        .pdf-table-connections td{
+        .pdf-table-connections td {
             width: 377px;
             padding-bottom: 5px;
         }
 
-        .pdf-table-connections td.right-align {
+        .pdf-table-connections td.right-align, .pdf-data-dates-table td.right-align {
             text-align: right;
         }
 
@@ -78,7 +78,7 @@
             display: block;
             width: 100%;
             text-align: center;
-            font-size: 32px;
+            font-size: 28px;
             padding: 12px;
             margin-top: 65px;
             margin-bottom: 30px;
@@ -88,11 +88,11 @@
         }
 
         .pdf-data-box {
-            width: 90%;
+            width: 100%;
             padding: 18px;
             margin-bottom: 80px;
             border-radius: 10px;
-            box-shadow: 4px 5px 10px 2px rgba(0,0,0,0.2);
+            border: 1px solid #BBBBBB;
         }
 
         .pdf-data-bar {
@@ -121,19 +121,14 @@
             height: 100%;
             border-radius: 10px;
         }
-        .pdf-data-dates-container {
-            width: 100%;
-            display: flex;
-            justify-content: space-between;
-        }
 
         .pdf-data-title {
-            font-size: 22px;
+            font-size: 18px;
             color: #1F140F;
         }
 
         .pdf-data-date {
-            font-size: 14px;
+            font-size: 12px;
             font-weight: bold;
             margin: 10px 0 50px;
             color: #1F140F;
@@ -145,7 +140,7 @@
         }
 
         .pdf-graphs-container .col {
-            width: 50%;
+            width: 200px;
         }
 
         .pdf-data-graph-wrapper {
@@ -198,7 +193,7 @@
         }
 
         .pdf-graph-right p {
-            font-size: 15px;
+            font-size: 12px;
             margin-bottom: 2px;
         }
 
@@ -227,14 +222,14 @@
         
 
         .pdf-data-table {
-            width: 90%;
+            width: 100%;
             border-collapse: collapse;
             margin-bottom: 40px;
-            font-size: 24px;
+            font-size: 20px;
         }
 
         .pdf-data-table td, .pdf-data-table th {
-            padding: 10px 8px;
+            padding: 10px 14.5px;
             border-bottom: 1px solid #0D5890;
             border-right: 1px solid #0D5890;
         }
@@ -272,6 +267,44 @@
             align-self: flex-start;
             margin-left: 60px;
         }
+        
+        .pdf-data-dates-table {
+            margin-bottom: 25px;
+        }
+
+        .pdf-data-dates-table td {
+            width: 357px;
+            margin-top: 10px;
+        }
+
+        .pdf-graphs-table td {
+            
+            border-radius: 10px;
+            padding: 5px;
+        }
+
+        .pdf-graphs-table td.middle-space {
+            width: 20px;
+            border: none;
+        }
+
+        .pdf-graphs-table .graph-td {
+            width: 310px;
+        }
+
+        .pdf-graphs-table .spacer {
+            padding: 50px;
+        }
+
+        .pdf-graphs-table td p {
+            text-align: center;
+        }
+
+        .pdf-graphs-table td p span {
+            font-weight: bold;
+        }
+
+        
     </style>
     <title>Pdf</title>
 {% endblock %}
@@ -383,87 +416,81 @@
                 100%
             </span>
         </div>
-        <div class="pdf-data-dates-container">
-            <p class="pdf-data-date">
-                Fecha inicio: 14-03-2020
-            </p>
-            <p class="pdf-data-date">
-                Fecha fin: 14-03-2021
-            </p>
-        </div>
+        <table class="pdf-data-dates-table">
+            <tr>
+                <td class="pdf-data-date">Fecha inicio: 14-03-2020</td>
+                <td class="pdf-data-date right-align">Fecha fin: 14-03-2021</td>
+            </tr>
+        </table>
 
-        <div class="row pdf-graphs-container">
-            <div class="col">
-                <div class="pdf-data-graph-wrapper">
-                     <div class="pdf-graph">
-                        {#<draw>
-                            <circle cx="50" cy="50" r="50">
-                            <circle cx="50" cy="50" r="50" style="stroke-dashoffset: calc(310 - (310 * 100) / 100);">
-                        </draw>#}
-                        {#<draw>
-                        <circle  class="full-stroke" style="stroke:#0000AA; fill:#AAAA00" cx="50%" cy="50%" r="15%">
-                        </draw>#}
-                        <span>100%</span>
-                    </div> 
-                    <div class="pdf-graph-right">
-                        <p>Módulo: Xsjhaodjajod</p>
-                        <p>Materias vistas: 3/3</p>
-                        <p>Lecciones vistas: 15/15</p>
-                        <p>Nota de módulo: 100ptos</p>
-                    </div>
-                </div>
+        <table class="pdf-graphs-table">
+            <tr>
+                <td class="graph-td">
+                    <p><span>Módulo:</span> Xsjhaodjajod</p>
+                    <p><span>Materias vistas:</span> 3/3</p>
+                    <p><span>Lecciones vistas:</span> 15/15</p>
+                    <p><span>Nota de módulo:</span> 100ptos</p>
 
-                <div class="pdf-data-graph-wrapper">
-                    <div class="pdf-graph">
-                        {#<svg>
-                            <circle cx="50" cy="50" r="50"></circle>
-                            <circle cx="50" cy="50" r="50" style="stroke-dashoffset: calc(310 - (310 * 100) / 100);"></circle>
-                        </svg>#}
-                        <span>100%</span>
+                    <div class="pdf-data-bar" style="width:100%;">
+                        <div class="pdf-data-bar-fill" style="width: 100%; background-color: #76B422;"></div>
+                        <span>
+                            100%
+                        </span>
                     </div>
-                    <div class="pdf-graph-right">
-                        <p>Módulo: Xsjhaodjajod</p>
-                        <p>Materias vistas: 3/3</p>
-                        <p>Lecciones vistas: 15/15</p>
-                        <p>Nota de módulo: 100ptos</p>
-                    </div>
-                </div>
-            </div>
+                </td>
 
-            <div class="col">
-                <div class="pdf-data-graph-wrapper">
-                    <div class="pdf-graph">
-                       {# <svg>
-                            <circle cx="50" cy="50" r="50"></circle>
-                            <circle cx="50" cy="50" r="50" style="stroke-dashoffset: calc(310 - (310 * 100) / 100);"></circle>
-                        </svg>#}
-                        <span>100%</span>
-                    </div>
-                    <div class="pdf-graph-right">
-                        <p>Módulo: Xsjhaodjajod</p>
-                        <p>Materias vistas: 3/3</p>
-                        <p>Lecciones vistas: 15/15</p>
-                        <p>Nota de módulo: 100ptos</p>
-                    </div>
-                </div>
+                <td class="middle-space">
+                
+                </td>
+                 <td class="graph-td">
+                    <p>Módulo: Xsjhaodjajod</p>
+                    <p>Materias vistas: 3/3</p>
+                    <p>Lecciones vistas: 15/15</p>
+                    <p>Nota de módulo: 100ptos</p>
 
-                <div class="pdf-data-graph-wrapper">
-                    <div class="pdf-graph">
-                        {#<svg>
-                            <circle cx="50" cy="50" r="50"></circle>
-                            <circle cx="50" cy="50" r="50" style="stroke-dashoffset: calc(310 - (310 * 100) / 100);"></circle>
-                        </svg>#}
-                        <span>100%</span>
+                    <div class="pdf-data-bar" style="width:100%;">
+                        <div class="pdf-data-bar-fill" style="width: 100%; background-color: #76B422;"></div>
+                        <span>
+                            100%
+                        </span>
                     </div>
-                    <div class="pdf-graph-right">
-                        <p>Módulo: Xsjhaodjajod</p>
-                        <p>Materias vistas: 3/3</p>
-                        <p>Lecciones vistas: 15/15</p>
-                        <p>Nota de módulo: 100ptos</p>
+                </td>
+            </tr>
+
+            <tr>
+                <td class="graph-td">
+                    <p>Módulo: Xsjhaodjajod</p>
+                    <p>Materias vistas: 3/3</p>
+                    <p>Lecciones vistas: 15/15</p>
+                    <p>Nota de módulo: 100ptos</p>
+
+                    <div class="pdf-data-bar" style="width:100%;">
+                        <div class="pdf-data-bar-fill" style="width: 100%; background-color: #76B422;"></div>
+                        <span>
+                            100%
+                        </span>
                     </div>
-                </div>
-            </div>
-        </div>
+                </td>
+
+                <td class="middle-space">
+                
+                </td>
+                 <td class="graph-td">
+                    <p>Módulo: Xsjhaodjajod</p>
+                    <p>Materias vistas: 3/3</p>
+                    <p>Lecciones vistas: 15/15</p>
+                    <p>Nota de módulo: 100ptos</p>
+
+                    <div class="pdf-data-bar" style="width:100%;">
+                        <div class="pdf-data-bar-fill" style="width: 100%; background-color: #76B422;"></div>
+                        <span>
+                            100%
+                        </span>
+                    </div>
+                </td>
+            </tr>
+            
+        </table>
     </div>
 
     <div class="foot">
