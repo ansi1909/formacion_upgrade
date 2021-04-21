@@ -1,10 +1,20 @@
 $(document).ready(function() {
-    $('.j-btn-achievement').each(function() {
-        const achievementId = this.dataset.id;
-        console.log(achievementId);
+    $('.j-btn-achievement').click(function(e) {
+        const programId = this.dataset.id;
+        
 
-        if (achievementId) {
-            
+        if (programId) {
+            $('.ranking-loader').addClass('d-flex');
+            setTimeout(() => {
+                $('.ranking-loader').removeClass('d-flex');
+                $('#achievements-container').addClass('show');
+                $('#study_plan').removeClass('show');
+            }, 1000);
         }
+    });
+
+    $('.j-btn-back-to-plan').click(function(e) {
+        $('#achievements-container').removeClass('show');
+        $('#study_plan').addClass('show');
     });
 });

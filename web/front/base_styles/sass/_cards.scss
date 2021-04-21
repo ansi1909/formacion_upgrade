@@ -1122,6 +1122,124 @@
 }
 //Constancia Notas
 
+
+//Ranking
+
+.card-achievement {
+    position: relative;
+    width: 90%;
+    max-width: 50rem;
+    display: flex;
+    align-items: center;
+    padding: 1rem 2.5rem;
+    margin-bottom: 1.5rem;
+    background-color: #fff;
+    box-shadow: 3px 3px 0px rgba(220, 220, 220, 0.3);
+
+
+    &.green-line {
+        &::before {
+            background-color: #24932F;
+        }
+    }
+
+    &.blue-line {
+        &::before {
+            background-color: #075490;
+        }
+    }
+
+    &.lightblue-line {
+        &::before {
+            background-color: #00A4B1;
+        }
+    }
+
+    &.yellow-line {
+        &::before {
+            background-color: #FCDE21;
+        }
+    }
+
+    &::before {
+        content: "";
+        position: absolute;
+        left: 0;
+        top: 0;
+        height: 100%;
+        width: 0.8rem;
+    }
+
+    &__badge {
+        display: block;
+        width: 5rem;
+        margin-right: 1.5rem;
+        filter: grayscale(1);
+        opacity: 0.4;
+
+        &.achieved {
+            opacity: 1;
+            filter: none;
+        }
+    }
+
+    &__details {
+        flex: 1;
+    }
+
+    &__title {
+        font-size: 1.2rem;
+        font-weight: bold;
+        color: #596164;
+    }
+
+    &__condition {
+        font-size: 1rem;;
+        color: #525250;
+    }
+
+    &__progress {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        width: 100%;
+
+        &__bar {
+            position: relative;
+            flex: 1;
+            height: 0.6rem;
+            background-color: #B7B7B6;
+            border-radius: 10px;
+            overflow: hidden;
+
+            &__fill {
+                position: absolute;
+                top: 0;
+                left: 0;
+                height: 100%;
+                border-top-right-radius: 10px;
+                border-bottom-right-radius: 10px;
+                &.fill-orange {
+                    background-color: #EC7E30;
+                }
+
+                &.fill-green {
+                    background-color: #76B422;
+                }
+            }
+        }
+
+        &__number {
+            font-size: 1.7rem;
+            color: #B7B7B6;
+        }
+    }
+
+    @include media-breakpoint-down(sm){ 
+        flex-direction: column;
+    }
+}
+
 //Extend
 
 %sty_user{

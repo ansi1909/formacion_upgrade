@@ -55,6 +55,30 @@
             .modalChagePwd {
                 max-width: 30rem !important;
             }
+
+            #achievements-container {
+                display: none;
+                visibility: hidden;
+                transition: visibility 0.2s;
+            }
+
+            #achievements-container.show {
+                visibility: visible;
+                display: flex;
+            }
+            
+            #study_plan {
+                display: none;
+                visibility: hidden;
+                transition: visibility 0.2s;
+            }
+
+            #study_plan.show {
+                visibility: visible;
+                display: block;
+            }
+
+            
         </style>
 {% endblock %}
 
@@ -70,6 +94,10 @@
 {% set fecha_nacimiento_formateada = app.session.get('usuario')['fecha_nacimiento_formateada'] %}
 <input type="hidden" id="url_img" name="url_img" value="{{ path('_ajaxImg') }}">
 
+<div class="modal ranking-loader justify-content-center align-items-center">
+    <div class="ranking-loader__spinner">
+    </div>
+</div>
 <section class="card-datos col-12 col-sm-10 mx-auto">
     <div class="row align-items-center justify-content-center">
         <div class="col-12 col-md-6 d-flex justify-content-center align-items-center">
@@ -159,7 +187,7 @@
         </div>
     </div>
 </section>
-<div class="for-message  container py-5 px-6 my-4 ">
+<div class="for-message  container py-5 px-6 my-4 show" id="study_plan">
     <h4 class="mb-4 title-grey font-bold text-left">Plan de estudio:</h4>
     <div class="container d-flex flex-column justify-content-center align-items-center ">
         <div class="card-hrz card-mod d-flex flex-column flex-md-row">
@@ -179,7 +207,7 @@
                     <h2 class="color-light-grey mb-0 pb-0 porcent-xs"> 20% </h2>
                     <span class="d-block count mt-0 mb-2 text-xs color-light-grey alertTimeDanger">Finaliza en 08 días</span>
                 </div>
-                <a href="#" class="btn btn-sm btn-continuar mt-0 px-3 mb-3 btn-xs-cont j-btn-achievement" data-id="1"> Mis logros </a>
+                <button href="#" class="btn btn-sm btn-continuar mt-0 px-3 mb-3 btn-xs-cont j-btn-achievement" data-id="1"> Mis logros </button>
             </div>
             </div>
         </div>
@@ -201,13 +229,158 @@
                     <h2 class="color-light-grey mb-0 pb-0 porcent-xs"> 20% </h2>
                     <span class="d-block count mt-0 mb-2 text-xs color-light-grey alertTimeDanger">Finaliza en 08 días</span>
                 </div>
-                <a href="#" class="btn btn-sm btn-continuar mt-0 px-3 mb-3 btn-xs-cont j-btn-achievement" data-id="2"> Mis logros </a>
+                <button href="#" class="btn btn-sm btn-continuar mt-0 px-3 mb-3 btn-xs-cont j-btn-achievement" data-id="2"> Mis logros </button>
             </div>
             </div>
         </div>
     </div>
 </div>
 
+
+<!-- ZONA DE LOGROS -->
+
+<div class="container py-5 px-2 mb-4 flex-column align-items-center" id="achievements-container">
+<button href="#" class="btn btn-sm btn-continuar mt-0 px-3 mb-3 btn-xs-cont j-btn-back-to-plan" data-id="2"> Volver al plan de estudios </button>
+    <h4 class="mb-4 title-grey font-bold">Mis logros en el curso Comunicación para la supervisión:</h4>
+
+    <div class="card-achievement green-line">
+        <img src="./assets/img/recurso-5.png" alt="" class="card-achievement__badge">
+        <div class="card-achievement__details">
+            <h4 class="card-achievement__title">Súper listo</h4>
+            <p class="card-achievement__condition">Aprueba todas las evaluaciones al primer intento</p>
+            <div class="card-achievement__progress">
+                <div class="card-achievement__progress__bar">
+                    <div class="card-achievement__progress__bar__fill fill-orange" style="width: 50%;"></div>
+                </div>
+                <div class="card-achievement__progress__number">
+                    5/13
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="card-achievement green-line">
+        <img src="./assets/img/recurso-5.png" alt="" class="card-achievement__badge achieved">
+        <div class="card-achievement__details">
+            <h4 class="card-achievement__title">Súper listo</h4>
+            <p class="card-achievement__condition">Aprueba todas las evaluaciones al primer intento</p>
+            <div class="card-achievement__progress">
+                <div class="card-achievement__progress__bar">
+                    <div class="card-achievement__progress__bar__fill fill-green" style="width: 100%;"></div>
+                </div>
+                <div class="card-achievement__progress__number">
+                    13/13
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="card-achievement green-line">
+        <img src="./assets/img/recurso-6.png" alt="" class="card-achievement__badge achieved">
+        <div class="card-achievement__details">
+            <h4 class="card-achievement__title">Perfeccionista</h4>
+            <p class="card-achievement__condition">Obtén la nota perfecta 100/100 en todas las evaluaciones</p>
+            <div class="card-achievement__progress">
+                <div class="card-achievement__progress__bar">
+                    <div class="card-achievement__progress__bar__fill fill-green" style="width: 100%;"></div>
+                </div>
+                <div class="card-achievement__progress__number">
+                    13/13
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="card-achievement green-line">
+        <img src="./assets/img/recurso-7.png" alt="" class="card-achievement__badge achieved">
+        <div class="card-achievement__details">
+            <h4 class="card-achievement__title">Imparable</h4>
+            <p class="card-achievement__condition">Aprueba el programa en una misma sesión</p>
+        </div>
+    </div>
+
+    <div class="card-achievement lightblue-line">
+        <img src="./assets/img/recurso-18.png" alt="" class="card-achievement__badge achieved">
+        <div class="card-achievement__details">
+            <h4 class="card-achievement__title">Influencer</h4>
+            <p class="card-achievement__condition">Recibe tres respuestas a tus comentarios en el muro</p>
+            <div class="card-achievement__progress">
+                <div class="card-achievement__progress__bar">
+                    <div class="card-achievement__progress__bar__fill fill-orange" style="width: 100%;"></div>
+                </div>
+                <div class="card-achievement__progress__number">
+                    3/3
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="card-achievement lightblue-line">
+        <img src="./assets/img/recurso-16.png" alt="" class="card-achievement__badge achieved">
+        <div class="card-achievement__details">
+            <h4 class="card-achievement__title">Amigable</h4>
+            <p class="card-achievement__condition">Escribe cinco comentarios de valor en el muro</p>
+            <div class="card-achievement__progress">
+                <div class="card-achievement__progress__bar">
+                    <div class="card-achievement__progress__bar__fill fill-green" style="width: 100%;"></div>
+                </div>
+                <div class="card-achievement__progress__number">
+                    5/5
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="card-achievement yellow-line">
+        <img src="./assets/img/recurso-8.png" alt="" class="card-achievement__badge achieved">
+        <div class="card-achievement__details">
+            <h4 class="card-achievement__title">Primer lugar</h4>
+            <p class="card-achievement__condition">Termina el programa primero que los demás</p>
+        </div>
+    </div>
+
+    <div class="card-achievement blue-line">
+        <img src="./assets/img/recurso-11.png" alt="" class="card-achievement__badge achieved">
+        <div class="card-achievement__details">
+            <h4 class="card-achievement__title">Vencedor</h4>
+            <p class="card-achievement__condition">Obtén todas las medallas disponibles</p>
+            <div class="card-achievement__progress">
+                <div class="card-achievement__progress__bar">
+                    <div class="card-achievement__progress__bar__fill fill-green" style="width: 100%;"></div>
+                </div>
+                <div class="card-achievement__progress__number">
+                    8/8
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="card-achievement blue-line">
+        <img src="./assets/img/recurso-12.png" alt="" class="card-achievement__badge achieved">
+        <div class="card-achievement__details">
+            <h4 class="card-achievement__title">Leyenda</h4>
+            <p class="card-achievement__condition">Mantente entre las tres primeras posiciones del ranking por siete días consecutivos</p>
+            <div class="card-achievement__progress">
+                <div class="card-achievement__progress__bar">
+                    <div class="card-achievement__progress__bar__fill fill-green" style="width: 100%;"></div>
+                </div>
+                <div class="card-achievement__progress__number">
+                    7/7
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="card-achievement blue-line">
+        <img src="./assets/img/recurso-13.png" alt="" class="card-achievement__badge achieved">
+        <div class="card-achievement__details">
+            <h4 class="card-achievement__title">Fotogénico</h4>
+            <p class="card-achievement__condition">Agrega una foto a tu perfil</p>
+        </div>
+    </div>
+
+
+</div>
 
 
 
