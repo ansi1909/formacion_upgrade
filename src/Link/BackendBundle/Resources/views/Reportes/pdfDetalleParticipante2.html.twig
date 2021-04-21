@@ -327,7 +327,7 @@
                 Estatus: {{programa.status}}
             </h3>
             <div class="pdf-data-bar">
-                <div class="pdf-data-bar-fill" style="width: {{programa.avance}}%; background-color: #76B422;"></div>
+                <div class="pdf-data-bar-fill" style="width: {{programa.avance}}%;{% if programa.avance == 0 %} background-color: white; {% else %} background-color: #76B422; {% endif %}"></div>
                 <span>
                    {{programa.avance}}%
                 </span>
@@ -355,7 +355,7 @@
                         {% endif %}
 
                         <div class="pdf-data-bar" style="width:100%;">
-                            <div class="pdf-data-bar-fill" style="width: {{modulo.avance}}%; background-color: #76B422;"></div>
+                            <div class="pdf-data-bar-fill" style="width: {{modulo.avance}}%; {% if modulo.avance == 0 %} background-color: white; {% else %} background-color: #76B422; {% endif %}"></div>
                             <span>
                                 {{modulo.avance}}%
                             </span>
@@ -368,19 +368,6 @@
             </table>
         </div>
     {% endfor %}
-    <page_footer>
-        <table class="foot">
-        <tr>
-            <td class="foot-name">
-                {{datausuario.nombre}} {{datausuario.apellido}}
-            </td>
-
-            <td class="foot-image">
-                <img src="{{logo}}" alt="" class="foot-logo" />
-            </td>
-        </tr>
-    </table>
-    </page_footer>
 </body>
 </page>
 {% endblock %}
