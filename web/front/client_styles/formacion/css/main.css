@@ -1610,6 +1610,34 @@ a:focus, a:active, a:target, a:checked {
   animation: rank_loader 1.4s infinite linear;
 }
 
+.modal-notification-ranking {
+  background-color: rgba(0, 0, 0, 0.5);
+}
+.modal-notification-ranking.show {
+  display: flex;
+}
+.modal-notification-ranking__content {
+  position: relative;
+  width: 90%;
+  max-width: 32rem;
+  border-radius: 10px;
+  border: 1px solid #bbb;
+  background-color: #fff;
+  padding: 4rem 1rem;
+}
+.modal-notification-ranking__content .close {
+  position: absolute;
+  top: 0.5rem;
+  right: 0.5rem;
+}
+.modal-notification-ranking__content img {
+  width: 7rem;
+}
+.modal-notification-ranking__content__title {
+  font-size: 2.6rem;
+  font-weight: 400;
+}
+
 .modal-resp {
   height: 37rem;
   width: 65rem;
@@ -5443,6 +5471,44 @@ p.up {
   -webkit-transition: all 0.2s ease-in-out;
   -moz-transition: all 0.2s ease-in-out;
   transition: all 0.2s ease-in-out;
+}
+
+/*CAJITA DE NOTIFICACIONES*/
+.notification-box {
+  position: fixed;
+  top: 2rem;
+  right: 0.7rem;
+  z-index: 9999;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 7px;
+  box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.2);
+}
+.notification-box button.close {
+  height: 94%;
+}
+.notification-box button.close:focus, .notification-box button.close:active {
+  outline: none;
+}
+
+/*NOTIFICACIONES DEL RANKING*/
+.notification-ranking {
+  overflow: hidden;
+}
+.notification-ranking__image {
+  margin-right: 0.3rem;
+  position: absolute;
+  left: -3rem;
+  filter: grayscale(0.4);
+}
+.notification-ranking__text {
+  position: relative;
+  z-index: 10;
+  padding: 0.3rem;
+  border-radius: 9px;
+  font-weight: 500;
+  background-color: rgba(255, 255, 255, 0.8);
 }
 
 .titulo_faqs {

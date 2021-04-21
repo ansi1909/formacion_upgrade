@@ -351,6 +351,30 @@
                 </div>
             </div>
         </div>
+
+        <!-- Alert de notificaciones del ranking-->
+        <div class="alert alert-success alert-dismissible fade notification-box notification-ranking" role="alert">
+            <img src="{{asset('front/assets/img/recurso-13.png')}}" class="notification-ranking__image"/>
+            <span class="notification-ranking__text">Caja de notificación para el ranking!</span>
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+
+        <!-- Modal de notificaciones grandes del ranking -->
+        <div class="modal show justify-content-center align-items-center modal-notification-ranking" id="modal-ranking-big-notification">
+            <div class="modal-notification-ranking__content d-flex flex-wrap justify-content-center align-items-center">
+                <a class="close btn_close_modal" data-dismiss="modal" aria-label="Close">
+                    <span class="material-icons ic-close-white" aria-hidden="true">close</span>
+                </a>
+                <img class="modal-notification-ranking__badge" src="{{asset('front/assets/img/recurso-8.png')}}"/>
+                <div class="modal-notification-ranking__text-box">
+                    <h2 class="modal-notification-ranking__title">¡Texto principal!</h2>
+                    <p>Descripción o algo del logro en el modal</p>
+                </div>
+            </div>
+        </dv>
+
         {% block javascripts %}
             <script src="{{ asset('front/js/jquery-3.3.1.min.js') }}"></script>
             <script src="{{ asset('jq/jquery-ui.js') }}" charset="utf-8"></script>
@@ -363,6 +387,7 @@
             <script src="{{ asset('front/js/audio.js') }}"></script>
             <script src="{{ asset('js/front/expireSession.js') }}"></script>
             <script src="{{ asset('js/front/soporte_virtual.js') }}"></script>
+            <script type="text/javascript" src="{{ asset('js/front/logros.js') }}"></script>
         {% endblock %}
     </body>
 </html>

@@ -1,0 +1,42 @@
+/*CAJITA DE NOTIFICACIONES*/
+
+.notification-box {
+    position: fixed;
+    top: 2rem;
+    right: 0.7rem;
+    z-index: 9999;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 7px;
+    box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.2);
+
+    button.close {
+        height: 94%;
+
+        &:focus, &:active {
+            outline: none;
+        }
+    }
+}
+
+/*NOTIFICACIONES DEL RANKING*/
+
+.notification-ranking {
+    overflow: hidden;
+    &__image {
+        margin-right: 0.3rem;
+        position: absolute;
+        left: -3rem;
+        filter: grayscale(0.4);
+    }
+
+    &__text {
+        position: relative;
+        z-index: 10;
+        padding: 0.3rem;
+        border-radius: 9px;
+        font-weight: 500;
+        background-color: rgba(255,255,255,0.8);
+    }
+}
