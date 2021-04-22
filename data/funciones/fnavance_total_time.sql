@@ -6,10 +6,10 @@ CREATE OR REPLACE FUNCTION fnavance_total_time(
     pfecha_inicio timestamp,
     pfecha_fin timestamp,
     pusuario_id integer)
-  RETURNS time AS
+  RETURNS text AS
 $BODY$
 declare
-    str time;			-- resultado
+    str text;			-- resultado
     reg  record;		-- almacena las horas de conexión durante la fecha inicio y fin del programa
 	
 begin

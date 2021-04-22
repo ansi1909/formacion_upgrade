@@ -14,6 +14,7 @@ use Link\ComunBundle\Entity\CertiPagina;
 use Link\ComunBundle\Entity\CertiPaginaEmpresa;
 use Link\ComunBundle\Entity\AdminZonaHoraria;
 use Link\ComunBundle\Entity\AdminPais;
+use Spipu\Html2Pdf\Html2Pdf;
 
 class ReportesJTController extends Controller
 {
@@ -645,7 +646,7 @@ class ReportesJTController extends Controller
 
             $data_found = 1;
             $nivel_id = $usuario->getNivel() ? $usuario->getNivel()->getId() : 0;
-            $reporte = $rs->detalleParticipanteProgramas($usuario->getId(), $empresa_id, $nivel_id, $yml);
+            $reporte = $rs->detalleParticipanteProgramas($usuario->getId(), $empresa_id, $nivel_id, $yml, $pdfdetalle =0);
             //tomar los valores devueltos por la consulta, transformarlos segun la zona horaria y actualizarlos en el array si tiene
             if($reporte['ingresos']['primeraConexion']!='Nunca se ha conectado') {
                 $primeraConexion = $fn->converDate($reporte['ingresos']['primeraConexion'],$yml['parameters']['time_zone']['default'],$timeZoneEmpresa);
@@ -683,7 +684,97 @@ class ReportesJTController extends Controller
 
     }
 
+    public function pdfDetalleParticipanteAction($empresa_id,$login,Request $request)
+    {
 
+        /*$html = $this->renderView('LinkBackendBundle:Reportes:pdfDetalleParticipante1.html.twig');
+        $pdf = new Html2Pdf('P','A4','es','true','UTF-8',array(5, 5, 5, 8));
+        $pdf->pdf->SetDisplayMode('fullpage');
+        $pdf->writeHtml('<page>'.$html.'</page>');
+        //Generamos el PDF
+        $pdf->output('HORAS CONEXION.pdf');*/
+        $em = $this->getDoctrine()->getManager();
+        $rs = $this->get('reportes');
+        $fn = $this->get('funciones');
+        $yml = Yaml::parse(file_get_contents($this->get('kernel')->getRootDir().'/config/parametros.yml'));
+
+       // $empresa_id = $request->request->get('empresa_id');
+        //$login = $request->request->get('username');
+        $empresa = $this->getDoctrine()->getRepository('LinkComunBundle:AdminEmpresa')->find($empresa_id);
+        $timeZoneEmpresa = ($empresa->getZonaHoraria())? $empresa->getZonaHoraria()->getNombre():$yml['parameters']['time_zone']['default'];
+        $timeZoneReport = $fn->clearNameTimeZone($timeZoneEmpresa,$empresa->getPais()->getNombre(),$yml);
+
+        // Condiciones iniciales
+        $data_found = 0;
+        $dataUsuario = array();
+        $html = '';
+
+        $usuario = $this->getDoctrine()->getRepository('LinkComunBundle:AdminUsuario')->findOneBy(array('login' => $login,
+                                                                                                        'empresa' => $empresa_id));
+
+        if ($usuario)
+        {
+
+            $data_found = 1;
+            $nivel_id = $usuario->getNivel() ? $usuario->getNivel()->getId() : 0;
+            $reporte = $rs->detalleParticipanteProgramas($usuario->getId(), $empresa_id, $nivel_id, $yml,$pdfdetalle=1);
+            //tomar los valores devueltos por la consulta, transformarlos segun la zona horaria y actualizarlos en el array si tiene
+            if($reporte['ingresos']['primeraConexion']!='Nunca se ha conectado') {
+                $primeraConexion = $fn->converDate($reporte['ingresos']['primeraConexion'],$yml['parameters']['time_zone']['default'],$timeZoneEmpresa);
+                $ultimaConexion = $fn->converDate($reporte['ingresos']['ultimaConexion'],$yml['parameters']['time_zone']['default'],$timeZoneEmpresa);
+                $reporte['ingresos']['primeraConexion'] = $primeraConexion->fecha.' '.$primeraConexion->hora;
+                $reporte['ingresos']['ultimaConexion'] = $ultimaConexion->fecha.' '.$ultimaConexion->hora;
+            }
+
+            $dataUsuario = array('foto' => trim($usuario->getFoto()) ? $this->container->getParameter('folders')['uploads'].trim($usuario->getFoto()) : $this->container->getParameter('folders')['dir_project'].'web/img/user.png',
+                                 'login' => $usuario->getLogin(),
+                                 'nombre' => $usuario->getNombre(),
+                                 'apellido' => $usuario->getApellido(),
+                                 'clave'   => $usuario->getClave(),
+                                 'correoPersonal' => $usuario->getCorreoPersonal(),
+                                 'fechaNacimiento' => $usuario->getFechaNacimiento() ? $usuario->getFechaNacimiento()->format('d/m/Y') : '',
+                                 'activo' => $usuario->getActivo() ? $this->get('translator')->trans('Sí') : 'No',
+                                 'correoCorporativo' => $usuario->getCorreoCorporativo(),
+                                 'campo1' => $usuario->getCampo1(),
+                                 'campo2' => $usuario->getCampo2(),
+                                 'campo3' => $usuario->getCampo3(),
+                                 'campo4' => $usuario->getCampo4(),
+                                 'nivel' => $usuario->getNivel() ? $usuario->getNivel()->getNombre() : '',
+                                 'ingresos' => $reporte['ingresos'],
+                                 'timeZone' => $timeZoneReport);
+            $logo = $this->container->getParameter('folders')['dir_project'].'web/img/logo_formacion_smart.png';
+            $html = $this->renderView('LinkBackendBundle:Reportes:pdfDetalleParticipante1.html.twig', array('programas' => $reporte['programas'],
+                                                                                                            'datausuario'=> $dataUsuario,
+                                                                                                            'logo' => $logo));
+            $html1 = $this->renderView('LinkBackendBundle:Reportes:pdfDetalleParticipante2.html.twig', array('programas' => $reporte['programas'],
+                                                                                                             'datausuario'=> $dataUsuario,
+                                                                                                             'logo' => $logo));                                                                                               
+            $pdf = new Html2Pdf('P','A4','es','true','UTF-8',array(5, 5, 5, 8));
+            $pdf->pdf->SetDisplayMode('fullpage');
+            $pdf->writeHtml('<page>'.$html.'</page>');
+            $pdf->writeHtml('<page>'.$html1.'</page>');
+            //Generamos el PDF
+            $pdf->output('HORAS CONEXION.pdf');
+            $return = json_encode($pdf->output('HORAS CONEXION.pdf'));
+            return new Response($return, 200, array('Content-Type' => 'application/json'));
+        }
+
+        $html = $this->renderView('LinkBackendBundle:Reportes:pdfDetalleParticipante1.html.twig');
+        $html1 = $this->renderView('LinkBackendBundle:Reportes:pdfDetalleParticipante2.html.twig');
+        $pdf = new Html2Pdf('P','A4','es','true','UTF-8',array(5, 5, 5, 8));
+        $pdf->pdf->SetDisplayMode('fullpage');
+        $pdf->writeHtml('<page>'.$html.'</page>');
+        $pdf->writeHtml('<page>'.$html1.'</page>');
+        //Generamos el PDF
+        $pdf->output('Detalle participante.pdf');
+
+        $return = array('usuario' => $dataUsuario,
+                        'data_found' => $data_found,
+                        'html' => $html);
+        $return = json_encode($return);
+        return new Response($return, 200, array('Content-Type' => 'application/json'));
+
+    }
 
 
 }
