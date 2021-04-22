@@ -1,0 +1,411 @@
+{% block stylesheets %}
+    <style type="text/css">
+        * {
+            padding: 0;
+            margin: 0;
+            font-family: Arial, Helvetica, sans-serif;
+            box-sizing: border-box;
+        }
+
+        body {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 24px 0;
+            background-color: #fff;
+        }
+
+        .row {
+            display: flex;
+            flex-direction: row;
+        }
+
+        .col {
+            display: flex;
+            flex-direction: column;
+        }
+        .pdf-logo {
+            width: 250px;
+            margin-bottom: 60px;
+        }
+
+        .head-logo {
+            display: block;
+            margin-left: 240px;
+        }
+
+        .pdf-title {
+            font-size: 28px;
+            text-align: center;
+            text-transform: uppercase;
+            margin-bottom: 20px;
+            color: #00548C;
+        }
+
+        .pdf-user-info-box {
+            padding: 16px 22px;
+            margin-bottom: 60px;
+            background-color: #F4F4F4;
+        }
+
+        .pdf-user-info-ptop {
+            padding-top: 25px;
+            width: 500px;
+        }
+
+        .pdf-user-pic {
+            width: 150px;
+            margin-right: 30px;
+        }
+
+        .pdf-term-text {
+            font-size: 20px;
+            margin-bottom: 15px;
+            color: #535553;
+        }
+        
+        .pdf-term-text strong {
+            color: #3D3E3B;
+        }
+
+        .pdf-table-connections .pdf-term-text {
+            font-size: 16px;
+        }
+
+        .pdf-table-connections td {
+            width: 377px;
+            padding-bottom: 5px;
+        }
+
+        .pdf-table-connections td.right-align, .pdf-data-dates-table td.right-align {
+            text-align: right;
+        }
+
+        .pdf-band-title {
+            display: block;
+            width: 100%;
+            text-align: center;
+            font-size: 28px;
+            padding: 12px;
+            margin-top: 65px;
+            margin-bottom: 30px;
+            text-transform: uppercase;
+            color: #fff;
+            background-color: #0D5890;
+        }
+
+        .pdf-data-box {
+            width: 100%;
+            padding: 18px;
+            margin-bottom: 80px;
+            border-radius: 10px;
+            border: 1px solid #BBBBBB;
+        }
+
+        .pdf-data-bar {
+            position: relative;
+            width: 100%;
+            height: 18px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-weight: bold;
+            text-align: center;
+            border-radius: 10px;
+            margin-top: 25px;
+            color: #fff;
+            background-color: #B7B7B6;
+        }
+
+        .pdf-data-bar span {
+            z-index: 10;
+        }
+        .pdf-data-bar-fill {
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            height: 100%;
+            border-radius: 10px;
+        }
+
+        .pdf-data-title {
+            font-size: 18px;
+            color: #1F140F;
+        }
+
+        .pdf-data-date {
+            font-size: 12px;
+            font-weight: bold;
+            margin: 10px 0 50px;
+            color: #1F140F;
+        }
+
+        .pdf-graphs-container {
+            width: 95%;
+            margin: 0 auto;
+        }
+
+        .pdf-graphs-container .col {
+            width: 200px;
+        }
+
+        .pdf-data-graph-wrapper {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        .pdf-graph, .pdf-graph svg, .pdf-graph svg circle {
+            width: 120px;
+            height: 120px;
+        }
+        .pdf-graph {
+            position: relative;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-right: 15px;
+        }
+
+        .pdf-graph span {
+            position: absolute;
+            font-weight: bold;
+        }
+        .pdf-graph svg {
+            position: relative;
+        }
+        .pdf-graph circle {
+            position: absolute;
+            fill: none;
+            stroke-width: 10;
+            transform: translate(10px, 10px);
+            stroke-dasharray: 310;
+            stroke-linecap: round;
+        }
+
+        .pdf-graph circle:nth-child(1) {
+            stroke-dasharray: 0;
+            stroke: #B7B7B6;
+        }
+
+        .pdf-graph circle:nth-child(2) {
+            stroke: #00A4B1;
+        }
+
+        .pdf-graph-right {
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .pdf-graph-right p {
+            font-size: 12px;
+            margin-bottom: 2px;
+        }
+
+        .pdf-graph-right p:nth-last-child(1) {
+            margin-bottom: 0;
+        }
+
+        .foot {
+            padding: 0 20px;
+            margin-top: 50px;
+        }
+
+        .foot td {
+            width: 365px;
+        }
+
+        .foot td.foot-image {
+            text-align: right;
+        }
+
+        .foot-name {
+            color: #BCBABA;
+        }
+
+        .foot-logo {
+            width: 120px;
+            filter: grayscale(1);
+        }
+
+        
+
+        .pdf-data-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 40px;
+            font-size: 20px;
+        }
+
+        .pdf-data-table td, .pdf-data-table th {
+            padding: 10px 13.5px;
+            border-bottom: 1px solid #0D5890;
+            border-right: 1px solid #0D5890;
+        }
+
+        .pdf-data-table th {
+            color: #0D5890;
+            border-top: 1px solid #0D5890;
+            text-align: center; 
+        }
+
+        .pdf-data-table th.empty-cell {
+            border-top: none;
+        }
+        
+
+        .pdf-data-table td {
+            text-align: center;
+        }
+
+        .pdf-data-table td:nth-child(1) {
+            border-left: 1px solid #0D5890;
+        }
+
+        .pdf-data-table td.pdf-table-first-data {
+            border-left: 1px solid #0D5890;
+            width: 200px;
+            text-align: left;
+        }
+
+        .capitalize {
+            text-transform: unset;
+        }
+
+        .left-align {
+            align-self: flex-start;
+            margin-left: 60px;
+        }
+        
+        .pdf-data-dates-table {
+            margin-bottom: 25px;
+        }
+
+        .pdf-data-dates-table td {
+            width: 357px;
+            margin-top: 10px;
+        }
+
+        .pdf-graphs-table td {
+            
+            border-radius: 10px;
+            padding: 5px;
+        }
+
+        .pdf-graphs-table td.middle-space {
+            width: 20px;
+            border: none;
+        }
+
+        .pdf-graphs-table .graph-td {
+            width: 310px;
+        }
+
+        .pdf-graphs-table .spacer {
+            padding: 50px;
+        }
+
+        .pdf-graphs-table td p {
+            text-align: center;
+        }
+
+        .pdf-graphs-table td p span {
+            font-weight: bold;
+        }
+
+        
+    </style>
+    <title>Pdf</title>
+{% endblock %}
+
+{% block body %}
+    <page pageset="old">
+    <body>
+    <img class="pdf-logo head-logo" src="{{logo}}"/>
+
+    <h2 class="pdf-title">
+        ficha del participante
+    </h2>
+
+    <div class="pdf-user-info-box">
+        <table>
+            <tr>
+                <td>
+                    <img src="{{datausuario.foto}}" alt="" class="pdf-user-pic">        
+                </td>
+
+                <td class="pdf-user-info-ptop">
+                    <p class="pdf-term-text">
+                        <strong>Nombres:</strong> {{datausuario.nombre}}
+                    </p>
+                    <p class="pdf-term-text">
+                        <strong>Apellidos:</strong> {{datausuario.apellido}}
+                    </p>
+                    <p class="pdf-term-text">
+                        <strong>Correo electrónico:</strong> {{datausuario.correoPersonal}}  
+                    </p>
+                </td>
+            </tr>
+        </table>
+    </div>
+
+    <h2 class="pdf-title">
+        ingresos al sistema
+    </h2>
+
+    
+    <table class="pdf-table-connections">
+        <tbody>
+            <tr> 
+                <td class="pdf-term-text">
+                    <strong>Primera conexión:</strong> {{datausuario.ingresos.primeraConexion}}
+                </td> 
+                
+                <td class="pdf-term-text right-align">
+                    <strong>Última conexión:</strong> {{datausuario.ingresos.ultimaConexion}}  
+                </td>
+            </tr>
+            
+            <tr> 
+                <td class="pdf-term-text">
+                    <strong>Promedio de conexión:</strong>{{datausuario.ingresos.promedioConexion}}
+                </td> 
+                
+                <td class="pdf-term-text right-align">
+                    <strong>Cantidad de conexiones:</strong> {{datausuario.ingresos.cantidadConexiones}}
+                </td>
+            </tr>
+        </tbody>
+    </table>
+
+    <div class="pdf-band-title">
+        programas asignados
+    </div>
+
+    <table class="pdf-data-table">
+        <thead>
+            <tr>
+                <th class="empty-cell"></th>
+                <th>Estatus</th>
+                <th>%<br>Avance</th>
+                <th>Fecha<br>Inicio</th>
+                <th>Fecha<br>Fin</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for programa in programas %}
+            <tr>
+                <td class="pdf-table-first-data">{{programa.nombre}} </td>
+                <td>{{programa.status}}</td>
+                <td>{{programa.avance}}</td>
+                <td>{{programa.fecha_inicio}}</td>
+                <td>{{programa.fecha_fin}}</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</body>
+</page>
+{% endblock %}

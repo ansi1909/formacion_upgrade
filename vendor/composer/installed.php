@@ -1,12 +1,12 @@
 <?php return array (
   'root' => 
   array (
-    'pretty_version' => 'dev-master',
-    'version' => 'dev-master',
+    'pretty_version' => 'dev-develop',
+    'version' => 'dev-develop',
     'aliases' => 
     array (
     ),
-    'reference' => '9e65752017dbab0fb09334a41ca8b8ff7f8ddf08',
+    'reference' => 'fc0ef2d23ab3f2ca9a7194a35d335aaacace9cd4',
     'name' => 'jvelasquez/sabana51',
   ),
   'versions' => 
@@ -193,12 +193,12 @@
     ),
     'jvelasquez/sabana51' => 
     array (
-      'pretty_version' => 'dev-master',
-      'version' => 'dev-master',
+      'pretty_version' => 'dev-develop',
+      'version' => 'dev-develop',
       'aliases' => 
       array (
       ),
-      'reference' => '9e65752017dbab0fb09334a41ca8b8ff7f8ddf08',
+      'reference' => 'fc0ef2d23ab3f2ca9a7194a35d335aaacace9cd4',
     ),
     'liuggio/excelbundle' => 
     array (

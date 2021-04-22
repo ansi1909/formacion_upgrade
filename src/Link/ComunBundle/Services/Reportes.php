@@ -630,7 +630,7 @@ class Reportes
     }
 
     // Interacciones del usuario con los programas asignados
-    public function detalleParticipanteProgramas($usuario_id, $empresa_id, $nivel_id, $yml)
+    public function detalleParticipanteProgramas($usuario_id, $empresa_id, $nivel_id, $yml, $pdfdetalle)
     {
 
         $em = $this->em;
@@ -757,14 +757,30 @@ class Reportes
                                        'evaluaciones_materias' => $evaluaciones_materias);
 
             }
-            $status_programa = ($programa_log)? $em->getRepository('LinkComunBundle:CertiEstatusPagina')->find($programa_log->getEstatusPagina()->getId()):null;
-            $fecha_inicio = ($programa_log)? $this->translator->trans('Inicio').': '.$programa_log->getFechaInicio()->format('d-m-Y').' ':'';
-            $fecha_fin = ($programa_log)? ($programa_log->getFechaFin())? ', '.$this->translator->trans('Fin').': '.$programa_log->getFechaFin()->format('d-m-Y'):'':'';
-            $status_programa = (is_null($status_programa))? $this->translator->trans('No iniciado'):$status_programa->getNombre().', ';
-            $programas_arr[] = array('id'        => $programa->getId(),
-                                     'nombre'    => $programa->getNombre().', '.$this->translator->trans('Estatus').': '.$status_programa.$fecha_inicio.$fecha_fin,
-                                     'avance'    => $programa_log ? number_format($programa_log->getPorcentajeAvance(), 0) : 0,
-                                     'modulos'   => $modulos_arr);
+            //return new response($pdfdetalle);
+            if($pdfdetalle  == 0)
+            {
+                $status_programa = ($programa_log)? $em->getRepository('LinkComunBundle:CertiEstatusPagina')->find($programa_log->getEstatusPagina()->getId()):null;
+                $fecha_inicio = ($programa_log)? $this->translator->trans('Inicio').': '.$programa_log->getFechaInicio()->format('d-m-Y').' ':'';
+                $fecha_fin = ($programa_log)? ($programa_log->getFechaFin())? ', '.$this->translator->trans('Fin').': '.$programa_log->getFechaFin()->format('d-m-Y'):'':'';
+                $status_programa = (is_null($status_programa))? $this->translator->trans('No iniciado'):$status_programa->getNombre().', ';
+                $programas_arr[] = array('id'        => $programa->getId(),
+                                        'nombre'    => $programa->getNombre().', '.$this->translator->trans('Estatus').': '.$status_programa.$fecha_inicio.$fecha_fin,
+                                        'avance'    => $programa_log ? number_format($programa_log->getPorcentajeAvance(), 0) : 0,
+                                        'modulos'   => $modulos_arr);
+            }else{
+                $status_programa = ($programa_log)? $em->getRepository('LinkComunBundle:CertiEstatusPagina')->find($programa_log->getEstatusPagina()->getId()):null;
+                $fecha_inicio = ($programa_log)? $programa_log->getFechaInicio()->format('d-m-Y').' ':'';
+                $fecha_fin = ($programa_log)? ($programa_log->getFechaFin())? $programa_log->getFechaFin()->format('d-m-Y'):'':'';
+                $status_programa = (is_null($status_programa))? $this->translator->trans('No iniciado'):$status_programa->getNombre();
+                $programas_arr[] = array('id'          => $programa->getId(),
+                                        'nombre'       => $programa->getNombre(),
+                                        'status'       => $status_programa,
+                                        'fecha_inicio' => $fecha_inicio,
+                                        'fecha_fin'    => $fecha_fin,
+                                        'avance'       => $programa_log ? number_format($programa_log->getPorcentajeAvance(), 0) : 0,
+                                        'modulos'      => $modulos_arr);
+            }
 
         }
 

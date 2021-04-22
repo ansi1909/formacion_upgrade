@@ -97,7 +97,7 @@ final class Versions
   'yectep/phpspreadsheet-bundle' => 'v0.1.1@85bcea7b06e77d15a459233b27aebd0d74fb4a65',
   'sensio/generator-bundle' => 'v3.1.7@28cbaa244bd0816fd8908b93f90380bcd7b67a65',
   'symfony/phpunit-bridge' => 'v3.4.46@8d05c61270c40f457e0fc11d47cc112c0f2e3606',
-  'jvelasquez/sabana51' => 'dev-master@9e65752017dbab0fb09334a41ca8b8ff7f8ddf08',
+  'jvelasquez/sabana51' => 'dev-develop@fc0ef2d23ab3f2ca9a7194a35d335aaacace9cd4',
 );
 
     private function __construct()
