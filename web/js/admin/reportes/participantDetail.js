@@ -2,30 +2,6 @@ $(document).ready(function() {
 
 	observeList();
 
-	
-	/*var href = $("#url_pdf").val()+'/'+$('#empresa_id').val()+'/'+$('#desdef').val()+'/'+$('#hastaf').val()+'/'+$('#rol').val();
-
-	$('#pdf').click(function(){
-		var username = $('#username').val();
-    	var empresa_id = $('#empresa_id').val();
-		console.log(empresa_id);
-		$.ajax({
-			type: "POST",
-			url: $('#url_pdfdetalle').val(),
-			async: true,
-			data: { empresa_id: empresa_id, username: username },
-			dataType: "json",
-			success: function(data) {
-				console.log('ok')
-			},
-			error: function(){
-				$('#div-alert-detail').show();
-				$('#loadDetail').hide();
-			}
-		});
-
-	});*/
-
 });
 
 function setDetails(data)
@@ -65,7 +41,6 @@ function setDetails(data)
 	$('#programasAsignados').html(data.html);
 	progressCircle();
 	var href = $('#url_pdfdetalle').val()+'/'+$('#empresa_id').val()+'/'+$('#username').val();
-	console.log('hola');
 	$('#pdf-detalle').attr('href', href);
 	
 }

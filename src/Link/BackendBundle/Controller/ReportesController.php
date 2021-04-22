@@ -499,7 +499,7 @@ class ReportesController extends Controller
                 $objWorksheet->setCellValue($columnNames[$col+2].$inHeaderRow, $this->get('translator')->trans('Hora inicio'));
                 $objWorksheet->setCellValue($columnNames[$col+3].$inHeaderRow, $this->get('translator')->trans('Fecha fin'));
                 $objWorksheet->setCellValue($columnNames[$col+4].$inHeaderRow, $this->get('translator')->trans('Hora fin'));
-                $objWorksheet->setCellValue($columnNames[$col+5].$inHeaderRow, $this->get('translator')->trans('Tiempo total'));
+                $objWorksheet->setCellValue($columnNames[$col+5].$inHeaderRow, $this->get('translator')->trans('Tiempo acumulado'));
 
             }
             $p++;
@@ -574,7 +574,7 @@ class ReportesController extends Controller
                     {
                         $fecha_inicio = $f->converDate($participante['paginas'][$pagina_id]['fecha_inicio'],$yml['parameters']['time_zone']['default'],$timeZoneEmpresa);
                         $fecha_fin = $f->converDate($participante['paginas'][$pagina_id]['fecha_fin'],$yml['parameters']['time_zone']['default'],$timeZoneEmpresa);
-                        $totalTime = $f->totalTime($participante['paginas'][$pagina_id]['fecha_inicio'],$participante['paginas'][$pagina_id]['fecha_fin']);
+                        $totalTime = $f->AvancetotalTime($participante['paginas'][$pagina_id]['fecha_inicio'],$participante['paginas'][$pagina_id]['fecha_fin'], $participante['id']);
                         $aprobados++;
                         $objWorksheet->setCellValue($columnNames[$col].$row, $participante['paginas'][$pagina_id]['promedio']);
                         $objWorksheet->setCellValue($columnNames[$col+1].$row, $fecha_inicio->fecha);
