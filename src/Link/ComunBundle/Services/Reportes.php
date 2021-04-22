@@ -757,7 +757,8 @@ class Reportes
                                        'evaluaciones_materias' => $evaluaciones_materias);
 
             }
-            if($pdfdetalle  = 0)
+            //return new response($pdfdetalle);
+            if($pdfdetalle  == 0)
             {
                 $status_programa = ($programa_log)? $em->getRepository('LinkComunBundle:CertiEstatusPagina')->find($programa_log->getEstatusPagina()->getId()):null;
                 $fecha_inicio = ($programa_log)? $this->translator->trans('Inicio').': '.$programa_log->getFechaInicio()->format('d-m-Y').' ':'';
