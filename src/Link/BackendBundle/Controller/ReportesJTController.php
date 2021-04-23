@@ -646,7 +646,8 @@ class ReportesJTController extends Controller
 
             $data_found = 1;
             $nivel_id = $usuario->getNivel() ? $usuario->getNivel()->getId() : 0;
-            $reporte = $rs->detalleParticipanteProgramas($usuario->getId(), $empresa_id, $nivel_id, $yml, $pdfdetalle =0);
+            $reporte = $rs->detalleParticipanteProgramas($usuario->getId(), $empresa_id, $nivel_id, $yml, $pdfdetalle = 0);
+            //return new response(var_dump($reporte));
             //tomar los valores devueltos por la consulta, transformarlos segun la zona horaria y actualizarlos en el array si tiene
             if($reporte['ingresos']['primeraConexion']!='Nunca se ha conectado') {
                 $primeraConexion = $fn->converDate($reporte['ingresos']['primeraConexion'],$yml['parameters']['time_zone']['default'],$timeZoneEmpresa);
