@@ -95,8 +95,8 @@ class CertificadoController extends Controller
 		            $certificado_pdf->writeHTML($pagina_uno);
                     
 					if($categoria->getContenido()){
-						$contenidoMod  = '<div style="font-size:21px;text-align:center"> <h1>'.$this->get('translator')->trans('Contenido del').' '.$categoria->getNombre().': '.$pagina->getNombre().'</h1>';
-                        $contenidoMod .= '<h2>'.$this->get('translator')->trans(trim($categoria->getTarjetas())).'</h2>';
+						$contenidoMod  = '<div style="font-size:21px;text-align:center"> <h1>'.$this->get('translator')->trans(trim('Contenido'.' '.$categoria->getNotas().' '.strtolower($categoria->getNombre()))).': '.$pagina->getNombre().'</h1>';
+                        $contenidoMod .= '<h2> * '.$this->get('translator')->trans(trim($categoria->getTarjetas())).'</h2>';
 						$item = 1;
 						foreach ($session->get('paginas')[$programa_id]['subpaginas'] as $modulo)
 						{
