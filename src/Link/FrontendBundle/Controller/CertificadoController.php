@@ -77,17 +77,6 @@ class CertificadoController extends Controller
 					$comodines   = array('%%categoria%%');
 			        $reemplazos  = array($categoria->getPronombre().' '.$categoria->getNombre());
 			        $descripcion = str_replace($comodines, $reemplazos, $certificado->getDescripcion());
-		           /*  if ($pagina_log->getPagina()->getCategoria()->getNombre() == 'Curso') {
-
-		            	$comodines = array('%%categoria%%');
-			            $reemplazos = array('Curso');
-			            $descripcion = str_replace($comodines, $reemplazos, $certificado->getDescripcion());
-		            }
-		            else{
-		            	$comodines = array('%%categoria%%');
-			            $reemplazos = array('Programa');
-			            $descripcion = str_replace($comodines, $reemplazos, $certificado->getDescripcion());
-		            } */
 
             		$certificado_pdf = new Html2Pdf('L','A4','es','true','UTF-8',array(0, 15, 0, 0));
 					$pagina_uno = '<page title="Certificado" pageset="new" backimg="'.$file.'" backimgw="90%" backimgx="center">
@@ -106,12 +95,12 @@ class CertificadoController extends Controller
 		            $certificado_pdf->writeHTML($pagina_uno);
                     
 					if($categoria->getContenido()){
-						$contenidoMod = '<div style="font-size:21px;text-align:center"> <h1>'.$this->get('translator')->trans('Contenido del').' '.$categoria->getNombre().': '.$pagina->getNombre().'</h1>';
-
+						$contenidoMod  = '<div style="font-size:21px;text-align:center"> <h1>'.$this->get('translator')->trans('Contenido del').' '.$categoria->getNombre().': '.$pagina->getNombre().'</h1>';
+                        $contenidoMod .= '<h2>'.$this->get('translator')->trans(trim($categoria->getTarjetas())).'</h2>';
 						$item = 1;
 						foreach ($session->get('paginas')[$programa_id]['subpaginas'] as $modulo)
 						{
-							$contenidoMod .= '<h2> * '.$this->get('translator')->trans('Módulo').' '.$item.': '.$modulo['nombre'].'</h2>';
+							$contenidoMod .= '<h2> '.$item.': '.$modulo['nombre'].'</h2>';
 							$item += 1;
 						}
 						$contenidoMod .= '</div>';
