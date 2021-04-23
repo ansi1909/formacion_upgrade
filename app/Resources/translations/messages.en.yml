@@ -1,4 +1,5 @@
 a continuación te presento los detalles: these are the details
+a la: to the
 A la publicación de: In response of
 académicas: academics
 Acceso: Access
@@ -139,6 +140,7 @@ Comentario seleccionado: Selected comment
 comentarios: comments
 Comentarios: Comments
 Comparativo hasta el: Comparative until
+Competencia: Competence
 Competencia debe ser un valor entero: Competition must be an integer value
 Competencia debe tener como valor 0 o 1: Competition must have 0 or 1 as value
 Competencia requerida. Valores válidos 0 o 1.: Competition required. Valid values 0 or 1.
@@ -159,6 +161,7 @@ Configurar asignación de sub-páginas: Configure sub-pages assignment
 Configurar evaluación: Configure test
 Configurar página: Configure page
 Confirmar: Confirm
+Configuración de la categoría: Category settings
 Confirmar contraseña: Confirm password
 Contacte al Administrador del Sistema para agregar thumbnails para esta plantilla: Contact to System Administrator to add thumbnails to this template
 Contacte al Administrador del Sistema para mayor información: Contact to System Administrator for further information
@@ -265,6 +268,7 @@ Domingo: Sunday
 Duplicar página y sub-páginas: Duplicate page and sub-pages
 Duplicar página y sub-páginas 1: Duplicate page and sub-pages 1
 Duplicar evaluación: Duplicate test
+el: the
 Editar: Edit
 Editar asignación: Edit assignment
 Editar comentario: Edit comment
@@ -490,6 +494,8 @@ Filtrar por empresa: Filter by company
 Filtro: Filter
 Filtro automático: Automatic filter
 Fin del programa: End of the program
+Fin del curso: End of the course
+Fin de la competencia: End of the competition
 Finaliza en: Ends in
 Finalizar: Finish
 Finalizado: Finished
@@ -564,7 +570,9 @@ Iniciar: Start
 Iniciar Sesión: Log in
 Inicio: Begin
 Inicio del programa: Program start
+Inicio del curso: Course start
 Inicio de la evaluación: Evaluation start
+Inicio de la competencia: Start of the competition
 Inicio del programa: Program start
 tu usuario y clave. Ingresa tu correo.: your username and password. Enter your email.
 Interacción: Interaction
@@ -577,6 +585,7 @@ Ir al listado de evaluaciones: Go to tests list
 Ir al listado de opciones: Go to options list
 Ir al listado de preguntas: Go to questions list
 Jueves: Thursday
+la: the
 La aplicación ha sido almacenada con éxito: Application has been saved successfully
 La cantidad de preguntas a mostrar debe ser mayor o igual a 1.: The number of questions to show must be greater or equal than 1.
 La cantidad de preguntas a mostrar debe ser un valor entero.: The number of questions to show must be a integer value.
@@ -839,6 +848,7 @@ Prelada por: Preached by
 Presiona el botón finalizar para completar: Press finish button to complete
 Primera conexión: First connection
 Procesando: Processing
+Pronombre: Pronoun
 Procesar: Process
 Programa: Program
 Programación del aviso: Notification schedule
@@ -862,6 +872,8 @@ Puede solicitar crear una evaluación para esta página a través del Administra
 Puntaje: Score
 Puntaje con que se aprueba: Score with which it is approved
 Puntaje definitivo del programa: Definitive score of the program
+Puntaje definitivo del curso: Final score of the course
+Puntaje definitivo de la competencia: Final score of the competition
 que aún no han ingresado a la plataforma: that have not yet entered the platform
 QR: QR
 Quieres hacer un tour guiado: You want to take a guided tour
@@ -1027,7 +1039,7 @@ Tu calificación: Your score
 Tu comentario: Your comment
 Tu respuesta: Your answer
 Tutoriales: Tutorials
-Tu progreso en el: Your progress in the
+Tu progreso en: Your progress in
 Última conexión: Last connection
 Últimos 12: Last 12
 Url de la empresa no existe: Url for this company not found

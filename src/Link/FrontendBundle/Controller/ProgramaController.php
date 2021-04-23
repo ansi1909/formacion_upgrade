@@ -11,6 +11,7 @@ use Link\ComunBundle\Entity\AdminSesion;
 use Link\ComunBundle\Entity\AdminIntroduccion;
 use Symfony\Component\HttpFoundation\Cookie;
 use Link\ComunBundle\Entity\CertiPaginaLog;
+use Link\ComunBundle\Entity\CertiCategoria;
 
 class ProgramaController extends Controller
 {
@@ -51,10 +52,9 @@ class ProgramaController extends Controller
 
         $porcentaje_avance = round($pagina_log->getPorcentajeAvance());
 
-        $pagina = $this->getDoctrine()->getRepository('LinkComunBundle:CertiPagina')->find($programa_id);
-        $categoria =  $this->get('translator')->trans($pagina->getCategoria()->getNombre());
-
-        $pagina_sesion = $session->get('paginas')[$programa_id];
+        $pagina        =   $this->getDoctrine()->getRepository('LinkComunBundle:CertiPagina')->find($programa_id);
+        $categoria     =   $this->getDoctrine()->getRepository('LinkComunBundle:CertiCategoria')->findOneById($pagina->getCategoria()->getId());
+        $pagina_sesion =   $session->get('paginas')[$programa_id];
 
         $lis_mods = '';
         $tiene_evaluacion = 0;
@@ -318,11 +318,11 @@ class ProgramaController extends Controller
 
         return $this->render('LinkFrontendBundle:Programa:index.html.twig', array('pagina' => $pagina,
                                                                                   'categoria' => $categoria,
-                                                                                  'modulos' =>$modulos,
-                                                                                  'porcentaje_avance' =>$porcentaje_avance,
-                                                                                  'lis_mods' =>$lis_mods,
-                                                                                  'paso_actual_intro' =>$paso_actual_intro,
-                                                                                  'cancelar_intro' =>$cancelar_intro));
+                                                                                  'modulos' => $modulos,
+                                                                                  'porcentaje_avance' => $porcentaje_avance,
+                                                                                  'lis_mods' => $lis_mods,
+                                                                                  'paso_actual_intro' => $paso_actual_intro,
+                                                                                  'cancelar_intro' => $cancelar_intro));
 
         $response->headers->setCookie(new Cookie('Peter', 'Griffina', time() + 36, '/'));
 

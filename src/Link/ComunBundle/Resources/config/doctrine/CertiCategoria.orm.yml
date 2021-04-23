@@ -17,4 +17,34 @@ Link\ComunBundle\Entity\CertiCategoria:
             length: 20
             options:
                 fixed: false
+        pronombre:
+            type: string
+            nullable: true
+            length: 20
+            options:
+                fixed: false
+        bienvenida:
+            type: string
+            nullable: true
+            length: 20
+            options:
+                fixed: false
+        tarjetas:
+            type: string
+            nullable: true
+            length: 40
+            options:
+                fixed: false
+        horas:
+            type: boolean
+            nullable: true
+        contenido:
+            type: boolean
+            nullable: true
+        notas:
+            type: string
+            nullable: true
+            length: 40
+            options:
+                fixed: false
     lifecycleCallbacks: {  }
