@@ -6,15 +6,15 @@ Link\ComunBundle\Entity\CertiPaginaLog:
             columns:
                 - pagina_id
                 - usuario_id
+        IDX_AE97B9D67D139FE4:
+            columns:
+                - estatus_pagina_id
         IDX_AE97B9D657991ECF:
             columns:
                 - pagina_id
         IDX_AE97B9D6DB38439E:
             columns:
                 - usuario_id
-        IDX_AE97B9D67D139FE4:
-            columns:
-                - estatus_pagina_id
     id:
         id:
             type: integer
@@ -45,6 +45,16 @@ Link\ComunBundle\Entity\CertiPaginaLog:
             options:
                 unsigned: false
     manyToOne:
+        estatusPagina:
+            targetEntity: CertiEstatusPagina
+            cascade: {  }
+            fetch: LAZY
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                estatus_pagina_id:
+                    referencedColumnName: id
+            orphanRemoval: false
         pagina:
             targetEntity: CertiPagina
             cascade: {  }
@@ -63,16 +73,6 @@ Link\ComunBundle\Entity\CertiPaginaLog:
             inversedBy: null
             joinColumns:
                 usuario_id:
-                    referencedColumnName: id
-            orphanRemoval: false
-        estatusPagina:
-            targetEntity: CertiEstatusPagina
-            cascade: {  }
-            fetch: LAZY
-            mappedBy: null
-            inversedBy: null
-            joinColumns:
-                estatus_pagina_id:
                     referencedColumnName: id
             orphanRemoval: false
     lifecycleCallbacks: {  }
