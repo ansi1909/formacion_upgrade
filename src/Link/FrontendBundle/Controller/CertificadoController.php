@@ -32,7 +32,7 @@ class CertificadoController extends Controller
         $em = $this->getDoctrine()->getManager();
 
         $pagina = $em->getRepository('LinkComunBundle:CertiPagina')->find($programa_id);
-        $categoria = $pagina->getCategoria();
+        $categoria = $em->getRepository('LinkComunBundle:CertiCategoria')->findOneById($pagina->getCategoria()->getId());
 
 
        
