@@ -131,6 +131,12 @@ CREATE TABLE certi_categoria(
 -- Attributes --
 id serial,
 nombre varchar(20),
+pronombre varchar(20),
+bienvenida varchar(20),
+tarjetas varchar(40),
+notas varchar(40),
+horas boolean,
+contenido boolean,
  PRIMARY KEY (id));
 
 CREATE TABLE certi_estatus_contenido(

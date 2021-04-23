@@ -7,7 +7,14 @@ $(document).ready(function() {
 		enableSubmit();
 		$('#categoria_id').val("");
 		$('#categoria').val("");
+		$('#pronombre').val("");
+		$('#cbienvenida').val("");
+		$('#tarjetas').val("");
+		$('#notas').val("");
+		$('#horas').prop('checked', false);
+		$('#notas').val("");
 	});
+
 
 	$('#guardar').click(function(){
 		$('#form').submit();
@@ -36,6 +43,21 @@ $(document).ready(function() {
 				enableSubmit();
 				$('#categoria_id').val(categoria_id);
 				$('#categoria').val(data.nombre);
+				$('#pronombre').val(data.pronombre);
+				$('#cbienvenida').val(data.bienvenida);
+				$('#tarjetas').val(data.tarjetas);
+				$('#notas').val(data.notas);
+				if(data.horas){
+					$('#horas').prop('checked', true);
+				}else{
+					$('#horas').prop('checked', false);
+				}
+
+				if(data.contenido){
+					$('#contenido').prop('checked', true);
+				}else{
+					$('#contenido').prop('checked', false);
+				}
 			},
 			error: function(){
 				$('#alert-error').html($('#error_msg-edit').val());
