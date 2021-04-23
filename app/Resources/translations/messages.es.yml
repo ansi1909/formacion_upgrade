@@ -1,4 +1,5 @@
 a continuación te presento los detalles: a continuación te presento los detalles
+a la: a la
 A la publicación de: A la publicación de
 académicas: académicas
 Acceso: Acceso
@@ -139,6 +140,7 @@ Comentario seleccionado: Comentario seleccionado
 comentarios: comentarios
 Comentarios: Comentarios
 Comparativo hasta el: Comparativo hasta el
+Competencia: Competencia
 Competencia debe ser un valor entero: Competencia debe ser un valor entero
 Competencia debe tener como valor 0 o 1: Competencia debe tener como valor 0 o 1
 Competencia requerida. Valores válidos 0 o 1.: Competencia requerida. Valores válidos 0 o 1.
@@ -159,6 +161,7 @@ Configurar asignación de sub-páginas: Configurar asignación de sub-páginas
 Configurar evaluación: Configurar evaluación
 Configurar página: Configurar página
 Confirmar: Confirmar
+Configuración de la categoría: Configuración de la categoría
 Confirmar contraseña: Confirmar contraseña
 Contacte al Administrador del Sistema para agregar thumbnails para esta plantilla: Contacte al Administrador del Sistema para agregar thumbnails para esta plantilla
 Contacte al Administrador del Sistema para mayor información: Contacte al Administrador del Sistema para mayor información
@@ -265,6 +268,7 @@ Domingo: Domingo
 Duplicar página y sub-páginas: Duplicar página y sub-páginas
 Duplicar página y sub-páginas 1: Duplicar página y sub-páginas 1
 Duplicar evaluación : Duplicar evaluación
+el: el
 Editar: Editar
 Editar asignación: Editar asignación
 Editar comentario: Editar comentario
@@ -490,6 +494,8 @@ Filtrar por empresa: Filtrar por empresa
 Filtro: Filtro
 Filtro automático: Filtro automático
 Fin del programa: Fin del programa
+Fin del curso: Fin del curso
+Fin de la competencia: Fin de la competencia
 Finaliza en: Finaliza en
 Finalizar: Finalizar
 Finalizado: Finalizado
@@ -564,6 +570,8 @@ Iniciar: Iniciar
 Iniciar Sesión: Iniciar Sesión
 Inicio: Inicio
 Inicio del programa: Inicio del programa
+Inicio del curso: Inicio del curso
+Inicio de la competencia: Inicio de la competencia
 Inicio de la evaluación: Inicio de la evaluación
 Inicio del programa: Inicio del programa
 tu usuario y clave. Ingresa tu correo.: tu usuario y clave. Ingresa tu correo.
@@ -577,6 +585,7 @@ Ir al listado de evaluaciones: Ir al listado de evaluaciones
 Ir al listado de opciones: Ir al listado de opciones
 Ir al listado de preguntas: Ir al listado de preguntas
 Jueves: Jueves
+la: la
 La aplicación ha sido almacenada con éxito: La aplicación ha sido almacenada con éxito
 La cantidad de preguntas a mostrar debe ser mayor o igual a 1.: La cantidad de preguntas a mostrar debe ser mayor o igual a 1.
 La cantidad de preguntas a mostrar debe ser un valor entero.: La cantidad de preguntas a mostrar debe ser un valor entero.
@@ -839,6 +848,7 @@ Prelada por: Prelada por
 Presiona el botón finalizar para completar: Presiona el botón finalizar para completar
 Primera conexión: Primera conexión
 Procesando: Procesando
+Pronombre: Pronombre
 Procesar: Procesar
 Programa: Programa
 Programación del aviso: Programación del aviso
@@ -863,6 +873,8 @@ Puede solicitar crear una evaluación para esta página a través del Administra
 Puntaje: Puntaje
 Puntaje con que se aprueba: Puntaje con que se aprueba
 Puntaje definitivo del programa: Puntaje definitivo del programa
+Puntaje definitivo del curso: Puntaje definitivo del curso
+Puntaje definitivo de la competencia: Puntaje definitivo de la competencia
 que aún no han ingresado a la plataforma: que aún no han ingresado a la plataforma
 QR: QR
 Quieres hacer un tour guiado: Quieres hacer un tour guiado
@@ -1026,7 +1038,7 @@ Total de registros: Total de registros
 Tu calificación: Tu calificación
 Tu comentario: Tu comentario
 Tu respuesta: Tu respuesta
-Tu progreso en el: Tu progreso en el
+Tu progreso en: Tu progreso en
 Tutoriales: Tutoriales
 Última conexión: Última conexión
 Últimos 12: Últimos 12

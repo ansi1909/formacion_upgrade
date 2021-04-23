@@ -66,6 +66,13 @@ class CategoriaController extends Controller
 
         $categoria_id = $request->request->get('categoria_id');
         $nombre = $request->request->get('categoria');
+        $pronombre = $request->request->get('pronombre');
+        $bienvenida = $request->request->get('cbienvenida');
+        $tarjetas = $request->request->get('tarjetas');
+        $horas = $request->request->get('horas');
+        $contenido = $request->request->get('contenido');
+        $notas = $request->request->get('notas');
+       
 
         if ($categoria_id)
         {
@@ -76,12 +83,25 @@ class CategoriaController extends Controller
         }
 
         $categoria->setNombre($nombre);
+        $categoria->setPronombre($pronombre);
+        $categoria->setBienvenida($bienvenida);
+        $categoria->setTarjetas($tarjetas);
+        $categoria->setHoras($horas? true:false);
+        $categoria->setContenido($contenido? true:false);
+        $categoria->setNotas($notas);
+
                 
         $em->persist($categoria);
         $em->flush();
                     
         $return = array('id' => $categoria->getId(),
-                        'nombre' => $categoria->getNombre(),
+                        'nombre'      => $categoria->getNombre(),
+                        'pronombre'   => $categoria->getPronombre(),
+                        'bienvenida'  => $categoria->getBienvenida(),
+                        'tarjetas'    => $categoria->getTarjetas(),
+                        'horas'       => $categoria->getHoras(),
+                        'contenido'   => $categoria->getContenido(),
+                        'notas'       => $categoria->getNotas(),
                         'delete_disabled' => $f->linkEliminar($categoria->getId(),'CertiCategoria'));
 
         $return = json_encode($return);
@@ -97,7 +117,15 @@ class CategoriaController extends Controller
                 
         $categoria = $this->getDoctrine()->getRepository('LinkComunBundle:CertiCategoria')->find($categoria_id);
 
-        $return = array('nombre' => $categoria->getNombre());
+        $return = array(
+                    'nombre'     => $categoria->getNombre(), 
+                    'pronombre'  => $categoria->getPronombre(),
+                    'bienvenida' => $categoria->getBienvenida(),
+                    'tarjetas'   => $categoria->getTarjetas(),
+                    'horas'      => $categoria->getHoras(),
+                    'notas'      => $categoria->getNotas(),
+                    'contenido'  => $categoria->getContenido()
+                );
 
         $return = json_encode($return);
         return new Response($return, 200, array('Content-Type' => 'application/json'));
