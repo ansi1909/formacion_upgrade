@@ -173,7 +173,7 @@
                         <li class="nav-item">
                             <a href="{{ menu.url_existente ? path(menu.url, { 'app_id': menu.id }) : '#'~loop.index }}" class="{% if menu.submenu|length > 0 %}menudropdown {% endif %}nav-link">
                                 {% if menu.submenu|length > 0 %}
-                                        <span class="fa {{ menu.icono }}"></span> {{ menu.nombre }} <i class="fa fa-chevron-circle-down"></i>
+                                        <span class="fa {{ menu.icono }}"></span> {{ menu.nombre| trans }} <i class="fa fa-chevron-circle-down"></i>
                                 {% else %}
                                     <i class="fa {{ menu.icono }}"></i> {{ menu.nombre }}
                                 {% endif %}
@@ -185,7 +185,7 @@
                                     {% for submenu in menu.submenu %}
                                     {% if ultimosub != submenu.id %}
                                         <li class="nav-item">
-                                            <a href="{{ submenu.url_existente ? path(submenu.url, { 'app_id': submenu.id }) : '#'~loop.index }}" class="nav-link"><i class="fa {{ submenu.icono }}"></i> {{ submenu.nombre }}</a>
+                                            <a href="{{ submenu.url_existente ? path(submenu.url, { 'app_id': submenu.id }) : '#'~loop.index }}" class="nav-link"><i class="fa {{ submenu.icono }}"></i> {{ submenu.nombre| trans }}</a>
                                         </li>
                                         {% set ultimosub = submenu.id %}
                                     {% endif %}
@@ -561,7 +561,7 @@
                             "sLengthMenu":    "{{ 'Mostrar'|trans }} _MENU_ {{ 'registros'|trans }}",
                             "sZeroRecords":   "{{ 'No se encontraron resultados'|trans }}",
                             "sEmptyTable":    "{{ 'Ningún dato disponible en esta tabla'|trans }}",
-                            "sInfo":          "{{ 'Registros del'|trans }} _START_ {{ 'al'|trans }} _END_ {{ ' total'|trans }} _TOTAL_",
+                            "sInfo":          "{{ 'Registros del'|trans }} _START_ {{ 'al'|trans }} _END_ total _TOTAL_",
                             "sInfoEmpty":     "{{ 'Registros del'|trans }} 0 al 0 total de 0 ",
                             "sInfoFiltered":  "",
                             "sInfoPostFix":   "",

@@ -39,6 +39,8 @@ parameters:
         materia: 3
         leccion: 4
         curso: 5
+        competencia: 6
+        recurso: 7
     tipo_imagen_certificado:
         certificado: 1
         constancia: 2

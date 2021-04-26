@@ -236,11 +236,11 @@
             width: 100%;
             border-collapse: collapse;
             margin-bottom: 40px;
-            font-size: 20px;
+            font-size: 16px;
         }
 
         .pdf-data-table td, .pdf-data-table th {
-            padding: 10px 13.5px;
+            padding: 10px 20px;
             border-bottom: 1px solid #0D5890;
             border-right: 1px solid #0D5890;
         }
@@ -326,7 +326,7 @@
     <img class="pdf-logo head-logo" src="{{logo}}"/>
 
     <h2 class="pdf-title">
-        ficha del participante
+        Expediente del participante
     </h2>
 
     <div class="pdf-user-info-box">
@@ -345,6 +345,9 @@
                     </p>
                     <p class="pdf-term-text">
                         <strong>Correo electrónico:</strong> {{datausuario.correoPersonal}}  
+                    </p>
+                    <p class="pdf-term-text">
+                        <strong>Empresa:</strong> {{datausuario.empresa}}  
                     </p>
                 </td>
             </tr>

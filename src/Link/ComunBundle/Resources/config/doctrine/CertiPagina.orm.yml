@@ -2,18 +2,23 @@ Link\ComunBundle\Entity\CertiPagina:
     type: entity
     table: certi_pagina
     indexes:
-        IDX_CF1CDC9157991ECF:
+        pagina_ndx1:
             columns:
+                - id
                 - pagina_id
+                - categoria_id
         IDX_CF1CDC913397707A:
             columns:
                 - categoria_id
-        IDX_CF1CDC91DB38439E:
-            columns:
-                - usuario_id
         IDX_CF1CDC9164373B63:
             columns:
                 - estatus_contenido_id
+        IDX_CF1CDC9157991ECF:
+            columns:
+                - pagina_id
+        IDX_CF1CDC91DB38439E:
+            columns:
+                - usuario_id
     id:
         id:
             type: integer
@@ -80,16 +85,6 @@ Link\ComunBundle\Entity\CertiPagina:
                 unsigned: false
             column: horas_academicas
     manyToOne:
-        pagina:
-            targetEntity: CertiPagina
-            cascade: {  }
-            fetch: LAZY
-            mappedBy: null
-            inversedBy: null
-            joinColumns:
-                pagina_id:
-                    referencedColumnName: id
-            orphanRemoval: false
         categoria:
             targetEntity: CertiCategoria
             cascade: {  }
@@ -100,16 +95,6 @@ Link\ComunBundle\Entity\CertiPagina:
                 categoria_id:
                     referencedColumnName: id
             orphanRemoval: false
-        usuario:
-            targetEntity: AdminUsuario
-            cascade: {  }
-            fetch: LAZY
-            mappedBy: null
-            inversedBy: null
-            joinColumns:
-                usuario_id:
-                    referencedColumnName: id
-            orphanRemoval: false
         estatusContenido:
             targetEntity: CertiEstatusContenido
             cascade: {  }
@@ -118,6 +103,26 @@ Link\ComunBundle\Entity\CertiPagina:
             inversedBy: null
             joinColumns:
                 estatus_contenido_id:
+                    referencedColumnName: id
+            orphanRemoval: false
+        pagina:
+            targetEntity: CertiPagina
+            cascade: {  }
+            fetch: LAZY
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                pagina_id:
+                    referencedColumnName: id
+            orphanRemoval: false
+        usuario:
+            targetEntity: AdminUsuario
+            cascade: {  }
+            fetch: LAZY
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                usuario_id:
                     referencedColumnName: id
             orphanRemoval: false
     lifecycleCallbacks: {  }

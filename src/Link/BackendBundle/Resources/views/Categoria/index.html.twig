@@ -48,7 +48,7 @@
 
 {% block formModal %}
 <div class="modal-header" style="background: linear-gradient(to right, #0084db 0%, #00558D 100%); color: #fff;">
-    <h5 class="modal-title" id="exampleModalLongTitle">{{'Datos de la categoría'|trans}}</h5>
+    <h5 class="modal-title" id="exampleModalLongTitle">{{'Configuración de la categoría'|trans}}</h5>
     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
         <span aria-hidden="true" style="color: #fff;">&times;</span>
     </button>
@@ -59,7 +59,46 @@
         <div class="form-group">
             <label for="recipient-name" class="form-control-label">{{ 'Categoría'|trans }}:</label>
             <input type="text" class="form-control form_sty_modal" id="categoria" name="categoria" value="">
-            <span class="fa fa-tags"></span>
+        </div>
+        <div class="form-group">
+            <label for="recipient-name" class="form-control-label">{{ 'Pronombre'|trans }}:</label>
+            <input type="text" class="form-control form_sty_modal" id="pronombre" name="pronombre" value="">
+        </div>
+        <div class="form-group">
+            <label for="recipient-name" class="form-control-label">{{ 'Bienvenida'|trans }}:</label>
+            <input type="text" class="form-control form_sty_modal" id="cbienvenida" name="cbienvenida" value="">
+        </div>
+         <div class="form-group">
+            <label for="recipient-name" class="form-control-label">{{ 'Tarjetas'|trans }}:</label>
+            <input type="text" class="form-control form_sty_modal" id="tarjetas" name="tarjetas" value="">
+        </div>
+        <div class="form-group">
+            <label for="recipient-name" class="form-control-label">{{ 'Notas'|trans }}:</label>
+            <input type="text" class="form-control form_sty_modal" id="notas" name="notas" value="">
+        </div>
+        <div class="row">
+            <div class="col-sm-9 col-md-9 col-lg-9" >
+                <div class="form-group">
+                    <div class="can-toggle demo-rebrand-2 small">
+                        <label for="recipient-name" class="form-control-label">{{ 'Horas académicas en el certificado'|trans }}:</label>
+                        <input id="horas" name="horas" type="checkbox">
+                        <label for="horas">
+                            <div class="can-toggle__switch" data-checked="{{ 'Si'|trans }}" data-unchecked="No"></div>
+                        </label>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-7 col-md-7 col-lg-7" >
+                <div class="form-group">
+                    <div class="can-toggle demo-rebrand-2 small">
+                        <label for="recipient-name" class="form-control-label">{{ 'Contenido en el certificado'|trans }}:</label>
+                        <input id="contenido" name="contenido" type="checkbox">
+                        <label for="contenido">
+                            <div class="can-toggle__switch" data-checked="{{ 'Si'|trans }}" data-unchecked="No"></div>
+                        </label>
+                    </div>
+                </div>
+            </div>
         </div>
     </form>
     <div class="alert alert-success" role="alert" id="alert-success" style="display:none;"> 
