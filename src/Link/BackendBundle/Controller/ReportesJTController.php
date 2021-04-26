@@ -742,7 +742,8 @@ class ReportesJTController extends Controller
                                  'campo4' => $usuario->getCampo4(),
                                  'nivel' => $usuario->getNivel() ? $usuario->getNivel()->getNombre() : '',
                                  'ingresos' => $reporte['ingresos'],
-                                 'timeZone' => $timeZoneReport);
+                                 'timeZone' => $timeZoneReport,
+                                 'empresa' => $empresa->getNombre());
             $logo = $this->container->getParameter('folders')['dir_project'].'web/img/logo_formacion_smart.png';
             $html = $this->renderView('LinkBackendBundle:Reportes:pdfDetalleParticipante1.html.twig', array('programas' => $reporte['programas'],
                                                                                                             'datausuario'=> $dataUsuario,
@@ -755,25 +756,10 @@ class ReportesJTController extends Controller
             $pdf->writeHtml('<page>'.$html.'</page>');
             $pdf->writeHtml('<page>'.$html1.'</page>');
             //Generamos el PDF
-            $pdf->output('HORAS CONEXION.pdf');
-            $return = json_encode($pdf->output('HORAS CONEXION.pdf'));
+            
+            $return = json_encode($pdf->output('Detalle del participante.pdf'));
             return new Response($return, 200, array('Content-Type' => 'application/json'));
         }
-
-        $html = $this->renderView('LinkBackendBundle:Reportes:pdfDetalleParticipante1.html.twig');
-        $html1 = $this->renderView('LinkBackendBundle:Reportes:pdfDetalleParticipante2.html.twig');
-        $pdf = new Html2Pdf('P','A4','es','true','UTF-8',array(5, 5, 5, 8));
-        $pdf->pdf->SetDisplayMode('fullpage');
-        $pdf->writeHtml('<page>'.$html.'</page>');
-        $pdf->writeHtml('<page>'.$html1.'</page>');
-        //Generamos el PDF
-        $pdf->output('Detalle participante.pdf');
-
-        $return = array('usuario' => $dataUsuario,
-                        'data_found' => $data_found,
-                        'html' => $html);
-        $return = json_encode($return);
-        return new Response($return, 200, array('Content-Type' => 'application/json'));
 
     }
 
