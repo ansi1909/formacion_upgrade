@@ -1,6 +1,6 @@
 _participantesEmpresa:
-    path:     /participantesEmpresa/{app_id}/{r}/{empresa_id}
-    defaults: { _controller: LinkBackendBundle:Reportes:index, r: 1, pagina_id: 0, empresa_id: 0 }
+    path:     /participantesEmpresa/{app_id}/{r}/{empresa_id}/{nivel_id}
+    defaults: { _controller: LinkBackendBundle:Reportes:index, r: 1, pagina_id: 0, empresa_id: 0, nivel_id: 0 }
 
 _ajaxListadoParticipantes:
     path:     /ajaxListadoParticipantes
@@ -9,12 +9,12 @@ _ajaxListadoParticipantes:
         method: GET
 
 _participantesRegistrados:
-    path:     /participantesRegistrados/{app_id}/{pagina_id}/{r}/{empresa_id}
-    defaults: { _controller: LinkBackendBundle:Reportes:index, pagina_id: 0, r: 2, empresa_id: 0}
+    path:     /participantesRegistrados/{app_id}/{pagina_id}/{r}/{empresa_id}/{nivel_id}
+    defaults: { _controller: LinkBackendBundle:Reportes:index, pagina_id: 0, r: 2, empresa_id: 0, nivel_id: 0}
 
 _participantesCursando:
-    path:     /participantesCursando/{app_id}/{pagina_id}/{r}/{empresa_id}
-    defaults: { _controller: LinkBackendBundle:Reportes:index, pagina_id: 0, r: 3, empresa_id: 0 }
+    path:     /participantesCursando/{app_id}/{pagina_id}/{r}/{empresa_id}/{nivel_id}
+    defaults: { _controller: LinkBackendBundle:Reportes:index, pagina_id: 0, r: 3, empresa_id: 0, nivel_id: 0 }
 
 _ajaxProgramasE:
     path:     /ajaxProgramasE
@@ -23,8 +23,8 @@ _ajaxProgramasE:
         method: GET
 
 _participantesAprobados:
-    path:     /participantesAprobados/{app_id}/{pagina_id}/{r}/{empresa_id}
-    defaults: { _controller: LinkBackendBundle:Reportes:index, pagina_id: 0 , r: 4, empresa_id: 0 }
+    path:     /participantesAprobados/{app_id}/{pagina_id}/{r}/{empresa_id}/{nivel_id}
+    defaults: { _controller: LinkBackendBundle:Reportes:index, pagina_id: 0 , r: 4, empresa_id: 0, nivel_id: 0 }
 
 _ajaxListadoAprobados:
     path:     /ajaxListadoAprobados
@@ -33,12 +33,12 @@ _ajaxListadoAprobados:
         method: POST
 
 _participantesNoIniciados:
-    path:     /participantesNoIniciados/{app_id}/{pagina_id}/{r}/{empresa_id}
-    defaults: { _controller: LinkBackendBundle:Reportes:index, pagina_id: 0 , r: 5, empresa_id: 0 }
+    path:     /participantesNoIniciados/{app_id}/{pagina_id}/{r}/{empresa_id}/{nivel_id}
+    defaults: { _controller: LinkBackendBundle:Reportes:index, pagina_id: 0 , r: 5, empresa_id: 0, nivel_id: 0 }
 
 _excelReporte:
-    path:     /excelReporte/{app_id}/{pagina_id}/{r}/{empresa_id}
-    defaults: { _controller: LinkBackendBundle:Reportes:index, r: 0, empresa_id: 0, pagina_id: 0}
+    path:     /excelReporte/{app_id}/{pagina_id}/{r}/{empresa_id}/{nivel_id}
+    defaults: { _controller: LinkBackendBundle:Reportes:index, r: 0, empresa_id: 0, pagina_id: 0, nivel_id: 0}
     requirements:
         method: POST
 

@@ -327,6 +327,7 @@ class Functions
                         ->setParameters(array('pagina_id' => $categoria['programa_id'],
                                               'nivel_id' => $tutor->getNivel()->getId()));
             $nivel_asignado = $query->getSingleScalarResult();
+            //query revisado
 
             //verificar si el usuario es tutor, en caso de ser falso envia el correo al tutor
             if($muro->getUsuario()->getId()!= $tutor->getId() && $nivel_asignado && $correo)
@@ -984,7 +985,6 @@ public function obtenerEstructuraJson($pagina_id){
     $subpaginas = array();
     $tiene = 0;
     $return = $json ? array() : '';
-
     $query = $em->createQuery("SELECT pe, p FROM LinkComunBundle:CertiPaginaEmpresa pe
                                     JOIN pe.pagina p
                                     WHERE pe.empresa = :empresa_id AND p.pagina = :pagina_id
@@ -992,6 +992,7 @@ public function obtenerEstructuraJson($pagina_id){
                     ->setParameters(array('empresa_id' => $empresa_id,
                                 'pagina_id' => $pagina_id));
         $subpages = $query->getResult();
+    //Query probado
 
     foreach ($subpages as $subpage)
     {
@@ -1153,7 +1154,6 @@ public function obtenerEstructuraJson($pagina_id){
   // Retorna un arreglo multidimensional de las subpaginas asignadas a una empresa dada pagina_id, empresa_id
   public function subPaginasNivel($pagina_id, $estatus_contenido, $empresa_id)
   {
-
     $em = $this->em;
     $subpaginas = array();
     $orden = 0;
@@ -2134,9 +2134,16 @@ public function obtenerEstructuraJson($pagina_id){
     $em = $this->em;
 
     $query = $em->createQuery('SELECT u FROM LinkComunBundle:AdminUsuario u
-                  WHERE LOWER(u.login) = :login AND u.clave = :clave')
-                    ->setParameters(array('login' => strtolower($datos['login']),
-                                'clave' => $datos['clave']));
+                               WHERE LOWER(u.login) = :login
+                              AND u.clave = :clave
+                              AND u.empresa =:empresa
+                              ORDER BY u.id ASC'
+        )
+            ->setParameters(array(
+                'login' => strtolower($datos['login']),
+                'clave' => $datos['clave'],
+                'empresa' => $datos['empresa']['id'],
+            ));
         $usuarios = $query->getResult();
 
         if ($usuarios)
@@ -3712,9 +3719,10 @@ public function obtenerEstructuraJson($pagina_id){
 
         public function ExcelMails($mails,$encabezado,$pex,$yml,$sufijo){
         $em = $this->em;
+        $readerXlsx  = $this->get('phpoffice.spreadsheet')->createReader('Xlsx');
         $fileWithPath = $this->container->getParameter('folders')['dir_project'].'docs/formatos/correosFallidos.xlsx';
-        $objPHPExcel = \PHPExcel_IOFactory::load($fileWithPath);
-        $objWorksheet = $objPHPExcel->setActiveSheetIndex(0);
+        $spreadsheet = $readerXlsx->load($fileWithPath);
+        $objWorksheet = $spreadsheet->setActiveSheetIndex(0);
         $columnNames = array('A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z');
         $styleThinBlackBorderOutline = array(
                     'borders' => array(
@@ -3744,7 +3752,7 @@ public function obtenerEstructuraJson($pagina_id){
 
         }
         $hoy = date('d-m-Y');
-        $writer = $pex->createWriter($objPHPExcel, 'Excel5');
+        $writer = $this->get('phpoffice.spreadsheet')->createWriter($spreadsheet, 'Xlsx');
         $path = 'recursos/notificaciones/'.'correosNoentregados_'.$encabezado['empresa'].'_'.$hoy.'_'.$sufijo.'.xls';
         $xls = $yml['parameters']['folders']['dir_uploads'].$path;
         $writer->save($xls);
@@ -3780,6 +3788,29 @@ public function obtenerEstructuraJson($pagina_id){
         $fecha_fin_total = new \DateTime(date('Y/m/d H:i:s', strtotime($date_fin)));
         $interval = date_diff($fecha_inicio_total, $fecha_fin_total);
         return $interval->format('%h:%i:%s');
+    }
+
+    public function AvancetotalTime($date_inicio,$date_fin,$usuario_id){
+      $fecha_inicio = new \DateTime(date('Y-m-d 00:00:00', strtotime($date_inicio)));
+      $fecha_fin = new \DateTime(date('Y-m-d 23:59:59', strtotime($date_fin)));
+      $fecha_inicio = $fecha_inicio->format('Y-m-d H:i:s');
+      $fecha_fin = $fecha_fin->format('Y-m-d H:i:s');
+      
+      $em = $this->em;
+
+        $query = $em->getConnection()->prepare('SELECT
+                                                fnavance_total_time(:pfecha_inicio, :pfecha_fin, :pusuario_id) as
+                                                resultado;');
+        
+        $query->bindValue(':pfecha_inicio', $fecha_inicio, \PDO::PARAM_STR);
+        $query->bindValue(':pfecha_fin', $fecha_fin, \PDO::PARAM_STR);
+        $query->bindValue(':pusuario_id', $usuario_id, \PDO::PARAM_INT);
+        $query->execute();
+        $rs = $query->fetchAll();
+
+        return $rs[0]['resultado'];
+
+      
     }
 
     public function clearNameTimeZone($timeZone,$pais,$yml){

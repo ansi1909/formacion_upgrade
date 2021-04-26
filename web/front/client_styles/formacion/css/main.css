@@ -126,6 +126,22 @@ a.active-line, .active-line {
   .justify-content-md-evenly {
     justify-content: space-evenly !important; } }
 
+.navbar_username {
+  position: relative;
+  text-align: center; }
+  .navbar_username::before {
+    content: "";
+    position: absolute;
+    top: -109%;
+    left: 0;
+    width: 0.1rem;
+    height: 297%;
+    background-color: #adb5bd; }
+  .navbar_username p {
+    font-size: 0.8rem;
+    margin-bottom: 0;
+    font-weight: 600; }
+
 /* FONTS */
 h1, h2, h3, h4, h5, h6,
 .h1, .h2, .h3, .h4, .h5, .h6 {
@@ -602,7 +618,7 @@ body.codigoQR {
     box-shadow: 0 3px 20px rgba(0, 0, 0, 0.9); }
   55% {
     transform: scale3d(1.08, 1.08, 1);
-    box-shadow: 0 10px 20px transparent; }
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0); }
   75% {
     transform: scale3d(0.95, 0.95, 1);
     box-shadow: 0 0 20px rgba(0, 0, 0, 0.9); }
@@ -2595,12 +2611,10 @@ p.up {
 
 @media (max-width: 991.98px) {
   .cards-section {
-    width: 90vw;
     margin: auto; } }
 @media (max-width: 559.98px) {
   .cards-section {
-    padding: 0 !important;
-    width: 16rem !important; } }
+    padding: 0 !important; } }
 
 .card-footer {
   position: relative;
@@ -2980,7 +2994,7 @@ p.up {
 
 .card-anuncio {
   height: 18.375rem;
-  width: 15.25rem;
+  max-width: 15.25rem;
   border-radius: 1rem;
   background: #fff;
   box-shadow: 0px 0px 10px 0px rgba(92, 98, 102, 0.4);
@@ -2989,13 +3003,15 @@ p.up {
   .card-anuncio:hover .card_footer .fecha_anuncio {
     color: #5CAEE6; }
   .card-anuncio .card_header {
-    height: 9rem; }
+    width: 100%;
+    height: 50%; }
     .card-anuncio .card_header .card_img {
-      width: 15.25rem;
-      height: 9rem;
-      border-radius: 1rem 1rem 0 0; }
+      width: 100%;
+      height: 100%;
+      border-radius: 1rem 1rem 0 0;
+      object-fit: cover; }
   .card-anuncio .card_body {
-    height: 5.5rem;
+    height: 30%;
     padding: 0 calc(1rem - 2px); }
     .card-anuncio .card_body .titulo_anuncio {
       padding-top: calc(1rem + 3px);
@@ -3005,15 +3021,12 @@ p.up {
       font-weight: 500;
       line-height: calc(1rem + 5px); }
   .card-anuncio .card_footer {
-    height: 3.5rem;
     position: relative;
-    bottom: 0;
     margin: 0;
     padding: 0 calc(1rem - 2px); }
     .card-anuncio .card_footer .separador {
       box-sizing: border-box;
       border: 1px solid #DAE1E6;
-      width: 13.75rem;
       margin-bottom: calc(1rem - 8px); }
     .card-anuncio .card_footer .fecha_anuncio {
       color: #AAAFB3;
@@ -3091,19 +3104,17 @@ p.up {
   display: flex;
   flex-direction: row;
   word-wrap: break-word;
-  height: 6.5rem;
-  width: 17.56rem;
+  height: 7.5rem;
+  max-width: 17.56rem;
   border-radius: 1rem;
   background-color: #fff;
   box-shadow: 4px 4px 10px 0px rgba(92, 98, 102, 0.32);
   cursor: pointer;
+  margin: 0 auto;
   margin-bottom: calc(1rem + 2px); }
-  @media (max-width: 991.98px) {
-    .card_biblio {
-      width: 15rem; } }
   .card_biblio .card_biblio-left {
-    height: 6.5rem;
-    width: 4.8rem;
+    height: 100%;
+    width: 30%;
     background: #80CCFF;
     padding: calc(1rem + 5px);
     color: #5CAEE6;
@@ -3113,13 +3124,13 @@ p.up {
       font-size: calc(2rem + 4px);
       margin-top: .7rem; }
   .card_biblio .card_biblio-right {
-    height: 6.5rem;
-    width: 12.76rem;
+    height: 100%;
+    width: 70%;
     padding: 1rem calc(1rem - 2px); }
     .card_biblio .card_biblio-right .titulo_recurso {
       color: #797D80;
       font-family: "Roboto";
-      font-size: 1.1rem;
+      font-size: 1rem;
       font-weight: 500;
       line-height: calc(1rem + 3px); }
       @media (max-width: 991.98px) {
@@ -4146,7 +4157,8 @@ p.up {
   .biblio_detalle-recurso .img-recurso {
     box-sizing: border-box;
     height: auto;
-    width: 18rem;
+    width: 100%;
+    max-width: 18rem;
     border: 1px solid #565656;
     box-shadow: 5px 5px 15px rgba(58, 58, 58, 0.5);
     border-radius: calc(1rem - 8px); }
@@ -4361,28 +4373,34 @@ p.up {
 #jquery-tab-pager-navi {
   height: 3rem;
   width: auto;
-  border: 2px solid #DAE1E6;
   border-radius: calc(2rem - 4px);
   background-color: transparent;
   display: flex;
   flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: center;
   margin: 0;
   padding: 0;
   position: relative; }
   #jquery-tab-pager-navi li {
     margin: 0;
+    margin-bottom: 0.1rem;
     padding: calc(1rem - 6px) 1rem;
     position: relative;
     left: 0;
-    list-style-type: none; }
+    list-style-type: none;
+    border-color: #DAE1E6;
+    border-style: solid;
+    border-top-width: 3px;
+    border-bottom-width: 3px;
+    border-left-width: 1px;
+    border-right-width: 1px; }
     #jquery-tab-pager-navi li:last-child {
       border-radius: 0 calc(2rem - 4px) calc(2rem - 4px) 0;
-      border-left: 1px solid #DAE1E6; }
+      border-right-width: 3px; }
     #jquery-tab-pager-navi li:first-child {
       border-radius: calc(2rem - 4px) 0 0 calc(2rem - 4px);
-      border-right: 1px solid #DAE1E6; }
-    #jquery-tab-pager-navi li:nth-child(n) {
-      border: 1px solid #DAE1E6; }
+      border-left-width: 3px; }
     #jquery-tab-pager-navi li:hover {
       background: #5CAEE6; }
       #jquery-tab-pager-navi li:hover a {
@@ -4490,7 +4508,7 @@ p.up {
         background-color: rgba(58, 58, 58, .5);
         opacity: 0;
         padding: 1rem 0;
-        border-radius: 0 0 .7rem .7rem;
+        border-radius: 0 0 .7rem .7rem; 
         text-transform: uppercase;
         transition: all .2s ease;
         @include media-breakpoint-down(xl){
@@ -4553,7 +4571,7 @@ p.up {
             border-color: transparent transparent $white transparent;
         }
     }
-
+    
     .radarDouble{
         border-radius: calc(3rem + 2px);
         background-color: rgba(255, 255, 255, .2);

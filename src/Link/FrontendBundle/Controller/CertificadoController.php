@@ -15,7 +15,8 @@ class CertificadoController extends Controller
 	public function certificadoAction($programa_id)
     {
 
-        $session = new Session();
+        
+		$session = new Session();
         $f = $this->get('funciones');
 
         if (!$session->get('iniFront') || $f->sesionBloqueda($session->get('sesion_id')))
@@ -31,17 +32,10 @@ class CertificadoController extends Controller
         $em = $this->getDoctrine()->getManager();
 
         $pagina = $em->getRepository('LinkComunBundle:CertiPagina')->find($programa_id);
-        $categoria = $pagina->getCategoria()->getNombre();
+        $categoria = $em->getRepository('LinkComunBundle:CertiCategoria')->findOneById($pagina->getCategoria()->getId());
 
-        $contenidoMod = '<div style="font-size:21px;text-align:center"> <h1>'.$this->get('translator')->trans('Contenido del').' '.$categoria.': '.$pagina->getNombre().'</h1>';
 
-        $item = 1;
-        foreach ($session->get('paginas')[$programa_id]['subpaginas'] as $modulo)
-        {
-        	$contenidoMod .= '<h2> * '.$this->get('translator')->trans('Módulo').' '.$item.': '.$modulo['nombre'].'</h2>';
-        	$item += 1;
-        }
-        $contenidoMod .= '</div>';
+       
 
 		if ($pagina)
 		{
@@ -75,37 +69,47 @@ class CertificadoController extends Controller
 		        $ruta ='<img src="'.$directorio.'">';
 
 				$file = $uploads['parameters']['folders']['dir_uploads'].$certificado->getImagen();
-
+                
 		        if ($certificado->getTipoImagenCertificado()->getId() == $values['parameters']['tipo_imagen_certificado']['certificado'] )
 		        {
 
 		            /*certificado numero 2*/
-		            if ($pagina_log->getPagina()->getCategoria()->getNombre() == 'Curso') {
-
-		            	$comodines = array('%%categoria%%');
-			            $reemplazos = array('Curso');
-			            $descripcion = str_replace($comodines, $reemplazos, $certificado->getDescripcion());
-		            }
-		            else{
-		            	$comodines = array('%%categoria%%');
-			            $reemplazos = array('Programa');
-			            $descripcion = str_replace($comodines, $reemplazos, $certificado->getDescripcion());
-		            }
+					$comodines   = array('%%categoria%%');
+			        $reemplazos  = array($categoria->getPronombre().' '.$categoria->getNombre());
+			        $descripcion = str_replace($comodines, $reemplazos, $certificado->getDescripcion());
 
             		$certificado_pdf = new Html2Pdf('L','A4','es','true','UTF-8',array(0, 15, 0, 0));
-		            $certificado_pdf->writeHTML('<page title="Certificado" pageset="new" backimg="'.$file.'" backimgw="90%" backimgx="center">
-		            								<div style="margin-left:910px; ">'.$ruta.'</div>
-		                                            <div style="font-size:22px; margin-top:90px; text-align:center">'.$certificado->getEncabezado().'</div>
-                                            		<div style="text-align:center; font-size:40px; margin-top:25px; text-transform:uppercase;">'.$session->get('usuario')['nombre'].' '.$session->get('usuario')['apellido'].'</div>
-		                                            <div style="text-align:center; font-size:24px; margin-top:25px; ">'.$descripcion.'</div>
-		                                            <div style="text-align:center; font-size:40px; margin-top:25px; text-transform:uppercase;">'.$pagina->getNombre().'</div>
-		                                            <div style="text-align:center; margin-top:40px; font-size:14px;">'.$this->get('translator')->trans('Fecha inicio').':'.$pagina_log->getFechaInicio()->format("d/m/Y").'   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'.$this->get('translator')->trans('Fecha fin').':'.$pagina_log->getFechaFin()->format("d/m/Y").' </div>
-		                                            <div style="text-align:center; margin-top:15px; font-size:14px;">'.$this->get('translator')->trans('Equivalente a').': '.$pagina->getHorasAcademicas().' hrs. '.$this->get('translator')->trans('académicas').'</div>
-		                                        </page>');
+					$pagina_uno = '<page title="Certificado" pageset="new" backimg="'.$file.'" backimgw="90%" backimgx="center">
+									<div style="margin-left:910px; ">'.$ruta.'</div>
+									<div style="font-size:22px; margin-top:90px; text-align:center">'.$certificado->getEncabezado().'</div>
+									<div style="text-align:center; font-size:40px; margin-top:25px; text-transform:uppercase;">'.$session->get('usuario')['nombre'].' '.$session->get('usuario')['apellido'].'</div>
+									<div style="text-align:center; font-size:24px; margin-top:25px; ">'.$descripcion.'</div>
+									<div style="text-align:center; font-size:40px; margin-top:25px; text-transform:uppercase;">'.$pagina->getNombre().'</div>
+									<div style="text-align:center; margin-top:40px; font-size:14px;">'.$this->get('translator')->trans('Fecha inicio').':'.$pagina_log->getFechaInicio()->format("d/m/Y").'   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'.$this->get('translator')->trans('Fecha fin').':'.$pagina_log->getFechaFin()->format("d/m/Y").' </div>';
+				    
+					if($categoria->getHoras())
+					{
+						$pagina_uno .= '<div style="text-align:center; margin-top:15px; font-size:14px;">'.$this->get('translator')->trans('Equivalente a').': '.$pagina->getHorasAcademicas().' hrs. '.$this->get('translator')->trans('académicas').'</div>';
+					}
+					$pagina_uno	.= '</page>';
+		            $certificado_pdf->writeHTML($pagina_uno);
+                    
+					if($categoria->getContenido()){
+						$contenidoMod  = '<div style="font-size:21px;text-align:center"> <h1>'.$this->get('translator')->trans(trim('Contenido'.' '.$categoria->getNotas().' '.strtolower($categoria->getNombre()))).': '.$pagina->getNombre().'</h1>';
+                        $contenidoMod .= '<h2> * '.$this->get('translator')->trans(trim($categoria->getTarjetas())).'</h2>';
+						$item = 1;
+						foreach ($session->get('paginas')[$programa_id]['subpaginas'] as $modulo)
+						{
+							$contenidoMod .= '<h2> '.$item.': '.$modulo['nombre'].'</h2>';
+							$item += 1;
+						}
+						$contenidoMod .= '</div>';
 
-		            $certificado_pdf->writeHtml('<page title="prueba" pageset="new"  backimgw="90%" backimgx="center">'
-		            								.$contenidoMod.'
-											   	</page>');
+						$certificado_pdf->writeHtml('<page title="prueba" pageset="new"  backimgw="90%" backimgx="center">'
+		            								  .$contenidoMod.'
+											   	     </page>');
+					}
+		            
 
 		            //Generamos el PDF
 		            $certificado_pdf->output('certificado.pdf');
@@ -202,7 +206,8 @@ class CertificadoController extends Controller
 		{
 
 
-		    $pagina_log = $em->getRepository('LinkComunBundle:CertiPaginaLog')->findOneBy(array('usuario' => $session->get('usuario')['id'],'pagina'=>$programa_id));
+		    $pagina_log =  $em->getRepository('LinkComunBundle:CertiPaginaLog')->findOneBy(array('usuario' => $session->get('usuario')['id'],'pagina'=>$programa_id));
+			$categoria  =  $em->getRepository('LinkComunBundle:CertiCategoria')->findOneById($pagina_log->getPagina()->getCategoria()->getId()); 
 
 	        if($session->get('empresa')['logo']!='')
 	        {
@@ -302,13 +307,13 @@ class CertificadoController extends Controller
 	                                    <span class='tituloPart'>".$this->get('translator')->trans('Correo electrónico').": <span>".$session->get('usuario')['correo']."</span></span>
 		                            </div>
 		                            <div class='row'>
-	                                    <span class='tituloPart'>".$this->get('translator')->trans('Programa').": <span>".$session->get('paginas')[$programa_id]['nombre']."</span></span>
+	                                    <span class='tituloPart'>".$this->get('translator')->trans(trim($categoria->getNombre())).": <span>".$session->get('paginas')[$programa_id]['nombre']."</span></span>
 		                            </div>
 		                            <div class='row'>
-	                                    <span class='tituloPart'>".$this->get('translator')->trans('Inicio del programa').": <span>".$pagina_log->getFechaInicio()->format('d/m/Y')."</span></span>
+	                                    <span class='tituloPart'>".$this->get('translator')->trans(trim('Inicio'.' '.$categoria->getNotas().' '.strtolower($categoria->getNombre()))).": <span>".$pagina_log->getFechaInicio()->format('d/m/Y')."</span></span>
 		                            </div>
 		                            <div class='row'>
-	                                    <span class='tituloPart'>".$this->get('translator')->trans('Fin del programa').": <span>".$pagina_log->getFechaFin()->format('d/m/Y')."</span></span>
+	                                    <span class='tituloPart'>".$this->get('translator')->trans(trim('Fin'.' '.$categoria->getNotas().' '.strtolower($categoria->getNombre()))).": <span>".$pagina_log->getFechaFin()->format('d/m/Y')."</span></span>
 		                            </div>
 		                        </div>
 			                </div>
@@ -356,26 +361,12 @@ class CertificadoController extends Controller
 										               	<td class='center'>".round($nota,2)."</td>
 										            </tr>";
 							        	}
-							        	// else {
-								        // 	if ($programa['categoria'] == $values['parameters']['categoria']['materia'])
-								        // 	{
-								        // 		$valor = 30;
-								        // 		$guion = '+ ';
-								        // 	}
-								        // 	else {
-								        // 		if ($programa['categoria'] == $values['parameters']['categoria']['leccion'])
-								        // 		{
-								        // 			$valor = 40;
-								        // 			$guion = '- ';
-								        // 		}
-								        // 	}
-								        // }
 
 									}
 									if ($indice > 0)
 									{
 										$html .= "<tr style='font-size:16px; font-weight:300; font-color:#000000;'>
-								               		<td style='color:#000000;'>".$this->get('translator')->trans('Puntaje definitivo del programa').":</td>
+								               		<td style='color:#000000;'>".$this->get('translator')->trans(trim('Puntaje definitivo '.strtolower($categoria->getNotas().' '.$categoria->getNombre()))).":</td>
 								               		<td style='color:#000000;' class='center'>".round($puntaje/$indice,2)."</td>
 								            	</tr>";
 									}
@@ -396,7 +387,7 @@ class CertificadoController extends Controller
 									$html .= "<table class='table-notas' cellpadding='0' cellspacing='0'>
 				                            	<thead>
 				                                	<tr>
-				                                    	<th style='width: 380;'>".$this->get('translator')->trans('Módulos')."</th>
+				                                    	<th style='width: 380;'>".$this->get('translator')->trans(trim($categoria->getTarjetas()))."</th>
 				                                    	<th style='width: 100;'>".$this->get('translator')->trans('Puntaje')."</th>
 				                                	</tr>
 				                            	</thead>

@@ -139,6 +139,15 @@
         </div>
         <div class="navbar-brand d-flex justify-content-center align-items-center" href="#">
             {{ include('LinkFrontendBundle:Default:notificaciones.html.twig') }}
+            {% set username = app.session.get('usuario').nombre is defined and app.session.get('usuario').nombre is not null and app.session.get('usuario').nombre != '' ?  app.session.get('usuario').nombre : false %}
+            {% if username  %}
+            <div class="navbar_username mr-3 d-none d-sm-flex pl-2">
+                    <p>
+                    {{ 'Hola'|trans }},
+                    {{username}}
+                    </p>
+                </div>
+            {% endif %}
             <div class="d-flex flex-column">
                 <div class="wrapperDdMenu" title="{{ 'Perfil del participante'|trans }}" data-toggle="tooltip" data-placement="bottom">
                     <a href="#" class="perfil no-decorate" id="config">

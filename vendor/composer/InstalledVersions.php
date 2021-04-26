@@ -19,7 +19,7 @@ private static $installed = array (
     'aliases' => 
     array (
     ),
-    'reference' => 'fa8fb4de00494c54b68e4deee55f16bf5fe53f46',
+    'reference' => 'fc0ef2d23ab3f2ca9a7194a35d335aaacace9cd4',
     'name' => 'jvelasquez/sabana51',
   ),
   'versions' => 
@@ -168,6 +168,15 @@ private static $installed = array (
       ),
       'reference' => 'fa587178be682efe90d005e3a322590d6ebb59a5',
     ),
+    'ezyang/htmlpurifier' => 
+    array (
+      'pretty_version' => 'v4.13.0',
+      'version' => '4.13.0.0',
+      'aliases' => 
+      array (
+      ),
+      'reference' => '08e27c97e4c6ed02f37c5b2b20488046c8d90d75',
+    ),
     'fig/link-util' => 
     array (
       'pretty_version' => '1.1.1',
@@ -202,7 +211,7 @@ private static $installed = array (
       'aliases' => 
       array (
       ),
-      'reference' => 'fa8fb4de00494c54b68e4deee55f16bf5fe53f46',
+      'reference' => 'fc0ef2d23ab3f2ca9a7194a35d335aaacace9cd4',
     ),
     'liuggio/excelbundle' => 
     array (
@@ -213,6 +222,33 @@ private static $installed = array (
       ),
       'reference' => 'b4fe94b64449490a1b5fbbce827c2501be335126',
     ),
+    'maennchen/zipstream-php' => 
+    array (
+      'pretty_version' => '2.1.0',
+      'version' => '2.1.0.0',
+      'aliases' => 
+      array (
+      ),
+      'reference' => 'c4c5803cc1f93df3d2448478ef79394a5981cc58',
+    ),
+    'markbaker/complex' => 
+    array (
+      'pretty_version' => '2.0.0',
+      'version' => '2.0.0.0',
+      'aliases' => 
+      array (
+      ),
+      'reference' => '9999f1432fae467bc93c53f357105b4c31bb994c',
+    ),
+    'markbaker/matrix' => 
+    array (
+      'pretty_version' => '2.1.2',
+      'version' => '2.1.2.0',
+      'aliases' => 
+      array (
+      ),
+      'reference' => '361c0f545c3172ee26c3d596a0aa03f0cef65e6a',
+    ),
     'monolog/monolog' => 
     array (
       'pretty_version' => '1.25.5',
@@ -221,6 +257,15 @@ private static $installed = array (
       array (
       ),
       'reference' => '1817faadd1846cd08be9a49e905dc68823bc38c0',
+    ),
+    'myclabs/php-enum' => 
+    array (
+      'pretty_version' => '1.8.0',
+      'version' => '1.8.0.0',
+      'aliases' => 
+      array (
+      ),
+      'reference' => '46cf3d8498b095bd33727b13fd5707263af99421',
     ),
     'ocramius/package-versions' => 
     array (
@@ -251,6 +296,15 @@ private static $installed = array (
       array (
       ),
       'reference' => '1441011fb7ecdd8cc689878f54f8b58a6805f870',
+    ),
+    'phpoffice/phpspreadsheet' => 
+    array (
+      'pretty_version' => '1.17.1',
+      'version' => '1.17.1.0',
+      'aliases' => 
+      array (
+      ),
+      'reference' => 'c55269cb06911575a126dc225a05c0e4626e5fb4',
     ),
     'psr/cache' => 
     array (
@@ -284,12 +338,39 @@ private static $installed = array (
         0 => '1.0',
       ),
     ),
+    'psr/http-client' => 
+    array (
+      'pretty_version' => '1.0.1',
+      'version' => '1.0.1.0',
+      'aliases' => 
+      array (
+      ),
+      'reference' => '2dfb5f6c5eff0e91e20e913f8c5452ed95b86621',
+    ),
     'psr/http-client-implementation' => 
     array (
       'provided' => 
       array (
         0 => '1.0',
       ),
+    ),
+    'psr/http-factory' => 
+    array (
+      'pretty_version' => '1.0.1',
+      'version' => '1.0.1.0',
+      'aliases' => 
+      array (
+      ),
+      'reference' => '12ac7fcd07e5b077433f5f2bee95b3a771bf61be',
+    ),
+    'psr/http-message' => 
+    array (
+      'pretty_version' => '1.0.1',
+      'version' => '1.0.1.0',
+      'aliases' => 
+      array (
+      ),
+      'reference' => 'f6561bf28d520154e4b0ec72be95418abe6d9363',
     ),
     'psr/link' => 
     array (
@@ -946,6 +1027,15 @@ private static $installed = array (
       array (
       ),
       'reference' => '5eb9ac5dfdd20c3f59495c22841adc5da980d312',
+    ),
+    'yectep/phpspreadsheet-bundle' => 
+    array (
+      'pretty_version' => 'v0.1.1',
+      'version' => '0.1.1.0',
+      'aliases' => 
+      array (
+      ),
+      'reference' => '85bcea7b06e77d15a459233b27aebd0d74fb4a65',
     ),
   ),
 );

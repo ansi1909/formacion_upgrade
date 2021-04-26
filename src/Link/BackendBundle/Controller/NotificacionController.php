@@ -1296,6 +1296,7 @@ class NotificacionController extends Controller
 
         // Tipos de destino
         $tds = $em->getRepository('LinkComunBundle:AdminTipoDestino')->findAll();
+        //return new response(var_dump($tds));
 
         return $this->render('LinkBackendBundle:Notificacion:editNotificacionProgramada.html.twig', array('notificacion_programada' => $notificacion_programada,
                                                                                                           'tds' => $tds,
@@ -1750,9 +1751,10 @@ class NotificacionController extends Controller
         $res = $query->fetchAll();
 
         // Solicita el servicio de excel
+        $readerXlsx  = $this->get('phpoffice.spreadsheet')->createReader('Xlsx');
         $fileWithPath = $this->container->getParameter('folders')['dir_project'].'docs/formatos/CorreosParticipantes.xlsx';
-        $objPHPExcel = \PHPExcel_IOFactory::load($fileWithPath);
-        $objWorksheet = $objPHPExcel->setActiveSheetIndex(0);
+        $spreadsheet = $readerXlsx->load($fileWithPath);
+        $objWorksheet = $spreadsheet->setActiveSheetIndex(0);
         $columnNames = array('A', 'B', 'C', 'D', 'E', 'F', 'G');
 
         // Encabezado
@@ -1800,7 +1802,7 @@ class NotificacionController extends Controller
         // Crea el writer
 
 
-        $writer = $this->get('phpexcel')->createWriter($objPHPExcel, 'Excel2007');
+        $writer = $this->get('phpoffice.spreadsheet')->createWriter($spreadsheet, 'Xlsx');
         $hoy = date('y-m-d H:i:s');
         $path ='recursos/notificaciones/'.'CorreosParticipantes_'.$hoy.'.xlsx';
         $xls = $yml['parameters']['folders']['dir_uploads'].$path;

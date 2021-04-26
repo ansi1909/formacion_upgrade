@@ -800,7 +800,7 @@ class UsuarioController extends Controller
 
     public function uploadParticipantesAction(Request $request)
     {
-
+        
         $session = new Session();
         $f = $this->get('funciones');
 
@@ -860,17 +860,19 @@ class UsuarioController extends Controller
             }
             else {
 
-                $objPHPExcel = \PHPExcel_IOFactory::load($fileWithPath);
+                $readerXlsx  = $this->get('phpoffice.spreadsheet')->createReader('Xlsx');
+
+                $spreadsheet = $readerXlsx->load($fileWithPath);
 
                 // Se obtienen las hojas, el nombre de las hojas y se pone activa la primera hoja
-                $total_sheets = $objPHPExcel->getSheetCount();
-                $allSheetName = $objPHPExcel->getSheetNames();
-                $objWorksheet = $objPHPExcel->setActiveSheetIndex(0);
+                $total_sheets = $spreadsheet->getSheetCount();
+                $allSheetName = $spreadsheet->getSheetNames();
+                $objWorksheet = $spreadsheet->setActiveSheetIndex(0);
 
                 // Se obtiene el número máximo de filas y columnas
                 $highestRow = $objWorksheet->getHighestRow();
                 $highestColumn = $objWorksheet->getHighestColumn();
-                $highestColumnIndex = \PHPExcel_Cell::columnIndexFromString($highestColumn);
+                $highestColumnIndex = \PhpOffice\PhpSpreadsheet\Cell\Coordinate::columnIndexFromString($highestColumn);
 
                 //return new Response($highestRow);
 
@@ -894,7 +896,7 @@ class UsuarioController extends Controller
                        $filas_analizadas++;
 
                         // Código del empleado
-                        $col = 0;
+                        $col = 1;
                         $col_name = 'A';
                         $cell = $objWorksheet->getCellByColumnAndRow($col, $row);
                         $codigo = trim($cell->getValue());
@@ -971,13 +973,14 @@ class UsuarioController extends Controller
                         $fecha_registro = trim($cell->getValue());
                         if ($fecha_registro)
                         {
+                            
                             $hay_data++;
                             if ($cell->getDataType() != 's')
                             {
                                 $particulares[$this->get('translator')->trans('Línea').' '.$row][$this->get('translator')->trans('Columna').' '.$col_name] = $this->get('translator')->trans('La fecha de registro debe ser del tipo texto en formato DD/MM/AAAA').'.';
                             }
                             else {
-                                if (\PHPExcel_Shared_Date::isDateTime($cell))
+                                if (\PhpOffice\PhpSpreadsheet\Shared\Date::isDateTime($cell))
                                 {
                                     $particulares[$this->get('translator')->trans('Línea').' '.$row][$this->get('translator')->trans('Columna').' '.$col_name] = $this->get('translator')->trans('La fecha de registro debe ser del tipo texto en formato DD/MM/AAAA').'.';
                                 }
@@ -985,6 +988,19 @@ class UsuarioController extends Controller
                                     if (!$f->checkFecha($fecha_registro))
                                     {
                                         $particulares[$this->get('translator')->trans('Línea').' '.$row][$this->get('translator')->trans('Columna').' '.$col_name] = $this->get('translator')->trans('La fecha de registro debe ser en formato DD/MM/AAAA y ser válida').'.';
+                                    }else{
+                                        
+                                        #Es necesario transformar la hora que obtenemos (UTC) del servidor a la hora de venezuela
+                                        #Ya que a las 8:00 pm de venezuela en UTC serian las 12:00 am del dia siguiente
+                                        
+                                        $hoy = new \DateTime('now');
+                                        $reg = new \DateTime(str_replace("/","-",$fecha_registro));
+                                        $hoy = $f->converDate($hoy->format('d-m-Y H:i:s'),$yml['parameters']['time_zone']['utc'],$yml['parameters']['time_zone']['local']);
+                                        $hoy = new \Datetime(str_replace("/","-",$hoy->fecha));
+
+                                        if($reg > $hoy ){    
+                                            $particulares[$this->get('translator')->trans('Línea').' '.$row][$this->get('translator')->trans('Columna').' '.$col_name] = $this->get('translator')->trans('La fecha de registro debe ser menor o igual a la fecha actual').'.';
+                                        }
                                     }
                                 }
                             }
@@ -1208,20 +1224,21 @@ class UsuarioController extends Controller
         $r = $query->fetchAll();
         $max = $r[0]['max'] != '' ? $r[0]['max'] : 0;
 
-        $objPHPExcel = \PHPExcel_IOFactory::load($fileWithPath);
+        $readerXlsx  = $this->get('phpoffice.spreadsheet')->createReader('Xlsx');
+        $spreadsheet = $readerXlsx->load($fileWithPath);
 
         // Se obtienen las hojas, el nombre de las hojas y se pone activa la primera hoja
-        $total_sheets = $objPHPExcel->getSheetCount();
-        $allSheetName = $objPHPExcel->getSheetNames();
-        $objWorksheet = $objPHPExcel->setActiveSheetIndex(0);
+        $total_sheets = $spreadsheet->getSheetCount();
+        $allSheetName = $spreadsheet->getSheetNames();
+        $objWorksheet = $spreadsheet->setActiveSheetIndex(0);
 
         // Se obtiene el número máximo de filas y columnas
         $highestRow = $objWorksheet->getHighestRow();
         $highestColumn = $objWorksheet->getHighestColumn();
-        $highestColumnIndex = \PHPExcel_Cell::columnIndexFromString($highestColumn);
+        $highestColumnIndex = \PhpOffice\PhpSpreadsheet\Cell\Coordinate::columnIndexFromString($highestColumn);
 
         // Nuevo objeto Excel para el CSV
-        $phpExcelObject = $this->get('phpexcel')->createPHPExcelObject();
+        $phpExcelObject = $this->get('phpoffice.spreadsheet')->createSpreadsheet();
         $phpExcelObject->getProperties()->setCreator("formacion")
                        ->setLastModifiedBy($usuario->getNombre().' '.$usuario->getApellido())
                        ->setTitle("CSV Autogenerado")
@@ -1237,7 +1254,7 @@ class UsuarioController extends Controller
             $r = $row-1; // Se empieza desde la fila 1 el archivo CSV
 
             // Código del empleado
-            $col = 0;
+            $col = 1;
             $col_name = 'A';
             $cell = $objWorksheet->getCellByColumnAndRow($col, $row);
             $codigo = trim($cell->getValue());
@@ -1389,7 +1406,7 @@ class UsuarioController extends Controller
         }
 
         // Crea el writer
-        $writer = $this->get('phpexcel')->createWriter($phpExcelObject, 'CSV')
+        $writer = $this->get('phpoffice.spreadsheet')->createWriter($phpExcelObject, 'Csv')
                                         ->setDelimiter('|')
                                         ->setEnclosure('');
         $writer->setUseBOM(true);

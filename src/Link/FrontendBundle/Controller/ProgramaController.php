@@ -11,6 +11,7 @@ use Link\ComunBundle\Entity\AdminSesion;
 use Link\ComunBundle\Entity\AdminIntroduccion;
 use Symfony\Component\HttpFoundation\Cookie;
 use Link\ComunBundle\Entity\CertiPaginaLog;
+use Link\ComunBundle\Entity\CertiCategoria;
 
 class ProgramaController extends Controller
 {
@@ -51,10 +52,10 @@ class ProgramaController extends Controller
 
         $porcentaje_avance = round($pagina_log->getPorcentajeAvance());
 
-        $pagina = $this->getDoctrine()->getRepository('LinkComunBundle:CertiPagina')->find($programa_id);
-
-        $pagina_sesion = $session->get('paginas')[$programa_id];
-
+        $pagina        =   $this->getDoctrine()->getRepository('LinkComunBundle:CertiPagina')->find($programa_id);
+        $categoria     =   $this->getDoctrine()->getRepository('LinkComunBundle:CertiCategoria')->findOneById($pagina->getCategoria()->getId());
+        $pagina_sesion =   $session->get('paginas')[$programa_id];
+        
         $lis_mods = '';
         $tiene_evaluacion = 0;
 
@@ -68,6 +69,7 @@ class ProgramaController extends Controller
             {
                 $nota = 0;
                 $contador = $contador + 1;
+                $pruebaLog = false;
 
                 if ($subpagina['tiene_evaluacion'])
                 {
@@ -242,7 +244,13 @@ class ProgramaController extends Controller
                     if ($datos_certi_pagina->getAcceso())
                     {
                         // aprobado y con acceso de seguir viendo
-                        $boton_continuar = '<a href="'. $this->generateUrl('_lecciones', array('programa_id' => $programa_id, 'subpagina_id' => 0)).'" class="btn btn-sm btn-primary mt-3 btnAp px-4"> Ver </a>';
+                         
+                        if ($categoria->getId() != $yml['parameters']['categoria']['competencia']){
+                            $sub_pg = 0;
+                        }else{
+                            $sub_pg = $subpagina['id'];
+                        }
+                        $boton_continuar = '<a href="'. $this->generateUrl('_lecciones', array('programa_id' => $programa_id, 'subpagina_id' => $sub_pg)).'" class="btn btn-sm btn-primary mt-3 btnAp px-4"> Ver </a>';
                         $div_class1 = 'card-hrz-right d-flex flex-column justify-content-top mx-3 pb-1 align-item align-items-center';
                         $div_class2 = 'percent text-center mt-1';
                         $span_class = 'count mt-0 text-xs color-light-grey';
@@ -286,6 +294,7 @@ class ProgramaController extends Controller
                     }
                     elseif($avanzar == 1)
                     {
+                        $next_pagina = $categoria->getId() == $yml['parameters']['categoria']['competencia']? $subpagina['id']:$next_pagina;  
                         $lis_mods .= '<a href="'. $this->generateUrl('_lecciones', array('programa_id' => $programa_id, 'subpagina_id' => $next_pagina)).'" class="btn btn-sm '.$clase.' mt-6 mb-4"> '.$boton.' </a>';
                     }
                     else{
@@ -315,11 +324,12 @@ class ProgramaController extends Controller
         $cancelar_intro = $intro_del_usuario[0]->getCancelado();
 
         return $this->render('LinkFrontendBundle:Programa:index.html.twig', array('pagina' => $pagina,
-                                                                                  'modulos' =>$modulos,
-                                                                                  'porcentaje_avance' =>$porcentaje_avance,
-                                                                                  'lis_mods' =>$lis_mods,
-                                                                                  'paso_actual_intro' =>$paso_actual_intro,
-                                                                                  'cancelar_intro' =>$cancelar_intro));
+                                                                                  'categoria' => $categoria,
+                                                                                  'modulos' => $modulos,
+                                                                                  'porcentaje_avance' => $porcentaje_avance,
+                                                                                  'lis_mods' => $lis_mods,
+                                                                                  'paso_actual_intro' => $paso_actual_intro,
+                                                                                  'cancelar_intro' => $cancelar_intro));
 
         $response->headers->setCookie(new Cookie('Peter', 'Griffina', time() + 36, '/'));
 

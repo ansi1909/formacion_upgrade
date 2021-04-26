@@ -312,17 +312,19 @@ class NivelController extends Controller
             } 
             else {
                 
-                $objPHPExcel = \PHPExcel_IOFactory::load($fileWithPath);
+                $readerXlsx  = $this->get('phpoffice.spreadsheet')->createReader('Xlsx');
+
+                $spreadsheet = $readerXlsx->load($fileWithPath);
               
                 // Se obtienen las hojas, el nombre de las hojas y se pone activa la primera hoja
-                $total_sheets = $objPHPExcel->getSheetCount();
-                $allSheetName = $objPHPExcel->getSheetNames();
-                $objWorksheet = $objPHPExcel->setActiveSheetIndex(0);
+                $total_sheets = $spreadsheet->getSheetCount();
+                $allSheetName = $spreadsheet->getSheetNames();
+                $objWorksheet = $spreadsheet->setActiveSheetIndex(0);
               
                 // Se obtiene el número máximo de filas y columnas
                 $highestRow = $objWorksheet->getHighestRow();
                 $highestColumn = $objWorksheet->getHighestColumn();
-                $highestColumnIndex = \PHPExcel_Cell::columnIndexFromString($highestColumn);
+                $highestColumnIndex = \PhpOffice\PhpSpreadsheet\Cell\Coordinate::columnIndexFromString($highestColumn);
               
                 // $headingsArray contiene las cabeceras de la hoja excel. Los titulos de columnas
                 $headingsArray = $objWorksheet->rangeToArray('A1:'.$highestColumn.'1',null, true, true, true);
@@ -502,7 +504,7 @@ class NivelController extends Controller
                     <thead class="sty__title">
                         <tr>
                             <th class="hd__title">'.$this->get('translator')->trans('Nombre').'</th>
-                            <th class="hd__title">'.$this->get('translator')->trans('Categoria').'</th>
+                            <th class="hd__title">'.$this->get('translator')->trans('Categoría').'</th>
                             <th class="hd__title">'.$this->get('translator')->trans('Asignar').'</th>
                         </tr>
                     </thead>

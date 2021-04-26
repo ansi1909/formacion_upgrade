@@ -34,6 +34,7 @@
 </style>
 
 <input type="hidden" id="profilePhoto" name="profilePhoto" value="{{ asset('img/user.png') }}">
+<input type="hidden" id="url_pdfdetalle" name="url_pdfdetalle" value="{{ path ('_pdfDetalleParticipante') }}">
 <div class="row" id="reporteDetail" style="display:none;">
     <div class="col-sm-16 col-md-16 col-lg-16">
         <div class="card">
@@ -237,7 +238,7 @@
                                 </div>
                                 <div class="col-sm-4 col-md-4 col-lg-4">
                                     <div class="form-group">
-                                        <label for="finalizados" class="col-sm-16 col-md-16 col-lg-16 col-form-label">{{ 'Programas Finalizados'|trans }}</label>
+                                        <label for="finalizados" class="col-sm-16 col-md-16 col-lg-16 col-form-label">{{ 'Programas aprobados'|trans }}</label>
                                         <div class="col-sm-8 col-md-8 col-lg-8">
                                             <input type="text" class="form-control form_sty1" value="" disabled="disabled" id="finalizados">
                                         </div>
@@ -269,6 +270,14 @@
                     </div>
                 </div>
             </div>
+            <div class="card-footer">
+                <div class="col-sm-16 col-md-16 text-right">
+                    <a id="pdf-detalle" href="#" target="_blank" class="btn" value="">
+                    <button type="" class="bttn__edit"  data-toggle="tooltip" data-placement="bottom" title="{{'Descargar' |trans}}"><span class="fa fa-download"></span></button>
+                    </a>
+                </div>
+            </div>
         </div>
     </div>
 </div>
+

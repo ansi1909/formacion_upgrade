@@ -228,7 +228,7 @@
             			<div class="col-sm-16">
                             <div class="row">
                                 <div class="col-sm-16 col-lg-16 col-md-16">
-                                    <label for="title" class="col-sm-6 col-md-6 col-lg-6 col-form-label">{{ 'Título en la ventana del navegador' }}</label>
+                                    <label for="title" class="col-sm-6 col-md-6 col-lg-6 col-form-label">{{ 'Título en la ventana del navegador'|trans }}</label>
                                     <div class="col-sm-10 col-md-10 col-lg-10">
                                         <input type="text" id="title" name="title" class="form-control form_sty1" value="{{ preferencia.title }}">
                                         <span class="fa fa-font"></span>
@@ -274,7 +274,7 @@
                             <br><br>
                             <div class="row">
                                 <div class="col-sm-16 col-lg-16 col-md-16">
-                                    <label for="logoLogin" class="col-sm-6 col-md-6 col-lg-6 col-form-label">¿{{ 'El logo de la empresa se mostrará en la página de login' }}?</label>
+                                    <label for="logoLogin" class="col-sm-6 col-md-6 col-lg-6 col-form-label">¿{{ 'El logo de la empresa se mostrará en la página de login'|trans }}?</label>
                                     <div class="col-sm-10 col-md-10 col-lg-10">
                                         <div class="can-toggle demo-rebrand-2 small">
                                             {% set chk = preferencia.logoLogin ? 'checked="checked"' : '' %}

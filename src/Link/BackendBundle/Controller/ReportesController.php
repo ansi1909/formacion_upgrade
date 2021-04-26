@@ -10,11 +10,12 @@ use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 use Link\ComunBundle\Entity\AdminSesion;
 use Symfony\Component\HttpFoundation\Cookie;
 use Symfony\Component\Yaml\Yaml;
+use Symfony\Component\HttpFoundation\StreamedResponse;
 
 
 class ReportesController extends Controller
 {
-    public function indexAction($app_id, $r, $pagina_id, $empresa_id, Request $request)
+    public function indexAction($app_id, $r, $pagina_id, $empresa_id,$nivel_id, Request $request)
     {
         $session = new Session();
         $f = $this->get('funciones');
@@ -41,7 +42,7 @@ class ReportesController extends Controller
             $empresa_id = $request->request->get('empresa_id');
             $reporte = $request->request->get('reporte');
             $pagina_id = $request->request->get('programa_id');
-            $nivel_id = $request->request->get('nivel_id');
+            $nivel_id = $request->request->get('nivel_id_dashboard');
             $nivel_id = $nivel_id ? $nivel_id : 0;
             $pagina_id = $pagina_id ? $pagina_id : 0;
             $i = 1;
@@ -91,9 +92,10 @@ class ReportesController extends Controller
             $res = $query->fetchAll();
 
             // Solicita el servicio de excel
+            $readerXlsx  = $this->get('phpoffice.spreadsheet')->createReader('Xlsx');
             $fileWithPath = $this->container->getParameter('folders')['dir_project'].'docs/formatos/ListadoParticipantes.xlsx';
-            $objPHPExcel = \PHPExcel_IOFactory::load($fileWithPath);
-            $objWorksheet = $objPHPExcel->setActiveSheetIndex(0);
+            $spreadsheet = $readerXlsx->load($fileWithPath);
+            $objWorksheet = $spreadsheet->setActiveSheetIndex(0);
             $columnNames = array('A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z');
 
             // Encabezado
@@ -166,14 +168,18 @@ class ReportesController extends Controller
 
 
             // Crea el writer
-            $writer = $this->get('phpexcel')->createWriter($objPHPExcel, 'Excel2007');
+            $writer = $this->get('phpoffice.spreadsheet')->createWriter($spreadsheet, 'Xlsx');
             $empresaName = $f->eliminarAcentos($empresa->getNombre());
             $empresaName = strtoupper($empresaName);
             $encabezado = strtoupper($encabezado);
             $hoy = date('y-m-d');
 
             // Envia la respuesta del controlador
-            $response = $this->get('phpexcel')->createStreamedResponse($writer);
+            $response =  new StreamedResponse(
+                function () use ($writer) {
+                    $writer->save('php://output');
+                }
+            );
             // Agrega los headers requeridos
             if($pagina)
             {
@@ -216,6 +222,7 @@ class ReportesController extends Controller
                                                                                  'usuario' => $usuario,
                                                                                  'reporte' => $r,
                                                                                  'pagina_id' => $pagina_id,
+                                                                                 'nivel_id'  => $nivel_id,
                                                                                  'empresa_dashboard' => $empresa_id));
     }
 
@@ -242,7 +249,8 @@ class ReportesController extends Controller
 
             $options = '<option value=" "></option>';
             if($reporte_id){
-                $options .= '<option value="0">Todos los programas</option>';
+                $options .= '<option value="0">'.$this->get('translator')->trans('Todos los programas').'</option>';
+                
             }
 
             foreach ($paginas as $pagina)
@@ -302,6 +310,7 @@ class ReportesController extends Controller
     public function ajaxListadoAprobadosAction(Request $request)
     {
 
+        
         $session = new Session();
         $em = $this->getDoctrine()->getManager();
         $f = $this->get('funciones');
@@ -312,6 +321,8 @@ class ReportesController extends Controller
         $paginas_id = $request->request->get('programas');
         $pagina_selected = $request->request->get('pagina_selected');
         $preseleccion = $request->request->get('preseleccion');
+        $nivel_id = $request->request->get('nivel_id_dashboard');
+        
 
 
         $empresa = $this->getDoctrine()->getRepository('LinkComunBundle:AdminEmpresa')->find($empresa_id);
@@ -396,11 +407,12 @@ class ReportesController extends Controller
         $empresa = $this->getDoctrine()->getRepository('LinkComunBundle:AdminEmpresa')->find($empresa_id);
         $timeZoneEmpresa = ($empresa->getZonaHoraria())? $empresa->getZonaHoraria()->getNombre():$yml['parameters']['time_zone']['default'];
         $timeZoneReport = $f->clearNameTimeZone($timeZoneEmpresa,$empresa->getPais()->getNombre(),$yml);
-        $listado = $rs->participantesAprobados($empresa_id, $paginas_id,$desde,$hasta);
+        $listado = $rs->participantesAprobados($empresa_id, $paginas_id,$desde,$hasta,$nivel_id);
 
+        $readerXlsx  = $this->get('phpoffice.spreadsheet')->createReader('Xlsx');
         $fileWithPath = $this->container->getParameter('folders')['dir_project'].'docs/formatos/ListadoParticipantesAprobados.xlsx';
-        $objPHPExcel = \PHPExcel_IOFactory::load($fileWithPath);
-        $objWorksheet = $objPHPExcel->setActiveSheetIndex(0);
+        $spreadsheet = $readerXlsx->load($fileWithPath);
+        $objWorksheet = $spreadsheet->setActiveSheetIndex(0);
         $abecederario = array('A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z');
 
         // Carga inicial de los nombres de las columnas
@@ -487,7 +499,7 @@ class ReportesController extends Controller
                 $objWorksheet->setCellValue($columnNames[$col+2].$inHeaderRow, $this->get('translator')->trans('Hora inicio'));
                 $objWorksheet->setCellValue($columnNames[$col+3].$inHeaderRow, $this->get('translator')->trans('Fecha fin'));
                 $objWorksheet->setCellValue($columnNames[$col+4].$inHeaderRow, $this->get('translator')->trans('Hora fin'));
-                $objWorksheet->setCellValue($columnNames[$col+5].$inHeaderRow, $this->get('translator')->trans('Tiempo total'));
+                $objWorksheet->setCellValue($columnNames[$col+5].$inHeaderRow, $this->get('translator')->trans('Tiempo acumulado'));
 
             }
             $p++;
@@ -562,7 +574,7 @@ class ReportesController extends Controller
                     {
                         $fecha_inicio = $f->converDate($participante['paginas'][$pagina_id]['fecha_inicio'],$yml['parameters']['time_zone']['default'],$timeZoneEmpresa);
                         $fecha_fin = $f->converDate($participante['paginas'][$pagina_id]['fecha_fin'],$yml['parameters']['time_zone']['default'],$timeZoneEmpresa);
-                        $totalTime = $f->totalTime($participante['paginas'][$pagina_id]['fecha_inicio'],$participante['paginas'][$pagina_id]['fecha_fin']);
+                        $totalTime = $f->AvancetotalTime($participante['paginas'][$pagina_id]['fecha_inicio'],$participante['paginas'][$pagina_id]['fecha_fin'], $participante['id']);
                         $aprobados++;
                         $objWorksheet->setCellValue($columnNames[$col].$row, $participante['paginas'][$pagina_id]['promedio']);
                         $objWorksheet->setCellValue($columnNames[$col+1].$row, $fecha_inicio->fecha);
@@ -619,7 +631,7 @@ class ReportesController extends Controller
         $empresaName = $f->eliminarAcentos($empresa->getNombre());
         $empresaName = strtoupper($empresaName);
         $hoy = date('y-m-d h i');
-        $writer = $this->get('phpexcel')->createWriter($objPHPExcel, 'Excel2007');
+        $writer = $this->get('phpoffice.spreadsheet')->createWriter($spreadsheet, 'Xlsx');
         $path = 'recursos/reportes/APROBADOS '.$empresaName.' '.$hoy.'.xlsx';
         $xls = $this->container->getParameter('folders')['dir_uploads'].$path;
         $writer->save($xls);
@@ -767,10 +779,10 @@ class ReportesController extends Controller
 
         $listado = $rs->interaccionColaborativo($empresa_id, $pagina_id, $tema_id);
 
-
+        $readerXlsx  = $this->get('phpoffice.spreadsheet')->createReader('Xlsx');
         $fileWithPath = $this->container->getParameter('folders')['dir_project'].'docs/formatos/interaccionColaborativo.xlsx';
-        $objPHPExcel = \PHPExcel_IOFactory::load($fileWithPath);
-        $objWorksheet = $objPHPExcel->setActiveSheetIndex(0);
+        $spreadsheet = $readerXlsx->load($fileWithPath);
+        $objWorksheet = $spreadsheet->setActiveSheetIndex(0);
         $columnNames = array('A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z');
 
         // Encabezado
@@ -845,7 +857,7 @@ class ReportesController extends Controller
         $paginaName = $fn->eliminarAcentos($pagina->getNombre());
         $paginaName = strtoupper($paginaName);
         $hoy = date('y-m-d h i');
-        $writer = $this->get('phpexcel')->createWriter($objPHPExcel, 'Excel2007');
+        $writer = $this->get('phpoffice.spreadsheet')->createWriter($spreadsheet, 'Xlsx');
         $path = 'recursos/reportes/ESPACIO COLABORATIVO '.$paginaName.' '.$empresaName.' '.$hoy.'.xlsx';
         $xls = $this->container->getParameter('folders')['dir_uploads'].$path;
         $writer->save($xls);
@@ -1056,9 +1068,10 @@ class ReportesController extends Controller
 
         $listado = $rs->interaccionMuro($empresa_id, $pestructura);
 
+        $readerXlsx  = $this->get('phpoffice.spreadsheet')->createReader('Xlsx');
         $fileWithPath = $this->container->getParameter('folders')['dir_project'].'docs/formatos/interaccionMuro.xlsx';
-        $objPHPExcel = \PHPExcel_IOFactory::load($fileWithPath);
-        $objWorksheet = $objPHPExcel->setActiveSheetIndex(0);
+        $spreadsheet = $readerXlsx->load($fileWithPath);
+        $objWorksheet = $spreadsheet->setActiveSheetIndex(0);
         $columnNames = array('A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z');
 
         // Encabezado
@@ -1133,7 +1146,7 @@ class ReportesController extends Controller
         $paginaName = $fn->eliminarAcentos($programa->getNombre());
         $paginaName = strtoupper($paginaName);
         $hoy = date('y-m-d h i');
-        $writer = $this->get('phpexcel')->createWriter($objPHPExcel, 'Excel2007');
+        $writer = $this->get('phpoffice.spreadsheet')->createWriter($spreadsheet, 'Xlsx');
         $path = 'recursos/reportes/MURO '.$paginaName.' '.$empresaName.' '.$hoy.'.xlsx';
         $xls = $this->container->getParameter('folders')['dir_uploads'].$path;
         $writer->save($xls);
@@ -1212,9 +1225,10 @@ class ReportesController extends Controller
 
 
          // Solicita el servicio de excel
+        $readerXlsx  = $this->get('phpoffice.spreadsheet')->createReader('Xlsx');
         $fileWithPath = $this->container->getParameter('folders')['dir_project'].'docs/formatos/reporteGeneral.xlsx';
-        $objPHPExcel = \PHPExcel_IOFactory::load($fileWithPath);
-        $objWorksheet = $objPHPExcel->setActiveSheetIndex(0);
+        $spreadsheet = $readerXlsx->load($fileWithPath);
+        $objWorksheet = $spreadsheet->setActiveSheetIndex(0);
         $columnNames = array('A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z');
 
         // Encabezado
@@ -1280,13 +1294,17 @@ class ReportesController extends Controller
         }
 
         // Crea el writer
-        $writer = $this->get('phpexcel')->createWriter($objPHPExcel, 'Excel2007');
+        $writer = $this->get('phpoffice.spreadsheet')->createWriter($spreadsheet, 'Xlsx');
         $empresaName = $f->eliminarAcentos($empresa->getNombre());
         $empresaName = strtoupper($empresaName);
         $hoy = date('d-m-Y');
 
         // Envia la respuesta del controlador
-        $response = $this->get('phpexcel')->createStreamedResponse($writer);
+        $response =  new StreamedResponse(
+            function () use ($writer) {
+                $writer->save('php://output');
+            }
+        );
         // Agrega los headers requeridos
         $dispositionHeader = $response->headers->makeDisposition(
             ResponseHeaderBag::DISPOSITION_ATTACHMENT,

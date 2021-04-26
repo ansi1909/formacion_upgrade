@@ -179,7 +179,7 @@
                             <div class="card-footer" id="footer_aprobados" style="">
                                 <div class="row">
                                     <div class="col-sm-16 col-md-16 col-lg-16 col-xl-16 text-right">
-                                    <a href="{{ path('_excelHistoricoAprobados') }} "> <button type="button" class="bttn__edit" data-toggle="tooltip" data-placement="bottom" title="Descargar"><span class="fa fa-download"></span></button></a>
+                                    <a href="{{ path('_excelHistoricoAprobados') }} "> <button type="button" class="bttn__edit" data-toggle="tooltip" data-placement="bottom" title="{{'Descargar'|trans}}"><span class="fa fa-download"></span></button></a>
                                     </div>
                                 </div>
                             </div>
@@ -222,11 +222,11 @@
             <input type="hidden" id="error-msg" name="error-msg" value="{{ 'Ha ocurrido un error al cargar los participantes conectados, verifique su conexión a internet o contacte al administrador del sistema.'|trans }}">
             <div class="row row-tarjetas-dashboard">
                 <div class="col-md-3 col-sm-3 col-lg-3 col-xl-3 ">
-                    <div class="activity-block linkg1" data-toggle="tooltip" data-placement="bottom" title="{{ 'Son todos los usuarios inscritos por una empresa.'|trans }}">
+                    <div class="activity-block linkg1" data-toggle="tooltip" data-placement="bottom" title="{{ 'Son todos los usuarios inscritos históricamente por la empresa'|trans }}.">
                         <div class="media">
                             <div class="media-body">
                                 <h5><span class="spincreament">{{ total }}</span></h5>
-                                <p>{{ 'Participantes registrados'|trans }}</p>
+                                <p>{{ 'USUARIOS REGISTRADOS'|trans }}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</p>
                             </div>
                             <i class="fa fa-users"></i>
                         </div>
@@ -235,11 +235,35 @@
                     </div>
                 </div>
                 <div class="col-md-3 col-sm-3 col-lg-3 col-xl-3 ">
-                    <div class="activity-block linkg2" data-toggle="tooltip" data-placement="bottom" title="{{ 'Son todos los usuarios inscritos por una empresa, que tienen acceso a la plataforma y que se han logueado al menos una vez.'|trans }}">
+                    <div class="activity-block danger"  data-toggle="tooltip" data-placement="bottom" title="{{ 'Son todos los usuarios que han sido desincorporados a solicitud de la empresa y que ya no tienen acceso a la plataforma'|trans }}.">
+                        <div class="media">
+                            <div class="media-body">
+                                <h5><span class="spincreament">{{ sin_acceso }}</span></h5>
+                                <p>{{ 'USUARIOS SIN ACCESO'|trans }}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</p>
+                            </div>
+                            <i class="fa fa-user"></i> </div>
+                        <br>
+                        <i class="bg-icon text-center fa fa-lock" style="margin-top: 0px;"></i>
+                    </div>
+                </div>
+                 <div class="col-md-3 col-sm-3 col-lg-3 col-xl-3 ">
+                    <div class="activity-block linkg2"  data-toggle="tooltip" data-placement="bottom" title="{{ 'Son todos los usuarios inscritos por la empresa que actualmente tienen acceso a la plataforma'|trans }}.">
+                        <div class="media">
+                            <div class="media-body">
+                                <h5><span class="spincreament">{{ con_acceso }}</span></h5>
+                                <p>{{ 'USUARIOS CON ACCESO'|trans }}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</p>
+                            </div>
+                            <i class="fa fa-user"></i> </div>
+                        <br>
+                        <i class="bg-icon text-center fa fa-unlock" style="margin-top: 0px;"></i>
+                    </div>
+                </div>
+                <div class="col-md-3 col-sm-3 col-lg-3 col-xl-3 ">
+                    <div class="activity-block linkg2" data-toggle="tooltip" data-placement="bottom" title="{{ 'Son todos los usuarios inscritos por la empresa, que tienen acceso a la plataforma y que se han logueado al menos una vez'|trans }}.">
                         <div class="media">
                             <div class="media-body">
                                 <h5><span class="spincreament">{{ activos }}</span></h5>
-                                <p>{{ 'Participantes activos'|trans }}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</p>
+                                <p>{{ 'USUARIOS ACTIVOS'|trans }}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</p>
                             </div>
                             <i class="fa fa-user"></i> </div>
                         <br>
@@ -247,29 +271,18 @@
                     </div>
                 </div>
                 <div class="col-md-3 col-sm-3 col-lg-3 col-xl-3 ">
-                    <div class="activity-block warning" data-toggle="tooltip" data-placement="bottom" title="{{ 'Son todos los usuarios inscritos por una empresa, que tienen acceso a la plataforma y que no se han logueado.'|trans }}">
+                    <div class="activity-block warning" data-toggle="tooltip" data-placement="bottom" title="{{ 'Son todos los usuarios inscritos por la empresa, que tienen acceso a la plataforma y que no se han logueado'|trans }}.">
                         <div class="media">
                             <div class="media-body">
                                 <h5><span class="spincreament">{{ inactivos }}</span></h5>
-                                <p>{{ 'Participantes inactivos'|trans }}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</p>
+                                <p>{{ 'USUARIOS INACTIVOS'|trans }}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</p>
                             </div>
                             <i class="fa fa-user" ></i> </div>
                         <br>
                         <i class="bg-icon text-center fa fa-exclamation-circle" style="margin-top: 0px;"></i>
                     </div>
                 </div>
-                <div class="col-md-3 col-sm-3 col-lg-3 col-xl-3 ">
-                    <div class="activity-block danger"  data-toggle="tooltip" data-placement="bottom" title="{{ 'Son todos los usuarios inscritos por una empresa que no tienen acceso a la plataforma.'|trans }}">
-                        <div class="media">
-                            <div class="media-body">
-                                <h5><span class="spincreament">{{ sin_acceso }}</span></h5>
-                                <p>{{ 'Participantes sin acceso'|trans }}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</p>
-                            </div>
-                            <i class="fa fa-user"></i> </div>
-                        <br>
-                        <i class="bg-icon text-center fa fa-times" style="margin-top: 0px;"></i>
-                    </div>
-                </div>
+
             </div>
             <!-- fin bloques de empresas registradas -->
             <br>
@@ -289,7 +302,7 @@
                                         <th class="hd__title">{{ 'Fecha fin'|trans }}</th>
                                         <th class="hd__title text-center">{{ 'Participantes no iniciados'|trans }}</th>
                                         <th class="hd__title text-center">{{ 'Participantes cursando'|trans }}</th>
-                                        <th class="hd__title text-center">{{ 'Participantes culminados'|trans }}</th>
+                                        <th class="hd__title text-center">{{ 'Participantes aprobados'|trans }}</th>
                                         <th class="hd__title text-center">{{ 'Participantes activos'|trans }}</th>
                                         <th class="hd__title text-center">{{ 'Participantes registrados'|trans }}</th>
                                     </tr>
@@ -302,11 +315,11 @@
                                             <td>{{ pagina.nivel }}</td>
                                             <td>{{ pagina.fecha_i }}</td>
                                             <td>{{ pagina.fecha_f }}</td>
-                                            <td class="text-center"><a href="{{ path('_participantesNoIniciados',{'app_id': 34, 'pagina_id': pagina.id, 'empresa_id': usuario.empresa.id }) }}"><span>{{ pagina.usuariosN }} <i class="fa fa-user"></i></span></a></td>
-                                            <td class="text-center"><a href="{{ path('_participantesCursando',{'app_id': 21 , 'pagina_id': pagina.id, 'empresa_id': usuario.empresa.id}) }}"><span>{{ pagina.usuariosCur }} <i class="fa fa-user"></i></span></a></td>
-                                            <td class="text-center"><a href="{{ path('_participantesAprobados',{'app_id': 22,'pagina_id': pagina.id, 'empresa_id': usuario.empresa.id }) }}"><span>{{ pagina.usuariosF }} <i class="fa fa-user"></i></span></a></td>
+                                            <td class="text-center"><a href="{{ path('_participantesNoIniciados',{'app_id': 34, 'pagina_id': pagina.id, 'empresa_id': usuario.empresa.id, 'nivel_id': pagina.nivel_id }) }}"><span>{{ pagina.usuariosN }} <i class="fa fa-user"></i></span></a></td>
+                                            <td class="text-center"><a href="{{ path('_participantesCursando',{'app_id': 21 , 'pagina_id': pagina.id, 'empresa_id': usuario.empresa.id, 'nivel_id': pagina.nivel_id }) }}"><span>{{ pagina.usuariosCur }} <i class="fa fa-user"></i></span></a></td>
+                                            <td class="text-center"><a href="{{ path('_participantesAprobados',{'app_id': 22,'pagina_id': pagina.id, 'empresa_id': usuario.empresa.id, 'nivel_id': pagina.nivel_id }) }}"><span>{{ pagina.usuariosF }} <i class="fa fa-user"></i></span></a></td>
                                             <td class="text-center"><span>{{ pagina.usuariosA }} <i class="fa fa-user"></i></span></td>
-                                            <td class="text-center"><a href="{{ path('_participantesRegistrados',{'app_id': 20, 'pagina_id': pagina.id, 'empresa_id': usuario.empresa.id }) }}"><span>{{ pagina.usuariosT }} <i class="fa fa-user"></i></span></a></td>
+                                            <td class="text-center"><a href="{{ path('_participantesRegistrados',{'app_id': 20, 'pagina_id': pagina.id, 'empresa_id': usuario.empresa.id, 'nivel_id': pagina.nivel_id }) }}"><span>{{ pagina.usuariosT }} <i class="fa fa-user"></i></span></a></td>
                                         </tr>
                                     {% endfor %}
                                 </tbody>

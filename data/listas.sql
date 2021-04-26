@@ -94,6 +94,8 @@ INSERT INTO certi_categoria (id, nombre) VALUES (2, 'Módulo');
 INSERT INTO certi_categoria (id, nombre) VALUES (3, 'Materia');
 INSERT INTO certi_categoria (id, nombre) VALUES (4, 'Lección');
 INSERT INTO certi_categoria (id, nombre) VALUES (5, 'Curso');
+INSERT INTO certi_categoria (id, nombre) VALUES (6, 'Competencia');
+INSERT INTO certi_categoria (id, nombre) VALUES (7, 'Recurso');
 
 ------------------------------------------------------------------------------------------------------------------------
 -- Name: idcerti_estatus_contenido_seq;; Type: SEQUENCE SET; Schema: public;

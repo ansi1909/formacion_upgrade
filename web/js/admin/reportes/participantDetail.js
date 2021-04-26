@@ -40,6 +40,9 @@ function setDetails(data)
 	$('#finalizados').val(data.usuario.ingresos.finalizados);
 	$('#programasAsignados').html(data.html);
 	progressCircle();
+	var href = $('#url_pdfdetalle').val()+'/'+$('#empresa_id').val()+'/'+$('#username').val();
+	$('#pdf-detalle').attr('href', href);
+	
 }
 
 function progressCircle()
@@ -85,7 +88,7 @@ function observeList()
 			data: { empresa_id: empresa_id, username: username },
 			dataType: "json",
 			success: function(data) {
-				setDetails(data);
+				setDetails(data);	
 			},
 			error: function(){
 				$('#div-alert-detail').show();
