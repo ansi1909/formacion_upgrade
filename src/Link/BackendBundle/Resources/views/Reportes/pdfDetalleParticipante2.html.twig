@@ -349,7 +349,7 @@
                         <p><span>Materias vistas:</span> {{modulo.materias}}</p>
                         <p><span>Lecciones vistas:</span> {{modulo.lecciones}}</p>
                         {% if modulo.evaluacion.tiene %}
-                            <p>Nota de módulo: {{ modulo.evaluacion.nota }}ptos</p>
+                            <p><span>Nota de módulo:</span> {{ modulo.evaluacion.nota }}/100</p>
                         {% else %}
                             <p> <span> Nota de módulo: </span> {{ modulo.evaluacion.status }}</p> 
                         {% endif %}
