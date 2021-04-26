@@ -23,6 +23,11 @@ Activo: Activo
 Activos: Activos
 Actualizando la lista de usuarios conectados: Actualizando la lista de usuarios conectados
 Advertencia: Advertencia
+Administración: Administración
+Administrar ayuda: Manage help
+Administrar páginas: Administrar páginas
+Administrar empresa: Administrar empresa
+Administrar notificaciones: Administrar notificaciones
 Agregar: Agregar
 Agregar opción: Agregar opción
 Agregar pregunta: Agregar pregunta
@@ -93,6 +98,7 @@ Búsqueda de participantes por empresa: Búsqueda de participantes por empresa
 Búsqueda de notificaciones empresa: Búsqueda de notificaciones empresa
 Búsqueda de notificaciones por empresa: Búsqueda de notificaciones por empresa
 Calendario: Calendario
+Calendario de eventos: Calendario de eventos
 Calificación: Calificación
 Cambiar contraseña: Cambiar contraseña
 Cambiar imagen: Cambiar imagen
@@ -116,6 +122,7 @@ Cargando usuarios conectados..: Cargando usuarios conectados..
 Carga masiva: Carga masiva
 Carga masiva de participantes de la empresa: Carga masiva de participantes de la empresa
 Categoría: Categoría
+Categorías: Categorías
 Categoría de las sub-paginas: Categoría de las sub-paginas
 Categorías: Categorías
 Cerrar: Cerrar
@@ -125,6 +132,7 @@ Cerrar sesión: Cerrar sesión
 Certificado: Certificado
 Certificado inexistente para este contenido: Certificado inexistente para este contenido
 Certificado no encontrado: Certificado no encontrado
+Certificados y Constancias: Certificados y Constancias
 Clave: Clave
 Código: Código
 Código del empleado repetido: Código del empleado repetido
@@ -160,6 +168,7 @@ Configurar: Configurar
 Configurar asignación de sub-páginas: Configurar asignación de sub-páginas
 Configurar evaluación: Configurar evaluación
 Configurar página: Configurar página
+Configuración de permisos: Configuración de permisos
 Confirmar: Confirmar
 Configuración de la categoría: Configuración de la categoría
 Confirmar contraseña: Confirmar contraseña
@@ -169,6 +178,7 @@ Constancia de Notas: Constancia de Notas
 Consultar: Consultar
 Contestar: Contestar
 Contenido: Contenido
+Contenido en el certificado: Contenido en el certificado
 Contenido del: Contenido del
 Contenido del curso: Contenido del curso
 Contenido del programa: Contenido del programa
@@ -280,6 +290,7 @@ Editar página: Editar página
 Editar perfil: Editar perfil
 Editar tema: Editar tema
 Editar orden: Editar orden
+Evaluaciones: Evaluations
 Error al editar el orden de la pagina: Error al editar el orden de la pagina
 El archivo seleccionado no se cargo correctamente.: El archivo seleccionado no se cargo correctamente.
 Elegir empresa: Elegir empresa
@@ -471,6 +482,7 @@ Extensiones aceptadas: Extensiones aceptadas
 Extensiones aceptadas para el campo PDF: Extensiones aceptadas para el campo PDF
 Extensiones aceptadas para imagen: Extensiones aceptadas para imagen
 Extensiones aceptadas para vídeo: Extensiones aceptadas para vídeo
+Faqs: Faqs
 Fecha: Fecha
 Fecha automática: Fecha automática
 Fecha Creación: Fecha Creación
@@ -543,6 +555,7 @@ Hola: Hola
 Hora inicio: Hora inicio
 Hora fin: Hora fin
 Horas académicas: Horas académicas
+Horas académicas en el certificado: Horas académicas en el certificado
 Horas de conexión: Horas de conexión
 Horas de conexión de la empresa: Horas de conexión de la empresa
 Horas de conexión por empresa: Horas de conexión por empresa
@@ -580,6 +593,7 @@ Inicio del programa: Inicio del programa
 tu usuario y clave. Ingresa tu correo.: tu usuario y clave. Ingresa tu correo.
 Interacción: Interacción
 Interacción en los muros: Interacción en los muros
+Interacción en el espacio colaborativo: Interacción en el espacio colaborativo
 Interacción en los muros por empresa: Interacción en los muros por empresa
 Ir a detalles de la página: Ir a detalles de la página
 Ir al inicio: Ir al inicio
@@ -712,6 +726,8 @@ Mostrar preferencia: Mostrar preferencia
 Mostrar resultados: Mostrar resultados
 MOSTRAR TODOS LOS COMENTARIOS: MOSTRAR TODOS LOS COMENTARIOS
 Mover: Mover
+Monitoreo del muro: Monitoreo del muro
+Monitoreo del espacio colaborativo: Monitoreo del espacio colaborativo
 Mover página: Mover página
 Muro: Muro
 Ningún dato disponible en esta tabla: Ningún dato disponible en esta tabla
@@ -719,6 +735,7 @@ Nivel: Nivel
 Nivel no existente para esta empresa: Nivel no existente para esta empresa
 Niveles: Niveles
 Niveles por empresas: Niveles por empresas
+Niveles por empresa: Niveles por empresa
 no existe: no existe
 No existe destino al que se pueda mover la página: No existe destino al que se pueda mover la página
 No existe evaluación para esta página: No existe evaluación para esta página
@@ -761,6 +778,7 @@ Noticia: Noticia
 Noticias: Noticias
 Notificación: Notificación
 Noticias y Novedades: Noticias y Novedades
+Noticias y novedades: Noticias y novedades
 Notificaciones: Notificaciones
 Notificaciones programadas: Notificaciones programadas
 Novedades: Novedades
@@ -807,10 +825,13 @@ participante: participante
 Participante: Participante
 participantes: participantes
 Participantes: Participantes
+Participantes por empresa: 	Participantes por empresa
 Participantes activos: Participantes activos
 Participantes inactivos: Participantes inactivos
 Participantes no iniciados: Participantes no iniciados
 Participantes registrados: Participantes registrados
+Participantes cursando el programa: Participantes cursando el programa
+Participantes aprobados en el programa: Participantes aprobados en el programa
 Participantes cursando: Participantes cursando
 Participantes culminados: Participantes culminados
 Participantes conectados: Participantes conectados
@@ -823,6 +844,8 @@ Participantes que si bien están activos en la plataforma, no han ingresado al c
 Participantes registrados en el programa que aunque tienen usuario y clave nunca se han logueado en la plataforma: Participantes registrados en el programa que aunque tienen usuario y clave nunca se han logueado en la plataforma
 Participantes registrados en el programa que se han logueado al menos una vez en la plataforma: Participantes registrados en el programa que se han logueado al menos una vez en la plataforma
 Participantes seleccionados: Participantes seleccionados
+Participantes registrados en programas: Participantes registrados en programas
+Participantes no iniciados en programas: Participantes no iniciados en programas
 Pdf: Pdf
 PDF requerido: PDF requerido
 Perfil de usuario: Perfil de usuario
@@ -841,6 +864,7 @@ Por medio de la presente se certifica que el participante arriba indicado ha cur
 Preferencias de la empresa: Preferencias de la empresa
 Preferencia de plantillas de las empresas: Preferencia de plantillas de las empresas
 Preferencias de usuario: Preferencias de usuario
+Preferencias de plantillas: Preferencias de plantillas
 Preferencias de participante: Preferencias de participante
 Pregunta: Pregunta
 Preguntas: Preguntas
@@ -854,9 +878,11 @@ Procesando: Procesando
 Pronombre: Pronombre
 Procesar: Procesar
 Programa: Programa
+Programas aprobados: Programas aprobados
 Programación del aviso: Programación del aviso
 Reporte de participantes registrados en programa: Reporte de participantes registrados en programa
 Programado para: Programado para
+Programar avisos: Programar avisos
 Programar nuevo aviso: Programar nuevo aviso
 Programas: Programas
 Programas asignados: Programas asignados
@@ -901,6 +927,7 @@ Registros nuevos: Registros nuevos
 Regresar al inicio: Regresar al inicio
 Recuperar contraseña: Recuperar contraseña
 Repetir evaluación: Repetir evaluación
+Reportes y consultas: Reportes y consultas
 Reportar problema: Reportar problema
 Reporte de participantes aprobados por programas: Reporte de participantes aprobados por programas
 Reporte de participantes aprobados en programas: Reporte de participantes aprobados en programas
@@ -938,6 +965,7 @@ Rol de empresa: Rol de empresa
 Roles: Roles
 Roles asignados: Roles asignados
 Roles a seleccionar: Roles a seleccionar
+Roles de usuarios: Roles de usuarios
 Sábado: Sábado
 Salir: Salir
 Salir de la evaluación: Salir de la evaluación
@@ -1002,9 +1030,11 @@ Subir Archivo de participantes: Subir Archivo de participantes
 Sub-Aplicación de: Sub-Aplicación de
 Sub-Aplicaciones de: Sub-Aplicaciones de
 Sub-páginas: Sub-páginas
+Tarjetas: Tarjetas
 También puede solicitar la carga del certificado para esta página a través del Administrador de Contenido del equipo de Formación Smart: También puede solicitar la carga del certificado para esta página a través del Administrador de Contenido del equipo de Formación Smart
 Teléfono de contacto: Teléfono de Contacto
 Tema: Tema
+Terminar: Terminar 
 Tema seleccionado: Tema seleccionado
 Tendrás: Tendrás
 Thumbnails de la plantilla: Thumbnails de la plantilla
@@ -1038,10 +1068,12 @@ TODOS LOS TEMAS: TODOS LOS TEMAS
 Tomar evaluación: Tomar evaluación
 Total aprobados: Total aprobados
 Total de registros: Total de registros
+total: total
 Tu calificación: Tu calificación
 Tu comentario: Tu comentario
 Tu respuesta: Tu respuesta
 Tu progreso en: Tu progreso en
+Tutorial: Tutorial
 Tutoriales: Tutoriales
 Última conexión: Última conexión
 Últimos 12: Últimos 12
