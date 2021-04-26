@@ -61,23 +61,29 @@ else {
 	$url_web = substr($url, 0, $url_pos);
 	$ruta = explode("/", $url);
 
-	$sql = "select u.nombre, u.apellido,u.id as usuario_id, p.nombre as programa, p.id as id, pl.fecha_inicio as fecha_inicio, pl.fecha_fin as fecha_fin, p.horas_academicas as horas_academicas 
+	$sql = "select u.nombre, u.apellido,u.id as usuario_id, 
+			p.nombre as programa, p.id as id, pl.fecha_inicio as fecha_inicio, 
+			pl.fecha_fin as fecha_fin, p.horas_academicas as horas_academicas, 
+			c.nombre as categoria, c.pronombre as pronombre
 			from certi_pagina_log pl 
 			inner join admin_usuario u on (u.id=pl.usuario_id)
 			inner join certi_pagina p on (p.id=pl.pagina_id)
+			inner join certi_categoria c on(p.categoria_id = c.id)
 			where pl.id=".$ruta[4]." limit 1";
 
 	$resultado = pg_query($connect, $sql);
 
 	while($row = pg_fetch_array($resultado)) 
 	{
-		$usuario = $row["nombre"]." ".$row["apellido"];
-		$programa = $row["programa"];
-		$fecha_inicio = $row["fecha_inicio"];
-		$fecha_fin = $row["fecha_fin"];
-		$horas_academicas = $row["horas_academicas"];
-		$pagina_id = $row["id"];
-		$usuario_id = $row["usuario_id"];
+		$usuario           = $row["nombre"]." ".$row["apellido"];
+		$programa          = $row["programa"];
+		$fecha_inicio      = $row["fecha_inicio"];
+		$fecha_fin         = $row["fecha_fin"];
+		$horas_academicas  = $row["horas_academicas"];
+		$pagina_id         = $row["id"];
+		$usuario_id        = $row["usuario_id"];
+		$categoria         = $row["categoria"];
+		$pronombre         = $row["pronombre"];
 	}
 
 	//obtener estructura del programa/curso
@@ -168,7 +174,7 @@ else {
 	                </div>
 	                <div class="row">
 	                    <div class="col-xs-auto col-sm-auto col-md-auto col-auto col-lg-auto col-xl-auto">
-	                        <h3 class="text-cQR">Completó exitosamente el programa:</h3>
+	                        <h3 class="text-cQR">Completó &nbsp;exitosamente <?php echo '&nbsp;'.$pronombre.'&nbsp;&nbsp;'.$categoria.': '?></h3>
 	                    </div> 
 	                </div>
 	                <div class="row">
