@@ -28,7 +28,7 @@ lesson-body
       </a>
    </div>
    <div class="wraper-title-lesson d-none d-md-flex flex-column align-items-center">
-      <h4 class="my-1 color-grey" >{{ titulo }} </h4>
+      <h4 class="my-1 color-grey" >{{ titulo }}</h4>
       <h6 class="mt-0 color-grey" >{{ subtitulo }}</h6>
    </div>
    <div class="navbar-brand d-flex justify-content-center align-items-center" href="#">
@@ -150,7 +150,7 @@ bg-white
          {% endif %}
       </div>
       <nav class="container text-center">
-         <div class="btn-primary btn" id="next_subpage" data="{{ programa.id }}-{{ lecciones.id }}-{{ lecciones.next_subpage }}">{{ 'Continuar'|trans }}</div>
+         <div class="btn-primary btn" id="next_subpage" data="{{ programa.id }}-{{ lecciones.id }}-{{ lecciones.next_subpage }}">{{ boton_continuar|trans }}</div>
       </nav>
    </div>
    {% else %}
@@ -183,7 +183,7 @@ bg-white
          {% if not loop.first %}
          <div class="btn-warning btn before_lesson" data="{{ programa.id }}-{{ subpagina.id }}-{{ loop.index }}-{{ last }}">{{ 'Anterior'|trans }}</div>
          {% endif %}
-         <div class="btn-primary btn next_lesson" data="{{ programa.id }}-{{ subpagina.id }}-{{ loop.index }}-{{ last }}">{{ 'Continuar'|trans }}</div>
+         <div class="btn-primary btn next_lesson" data="{{ programa.id }}-{{ subpagina.id }}-{{ loop.index }}-{{ last }}">{{ boton_continuar|trans }}</div>
       </nav>
    </div>
    {% endfor %}

@@ -36,6 +36,7 @@ class LeccionController extends Controller
 
         // También se anexa a la indexación el programa padre
         $programa = $this->getDoctrine()->getRepository('LinkComunBundle:CertiPagina')->find($programa_id);
+        $boton_continuar = ($programa->getCategoria()->getId() != $yml['parameters']['categoria']['competencia'])? 'Continuar':'Terminar';
         $pagina = $session->get('paginas')[$programa_id];
         $pagina['padre'] = 0;
         $pagina['sobrinos'] = 0;
@@ -99,11 +100,11 @@ class LeccionController extends Controller
                 $pagina_id = $indexedPages[$subpagina_id]['id'];
                 if ($indexedPages[$indexedPages[$subpagina_id]['padre']]['padre'])
                 {
-                    $titulo = $this->get('translator')->trans($indexedPages[$indexedPages[$indexedPages[$subpagina_id]['padre']]['padre']]['categoria']).': '.$indexedPages[$indexedPages[$indexedPages[$subpagina_id]['padre']]['padre']]['nombre'];
-                    $subtitulo = $this->get('translator')->trans($indexedPages[$indexedPages[$subpagina_id]['padre']]['categoria']).' '.$indexedPages[$indexedPages[$subpagina_id]['padre']]['orden'].': '.$indexedPages[$indexedPages[$subpagina_id]['padre']]['nombre'];
+                    $titulo = $this->get('translator')->trans(trim($indexedPages[$indexedPages[$indexedPages[$subpagina_id]['padre']]['padre']]['categoria'])).': '.$indexedPages[$indexedPages[$indexedPages[$subpagina_id]['padre']]['padre']]['nombre'];
+                    $subtitulo = $this->get('translator')->trans(trim($indexedPages[$indexedPages[$subpagina_id]['padre']]['categoria'])).' '.$indexedPages[$indexedPages[$subpagina_id]['padre']]['orden'].': '.$indexedPages[$indexedPages[$subpagina_id]['padre']]['nombre'];
                 }
                 else {
-                    $titulo = $this->get('translator')->trans($indexedPages[$indexedPages[$subpagina_id]['padre']]['categoria']).': '.$indexedPages[$indexedPages[$subpagina_id]['padre']]['nombre'];
+                    $titulo = $this->get('translator')->trans(trim($indexedPages[$indexedPages[$subpagina_id]['padre']]['categoria'])).': '.$indexedPages[$indexedPages[$subpagina_id]['padre']]['nombre'];
                 }
             }
             else {
@@ -145,7 +146,8 @@ class LeccionController extends Controller
                                                                                  'subtitulo' => $subtitulo,
                                                                                  'wizard' => $wizard,
                                                                                  'puntos' => $puntos,
-                                                                                 'comentarios'=> $totalComentarios));
+                                                                                 'comentarios'=> $totalComentarios,
+                                                                                 'boton_continuar'=> $boton_continuar));
 
     }
 
