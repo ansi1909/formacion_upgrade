@@ -23,6 +23,11 @@ Activo: Active
 Activos: Active
 Actualizando la lista de participantes conectados: Updating the list of connected participants
 Advertencia: Warning
+Administración: Administration
+Administrar ayuda: Manage help
+Administrar páginas: Manage Pages
+Administrar empresa: Manage company
+Administrar notificaciones: Manage notifications
 Agregar: Add
 Agregar opción: Add option
 Agregar pregunta: Add question
@@ -93,6 +98,7 @@ Búsqueda de participantes por empresa: Search participants by company
 Búsqueda de notificaciones empresa: Search notifications company
 Búsqueda de notificaciones por empresa: Search notifications by company
 Calendario: Calendar
+Calendario de eventos: Events calendar
 Calificación: Qualification
 Cambiar contraseña: Change password
 Cambiar imagen: Change image
@@ -116,6 +122,7 @@ Cargando usuarios conectados..: Loading connected users..
 Carga masiva: Bulk load
 Carga masiva de participantes de la empresa: Bulk load of participants of company
 Categoría: Category
+Categorías: Category
 Categoría de las sub-paginas: Sub-pages category
 Categorías: Categories
 Cerrar: Close
@@ -125,6 +132,7 @@ Cerrar sesión: Log out
 Certificado: Certificate
 Certificado inexistente para este contenido: No certificate for this content
 Certificado no encontrado: Certificate not found
+Certificados y Constancias: Certificates and Certificates
 Clave: Key code
 Código: Code
 Código del empleado repetido: Employee code repeated
@@ -160,6 +168,7 @@ Configurar: Configure
 Configurar asignación de sub-páginas: Configure sub-pages assignment
 Configurar evaluación: Configure test
 Configurar página: Configure page
+Configuración de permisos: Permission settings
 Confirmar: Confirm
 Configuración de la categoría: Category settings
 Confirmar contraseña: Confirm password
@@ -169,6 +178,7 @@ Constancia de Notas: Proof of Notes
 Consultar: Search
 Contestar: Answer
 Contenido: Content
+Contenido en el certificado: Content in the certificate
 Contenido del: Content of
 Contenido del curso: Course content
 Contenido del programa: Program content
@@ -280,6 +290,7 @@ Editar página: Edit page
 Editar perfil: Edit profile
 Editar tema: Edit topic
 Editar orden: Edit order
+Evaluaciones: Evaluations
 Error al editar el orden de la pagina: Error editing the page order
 El archivo seleccionado no se cargo correctamente.: The selected file is not loaded correctly.
 Elegir empresa: Choose company
@@ -472,6 +483,7 @@ Extensiones aceptadas para el campo PDF: Allowed extensions for PDF file
 Extensiones aceptadas para imagen: Allowed extensions for image
 Extensiones aceptadas para vídeo: Allowed extensions for video
 Fecha: Date
+Faqs: Faqs
 Fecha automática: Automatic date
 Fecha Creación: Creation Date
 Fecha fin: End date
@@ -543,6 +555,7 @@ Hola: Hi
 Hora inicio: Start Time
 Hora fin: End time
 Horas académicas: Academic hours
+Horas académicas en el certificado: Academic hours on the certificate
 Horas de conexión: Conection hours
 Horas de conexión de la empresa: Connection hours of the company
 Horas de conexión por empresa: Connection hours by company
@@ -580,6 +593,7 @@ Inicio del programa: Program start
 tu usuario y clave. Ingresa tu correo.: your username and password. Enter your email.
 Interacción: Interaction
 Interacción en los muros: Wall interactions
+Interacción en el espacio colaborativo: Interaction in the collaborative space
 Interacción en los muros por empresa: Wall interactions by company
 Ir a detalles de la página: Go to page details
 Ir al inicio: Go to home
@@ -712,6 +726,8 @@ Mostrar preferencia: Show preference
 Mostrar resultados: Show results
 MOSTRAR TODOS LOS COMENTARIOS: SHOW ALL COMMENTS
 Mover: Move
+Monitoreo del muro: Wall monitoring
+Monitoreo del espacio colaborativo: Collaborative space monitoring
 Muro: Wall
 Mover página: Move page
 Ningún dato disponible en esta tabla: No data available in this table
@@ -719,6 +735,7 @@ Nivel: Level
 Nivel no existente para esta empresa: No level for this company
 Niveles: Levels
 Niveles por empresas: Levels by companies
+Niveles por empresa: Levels by company
 no existe: does not exit
 No existe destino al que se pueda mover la página: There is not destination in which the page can be moved
 No existe evaluación para esta página: There is not test for this page
@@ -761,6 +778,7 @@ Noticia: News
 Noticias: News
 Notificación: Notification
 Noticias y Novedades: News and Novelties
+Noticias y novedades: News and updates
 Notificaciones: Notifications
 Notificaciones programadas: Programmed notifications
 Novedades: Novelties
@@ -807,10 +825,13 @@ participante: participant
 Participante: Participant
 participantes: participants
 Participantes: Participants
+Participantes por empresa: Participants by company
 Participantes activos: Active participants
 Participantes inactivos: Inactive participants
 Participantes no iniciados: Uninitiated participants
 Participantes registrados: Registered participants
+Participantes cursando el programa: Participants taking the program
+Participantes aprobados en el programa: Participants approved in the program
 Participantes cursando: Participants taking part
 Participantes culminados: Finished participants
 Participantes conectados: Connected participants
@@ -823,6 +844,8 @@ Participantes que si bien están activos en la plataforma, no han ingresado al c
 Participantes registrados en el programa que aunque tienen usuario y clave nunca se han logueado en la plataforma: Registered participants into the program who, although they have username and password, have never logged on the platform
 Participantes registrados en el programa que se han logueado al menos una vez en la plataforma: Registered participants into the program who have logged on the platform at least once
 Participantes seleccionados: Sele participants
+Participantes registrados en programas: Participants by company
+Participantes no iniciados en programas: Participants not initiated in programs
 Pdf: Pdf
 PDF requerido: PDF is required
 Perfil de usuario: User profile
@@ -841,6 +864,7 @@ Por medio de la presente se certifica que el participante arriba indicado ha cur
 Preferencias de la empresa: Preferences of company
 Preferencia de plantillas de las empresas: Layout preferences of the companies
 Preferencias de usuario: User preferences
+Preferencias de plantillas: Template preferences
 Preferencias de participante: Participant preferences
 Pregunta: Question
 Preguntas: Questions
@@ -854,10 +878,12 @@ Procesando: Processing
 Pronombre: Pronoun
 Procesar: Process
 Programa: Program
+Programas aprobados: Approved programs
 Programación del aviso: Notification schedule
 Programado para: scheduled at
 Programar nuevo aviso: Program new notice
 Programas: Programs
+Programar avisos: Schedule reminders
 Programas asignados: Assigned programs
 Programas en curso: Programs in progress
 Programas Finalizados: Finished programs
@@ -901,6 +927,7 @@ Regresar al inicio: Back to login
 Recuperar contraseña: Recover password
 Repetir evaluación: Repeat evaluation
 Reportar problema: Report issue
+Reportes y consultas: Reports and inquiries
 Reporte de participantes aprobados por programas: Report of participants approved by programs
 Reporte de participantes aprobados en programas: Report of approved participants in programs
 Reporte de participantes cursando por programas: Report of participants studying through programs
@@ -938,6 +965,7 @@ Rol de empresa: Company role
 Roles: Roles
 Roles asignados: Assigned roles
 Roles a seleccionar: Selectable roles
+Roles de usuarios: User roles
 Sábado: Saturday
 Salir: Log out
 Salir de la evaluación: Leave the evaluation
@@ -1002,6 +1030,7 @@ Subir Archivo de participantes: Upload participants file
 Sub-Aplicación de: Sub-Application of
 Sub-Aplicaciones de: Sub-Applications of
 Sub-páginas: Sub-pages
+Tarjetas: Cards
 También puede solicitar la carga del certificado para esta página a través del Administrador de Contenido del equipo de Formación Smart: You can also request the upload of this certificate through the Content Manager of Formación Smart team
 Teléfono de contacto: Contact Number
 Tema: Theme
@@ -1038,9 +1067,11 @@ TODOS LOS TEMAS: ALL SUBJECTS
 Tomar evaluación: Take test
 Total aprobados: Total approved
 Total de registros: Total records
+total: total
 Tu calificación: Your score
 Tu comentario: Your comment
 Tu respuesta: Your answer
+Tutorial: Tutorial
 Tutoriales: Tutorials
 Tu progreso en: Your progress in
 Última conexión: Last connection
