@@ -28,11 +28,8 @@ class LeccionController extends Controller
 
         $em = $this->getDoctrine()->getManager();
 
-        //$totalComentarios = $this->getDoctrine()->getRepository('LinkComunBundle:CertiMuro')->findBy(array('pagina'=>$programa_id,'empresa'=>$empresa_id));
-        //$totalComentarios = count($totalComentarios);
-        // Indexado de páginas descomponiendo estructuras de páginas cada uno en su arreglo
+
         $indexedPages = $f->indexPages($session->get('paginas')[$programa_id]);
-        //return new Response(var_dump($indexedPages));
 
         // También se anexa a la indexación el programa padre
         $programa = $this->getDoctrine()->getRepository('LinkComunBundle:CertiPagina')->find($programa_id);
@@ -129,16 +126,16 @@ class LeccionController extends Controller
         }
 
         $lecciones = $f->contenidoLecciones($indexedPages[$pagina_id], $wizard, $session->get('usuario')['id'], $yml, $session->get('empresa')['id']);
-       //return new response(var_dump($lecciones));
+        //print_r($lecciones);die();
         $lecciones['wizard'] = $wizard;
 
-        // Se reinicia el reinicia el reloj de pagina_log
+        
         $id_pagina_log = $wizard ? $lecciones['subpaginas'][0]['id'] : $lecciones['id'];
         $logs = $f->startLesson($indexedPages, $id_pagina_log, $session->get('usuario')['id'], $yml['parameters']['estatus_pagina']['iniciada']);
-       // return new Response(var_dump($wizard));
+      
         $totalComentarios = $this->getDoctrine()->getRepository('LinkComunBundle:CertiMuro')->findBy(array('pagina'=>$id_pagina_log,'empresa'=>$session->get('empresa')['id']));
         $totalComentarios = count($totalComentarios);
-        
+        //print_r($lecciones);die();
         return $this->render('LinkFrontendBundle:Leccion:index.html.twig', array('programa' => $programa,
                                                                                  'subpagina_id' => $subpagina_id,
                                                                                  'lecciones' => $lecciones,
@@ -216,7 +213,6 @@ class LeccionController extends Controller
         $indexedPages[$pagina['id']] = $pagina;
 
         $log_id = $f->finishLesson($indexedPages, $pagina_id, $session->get('usuario')['id'], $yml);
-
         $return = array('id' => $log_id);
 
         $return = json_encode($return);
@@ -226,7 +222,6 @@ class LeccionController extends Controller
 
     public function finLeccionesAction($programa_id, $subpagina_id, $puntos, Request $request)
     {
-
         $session = new Session();
         $f = $this->get('funciones');
         $yml = Yaml::parse(file_get_contents($this->get('kernel')->getRootDir().'/config/parametros.yml'));

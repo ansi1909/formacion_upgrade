@@ -178,7 +178,7 @@ $(document).ready(function() {
 	});
 
 	$('#next_subpage').click(function(){
-		
+		console.log('Procesando directo');
 		$('#next_subpage').hide();
 		$('#wait').show();
 		var str = $(this).attr('data');
@@ -186,16 +186,19 @@ $(document).ready(function() {
 		var prog_id = arr[0];
 		var pagina_id = arr[1];
 		var subpag_id = arr[2];
-
+		var url_inicio = $(this).data('url');
 		finishLesson(prog_id, pagina_id);
 		setTimeout(function() {
 			// Esperar a que responda el servidor
+			
 			if (subpag_id > 0)
 			{
+				console.log('Primera condicion')
 				window.location.replace($('#url_next').val()+'/'+subpag_id+'/'+$('#puntos_agregados').val());
 			}
 			else {
-				window.location.replace($('#url_fin').val()+'/'+$('#puntos_agregados').val());
+				console.log('Condicion del else');
+				window.location.replace(url_inicio+'/'+$('#puntos_agregados').val());
 			}
 	    }, 3000);
 
@@ -331,7 +334,8 @@ function startLesson(programa_id, pagina_id)
 }
 
 function finishLesson(programa_id, pagina_id)
-{
+{   
+	console.log('Procesando');
 	$.ajax({
 		type: "POST",
 		url: $('#url_procesar').val(),
