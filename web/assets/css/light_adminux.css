@@ -2086,7 +2086,7 @@ body > .sidebar-right, body > .sidebar-left, body > .container > .sidebar-right,
 }
 
 .activity-block.success h5, .activity-block.success p, .activity-block.success .progress-heading, .activity-block.danger h5, .activity-block.danger p, .activity-block.danger .progress-heading, .activity-block.warning h5, .activity-block.warning p, .activity-block.warning .progress-heading, .activity-block.primary h5, .activity-block.primary p, .activity-block.primary .progress-heading, .activity-block.linkg1 h5, .activity-block.linkg1 p, .activity-block.linkg1 .progress-heading, .activity-block.linkg2 h5, .activity-block.linkg2 p, .activity-block.linkg2 .progress-heading{
-  color: #ffffff;
+  color: #000;
 }
 
 .activity-block.success .media, .activity-block.danger .media, .activity-block.warning .media, .activity-block.primary .media, .activity-block.linkg1 .media, .activity-block.linkg2 .media {
