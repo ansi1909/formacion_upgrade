@@ -1,7 +1,7 @@
 $(document).ready(function() {
     $('.j-btn-achievement').click(function(e) {
         const programId = this.dataset.id;
-        
+        const rankingTitle =  this.dataset.ranktitle;
 
         if (programId) {
             $('.ranking-loader').addClass('d-flex');
@@ -10,6 +10,10 @@ $(document).ready(function() {
                 $('#study_plan').removeClass('show');
                 $('#achievements-container').addClass('show');
                 $("#achievements-container").animate({ scrollTop: 0 }, "fast");
+
+                if (rankingTitle) {
+                    $('.j-ranking-title').text(rankingTitle);
+                }
             }, 1000);
         }
     });

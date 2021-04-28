@@ -2,126 +2,195 @@
 
 {% block stylesheets %}
     {{ parent() }}
-    
+    <style>
+
+        #achievements-container {
+            display: none;
+            visibility: hidden;
+            transition: visibility 0.2s;
+        }
+
+        #achievements-container.show {
+            visibility: visible;
+            display: block;
+        }
+        #study_plan {
+            display: none;
+            visibility: hidden;
+            transition: visibility 0.2s;
+        }
+
+        #study_plan.show {
+            visibility: visible;
+            display: block;
+        }
+    </style>
 {% endblock %}
 
 {% block body %}
-<div class="row align-items-center justify-content-center mt-3">
-    <div class="col-8 col-md-10 col-lg-8 col-xl-8 col-sm-12 col-xs-12 text-center">
-        <h3 class="title-rank title-grey font-bold">Ranking curso Comunicaciòn para la supervisión</h3>
+
+<div class="modal ranking-loader justify-content-center align-items-center">
+    <div class="ranking-loader__spinner">
     </div>
 </div>
 
-<div class="row">
-    <div class="col-12">
-        <div class="card-table">
-            <div class="card_body">
-                <table class="rank-table" cellpadding="0" cellspacing="0" border="0">
-                    <thead class="campo_title">
-                        <tr>
-                            <th></th>
-                            <th>Nombre y apellido</th>
-                            <th>Medallas</th>
-                            <th>Puntos</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>
-                                <img class="rank-badge-number" src="{{ asset('front/assets/img/badge4.png') }}" alt="" />
-                            </td>
-                            
-                            <td><span>Yuan Osaka</span></td>
-                            <td>14</td>
-                            <td>
-                                840
-                            </td>
-                        </tr>
-                        <tr>
-                            <td><img class="rank-badge-number" src="{{ asset('front/assets/img/badge3.png') }}" alt="" /></td>
-                            
-                            <td><span>Donald Malarkey</span></td>
-                            <td>10</td>
-                            <td>
-                                500
-                            </td>
-                        </tr>
-                        <tr>
-                            <td><img class="rank-badge-number" src="{{ asset('front/assets/img/badge2.png') }}" alt="" /></td>
-                            
-                            <td><span>Ronald Spears</span></td>
-                            <td>8</td>
-                            <td>
-                                400
-                            </td>
-                        </tr>
-                        <tr>
-                            <td><img class="rank-badge" src="{{ asset('front/assets/img/badge.png') }}" alt="" /></td>
-                            
-                            <td><span>Jessica Chestain</span></td>
-                            <td>7</td>
-                            <td>
-                                370
-                            </td>
-                        </tr>
-                        <tr class="me-i">
-                            <td><img class="rank-badge" src="{{ asset('front/assets/img/badge.png') }}" alt="" /></td>
-                            
-                            <td><span>Pat Christensen</span></td>
-                            <td>7</td>
-                            <td>
-                                350
-                            </td>
-                        </tr>
-                        <tr>
-                            <td><img class="rank-badge" src="{{ asset('front/assets/img/badge.png') }}" alt="" /></td>
-                            
-                            <td><span>Masaki Oki</span></td>
-                            <td>5</td>
-                            <td>
-                                320
-                            </td>
-                        </tr>
-                        <tr>
-                            <td><img class="rank-badge" src="{{ asset('front/assets/img/badge.png') }}" alt="" /></td>
-                            
-                            <td><span>Alton Moore</span></td>
-                            <td>3</td>
-                            <td>
-                                300
-                            </td>
-                        </tr>
-                        <tr>
-                            <td><img class="rank-badge" src="{{ asset('front/assets/img/badge.png') }}" alt="" /></td>
-                            
-                            <td><span>Rebecca Chambers</span></td>
-                            <td>0</td>
-                            <td>
-                                210
-                            </td>
-                        </tr>
-                        <tr>
-                            <td><img class="rank-badge" src="{{ asset('front/assets/img/badge.png') }}" alt="" /></td>
-                            
-                            <td><span>Ada Wong</span></td>
-                            <td>0</td>
-                            <td>
-                                200
-                            </td>
-                        </tr>
-                        <tr>
-                            <td><img class="rank-badge" src="{{ asset('front/assets/img/badge.png') }}" alt="" /></td>
-                            
-                            <td><span>Natasha Romanov</span></td>
-                            <td>0</td>
-                            <td>
-                                100
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
+<div class="bg-transparent for-message  show container py-5 px-6 my-4 show" id="study_plan">
+    <h2 class="mb-4">Ranking</h2>
+    <p class="text-center">
+        Proident exercitation Lorem exercitation quis sunt.
+    </p>
+    <div class="container d-flex flex-wrap justify-content-center align-items-center ">
+        <div class="card d-flex flex-column">
+            <img class="card-img-top" src="{{ asset('front/assets/img/liderazgo-hrz.png') }}" alt="">
+            <div class="wraper d-flex flex-column"> 
+                <div class="card-hrz-body">
+                    <h5 class="title-grey my-3 font-weight-normal"> Curso de prueba </h5>
+                </div>
+
+                <div class="card-hrz-right d-flex flex-column justify-content-top mx-3 pb-1 align-item align-items-center">
+                
+                <button href="#" class="btn btn-sm btn-continuar mt-0 px-3 mb-3 btn-xs-cont j-btn-achievement" data-id="1" data-ranktitle="Curso de prueba"> Ver ranking </button>
+            </div>
+            </div>
+        </div>
+
+        <div class="card d-flex flex-column">
+            <img class="card-img-top" src="{{ asset('front/assets/img/liderazgo-hrz.png') }}" alt="">
+            <div class="wraper d-flex flex-column"> 
+                <div class="card-hrz-body">
+                    <h5 class="title-grey my-3 font-weight-normal"> Liderazgo </h5>
+                </div>
+
+                <div class="card-hrz-right d-flex flex-column justify-content-top mx-3 pb-1 align-item align-items-center">
+                
+                <button href="#" class="btn btn-sm btn-continuar mt-0 px-3 mb-3 btn-xs-cont j-btn-achievement" data-id="1" data-ranktitle="Curso de prueba"> Ver ranking </button>
+            </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<div id="achievements-container">
+<button href="#" class="btn btn-sm btn-continuar mt-0 px-3 mb-3 btn-xs-cont mx-auto my-4 d-block j-btn-back-to-plan" data-id="2"> Volver a mis cursos </button>
+    <div class="row align-items-center justify-content-center mt-3">
+        <div class="col-8 col-md-10 col-lg-8 col-xl-8 col-sm-12 col-xs-12 text-center">
+            <h3 class="title-rank j-ranking-title"></h3>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-12">
+            <div class="card-table">
+                <div class="card_body">
+                    <table class="rank-table" cellpadding="0" cellspacing="0" border="0">
+                        <thead class="campo_title">
+                            <tr>
+                                <th></th>
+                                <th>Nombre y apellido</th>
+                                <th>Medallas</th>
+                                <th>Puntos</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>
+                                    <img class="rank-badge-number" src="{{ asset('front/assets/img/badge4.png') }}" alt="" />
+                                </td>
+                                
+                                <td><span>Yuan Osaka</span></td>
+                                <td>14</td>
+                                <td>
+                                    840
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><img class="rank-badge-number" src="{{ asset('front/assets/img/badge3.png') }}" alt="" /></td>
+                                
+                                <td><span>Donald Malarkey</span></td>
+                                <td>10</td>
+                                <td>
+                                    500
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><img class="rank-badge-number" src="{{ asset('front/assets/img/badge2.png') }}" alt="" /></td>
+                                
+                                <td><span>Ronald Spears</span></td>
+                                <td>8</td>
+                                <td>
+                                    400
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><img class="rank-badge" src="{{ asset('front/assets/img/badge.png') }}" alt="" /></td>
+                                
+                                <td><span>Jessica Chestain</span></td>
+                                <td>7</td>
+                                <td>
+                                    370
+                                </td>
+                            </tr>
+                            <tr class="me-i">
+                                <td><img class="rank-badge" src="{{ asset('front/assets/img/badge.png') }}" alt="" /></td>
+                                
+                                <td><span>Pat Christensen</span></td>
+                                <td>7</td>
+                                <td>
+                                    350
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><img class="rank-badge" src="{{ asset('front/assets/img/badge.png') }}" alt="" /></td>
+                                
+                                <td><span>Masaki Oki</span></td>
+                                <td>5</td>
+                                <td>
+                                    320
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><img class="rank-badge" src="{{ asset('front/assets/img/badge.png') }}" alt="" /></td>
+                                
+                                <td><span>Alton Moore</span></td>
+                                <td>3</td>
+                                <td>
+                                    300
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><img class="rank-badge" src="{{ asset('front/assets/img/badge.png') }}" alt="" /></td>
+                                
+                                <td><span>Rebecca Chambers</span></td>
+                                <td>0</td>
+                                <td>
+                                    210
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><img class="rank-badge" src="{{ asset('front/assets/img/badge.png') }}" alt="" /></td>
+                                
+                                <td><span>Ada Wong</span></td>
+                                <td>0</td>
+                                <td>
+                                    200
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><img class="rank-badge" src="{{ asset('front/assets/img/badge.png') }}" alt="" /></td>
+                                
+                                <td><span>Natasha Romanov</span></td>
+                                <td>0</td>
+                                <td>
+                                    100
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
     </div>
 </div>
+
 {% endblock %}
