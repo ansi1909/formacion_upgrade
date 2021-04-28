@@ -178,7 +178,7 @@ $(document).ready(function() {
 	});
 
 	$('#next_subpage').click(function(){
-		console.log('Procesando directo');
+		
 		$('#next_subpage').hide();
 		$('#wait').show();
 		var str = $(this).attr('data');
@@ -193,11 +193,11 @@ $(document).ready(function() {
 			
 			if (subpag_id > 0)
 			{
-				console.log('Primera condicion')
+				
 				window.location.replace($('#url_next').val()+'/'+subpag_id+'/'+$('#puntos_agregados').val());
 			}
 			else {
-				console.log('Condicion del else');
+				
 				window.location.replace(url_inicio+'/'+$('#puntos_agregados').val());
 			}
 	    }, 3000);
@@ -235,7 +235,7 @@ $(document).ready(function() {
 					},
 					error: function(){
 						$('#comentario').val('');
-						console.log('Error comentando el muro'); // Hay que implementar los mensajes de error para el frontend
+						// Hay que implementar los mensajes de error para el frontend
 						$('#button-comment').show();
 
 					}
@@ -246,50 +246,6 @@ $(document).ready(function() {
 
 	$('.tab_rv').click(function(e){
 		e.preventDefault();
-		// var prefix = $('#prefix').val();
-		// var pagina_id = $('#pagina_id_viendo').val();
-		// var link_tab = $(this);
-		// var dirty = $('#dirty_'+pagina_id).val();
-		// var link_tab_id = $(this).attr('id');
-		// var link_tab_arr = link_tab_id.split('_');
-		// var last_tab = $('#mas_'+prefix+'_comments-'+pagina_id);
-		// var new_tab = $('#mas_'+link_tab_arr[1]+'_comments-'+pagina_id);
-		// if (link_tab_arr[1] != $('#prefix').val())
-		// {
-		// 	$('#mas_'+prefix).removeClass('active-line');
-		// 	$('#prefix').val(link_tab_arr[1]);
-		// 	link_tab.addClass('active-line');
-		// 	if (dirty == 1)
-		// 	{
-		// 		// Refrescar el tab
-		// 		$.ajax({
-		// 			type: "GET",
-		// 			url: $('#url_refresh').val(),
-		// 			async: false,
-		// 			data: { pagina_id: pagina_id, prefix: $('#prefix').val() },
-		// 			dataType: "json",
-		// 			success: function(data) {
-		// 				new_tab.html(data.html);
-		// 				observeMuro();
-		// 				observeLikeLecciones();
-		// 				observeMore();
-		// 				observeMoreResponses();
-		// 				last_tab.hide(1000);
-		// 				new_tab.show(1000);
-		// 				$('#dirty_'+pagina_id).val(0);
-		// 				//clearTimeout( timerId );
-		// 			},
-		// 			error: function(){
-		// 				console.log('Error refrescando el muro'); // Hay que implementar los mensajes de error para el frontend
-		// 			}
-		// 		});
-		// 	}
-		// 	else {
-		// 		// Solo mostrar lo que ya está cargado en el tab
-		// 		last_tab.hide(1000);
-		// 		new_tab.show(1000);
-		// 	}
-		// }
 	});
 
 	observeMuroLecciones();
@@ -324,7 +280,7 @@ function startLesson(programa_id, pagina_id)
 		data: { programa_id: programa_id, pagina_id: pagina_id },
 		dataType: "json",
 		success: function(data) {
-			console.log('Logs iniciados:');
+			
 			document.getElementById('verComent').innerHTML= $('#ver_comentarios').val()+' ( '+data.comentarios+' )';
 		},
 		error: function(){
@@ -335,7 +291,7 @@ function startLesson(programa_id, pagina_id)
 
 function finishLesson(programa_id, pagina_id)
 {   
-	console.log('Procesando');
+	
 	$.ajax({
 		type: "POST",
 		url: $('#url_procesar').val(),
@@ -343,7 +299,7 @@ function finishLesson(programa_id, pagina_id)
 		data: { programa_id: programa_id, pagina_id: pagina_id },
 		dataType: "json",
 		success: function(data) {
-			console.log('Log_puntos procesado: '+data.id);
+			
 			// Se van sumando los puntos obtenidos en la lección
 			var str = data.id;
 			var log_puntos = str.split('_');
@@ -426,7 +382,7 @@ function observeReply()
 						//clearTimeout( timerId );
 					},
 					error: function(data){
-						console.log(data.mensaje);
+						
 						//console.log('Error respondiendo al comentario'); // Hay que implementar los mensajes de error para el frontend
 						$('#radar-comment-'+muro_id).hide();
 						$('#button-reply-'+muro_id).show();
