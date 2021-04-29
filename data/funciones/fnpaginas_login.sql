@@ -45,6 +45,10 @@ BEGIN
               cp.orden as orden,
               cp.nombre as pagina,
               cc.nombre as categoria,
+              cc.pronombre as pronombre,
+              cc.bienvenida as bienvenida,
+              cc.tarjetas as tarjetas,
+              cc.notas as notas,
               cp.foto as foto,
               cpe.prueba_activa as tiene_evaluacion,
               cpe.acceso as acceso,
@@ -70,7 +74,7 @@ BEGIN
             ELSE
                 pr:=pagina.prelacion;
             END IF;
-            json_response:= json_response||'"'||pagina.id||'" : {"id":'||pagina.id||','||'"orden":'||pagina.orden||','||'"nombre":"'||pagina.pagina||'",'||'"categoria":"'||pagina.categoria||'",'||'"foto":"'||pagina.foto||'",'||'"tiene_evaluacion":'||pagina.tiene_evaluacion||','||'"acceso":'||pagina.acceso||','||'"muro_activo":'||pagina.muro_activo||','||'"espacio_colaborativo":'||pagina.espacio_colaborativo||','||'"prelacion":'||pr||','||'"inicio":"'||to_char(pagina.inicio,'DD/MM/YYYY')||'",'||'"vencimiento":"'||to_char(pagina.vencimiento,'DD/MM/YYYY')||'"';
+            json_response:= json_response||'"'||pagina.id||'" : {"id":'||pagina.id||','||'"orden":'||pagina.orden||','||'"nombre":"'||pagina.pagina||'",'||'"categoria":"'||pagina.categoria||'",'||'"pronombre":"'||pagina.pronombre||'",'||'"binvenida":"'||pagina.bienvenida||'",'||'"notas":"'||pagina.notas||'",'||'"tarjetas":"'||pagina.tarjetas||'",'||'"foto":"'||pagina.foto||'",'||'"tiene_evaluacion":'||pagina.tiene_evaluacion||','||'"acceso":'||pagina.acceso||','||'"muro_activo":'||pagina.muro_activo||','||'"espacio_colaborativo":'||pagina.espacio_colaborativo||','||'"prelacion":'||pr||','||'"inicio":"'||to_char(pagina.inicio,'DD/MM/YYYY')||'",'||'"vencimiento":"'||to_char(pagina.vencimiento,'DD/MM/YYYY')||'"';
             ----Obtener subpaginas
             json_response:=json_response||','||'"subpaginas":{';
             ---Contar cuantos modulos tiene la pagina
@@ -89,6 +93,10 @@ BEGIN
                               cp.orden as orden,
                               cp.nombre as pagina,
                               cc.nombre as categoria,
+                              cc.pronombre as pronombre,
+                              cc.bienvenida as bienvenida,
+                              cc.tarjetas as tarjetas,
+                              cc.notas as notas,
                               cp.foto as foto,
                               cpe.prueba_activa as tiene_evaluacion,
                               cpe.acceso as acceso,
@@ -119,7 +127,7 @@ BEGIN
                             ELSE
                                 mf:=modulo.foto;
                             END IF;
-                            json_modulo:= json_modulo||'"'||modulo.id||'" : {"id":'||modulo.id||','||'"orden":'||modulo.orden||','||'"nombre":"'||modulo.pagina||'",'||'"categoria":"'||modulo.categoria||'",'||'"foto":"'||mf||'",'||'"tiene_evaluacion":'||modulo.tiene_evaluacion||','||'"acceso":'||modulo.acceso||','||'"muro_activo":'||modulo.muro_activo||','||'"espacio_colaborativo":'||modulo.espacio_colaborativo||','||'"prelacion":'||pr||','||'"inicio":"'||to_char(modulo.inicio,'DD/MM/YYYY')||'",'||'"vencimiento":"'||to_char(modulo.vencimiento,'DD/MM/YYYY')||'"';
+                            json_modulo:= json_modulo||'"'||modulo.id||'" : {"id":'||modulo.id||','||'"orden":'||modulo.orden||','||'"nombre":"'||modulo.pagina||'",'||'"categoria":"'||modulo.categoria||'",'||'"pronombre":"'||modulo.pronombre||'",'||'"bienvenida":"'||modulo.bienvenida||'",'||'"tarjetas":"'||modulo.tarjetas||'",'||'"notas":"'||modulo.notas||'",'||'"foto":"'||mf||'",'||'"tiene_evaluacion":'||modulo.tiene_evaluacion||','||'"acceso":'||modulo.acceso||','||'"muro_activo":'||modulo.muro_activo||','||'"espacio_colaborativo":'||modulo.espacio_colaborativo||','||'"prelacion":'||pr||','||'"inicio":"'||to_char(modulo.inicio,'DD/MM/YYYY')||'",'||'"vencimiento":"'||to_char(modulo.vencimiento,'DD/MM/YYYY')||'"';
                             json_modulo:=json_modulo||','||'"subpaginas":{';
                             ---Contar cuantas materias tiene
                             SELECT COUNT(cp.id)  FROM certi_pagina cp
@@ -137,6 +145,10 @@ BEGIN
                                       cp.orden as orden,
                                       cp.nombre as pagina,
                                       cc.nombre as categoria,
+                                      cc.pronombre as pronombre,
+                                      cc.bienvenida as bienvenida,
+                                      cc.tarjetas as tarjetas, 
+                                      cc.notas as notas,
                                       cp.foto as foto,
                                       cpe.prueba_activa as tiene_evaluacion,
                                       cpe.acceso as acceso,
@@ -166,7 +178,7 @@ BEGIN
                                     ELSE
                                         maf:=materia.foto;
                                     END IF;
-                                    json_materia:= json_materia||'"'||materia.id||'" : {"id":'||materia.id||','||'"orden":'||materia.orden||','||'"nombre":"'||materia.pagina||'",'||'"categoria":"'||materia.categoria||'",'||'"foto":"'||maf||'",'||'"tiene_evaluacion":'||materia.tiene_evaluacion||','||'"acceso":'||materia.acceso||','||'"muro_activo":'||materia.muro_activo||','||'"espacio_colaborativo":'||materia.espacio_colaborativo||','||'"prelacion":'||pr||','||'"inicio":"'||to_char(materia.inicio,'DD/MM/YYYY')||'",'||'"vencimiento":"'||to_char(materia.vencimiento,'DD/MM/YYYY')||'"';
+                                    json_materia:= json_materia||'"'||materia.id||'" : {"id":'||materia.id||','||'"orden":'||materia.orden||','||'"nombre":"'||materia.pagina||'",'||'"categoria":"'||materia.categoria||'",'||'"pronombre":"'||materia.pronombre||'",'||'"notas":"'||materia.notas||'",'||'"bienvenida":"'||materia.bienvenida||'",'||'"tarjetas":"'||materia.tarjetas||'",'||'"foto":"'||maf||'",'||'"tiene_evaluacion":'||materia.tiene_evaluacion||','||'"acceso":'||materia.acceso||','||'"muro_activo":'||materia.muro_activo||','||'"espacio_colaborativo":'||materia.espacio_colaborativo||','||'"prelacion":'||pr||','||'"inicio":"'||to_char(materia.inicio,'DD/MM/YYYY')||'",'||'"vencimiento":"'||to_char(materia.vencimiento,'DD/MM/YYYY')||'"';
                                    --abrir lecciones
                                    json_materia:=json_materia||','||'"subpaginas":{';
                                    --Obtener lecciones
@@ -185,6 +197,10 @@ BEGIN
                                               cp.orden as orden,
                                               cp.nombre as pagina,
                                               cc.nombre as categoria,
+                                              cc.pronombre as pronombre,
+                                              cc.bienvenida as bienvenida,
+                                              cc.tarjetas as tarjetas,
+                                              cc.notas as notas,
                                               cp.foto as foto,
                                               cpe.prueba_activa as tiene_evaluacion,
                                               cpe.acceso as acceso,
@@ -214,7 +230,7 @@ BEGIN
                                         ELSE
                                             lf:=leccion.foto;
                                         END IF;
-                                        json_leccion:= json_leccion||'"'||leccion.id||'" : {"id":'||leccion.id||','||'"orden":'||leccion.orden||','||'"nombre":"'||leccion.pagina||'",'||'"categoria":"'||leccion.categoria||'",'||'"foto":"'||lf||'",'||'"tiene_evaluacion":'||leccion.tiene_evaluacion||','||'"acceso":'||leccion.acceso||','||'"muro_activo":'||leccion.muro_activo||','||'"espacio_colaborativo":'||leccion.espacio_colaborativo||','||'"prelacion":'||pr||','||'"inicio":"'||to_char(leccion.inicio,'DD/MM/YYYY')||'",'||'"vencimiento":"'||to_char(leccion.vencimiento,'DD/MM/YYYY')||'","subpaginas":{}}';
+                                        json_leccion:= json_leccion||'"'||leccion.id||'" : {"id":'||leccion.id||','||'"orden":'||leccion.orden||','||'"nombre":"'||leccion.pagina||'",'||'"categoria":"'||leccion.categoria||'",'||'"pronombre":"'||leccion.pronombre||'",'||'"bienvenida":"'||leccion.bienvenida||'",'||'"tarjetas":"'||leccion.tarjetas||'",'||'"notas":"'||leccion.notas||'",'||'"foto":"'||lf||'",'||'"tiene_evaluacion":'||leccion.tiene_evaluacion||','||'"acceso":'||leccion.acceso||','||'"muro_activo":'||leccion.muro_activo||','||'"espacio_colaborativo":'||leccion.espacio_colaborativo||','||'"prelacion":'||pr||','||'"inicio":"'||to_char(leccion.inicio,'DD/MM/YYYY')||'",'||'"vencimiento":"'||to_char(leccion.vencimiento,'DD/MM/YYYY')||'","subpaginas":{}}';
                                         IF cl < lecciones THEN
                                             json_leccion:=json_leccion||',';
                                         END IF;
@@ -256,4 +272,4 @@ END;
 $BODY$
   LANGUAGE plpgsql VOLATILE
 
-  ------SELECT * from fnpaginas_login(18,54,'2020-09-18');
+  ------SELECT * from fnpaginas_login(1,265,'2021-04-28');

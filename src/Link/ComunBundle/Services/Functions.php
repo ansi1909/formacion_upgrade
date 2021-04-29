@@ -2250,6 +2250,7 @@ public function obtenerEstructuraJson($pagina_id){
                                   $query->execute();
                                   $gc = $query->fetchAll();
                                   $paginas = json_decode($gc[0]['resultado'],true);
+                                  
 
                                     if (!$paginas)  //validamos que la empresa tenga paginas activas
                                     {
@@ -3950,7 +3951,7 @@ public function obtenerEstructuraJson($pagina_id){
       $paginas = null;
       $em = $this->em;
       $ids = array();
-      //$activo = $yml['parameters']['estatus_contenido']['activo'];
+      
       $categoria = $yml['parameters']['categoria']['modulo'];
 
       $query = $em->createQuery('SELECT p FROM LinkComunBundle:CertiPagina p
@@ -3959,7 +3960,7 @@ public function obtenerEstructuraJson($pagina_id){
                 ->setParameters(['pagina_id'=> $pagina_id]);
       $modulos = $query->getResult();
 
-      if ($categoria_id == $yml['parameters']['categoria']['modulo']) {
+      if ($categoria_id == $yml['parameters']['categoria']['modulo'] || $yml['parameters']['categoria']['competencia']) {
         $paginas = $modulos;
       }elseif ($categoria_id == $yml['parameters']['categoria']['materia'] || $categoria_id == $yml['parameters']['categoria']['leccion'] ) {
         foreach ($modulos as $modulo) {
