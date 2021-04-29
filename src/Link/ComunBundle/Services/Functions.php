@@ -2250,6 +2250,7 @@ public function obtenerEstructuraJson($pagina_id){
                                   $query->execute();
                                   $gc = $query->fetchAll();
                                   $paginas = json_decode($gc[0]['resultado'],true);
+                                  
 
                                     if (!$paginas)  //validamos que la empresa tenga paginas activas
                                     {

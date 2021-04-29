@@ -239,6 +239,7 @@ class LeccionController extends Controller
 
         // También se anexa a la indexación el programa padre
         $programa = $this->getDoctrine()->getRepository('LinkComunBundle:CertiPagina')->find($programa_id);
+        
         $pagina = $session->get('paginas')[$programa_id];
         $pagina['padre'] = 0;
         $pagina['sobrinos'] = 0;
@@ -275,12 +276,12 @@ class LeccionController extends Controller
         else {
             $duracion = 0;
         }
-
-        //return new Response(var_dump($continue_button));
-        //return new Response(var_dump($indexedPages[$subpagina_id]));
+       // print_r($indexedPages[$subpagina_id]);die();
+        $certificado = ($programa->getCategoria()->getId() == $yml['parameters']['categoria']['competencia'])? true:false;
 
         return $this->render('LinkFrontendBundle:Leccion:finLecciones.html.twig', array('programa' => $programa,
                                                                                         'subpagina' => $indexedPages[$subpagina_id],
+                                                                                        'certificado' => $certificado,
                                                                                         'continue_button' => $continue_button,
                                                                                         'puntos' => $puntos,
                                                                                         'duracion' => $duracion));
