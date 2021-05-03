@@ -62,9 +62,13 @@
                                     </div>
                                     <br>
                                     <div class="row justify-content-between">   
-                                        <div class="col-sm-16 show__details">
+                                        <div class="col-sm-8 show__details">
                                             <h5>{{ 'País'|trans }}</h5>
                                             <p>{{ empresa.pais.nombre }}</p>
+                                        </div>
+                                        <div class="col-sm-8 show__details">
+                                            <h5>{{ 'Límite de usuarios'|trans }}</h5>
+                                            <p>{% if empresa.limiteusuarios %}{{ empresa.limiteusuarios }}{% else %}indefinido{% endif %}</p>
                                         </div>
                                     </div>
                                 </div>

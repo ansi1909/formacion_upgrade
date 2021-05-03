@@ -70,6 +70,12 @@ Link\ComunBundle\Entity\AdminEmpresa:
         webinar:
             type: boolean
             nullable: true
+        limiteUsuarios:
+            type: integer
+            nullable: true
+            options:
+                unsigned: false
+            column: limite_usuarios
     manyToOne:
         pais:
             targetEntity: AdminPais

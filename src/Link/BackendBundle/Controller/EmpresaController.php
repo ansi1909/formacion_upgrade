@@ -104,6 +104,7 @@ class EmpresaController extends Controller
             $nombre = $request->request->get('nombre');
             $pais_id = $request->request->get('pais_id');
             $zona_id = $request->request->get('zona_id');
+            $limite_usuarios = $request->request->get('limite_usuarios');
             $bienvenida = $request->request->get('bienvenida');
             $activo = $request->request->get('activo');
             $activo2 = $request->request->get('activo2');
@@ -117,6 +118,7 @@ class EmpresaController extends Controller
             $empresa->setBienvenida($bienvenida);
             $empresa->setPais($pais);
             $empresa->setZonaHoraria($zona);
+            $empresa->setLimiteUsuarios($limite_usuarios);
             $em->persist($empresa);
             $em->flush();
             $f->subDirEmpresa($empresa->getId(), $this->container->getParameter('folders'));

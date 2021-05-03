@@ -294,6 +294,36 @@ class UsuarioController extends Controller
             $campo4 = $request->request->get('campo4');
             $roles_seleccionados = $request->request->get('roles');
 
+            $empresa = $this->getDoctrine()->getRepository('LinkComunBundle:AdminEmpresa')->find($empresa_id);
+
+            $query = $em->createQuery('SELECT COUNT(u.id) FROM LinkComunBundle:AdminUsuario u
+                                        WHERE u.empresa = :empresa_id
+                                        AND  u.activo = :activo')
+                        ->setParameters(array('empresa_id' => $empresa_id,
+                                              'activo' => 'true'));
+            $usuarios_activos = $query->getSingleScalarResult();
+
+            foreach( $roles_seleccionados as $rol)
+            {
+                if($rol == $yml['parameters']['rol']['participante'] && $activo )
+                {
+                    if($usuarios_activos >= $empresa->getLimiteUsuarios())
+                    {
+                        //return new response(var_dump($roles));
+                        $limite_usuarios = $this->get('translator')->trans('La empresa excede el limite de usuarios con acceso permitido').'. '.$usuarios_activos.'/'.$empresa->getlimiteUsuarios();
+                        return $this->render('LinkBackendBundle:Usuario:usuario.html.twig', array('usuario' => $usuario,
+                                                                                                  'paises' => $paises,
+                                                                                                  'empresas' => $empresas,
+                                                                                                  'empresa_asignada' => $empresa_asignada,
+                                                                                                  'niveles' => $niveles,
+                                                                                                  'roles' => $roles,
+                                                                                                  'roles_asignados' => $roles_asignados,
+                                                                                                  'roles_empresa_str' => $roles_empresa_str,
+                                                                                                  'limite_usuarios' => $limite_usuarios));
+                    }
+                }
+            }
+
             $pais = $pais_id ? $this->getDoctrine()->getRepository('LinkComunBundle:AdminPais')->find($pais_id) : null;
             $empresa = $empresa_id ? $this->getDoctrine()->getRepository('LinkComunBundle:AdminEmpresa')->find($empresa_id) : null;
             $nivel = $nivel_id ? $this->getDoctrine()->getRepository('LinkComunBundle:AdminNivel')->find($nivel_id) : null;
@@ -699,6 +729,29 @@ class UsuarioController extends Controller
             $empresa = $this->getDoctrine()->getRepository('LinkComunBundle:AdminEmpresa')->find($empresa_id);
             $nivel = $this->getDoctrine()->getRepository('LinkComunBundle:AdminNivel')->find($nivel_id);
 
+            $query = $em->createQuery('SELECT COUNT(u.id) FROM LinkComunBundle:AdminUsuario u
+                                        WHERE u.empresa = :empresa_id
+                                        AND  u.activo = :activo')
+                        ->setParameters(array('empresa_id' => $empresa_id,
+                                              'activo' => 'true'));
+            $usuarios_activos = $query->getSingleScalarResult();
+
+            //return new response($empresa->getlimiteUsuarios().'   '.$usuarios_activos);
+            if($activo)
+            {
+                if($usuarios_activos >= $empresa->getLimiteUsuarios())
+                {
+                    $limite_usuarios = $this->get('translator')->trans('La empresa excede el limite de usuarios con acceso permitido').'. '.$usuarios_activos.'/'.$empresa->getlimiteUsuarios();
+                    //return new response($limite_usuarios);
+                    return $this->render('LinkBackendBundle:Usuario:nuevoParticipante.html.twig', array('usuario' => $usuario,
+                                                                                                        'paises' => $paises,
+                                                                                                        'empresas' => $empresas,
+                                                                                                        'empresa_asignada' => $empresa_asignada,
+                                                                                                        'niveles' => $niveles,
+                                                                                                        'limite_usuarios' => $limite_usuarios));
+                }
+            }
+
             $usuario->setNombre($nombre);
             $usuario->setApellido($apellido);
             $usuario->setLogin($login);
@@ -769,7 +822,8 @@ class UsuarioController extends Controller
                                                                                             'paises' => $paises,
                                                                                             'empresas' => $empresas,
                                                                                             'empresa_asignada' => $empresa_asignada,
-                                                                                            'niveles' => $niveles));
+                                                                                            'niveles' => $niveles,
+                                                                                            'limite_usuarios' => ' '));
 
     }
 
@@ -851,6 +905,7 @@ class UsuarioController extends Controller
         {
 
             $empresa_id = $request->request->get('empresa_id');
+            $empresa = $em->getRepository('LinkComunBundle:AdminEmpresa')->find($empresa_id);
             $file = $request->request->get('file');
             $fileWithPath = $this->container->getParameter('folders')['dir_uploads'].$file;
 
@@ -889,9 +944,9 @@ class UsuarioController extends Controller
                     $codigos = array(); // No pueden existir códigos repetidos
                     $logins = array(); // No pueden existir logins repetidos
                     $correos = array(); // No pueden existir correos repetidos
+                    $limite_usuarios = 0; // cuenta los usuarios con acceso
                     for ($row=2; $row<=$highestRow; ++$row)
                     {
-
 
                        $filas_analizadas++;
 
@@ -1156,6 +1211,7 @@ class UsuarioController extends Controller
                                 if (!($activo == 0 || $activo == 1))
                                 {
                                     $particulares[$this->get('translator')->trans('Línea').' '.$row][$this->get('translator')->trans('Columna').' '.$col_name] = $this->get('translator')->trans('La columna Activo debe tener como valor 0 o 1').'.';
+                                    
                                 }
                             }
                         }
@@ -1165,6 +1221,17 @@ class UsuarioController extends Controller
                             // Si existen errores en esta fila, se anexan al conjunto del arreglo de errores
                         }*/
 
+                        if( $activo == 1)
+                        {
+                            $limite_usuarios++;
+                        }
+                        if($empresa->getlimiteUsuarios())
+                        {
+                            if($limite_usuarios > $empresa->getlimiteUsuarios())
+                            {
+                                $errores['general2'] = $this->get('translator')->trans('El archivo excede el limite de usuarios con acceso permitido').'. '.$limite_usuarios.'/'.$empresa->getlimiteUsuarios();
+                            }
+                        }
                     }
 
                     if ($hay_data == 0)
@@ -1180,7 +1247,7 @@ class UsuarioController extends Controller
 
             }
 
-            //return new Response(var_dump($errores));
+            //return new Response(var_dump($limite_usuarios));
 
         }
 
