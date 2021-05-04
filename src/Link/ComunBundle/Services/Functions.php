@@ -237,6 +237,14 @@ class Functions
   //verifica si el usuario aprobo el curso y alguna evaluacion correspondiente
   public function notasDisponibles($pagina_id,$usuario_id,$yml){
     $em = $this->em;
+    $pagina = $em->getRepository('LinkComunBundle:CertiPagina')->findOneById($pagina_id);
+    
+    if ($pagina->getCategoria()->getId() == $yml['parameters']['categoria']['curso'] || $pagina->getCategoria()->getId() == $yml['parameters']['categoria']['programa'] ){
+        $categoria = $yml['parameters']['categoria']['modulo'];
+    }elseif($pagina->getCategoria()->getId() == $yml['parameters']['categoria']['competencia']){
+        $categoria = $yml['parameters']['categoria']['recurso'];
+    }
+
     $buscar = array($pagina_id);
     $estructura = array($pagina_id);
     $cn_pruebas = 0;
@@ -244,7 +252,7 @@ class Functions
     //obtener estructura del programa
     while ($buscar!=NULL) {
       $pag_id = array_pop($buscar);
-      $paginas = $em->getRepository('LinkComunBundle:CertiPagina')->findBy(array('pagina'=>$pag_id,'estatusContenido'=>$yml['parameters']['estatus_contenido']['activo'],'categoria'=>$yml['parameters']['categoria']['modulo']));
+      $paginas = $em->getRepository('LinkComunBundle:CertiPagina')->findBy(array('pagina'=>$pag_id,'estatusContenido'=>$yml['parameters']['estatus_contenido']['activo'],'categoria'=>$categoria));
       foreach ($paginas as $pagina) {
         array_push($buscar,$pagina->getId());
         array_push($estructura,$pagina->getId());
