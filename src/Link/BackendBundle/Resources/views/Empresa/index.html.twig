@@ -52,6 +52,8 @@
                         	<th class="hd__title">{{ 'Empresa'|trans }}</th>
                             <th class="hd__title">{{ 'País'|trans }}</th>
                         	<th class="hd__title">{{ 'Fecha Creación'|trans }}</th>
+                            <th class="hd__title">{{ 'Usuarios con acceso'|trans }}</th>
+                            <th class="hd__title">{{ 'Límite de usuarios'|trans }}</th>
                         	<th class="hd__title">{{ 'Activo'|trans }}</th>
                         	<th class="hd__title">{{ 'Acciones'|trans }}</th>
                     	</tr>
@@ -62,6 +64,8 @@
                 				<td>{{ empresa.nombre }}</td>
                 				<td>{{ empresa.pais.nombre }}</td>
                 				<td>{{ empresa.fechaCreacion|date("d/m/Y") }}</td>
+                                <td>{{ empresa.usuarios_acceso }}</td>
+                                <td>{{ empresa.limite_usuarios}}</td>
                 				<td class="center">
                                     <div class="can-toggle demo-rebrand-2 small">
                                         <input id="f{{ empresa.id }}" class="cb_activo" type="checkbox" {% if empresa.activo %}checked{% endif %}>
