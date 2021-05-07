@@ -64,7 +64,7 @@ else {
 	$sql = "select u.nombre, u.apellido,u.id as usuario_id, 
 			p.nombre as programa, p.id as id, pl.fecha_inicio as fecha_inicio, 
 			pl.fecha_fin as fecha_fin, p.horas_academicas as horas_academicas, 
-			c.nombre as categoria, c.pronombre as pronombre
+			c.nombre as categoria, c.pronombre as pronombre, c.horas as horas
 			from certi_pagina_log pl 
 			inner join admin_usuario u on (u.id=pl.usuario_id)
 			inner join certi_pagina p on (p.id=pl.pagina_id)
@@ -84,6 +84,7 @@ else {
 		$usuario_id        = $row["usuario_id"];
 		$categoria         = $row["categoria"];
 		$pronombre         = $row["pronombre"];
+		$horas             = $row["horas"];
 	}
 
 	//obtener estructura del programa/curso
@@ -192,7 +193,7 @@ else {
 	                </div>
 	                <div class="row align-items-center justify-content-between mt-12v">
 	                    <div class="col-sm-12 col-md-12 col-12 col-lg-12 col-xl-12">
-	                        <span class="text-cQR">Equivalente a: <?php echo $horas_academicas ?> hrs. académicas</span>
+							<span class="text-cQR"><?php if ($horas){ echo "Equivalente a: ".$horas_academicas." hrs. académicas"; } ?> </span>
 	                    </div> 
 					</div>
 					<div class="row align-items-center justify-content-between mt-12v">
