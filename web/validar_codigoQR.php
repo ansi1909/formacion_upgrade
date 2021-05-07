@@ -86,6 +86,11 @@ else {
 		$pronombre         = $row["pronombre"];
 		$horas             = $row["horas"];
 	}
+	
+	$mensaje_horas = '';
+	if($horas){
+		$mensaje = "Equivalente a: ".$horas_academicas." hrs. académicas";
+	}
 
 	//obtener estructura del programa/curso
     $buscar = array($pagina_id);
@@ -193,7 +198,7 @@ else {
 	                </div>
 	                <div class="row align-items-center justify-content-between mt-12v">
 	                    <div class="col-sm-12 col-md-12 col-12 col-lg-12 col-xl-12">
-							<span class="text-cQR"><?php if ($horas){ echo "Equivalente a: ".$horas_academicas." hrs. académicas"; } ?> </span>
+							<span class="text-cQR"><?php echo $mensaje_horas  ?> </span>
 	                    </div> 
 					</div>
 					<div class="row align-items-center justify-content-between mt-12v">
