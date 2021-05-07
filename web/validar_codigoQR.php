@@ -132,7 +132,7 @@ else {
             $resul = pg_query($connect,$prueba_log);
             while($prueba_log_resul = pg_fetch_array($resul,NULL,PGSQL_ASSOC)){
               $cn_aprobadas++;
-              if($prueba["categoria"] == 2 ){
+              if($prueba["categoria"] == 2 || $prueba["categoria"] == 7 ){
               	$notas = $notas+$prueba_log_resul['nota'];
               	$cm++;
               }
@@ -140,7 +140,7 @@ else {
             }
         }
     }
-    if ($cn_pruebas >0  ) {
+    if ($notas >0  ) {
     	$promedio = $notas / $cm;
     	$promedio = round($promedio,2);
     }
