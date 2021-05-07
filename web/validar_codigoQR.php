@@ -64,7 +64,7 @@ else {
 	$sql = "select u.nombre, u.apellido,u.id as usuario_id, 
 			p.nombre as programa, p.id as id, pl.fecha_inicio as fecha_inicio, 
 			pl.fecha_fin as fecha_fin, p.horas_academicas as horas_academicas, 
-			c.nombre as categoria, c.pronombre as pronombre, c.horas as horas
+			c.nombre as categoria,c.id as categoria_id,c.pronombre as pronombre, c.horas as horas
 			from certi_pagina_log pl 
 			inner join admin_usuario u on (u.id=pl.usuario_id)
 			inner join certi_pagina p on (p.id=pl.pagina_id)
@@ -85,10 +85,11 @@ else {
 		$categoria         = $row["categoria"];
 		$pronombre         = $row["pronombre"];
 		$horas             = $row["horas"];
+		$categoria_id      = $row["categoria_id"];
 	}
 	
 	$mensaje_horas = '';
-	if($horas){
+	if($categoria_id == 1 || $categoria_id == 5){
 		$mensaje_horas = "Equivalente a: ".$horas_academicas." hrs. académicas";
 	}
 
