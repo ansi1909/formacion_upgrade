@@ -108,11 +108,18 @@
     {% set e = 0 %}
     {% set e_particulares = 0 %}
     {% set error_msg = '' %}
+    {% set error_msg2 = '' %}
     {% set display = 'display: none;' %}
     {% if errores.general is defined %}
         {% if errores.general != '' %}
             {% set e = 1 %}
             {% set error_msg = errores.general %}
+        {% endif %}
+    {% endif %}
+    {% if errores.general2 is defined %}
+        {% if errores.general2 != '' %}
+            {% set e = 1 %}
+            {% set error_msg2 = errores.general2 %}
         {% endif %}
     {% endif %}
     {% if e == 0 %}
@@ -141,6 +148,7 @@
                                 </div>
                                 <div class="sec1">
                                     {{ error_msg }}
+                                    {{ error_msg2 }}
                                 </div>
                             </div>
                         </div>

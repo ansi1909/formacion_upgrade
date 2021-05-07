@@ -3,6 +3,35 @@
     {{ parent() }}
     <link rel="stylesheet" href="{{ asset('assets/vendor/jstree/dist/themes/default/style.min.css') }}" type="text/css">
 
+    <style>
+
+        .activity-block {
+           height: 100%;
+       }
+
+        .activity-block.linkg-empresa-1 {
+            background: rgb(176,176,176); 
+            background: linear-gradient(90deg, rgba(176,176,176,1) 0%, rgba(128,128,128,1) 100%);
+            color: white;
+        }
+
+        .activity-block.linkg-empresa-2 {
+            background: rgb(227,227,227); 
+            background: linear-gradient(90deg, rgba(227,227,227,1) 0%, rgba(201,201,201,1) 100%);
+            color: white;
+            
+        }
+
+        .activity-block.linkg-empresa-2 .fa-lock::before {
+            color: #000;
+       }
+
+        .activity-block.linkg-empresa-3 {
+            background: rgb(0,139,231); 
+            background: linear-gradient(90deg, rgba(0,139,231,1) 0%, rgba(2,59,96,1) 100%);
+            color: white;
+        }
+    </style>
 {% endblock %}
 
 {% block body %}
@@ -222,20 +251,20 @@
             <input type="hidden" id="error-msg" name="error-msg" value="{{ 'Ha ocurrido un error al cargar los participantes conectados, verifique su conexión a internet o contacte al administrador del sistema.'|trans }}">
             <div class="row row-tarjetas-dashboard">
                 <div class="col-md-3 col-sm-3 col-lg-3 col-xl-3 ">
-                    <div class="activity-block linkg1" data-toggle="tooltip" data-placement="bottom" title="{{ 'Son todos los usuarios inscritos históricamente por la empresa'|trans }}.">
+                    <div class="activity-block linkg-empresa-1" data-toggle="tooltip" data-placement="bottom" title="{{ 'Son todos los usuarios inscritos históricamente por la empresa'|trans }}.">
                         <div class="media">
                             <div class="media-body">
                                 <h5><span class="spincreament">{{ total }}</span></h5>
-                                <p>{{ 'USUARIOS REGISTRADOS'|trans }}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</p>
+                                <p>{{ 'HISTÓRICO DE USUARIOS REGISTRADOS'|trans }}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</p>
                             </div>
                             <i class="fa fa-users"></i>
                         </div>
-                        <br>
-                        <i class="bg-icon text-center fa fa-pencil"></i>
+                        
+                        <i class="bg-icon text-center fa fa-address-book"></i>
                     </div>
                 </div>
                 <div class="col-md-3 col-sm-3 col-lg-3 col-xl-3 ">
-                    <div class="activity-block danger"  data-toggle="tooltip" data-placement="bottom" title="{{ 'Son todos los usuarios que han sido desincorporados a solicitud de la empresa y que ya no tienen acceso a la plataforma'|trans }}.">
+                    <div class="activity-block linkg-empresa-2"  data-toggle="tooltip" data-placement="bottom" title="{{ 'Son todos los usuarios que han sido desincorporados a solicitud de la empresa y que ya no tienen acceso a la plataforma'|trans }}.">
                         <div class="media">
                             <div class="media-body">
                                 <h5><span class="spincreament">{{ sin_acceso }}</span></h5>
@@ -247,7 +276,7 @@
                     </div>
                 </div>
                  <div class="col-md-3 col-sm-3 col-lg-3 col-xl-3 ">
-                    <div class="activity-block linkg2"  data-toggle="tooltip" data-placement="bottom" title="{{ 'Son todos los usuarios inscritos por la empresa que actualmente tienen acceso a la plataforma'|trans }}.">
+                    <div class="activity-block linkg-empresa-3"  data-toggle="tooltip" data-placement="bottom" title="{{ 'Son todos los usuarios inscritos por la empresa que actualmente tienen acceso a la plataforma'|trans }}.">
                         <div class="media">
                             <div class="media-body">
                                 <h5><span class="spincreament">{{ con_acceso }}</span></h5>
