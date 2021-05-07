@@ -99,7 +99,7 @@
                                         <div class="form-group">
                                             <label for="texto" class="col-6 col-form-label">{{ 'Límite de usuarios'|trans }}</label>
                                             <div class="col-14">
-                                                <input type="text" class="form-control form_sty1" name="limite_usuarios" id="limite_usuarios" value="{{ empresa.nombre }}">
+                                                <input type="text" class="form-control form_sty1" name="limite_usuarios" id="limite_usuarios" value="{% if empresa.limiteusuarios %}{{ empresa.limiteusuarios }}{% else %}indefinido{% endif %}">
                                                 <span class="fa fa-industry"></span>
                                             </div>	
                                         </div>

@@ -132,7 +132,7 @@ class EmpresaController extends Controller
             $empresa->setBienvenida($bienvenida);
             $empresa->setPais($pais);
             $empresa->setZonaHoraria($zona);
-            $empresa->setLimiteUsuarios($limite_usuarios);
+            $empresa->setLimiteUsuarios($limite_usuarios ? $limite_usuarios : null);
             $em->persist($empresa);
             $em->flush();
             $f->subDirEmpresa($empresa->getId(), $this->container->getParameter('folders'));
