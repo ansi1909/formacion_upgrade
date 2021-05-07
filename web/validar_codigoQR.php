@@ -89,7 +89,7 @@ else {
 	
 	$mensaje_horas = '';
 	if($horas){
-		$mensaje = "Equivalente a: ".$horas_academicas." hrs. académicas";
+		$mensaje_horas = "Equivalente a: ".$horas_academicas." hrs. académicas";
 	}
 
 	//obtener estructura del programa/curso
