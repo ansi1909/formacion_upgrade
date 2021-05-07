@@ -334,7 +334,7 @@ class CertificadoController extends Controller
 		                    		$html .= "<table class='table-notas'>
 			                            <thead>
 			                                <tr>
-			                                    <th style='width: 380;'>".$this->get('translator')->trans('Módulos')."</th>
+												<th style='width: 380;'>".$this->get('translator')->trans($categoria->getTarjetas())."</th>
 			                                    <th style='width: 100;'>".$this->get('translator')->trans('Puntaje')."</th>
 			                                </tr>
 			                            </thead>
@@ -345,7 +345,7 @@ class CertificadoController extends Controller
 									foreach ($programa_aprobado as $programa)
 							        {
 
-							        	if ($programa['categoria'] == $values['parameters']['categoria']['modulo'])
+							        	if ($programa['categoria'] == $values['parameters']['categoria']['modulo'] || $values['parameters']['categoria']['recurso'] )
 							        	{
 							        		$valor = 20;
 							        		$guion = '';
