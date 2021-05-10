@@ -11,6 +11,16 @@
             font-weight: 500;
             color: #797D80;
         }
+        .aling-certficados{
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .text-certificados{
+            font-family: Open Sans;
+            color: #5CAEE6;
+            font-family: 12px;
+        }
     </style>
 {% endblock %}
 
@@ -77,16 +87,10 @@
     <section class="s1_fin-materia">
         <div class="row align-items-center justify-content-center">
             <div class="col-10 text-center">
-                {% set categoria = continue_button.evaluacion != 0 ? continue_button.evaluacion != subpagina.id ? continue_button.categoria : subpagina.categoria : subpagina.categoria %}
+               
                 {% set nombre_pagina = continue_button.evaluacion != 0 ? continue_button.evaluacion != subpagina.id ? continue_button.nombre_pagina : subpagina.nombre : subpagina.nombre %}
-                {% if categoria == 'Materia' %}
-                    {% set articulo = 'de la'|trans %}
-                {% elseif categoria == 'Lección' %}
-                    {% set articulo = 'de la'|trans %}
-                {% else %}
-                    {% set articulo = 'del'|trans %}
-                {% endif %}
-                <h3>{{ 'Has completado con éxito los contenidos'|trans }} {{ articulo~' '~categoria }}:</h3>
+
+                <h3>{{ 'Has completado con éxito los contenidos '~subpagina.notas~' '~subpagina.categoria}}:</h3>
                 <h3><strong>{{ nombre_pagina }}</strong>.</h3>
             </div>
         </div>
@@ -102,6 +106,23 @@
                     <p class="text_fin-materia">{{ 'Tendrás'|trans }} <strong>{{ duracion }}</strong> {{ 'minutos para completar la evaluación'|trans }}.</p>
                 </div>
             </div>
+        {% else %}
+            {% if certificado %}
+                <div class="row align-items-center justify-content-center">
+                    <ul class="panelBtn d-flex px-0">
+                        <li class="seccBtn aling-certficados d-flex flex-column justify-content-start my-3 mx-5">
+                            <a href="{{ path('_generarCertificado', { 'programa_id': programa.id }) }}" target="_blank">
+                                <button class="btn btnC text-center" {#data-toggle="tooltip"#} data-placement="bottom" title="{{ 'Imprimir certificado'|trans }}">
+                                    <img src="{{ asset('front/assets/img/certificado.svg') }}" alt="" class="certi">
+                                </button>
+                            </a>
+                            <span class="aling-certficados text-certificados mt-3 text-center">
+                                {{ 'Imprimir certificado'|trans }}
+                            </span>
+                        </li>
+                    </ul>
+                </div>
+            {% endif %}
         {% endif %}
     </section>
     

@@ -1598,6 +1598,41 @@ color: darken($colorlight, 12%);
 	margin: 15px auto 15px auto;
 	padding: 15px 13px;
 	position: relative;
+
+	&.linkg1 {
+		background: #008fee;
+		background: -moz-linear-gradient(left, #008FEE 0%, #015d97 30%, #03385A 100%);
+		background: -webkit-linear-gradient(left, #008FEE 0%, #015d97 30%, #03385A 100%);
+		background: linear-gradient(to right, #008FEE 0%, #015d97 30%, #03385A 100%);
+		color: white;
+	}
+
+	&.linkg2 {
+		background: #3e4b00;
+		background: -moz-linear-gradient(left, #89af27 0%, #677b00 30%, #4b5711 100%);
+		background: -webkit-linear-gradient(left, #89af27 0%, #677b00 30%, #4b5711 100%);
+		background: linear-gradient(left, #89af27 0%, #677b00 30%, #4b5711 100%);
+		color: white;
+	}
+
+	&.linkg-empresa-1 {
+		background: rgb(176,176,176); 
+		background: linear-gradient(90deg, rgba(176,176,176,1) 0%, rgba(128,128,128,1) 100%);
+		color: white;
+	}
+
+	&.linkg-empresa-2 {
+		background: rgb(227,227,227); 
+		background: linear-gradient(90deg, rgba(227,227,227,1) 0%, rgba(201,201,201,1) 100%);
+		color: white;
+	}
+
+	&.linkg-empresa-3 {
+		background: rgb(0,139,231); 
+		background: linear-gradient(90deg, rgba(0,139,231,1) 0%, rgba(2,59,96,1) 100%);
+		color: white;
+	}
+	
  h5 {
 color: darken($colorlight, 50%);
 }

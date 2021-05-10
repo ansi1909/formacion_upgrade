@@ -371,33 +371,5 @@ class AdminEmpresa
     {
         return $this->zonaHoraria;
     }
-    /**
-     * @var int|null
-     */
-    private $limiteUsuarios;
-
-
-    /**
-     * Set limiteUsuarios.
-     *
-     * @param int|null $limiteUsuarios
-     *
-     * @return AdminEmpresa
-     */
-    public function setLimiteUsuarios($limiteUsuarios = null)
-    {
-        $this->limiteUsuarios = $limiteUsuarios;
-    
-        return $this;
-    }
-
-    /**
-     * Get limiteUsuarios.
-     *
-     * @return int|null
-     */
-    public function getLimiteUsuarios()
-    {
-        return $this->limiteUsuarios;
-    }
 }
+

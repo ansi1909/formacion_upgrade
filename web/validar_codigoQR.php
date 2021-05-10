@@ -61,23 +61,36 @@ else {
 	$url_web = substr($url, 0, $url_pos);
 	$ruta = explode("/", $url);
 
-	$sql = "select u.nombre, u.apellido,u.id as usuario_id, p.nombre as programa, p.id as id, pl.fecha_inicio as fecha_inicio, pl.fecha_fin as fecha_fin, p.horas_academicas as horas_academicas 
+	$sql = "select u.nombre, u.apellido,u.id as usuario_id, 
+			p.nombre as programa, p.id as id, pl.fecha_inicio as fecha_inicio, 
+			pl.fecha_fin as fecha_fin, p.horas_academicas as horas_academicas, 
+			c.nombre as categoria,c.id as categoria_id,c.pronombre as pronombre, c.horas as horas
 			from certi_pagina_log pl 
 			inner join admin_usuario u on (u.id=pl.usuario_id)
 			inner join certi_pagina p on (p.id=pl.pagina_id)
+			inner join certi_categoria c on(p.categoria_id = c.id)
 			where pl.id=".$ruta[4]." limit 1";
 
 	$resultado = pg_query($connect, $sql);
 
 	while($row = pg_fetch_array($resultado)) 
 	{
-		$usuario = $row["nombre"]." ".$row["apellido"];
-		$programa = $row["programa"];
-		$fecha_inicio = $row["fecha_inicio"];
-		$fecha_fin = $row["fecha_fin"];
-		$horas_academicas = $row["horas_academicas"];
-		$pagina_id = $row["id"];
-		$usuario_id = $row["usuario_id"];
+		$usuario           = $row["nombre"]." ".$row["apellido"];
+		$programa          = $row["programa"];
+		$fecha_inicio      = $row["fecha_inicio"];
+		$fecha_fin         = $row["fecha_fin"];
+		$horas_academicas  = $row["horas_academicas"];
+		$pagina_id         = $row["id"];
+		$usuario_id        = $row["usuario_id"];
+		$categoria         = $row["categoria"];
+		$pronombre         = $row["pronombre"];
+		$horas             = $row["horas"];
+		$categoria_id      = $row["categoria_id"];
+	}
+	
+	$mensaje_horas = '';
+	if($categoria_id == 1 || $categoria_id == 5){
+		$mensaje_horas = "Equivalente a: ".$horas_academicas." hrs. académicas";
 	}
 
 	//obtener estructura del programa/curso
@@ -120,7 +133,7 @@ else {
             $resul = pg_query($connect,$prueba_log);
             while($prueba_log_resul = pg_fetch_array($resul,NULL,PGSQL_ASSOC)){
               $cn_aprobadas++;
-              if($prueba["categoria"] == 2 ){
+              if($prueba["categoria"] == 2 || $prueba["categoria"] == 7 ){
               	$notas = $notas+$prueba_log_resul['nota'];
               	$cm++;
               }
@@ -128,7 +141,7 @@ else {
             }
         }
     }
-    if ($cn_pruebas >0  ) {
+    if ($notas >0  ) {
     	$promedio = $notas / $cm;
     	$promedio = round($promedio,2);
     }
@@ -168,7 +181,7 @@ else {
 	                </div>
 	                <div class="row">
 	                    <div class="col-xs-auto col-sm-auto col-md-auto col-auto col-lg-auto col-xl-auto">
-	                        <h3 class="text-cQR">Completó exitosamente el programa:</h3>
+	                        <h3 class="text-cQR">Completó &nbsp;exitosamente <?php echo '&nbsp;'.$pronombre.'&nbsp;&nbsp;'.$categoria.': '?></h3>
 	                    </div> 
 	                </div>
 	                <div class="row">
@@ -186,12 +199,12 @@ else {
 	                </div>
 	                <div class="row align-items-center justify-content-between mt-12v">
 	                    <div class="col-sm-12 col-md-12 col-12 col-lg-12 col-xl-12">
-	                        <span class="text-cQR">Equivalente a: <?php echo $horas_academicas ?> hrs. académicas</span>
+							<span class="text-cQR"><?php echo $mensaje_horas  ?> </span>
 	                    </div> 
 					</div>
 					<div class="row align-items-center justify-content-between mt-12v">
 	                    <div class="col-sm-12 col-md-12 col-12 col-lg-12 col-xl-12">
-	                    	<?php if ($promedio != 0) { ?>
+	                    	<?php if ($promedio && $promedio > 0) { ?>
 	                        <span class="text-cQR">Promedio de nota: <?php echo $promedio ?></span>
 	                       <?php } ?>
 	                    </div> 

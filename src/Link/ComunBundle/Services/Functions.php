@@ -237,6 +237,14 @@ class Functions
   //verifica si el usuario aprobo el curso y alguna evaluacion correspondiente
   public function notasDisponibles($pagina_id,$usuario_id,$yml){
     $em = $this->em;
+    $pagina = $em->getRepository('LinkComunBundle:CertiPagina')->findOneById($pagina_id);
+    
+    if ($pagina->getCategoria()->getId() == $yml['parameters']['categoria']['curso'] || $pagina->getCategoria()->getId() == $yml['parameters']['categoria']['programa'] ){
+        $categoria = $yml['parameters']['categoria']['modulo'];
+    }elseif($pagina->getCategoria()->getId() == $yml['parameters']['categoria']['competencia']){
+        $categoria = $yml['parameters']['categoria']['recurso'];
+    }
+
     $buscar = array($pagina_id);
     $estructura = array($pagina_id);
     $cn_pruebas = 0;
@@ -244,7 +252,7 @@ class Functions
     //obtener estructura del programa
     while ($buscar!=NULL) {
       $pag_id = array_pop($buscar);
-      $paginas = $em->getRepository('LinkComunBundle:CertiPagina')->findBy(array('pagina'=>$pag_id,'estatusContenido'=>$yml['parameters']['estatus_contenido']['activo'],'categoria'=>$yml['parameters']['categoria']['modulo']));
+      $paginas = $em->getRepository('LinkComunBundle:CertiPagina')->findBy(array('pagina'=>$pag_id,'estatusContenido'=>$yml['parameters']['estatus_contenido']['activo'],'categoria'=>$categoria));
       foreach ($paginas as $pagina) {
         array_push($buscar,$pagina->getId());
         array_push($estructura,$pagina->getId());
@@ -2250,6 +2258,7 @@ public function obtenerEstructuraJson($pagina_id){
                                   $query->execute();
                                   $gc = $query->fetchAll();
                                   $paginas = json_decode($gc[0]['resultado'],true);
+                                  
 
                                     if (!$paginas)  //validamos que la empresa tenga paginas activas
                                     {
@@ -3950,7 +3959,7 @@ public function obtenerEstructuraJson($pagina_id){
       $paginas = null;
       $em = $this->em;
       $ids = array();
-      //$activo = $yml['parameters']['estatus_contenido']['activo'];
+      
       $categoria = $yml['parameters']['categoria']['modulo'];
 
       $query = $em->createQuery('SELECT p FROM LinkComunBundle:CertiPagina p
@@ -3959,7 +3968,7 @@ public function obtenerEstructuraJson($pagina_id){
                 ->setParameters(['pagina_id'=> $pagina_id]);
       $modulos = $query->getResult();
 
-      if ($categoria_id == $yml['parameters']['categoria']['modulo']) {
+      if ($categoria_id == $yml['parameters']['categoria']['modulo'] || $yml['parameters']['categoria']['competencia']) {
         $paginas = $modulos;
       }elseif ($categoria_id == $yml['parameters']['categoria']['materia'] || $categoria_id == $yml['parameters']['categoria']['leccion'] ) {
         foreach ($modulos as $modulo) {
