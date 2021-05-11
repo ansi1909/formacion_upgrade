@@ -3670,6 +3670,15 @@ p.up {
   }
 }
 
+.ranking_categories {
+  background: #fff;
+  max-width: 40rem;
+  margin: 0 auto;
+  border: 1px solid #e0e0e0;
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+  border: 1px solid #e0e0e0;
+}
 .card-table {
   position: relative;
   width: 100%;
@@ -3684,8 +3693,11 @@ p.up {
   margin: 2rem auto;
   text-align: center;
   border-radius: 1rem;
+  border-top-left-radius: 0;
+  border-top-right-radius: 0;
   box-shadow: 0px 16px 32px -24px rgba(92, 98, 102, 0.32), 0px 24px 43px -9px rgba(92, 98, 102, 0.19);
   border: 1px solid #e0e0e0;
+  border-top: none;
   overflow-y: hidden;
 }
 .card-table .card_header {
@@ -5509,13 +5521,15 @@ p.up {
 
 /*NOTIFICACIONES DEL RANKING*/
 .notification-ranking {
+  padding-left: 7rem;
   overflow: hidden;
+  background-color: #cfe65c;
 }
 .notification-ranking__image {
   margin-right: 0.3rem;
   position: absolute;
   left: -3rem;
-  filter: grayscale(0.4);
+  filter: drop-shadow(2px 4px 6px rgba(0, 0, 0, 0.2));
 }
 .notification-ranking__text {
   position: relative;
@@ -5523,7 +5537,6 @@ p.up {
   padding: 0.3rem;
   border-radius: 9px;
   font-weight: 500;
-  background-color: rgba(255, 255, 255, 0.8);
 }
 
 .titulo_faqs {

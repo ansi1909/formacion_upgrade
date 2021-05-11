@@ -407,6 +407,24 @@
 }
 
 //Card Ranking
+
+//Card Ranking Header
+
+.ranking_categories {
+    background: #fff;
+    max-width: 40rem;
+    margin: 0 auto;
+    border: 1px solid #e0e0e0;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+    border: 1px solid #e0e0e0;
+
+    &__category {
+
+    }
+}
+
+//Card Ranking Body
 .card-table{
     position: relative;
     width: 100%;
@@ -421,8 +439,11 @@
     margin: 2rem auto;
     text-align: center;
     border-radius: 1rem;
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
     box-shadow: 0px 16px 32px -24px rgb(92 98 102 / 32%), 0px 24px 43px -9px rgb(92 98 102 / 19%);
     border: 1px solid #e0e0e0;
+    border-top: none;
     overflow-y: hidden;
     .card_header{
         padding: 3rem 0 1rem 0;
