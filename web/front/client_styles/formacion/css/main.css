@@ -3679,6 +3679,15 @@ p.up {
   border-top-right-radius: 10px;
   border: 1px solid #e0e0e0;
 }
+.ranking_categories__category {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.ranking_categories__category--current img {
+  width: 4.2rem;
+}
+
 .card-table {
   position: relative;
   width: 100%;
