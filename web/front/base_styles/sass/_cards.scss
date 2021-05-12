@@ -420,7 +420,14 @@
     border: 1px solid #e0e0e0;
 
     &__category {
-
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        &--current {
+            img {
+                width: 4.2rem;
+            }
+        }
     }
 }
 
