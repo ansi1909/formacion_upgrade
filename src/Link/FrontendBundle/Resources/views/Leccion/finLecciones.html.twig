@@ -2,6 +2,7 @@
 
 {% block stylesheets %}
     {{ parent() }}
+   
     <style>
         .menu{
             width: 60%;
@@ -107,23 +108,39 @@
                 </div>
             </div>
         {% else %}
-            {% if certificado %}
-                <div class="row align-items-center justify-content-center">
-                    <ul class="panelBtn d-flex px-0">
-                        <li class="seccBtn aling-certficados d-flex flex-column justify-content-start my-3 mx-5">
-                            <a href="{{ path('_generarCertificado', { 'programa_id': programa.id }) }}" target="_blank">
-                                <button class="btn btnC text-center" {#data-toggle="tooltip"#} data-placement="bottom" title="{{ 'Imprimir certificado'|trans }}">
-                                    <img src="{{ asset('front/assets/img/certificado.svg') }}" alt="" class="certi">
-                                </button>
-                            </a>
-                            <span class="aling-certficados text-certificados mt-3 text-center">
-                                {{ 'Imprimir certificado'|trans }}
-                            </span>
-                        </li>
-                    </ul>
-                </div>
-            {% endif %}
-        {% endif %}
+           
+                    <div class="row align-items-center justify-content-center">
+                     {% if certificado  %}
+                        <ul class="panelBtn d-flex px-0">
+                            <li class="seccBtn aling-certficados d-flex flex-column justify-content-start my-3 mx-5">
+                                <a href="{{ path('_generarCertificado', { 'programa_id': programa.id }) }}" target="_blank">
+                                    <button class="btn btnC text-center" {#data-toggle="tooltip"#} data-placement="bottom" title="{{ 'Imprimir certificado'|trans }}">
+                                        <img src="{{ asset('front/assets/img/certificado.svg') }}" alt="" class="certi">
+                                    </button>
+                                </a>
+                                <span class="aling-certficados text-certificados mt-3 text-center">
+                                    {{ 'Imprimir certificado'|trans }}
+                                </span>
+                            </li>
+                        </ul>
+                    {% endif %}
+                     {% if notas  %}
+                        <ul  class="panelBtn d-flex px-0">
+                            <li class="seccBtn aling-certficados d-flex flex-column justify-content-start my-3 mx-5">
+                                <a href="{{ path('_generarNotas', { 'programa_id': programa.id }) }}" target="_blank">
+                                    <button class="btn btnC text-center" {#data-toggle="tooltip"#} data-placement="bottom" title="{{ 'Imprimir constancia de notas'|trans }}">
+                                        <img src="{{ asset('front/assets/img/certi_notas.svg') }}" alt="" class="notas">
+                                    </button>
+                                </a>
+                                <span class="aling-certficados text-certificados mt-3 text-center">
+                                    {{ 'Imprimir constancia de notas'|trans }}
+                                </span>
+                            </li>
+                        </ul>
+                     {% endif %}
+                    </div>
+           
+         {% endif %}
     </section>
     
     <section class="s2_fin-materia">
