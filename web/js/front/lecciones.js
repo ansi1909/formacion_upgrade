@@ -89,12 +89,19 @@ $(document).ready(function() {
 		button.hide();
 		$('.before_lesson').hide();
 		$('#wait').show();
+
 		var str = button.attr('data');
 		var arr = str.split('-');
 		var programa_id = arr[0];
 		var subpagina_id = arr[1];
 		var step = arr[2];
 		var last = arr[3];
+		if ($('#categoria_padre').val() == $('#competencia_parametros').val()){
+			console.log('Agregando clases');
+			button.addClass("btnAp");
+			button.addClass("black-text");
+			button.html('Terminado');
+		}
 		if (last == 1 )
 		{
 			   var faltante = 0;
