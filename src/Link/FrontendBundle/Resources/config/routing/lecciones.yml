@@ -12,6 +12,12 @@ _ajaxIniciarPagina:
     requirements:
         _method: POST
 
+_ajaxRecursosFaltantes:
+    path:     /ajaxRecursosFaltantes
+    defaults: { _controller: LinkFrontendBundle:Leccion:ajaxRecursosFaltantes }
+    requirements:
+        _method: POST
+
 _ajaxProcesarPagina:
     path:     /ajaxProcesarPagina
     defaults: { _controller: LinkFrontendBundle:Leccion:ajaxProcesarPagina }

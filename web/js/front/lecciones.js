@@ -84,7 +84,6 @@ $(document).ready(function() {
 	{
 		nextPage(subpagina_id);
 	}
-
 	$('.next_lesson').click(function(){
 		var button = $(this);
 		button.hide();
@@ -96,52 +95,70 @@ $(document).ready(function() {
 		var subpagina_id = arr[1];
 		var step = arr[2];
 		var last = arr[3];
-		if (last == 1)
+		if (last == 1 )
 		{
+			   var faltante = 0;
+			   var pagina_faltante = 0;	
 			// Es la última lección. Se determina qué lección falta por ver antes de finalizar.
-			var faltante = 0;
-			var pagina_faltante = 0;
-			$('.circle-nav').each(function(index){
-				var nav_a = $(this);
-				var class_str = nav_a.attr('class');
-				if ((class_str.indexOf('circle-less-vista') == -1) && (class_str.indexOf('circle-less-viendo') == -1))
-				{
-					if (faltante == 0)
-					{
-						pagina_faltante = nav_a.attr('data');
-					}
+				if ($('#categoria_padre').val() != $('#competencia_parametros').val()){
+					//Si la categoria padre no es una competencia
+					$('.circle-nav').each(function(index){
+						var nav_a = $(this);
+						var class_str = nav_a.attr('class');
+						if ((class_str.indexOf('circle-less-vista') == -1) && (class_str.indexOf('circle-less-viendo') == -1))
+						{
+							if (faltante == 0)
+							{
+								pagina_faltante = nav_a.attr('data');
+							}
+							faltante = 1;
+						}
+					});
+				}else{
+					pagina_faltante = recursosFaltantes(programa_id);
 					faltante = 1;
 				}
-			});
-			if (faltante == 1)
-			{
-				// Nos vamos al primer tab faltante
-				$('#wait').hide();
-				$('.btn-primary').show();
-				$('.before_lesson').show();
-				nextPage(pagina_faltante);
-			}
-			else {
-				// Se finaliza esta última lección y se redirige a la pantalla de final
-				finishLesson(programa_id, subpagina_id);
+				
+				
+				if (faltante == 1)
+				{
+					console.log('Detecto que falta una pagina, y es: '+pagina_faltante);
+					// Nos vamos al primer tab faltante
+					$('#wait').hide();
+					$('.btn-primary').show();
+					$('.before_lesson').show();
+					nextPage(pagina_faltante);
+				}
+				else {
+					// Se finaliza esta última lección y se redirige a la pantalla de final
+					finishLesson(programa_id, subpagina_id);
+					setTimeout(function() {
+						// Esperar a que responda el servidor
+						window.location.replace($('#url_fin').val()+'/'+$('#puntos_agregados').val());
+					}, 3000);
+				}
+		}
+		else {
+			if($('#ultimo_recurso').val() == 1){
+				finishLesson(programa_id,subpagina_id);
 				setTimeout(function() {
 					// Esperar a que responda el servidor
 					window.location.replace($('#url_fin').val()+'/'+$('#puntos_agregados').val());
-			    }, 3000);
+				}, 3000);
 			}
-		}
-		else {
-			// Continuar a la siguiente lección
-			$('.tab-'+step).addClass('circle-less-vista');
-			step = parseInt(step)+parseInt(1);
-			var id_str = $('.tab-'+step).attr('id');
-			if (id_str != 'one-tab')
-			{
-				$('#wait').hide();
-				$('.btn-primary').show();
-				$('.before_lesson').show();
-				id_arr = id_str.split('-');
-				nextPage(id_arr[1]);
+			else{
+				// Continuar a la siguiente lección
+				$('.tab-'+step).addClass('circle-less-vista');
+				step = parseInt(step)+parseInt(1);
+				var id_str = $('.tab-'+step).attr('id');
+				if (id_str != 'one-tab')
+				{
+					$('#wait').hide();
+					$('.btn-primary').show();
+					$('.before_lesson').show();
+					id_arr = id_str.split('-');
+					nextPage(id_arr[1]);
+				}
 			}
 		}
 	});
@@ -271,6 +288,28 @@ function nextPage(pagina_id)
 
 }
 
+
+function recursosFaltantes(programa_id){
+	var recurso_id = 0;
+		$.ajax({
+			type: "POST",
+			url: $('#url_recursos_faltantes').val(),
+			async: false,
+			data: { programa_id: programa_id },
+			dataType: "json",
+			success: function(data) {
+				console.log(data);
+				recurso_id = data.recurso_id;
+			},
+			error: function(){
+				console.log('Error consultando recursos faltantes'); // Hay que implementar los mensajes de error para el frontend
+			}
+		});
+
+	return recurso_id;
+}
+
+
 function startLesson(programa_id, pagina_id)
 {
 	$.ajax({
@@ -280,6 +319,10 @@ function startLesson(programa_id, pagina_id)
 		data: { programa_id: programa_id, pagina_id: pagina_id },
 		dataType: "json",
 		success: function(data) {
+			$('#pagina_id_viendo').val(pagina_id);
+			if (data.ultimo_recurso >= 0 ){
+				$('#ultimo_recurso').val(data.ultimo_recurso);
+			}
 			
 			document.getElementById('verComent').innerHTML= $('#ver_comentarios').val()+' ( '+data.comentarios+' )';
 		},
@@ -299,7 +342,6 @@ function finishLesson(programa_id, pagina_id)
 		data: { programa_id: programa_id, pagina_id: pagina_id },
 		dataType: "json",
 		success: function(data) {
-			
 			// Se van sumando los puntos obtenidos en la lección
 			var str = data.id;
 			var log_puntos = str.split('_');
