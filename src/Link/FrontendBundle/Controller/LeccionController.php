@@ -126,7 +126,7 @@ class LeccionController extends Controller
         }
 
         $lecciones = $f->contenidoLecciones($indexedPages[$pagina_id], $wizard, $session->get('usuario')['id'], $yml, $session->get('empresa')['id']);
-        //print_r($lecciones);die();
+        
         $lecciones['wizard'] = $wizard;
 
         
@@ -135,7 +135,7 @@ class LeccionController extends Controller
       
         $totalComentarios = $this->getDoctrine()->getRepository('LinkComunBundle:CertiMuro')->findBy(array('pagina'=>$id_pagina_log,'empresa'=>$session->get('empresa')['id']));
         $totalComentarios = count($totalComentarios);
-        //print_r($lecciones);die();
+        
         return $this->render('LinkFrontendBundle:Leccion:index.html.twig', array('programa' => $programa,
                                                                                  'subpagina_id' => $subpagina_id,
                                                                                  'lecciones' => $lecciones,
@@ -144,7 +144,9 @@ class LeccionController extends Controller
                                                                                  'wizard' => $wizard,
                                                                                  'puntos' => $puntos,
                                                                                  'comentarios'=> $totalComentarios,
-                                                                                 'boton_continuar'=> $boton_continuar));
+                                                                                 'boton_continuar'=> $boton_continuar,
+                                                                                 'competencia_parametros' => $yml['parameters']['categoria']['competencia']
+                                                                                ));
 
     }
 
@@ -159,12 +161,40 @@ class LeccionController extends Controller
         $pagina_id = $request->request->get('pagina_id');
         $empresa_id = $session->get('empresa')['id'];
         $comentarios = $this->getDoctrine()->getRepository('LinkComunBundle:CertiMuro')->findBy(array('pagina'=>$pagina_id,'empresa'=>$empresa_id));
-        
+        $programa = $this->getDoctrine()->getRepository('LinkComunBundle:CertiPagina')->find($programa_id);
+
+        $ultima = -1;
+        if ($programa->getCategoria()->getId() == $yml['parameters']['categoria']['competencia']){
+            $recursos = $this->getDoctrine()->getRepository('LinkComunBundle:CertiPagina')->findByPagina($programa_id);
+            $ultima = 0;
+            $culminados = 0;
+            foreach($recursos as $recurso){
+                $log = $this->getDoctrine()->getRepository('LinkComunBundle:CertiPaginaLog')->findOneBy(['pagina'=>$recurso->getId(),'usuario'=>$session->get('usuario')['id']]);
+                if($log){
+                    if($log->getEstatusPagina()->getId() == $yml['parameters']['estatus_pagina']['completada']){
+                        $culminados += 1;
+                    }
+                }
+                
+            }
+            if($culminados == count($recursos) - 1){
+                $log = $this->getDoctrine()->getRepository('LinkComunBundle:CertiPaginaLog')->findOneBy(['pagina'=>$pagina_id,'usuario'=>$session->get('usuario')['id']]);
+                if($log){
+                    if($log->getEstatusPagina()->getId() != $yml['parameters']['estatus_pagina']['completada'] ){
+                        $ultima = 1;
+                    }
+                }else{
+                    $ultima = 1;
+                }
+                
+            }
+        }
+
         // Indexado de páginas descomponiendo estructuras de páginas cada uno en su arreglo
         $indexedPages = $f->indexPages($session->get('paginas')[$programa_id]);
 
         // También se anexa a la indexación el programa padre
-        $programa = $this->getDoctrine()->getRepository('LinkComunBundle:CertiPagina')->find($programa_id);
+       
         $pagina = $session->get('paginas')[$programa_id];
         $pagina['padre'] = 0;
         $pagina['sobrinos'] = 0;
@@ -178,7 +208,47 @@ class LeccionController extends Controller
 
         $logs = $f->startLesson($indexedPages, $pagina_id, $session->get('usuario')['id'], $yml['parameters']['estatus_pagina']['iniciada']);
 
-        $return = array('logs' => $logs,'comentarios'=>count($comentarios));
+        $return = array('logs' => $logs,'comentarios'=>count($comentarios),'ultimo_recurso'=>$ultima);
+
+        $return = json_encode($return);
+        return new Response($return, 200, array('Content-Type' => 'application/json'));
+
+    }
+
+    public function ajaxRecursosFaltantesAction(Request $request)
+    {
+        
+        $session = new Session();
+        $em = $this->getDoctrine()->getManager();
+        $yml = Yaml::parse(file_get_contents($this->get('kernel')->getRootDir().'/config/parametros.yml'));
+        $programa_id = $request->request->get('programa_id');
+
+        $query = $em->createQuery('SELECT p FROM LinkComunBundle:CertiPagina p
+                                    WHERE p.pagina = :programa
+                                    AND p.estatusContenido = :activo
+                                    ORDER BY p.orden ASC')
+                    ->setParameters(array('programa' => $programa_id, 'activo'=>$yml['parameters']['estatus_contenido']['activo']));
+        $recursos = $query->getResult();
+        
+        $consulta = true;
+        $recurso_id = 0;
+        $i = 0;
+        while ($consulta && $i < count($recursos)){
+            $log = $this->getDoctrine()->getRepository('LinkComunBundle:CertiPaginaLog')->findOneBy(['pagina'=>$recursos[0]->getId(),'usuario'=>$session->get('usuario')['id']]);
+            if($log){
+                if($log->getEstatusPagina()->getId() != $yml['parameters']['estatus_pagina']['completada']){
+                    $consulta = false;
+                    $recurso_id = $recursos[0]->getId();
+                }
+            }else{
+                $consulta = false;
+                $recurso_id = $recursos[0]->getId();
+            }
+            $i+=1;
+        }
+        
+
+        $return = array('recurso_id' => 5121);
 
         $return = json_encode($return);
         return new Response($return, 200, array('Content-Type' => 'application/json'));
@@ -262,7 +332,8 @@ class LeccionController extends Controller
 
         // Determinar siguiente lección a ver
         $continue_button = $f->nextLesson($indexedPages, $subpagina_id, $session->get('usuario')['id'], $session->get('empresa')['id'], $yml, $programa_id);
-
+        
+        
         if ($continue_button['evaluacion'])
         {
 
@@ -276,12 +347,27 @@ class LeccionController extends Controller
         else {
             $duracion = 0;
         }
-       // print_r($indexedPages[$subpagina_id]);die();
-        $certificado = ($programa->getCategoria()->getId() == $yml['parameters']['categoria']['competencia'])? true:false;
+        //verificar si debo mostrar notas y certificado al final de la leccion
+        $log = $this->getDoctrine()->getRepository('LinkComunBundle:CertiPaginaLog')->findOneBy(['pagina'=> $programa_id,'usuario'=>$session->get('usuario')['id']]);
+        $certificado = 0;
+        $notas = 0;
+        if($log->getEstatusPagina()->getId() == $yml['parameters']['estatus_pagina']['completada'] && $programa->getCategoria()->getId() == $yml['parameters']['categoria']['competencia']){
+            $fecha_fin = new \DateTime($log->getFechaFin()->format('Y-m-d H:i:s'));
+            $fecha_fin = strtotime ( '+15 second' , strtotime ($fecha_fin->format('Y-m-d H:i:s'))) ; 
+            $fecha_actual = strtotime(date('Y-m-d H:i:s'));
+            if ($fecha_actual < $fecha_fin){
+                $certificado = 1;
+                //comprobar si tiene notas disponibles 
+                $notas = $f->notasDisponibles($log->getPagina()->getId(),$session->get('usuario')['id'],$yml);
+            }
+
+
+        }
 
         return $this->render('LinkFrontendBundle:Leccion:finLecciones.html.twig', array('programa' => $programa,
                                                                                         'subpagina' => $indexedPages[$subpagina_id],
                                                                                         'certificado' => $certificado,
+                                                                                        'notas' => $notas,
                                                                                         'continue_button' => $continue_button,
                                                                                         'puntos' => $puntos,
                                                                                         'duracion' => $duracion));

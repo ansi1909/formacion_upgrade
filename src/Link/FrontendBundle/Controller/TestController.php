@@ -769,7 +769,15 @@ class TestController extends Controller
             $continue_button = $f->nextLesson($indexedPages, $prueba_log->getPrueba()->getPagina()->getId(), $session->get('usuario')['id'], $session->get('empresa')['id'], $yml, $programa_id);
 
         }
-
+        $aprobo_competencia = 0;
+        $logPrograma =   $this->getDoctrine()->getRepository('LinkComunBundle:CertiPaginaLog')->findOneBy(['pagina'=> $programa_id, 'usuario'=> $session->get('usuario')['id']]);
+        if($logPrograma){
+            if($logPrograma->getEstatusPagina()->getId() == $yml['parameters']['estatus_pagina']['completada']){
+                $aprobo_competencia = 1;
+            }
+        }
+        
+        
         //return new Response(var_dump($continue_button));
 
         return $this->render('LinkFrontendBundle:Test:resultados.html.twig', array('prueba_log' => $prueba_log,
@@ -778,7 +786,9 @@ class TestController extends Controller
                                                                                    'try_button' => $try_button,
                                                                                    'continue_button' => $continue_button,
                                                                                    'estados' => $yml['parameters']['estado_prueba'],
-                                                                                   'puntos' => $puntos));
+                                                                                   'puntos' => $puntos,
+                                                                                   'competencia_parametros' => $yml['parameters']['categoria']['competencia'],
+                                                                                   'aprobo_competencia' => $aprobo_competencia ));
 
     }
 

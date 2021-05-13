@@ -106,7 +106,7 @@
                             <h2 class="titulo-resul">¡{{ 'FELICITACIONES'|trans }}!</h2>
                             <h3>{{ 'Has aprobado con éxito la evaluación'|trans }}</h3>
                         </div>
-                        {% if not try_button and continue_button.evaluacion == 0 and continue_button.next_lesson == 0 %}
+                        {% if (not try_button and continue_button.evaluacion == 0 and continue_button.next_lesson == 0) or (programa.categoria.id == competencia_parametros and aprobo_competencia  ) %}
                             <ul class="panelBtn d-flex px-0">
                                 <li class="seccBtn aling-certficados d-flex flex-column justify-content-start my-3 mx-5">
                                     <a href="{{ path('_generarCertificado', { 'programa_id': programa.id }) }}" target="_blank">

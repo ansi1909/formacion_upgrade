@@ -2800,7 +2800,6 @@ public function obtenerEstructuraJson($pagina_id){
   {
 
     $em = $this->em;
-
     $next_lesson = 0;
     $evaluacion = 0;
     $duracion = 0;
