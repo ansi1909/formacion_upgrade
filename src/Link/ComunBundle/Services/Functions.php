@@ -1465,6 +1465,23 @@ public function obtenerEstructuraJson($pagina_id){
 
   }
 
+
+  //Verifica si la pagina fue vista 
+  public function paginaVista($pagina_id,$yml,$usuario_id){
+      $em = $this->em;
+      $query = $em->createQuery('SELECT COUNT(pl.id) FROM LinkComunBundle:CertiPaginaLog pl
+      WHERE pl.pagina = :pagina_id
+      AND pl.usuario = :usuario_id
+      AND pl.estatusPagina IN (:vista)')
+      ->setParameters(array('pagina_id' => $pagina_id,
+        'usuario_id' => $usuario_id,
+              'vista' => array($yml['parameters']['estatus_pagina']['completada'], $yml['parameters']['estatus_pagina']['en_evaluacion'])));
+      $vista = $query->getSingleScalarResult();
+
+      return $vista;
+  }
+
+  
   // Retorna un arreglo con toda la información de la lecciones de una página, con su muro.
   public function contenidoLecciones($pagina_arr, $wizard, $usuario_id, $yml, $empresa_id)
   {
@@ -1473,13 +1490,16 @@ public function obtenerEstructuraJson($pagina_id){
     $lecciones = array();
 
     $pagina = $em->getRepository('LinkComunBundle:CertiPagina')->find($pagina_arr['id']);
-
     $lecciones = $pagina_arr;
     $lecciones['descripcion'] = $pagina->getDescripcion();
     $lecciones['contenido'] = $pagina->getContenido();
     $lecciones['foto'] = $pagina->getFoto();
     $lecciones['pdf'] = $pagina->getPdf();
     $lecciones['next_subpage'] = 0;
+    if($pagina->getCategoria()->getId() == $yml['parameters']['categoria']['recurso']){
+      $lecciones['vista'] = $this->paginaVista($pagina->getId(),$yml,$usuario_id);
+    }
+ 
     $bloqueada = 0;
     if ($pagina_arr['prelacion'])
     {
@@ -1501,19 +1521,18 @@ public function obtenerEstructuraJson($pagina_id){
     $muros_valorados = $this->muroPaginaValorados($pagina_arr['id'], 0, 5, $usuario_id, $empresa_id, $yml['parameters']['social']);
     $lecciones['muros_recientes'] = $muros_recientes;
     $lecciones['muros_valorados'] = $muros_valorados;
-
     $sublecciones = array();
     $i = 0;
         foreach ($pagina_arr['subpaginas'] as $subpagina_arr)
     {
-
+      
       if (!$wizard && $i==0 && $subpagina_arr['acceso'])
       {
         // Al terminar la lectura del contenido, el botón "Siguiente" se debe redireccionar al primer hijo con acceso
         $lecciones['next_subpage'] = $subpagina_arr['id'];
         $i++;
       }
-
+      
       $subpagina = $em->getRepository('LinkComunBundle:CertiPagina')->find($subpagina_arr['id']);
       $subleccion = $subpagina_arr;
       $subleccion['descripcion'] = $subpagina->getDescripcion();
@@ -1521,6 +1540,10 @@ public function obtenerEstructuraJson($pagina_id){
       $subleccion['foto'] = $subpagina->getFoto();
       $subleccion['pdf'] = $subpagina->getPdf();
       $bloqueada = 0;
+      
+       // Se verifica si esta sublección ya fue vista
+       $subleccion['vista'] = $this->paginaVista($subpagina_arr['id'],$yml,$usuario_id);
+
       if ($subpagina_arr['prelacion'])
       {
         // Se determina si el contenido estará bloqueado
@@ -1536,16 +1559,7 @@ public function obtenerEstructuraJson($pagina_id){
       }
       $subleccion['bloqueada'] = $bloqueada;
 
-      // Se verifica si esta sublección ya fue vista
-      $query = $em->createQuery('SELECT COUNT(pl.id) FROM LinkComunBundle:CertiPaginaLog pl
-                                  WHERE pl.pagina = :pagina_id
-                                  AND pl.usuario = :usuario_id
-                                  AND pl.estatusPagina IN (:vista)')
-                  ->setParameters(array('pagina_id' => $subpagina_arr['id'],
-                              'usuario_id' => $usuario_id,
-                                    'vista' => array($yml['parameters']['estatus_pagina']['completada'], $yml['parameters']['estatus_pagina']['en_evaluacion'])));
-      $vista = $query->getSingleScalarResult();
-      $subleccion['vista'] = $vista;
+     
 
       $muros_recientes = $this->muroPagina($subpagina_arr['id'], 'id', 'DESC', 0, 5, $usuario_id, $empresa_id, $yml['parameters']['social']);
       $muros_valorados = $this->muroPaginaValorados($subpagina_arr['id'], 0, 5, $usuario_id, $empresa_id, $yml['parameters']['social']);
