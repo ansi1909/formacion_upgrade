@@ -15,7 +15,7 @@ class LeccionController extends Controller
 {
     public function indexAction($programa_id, $subpagina_id, $puntos, Request $request)
     {
-
+        
         $session = new Session();
         $f = $this->get('funciones');
         $yml = Yaml::parse(file_get_contents($this->get('kernel')->getRootDir().'/config/parametros.yml'));
@@ -34,6 +34,7 @@ class LeccionController extends Controller
         // También se anexa a la indexación el programa padre
         $programa = $this->getDoctrine()->getRepository('LinkComunBundle:CertiPagina')->find($programa_id);
         $boton_continuar = ($programa->getCategoria()->getId() != $yml['parameters']['categoria']['competencia'])? 'Continuar':'Terminar';
+        $boton_terminado = ($programa->getCategoria()->getId() == $yml['parameters']['categoria']['competencia'])? 'Terminado':'';
         $pagina = $session->get('paginas')[$programa_id];
         $pagina['padre'] = 0;
         $pagina['sobrinos'] = 0;
@@ -127,6 +128,7 @@ class LeccionController extends Controller
 
         $lecciones = $f->contenidoLecciones($indexedPages[$pagina_id], $wizard, $session->get('usuario')['id'], $yml, $session->get('empresa')['id']);
         
+        //print_r($lecciones);die();
         $lecciones['wizard'] = $wizard;
 
         
@@ -145,7 +147,8 @@ class LeccionController extends Controller
                                                                                  'puntos' => $puntos,
                                                                                  'comentarios'=> $totalComentarios,
                                                                                  'boton_continuar'=> $boton_continuar,
-                                                                                 'competencia_parametros' => $yml['parameters']['categoria']['competencia']
+                                                                                 'competencia_parametros' => $yml['parameters']['categoria']['competencia'],
+                                                                                 'boton_terminado'=> $boton_terminado
                                                                                 ));
 
     }
@@ -234,21 +237,22 @@ class LeccionController extends Controller
         $recurso_id = 0;
         $i = 0;
         while ($consulta && $i < count($recursos)){
-            $log = $this->getDoctrine()->getRepository('LinkComunBundle:CertiPaginaLog')->findOneBy(['pagina'=>$recursos[0]->getId(),'usuario'=>$session->get('usuario')['id']]);
+            
+            $log = $this->getDoctrine()->getRepository('LinkComunBundle:CertiPaginaLog')->findOneBy(['pagina'=>$recursos[$i]->getId(),'usuario'=>$session->get('usuario')['id']]);
             if($log){
                 if($log->getEstatusPagina()->getId() != $yml['parameters']['estatus_pagina']['completada']){
                     $consulta = false;
-                    $recurso_id = $recursos[0]->getId();
+                    $recurso_id = $recursos[$i]->getId();
                 }
             }else{
                 $consulta = false;
-                $recurso_id = $recursos[0]->getId();
+                $recurso_id = $recursos[$i]->getId();
             }
-            $i+=1;
+            $i++;
         }
         
 
-        $return = array('recurso_id' => 5121);
+        $return = array('recurso_id' => $recurso_id);
 
         $return = json_encode($return);
         return new Response($return, 200, array('Content-Type' => 'application/json'));
