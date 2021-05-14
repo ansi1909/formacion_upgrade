@@ -109,8 +109,7 @@ $(document).ready(function() {
 
 		}
 		if (last == 1 )
-		{
-			console.log('Es la ultima pagina');   
+		{ 
 			   var faltante = 0;
 			   var pagina_faltante = 0;	
 			// Es la última lección. Se determina qué lección falta por ver antes de finalizar.
@@ -139,7 +138,6 @@ $(document).ready(function() {
 				
 				if (faltante == 1)
 				{
-					console.log('Detecto que falta una pagina, y es: '+pagina_faltante);
 					// Nos vamos al primer tab faltante
 					$('#wait').hide();
 					$('.btn-primary').show();
@@ -315,7 +313,6 @@ function recursosFaltantes(programa_id){
 			data: { programa_id: programa_id },
 			dataType: "json",
 			success: function(data) {
-				console.log(data);
 				recurso_id = data.recurso_id;
 			},
 			error: function(){
