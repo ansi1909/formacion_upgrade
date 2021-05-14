@@ -156,11 +156,7 @@ bg-white
          {% endif %}
       </div>
       <nav class="container text-center">
-      {% if (lecciones.vista is defined)  and (programa.categoria.id == competencia_parametros) %}
-          <div class="btn-primary btn btnAp black-text" id="next_subpage" data-url="{{ path('_finLecciones', { 'programa_id': programa.id, 'subpagina_id': lecciones.id }) }}" data="{{ programa.id }}-{{ lecciones.id }}-{{ lecciones.next_subpage }}">{{ boton_terminado|trans }}</div>
-      {% else %}
          <div class="btn-primary btn" id="next_subpage" data-url="{{ path('_finLecciones', { 'programa_id': programa.id, 'subpagina_id': lecciones.id }) }}" data="{{ programa.id }}-{{ lecciones.id }}-{{ lecciones.next_subpage }}">{{ boton_continuar|trans }}</div>
-      {% endif %}
       </nav>
    </div>
    {% else %}

@@ -1528,6 +1528,7 @@ public function obtenerEstructuraJson($pagina_id){
       
       if (!$wizard && $i==0 && $subpagina_arr['acceso'])
       {
+        //cursos y programas
         // Al terminar la lectura del contenido, el botón "Siguiente" se debe redireccionar al primer hijo con acceso
         $lecciones['next_subpage'] = $subpagina_arr['id'];
         $i++;
