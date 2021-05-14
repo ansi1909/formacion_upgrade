@@ -62,6 +62,9 @@ class LeccionController extends Controller
         {
             if (count($indexedPages[$programa_id]['subpaginas']))
             {   
+                
+                
+                
                 $i = 0;
                 foreach ($indexedPages[$programa_id]['subpaginas'] as $subpagina_arr)
                 {
@@ -69,6 +72,7 @@ class LeccionController extends Controller
                     $subpagina = $indexedPages[$subpagina_arr['id']];
                     if ($i == 1)
                     {
+                        
                         // Solo la primera iteración. Se mostrará el primer módulo por defecto.
                         if ($subpagina['sobrinos'] > 0)
                         {
@@ -81,6 +85,7 @@ class LeccionController extends Controller
                     }
                     if ($subpagina['tiene_evaluacion'])
                     {
+                       
                         $pagina_id = $subpagina['id'];
                         $wizard = 0;
                         break;
@@ -88,12 +93,14 @@ class LeccionController extends Controller
                 }
             }
             else {
+                
                 $pagina_id = $programa_id;
             }
             $titulo = $indexedPages[$programa_id]['categoria'].': '.$indexedPages[$programa_id]['nombre'];
         }
         else {
-            if ($indexedPages[$subpagina_id]['hijos'] > 0 || $indexedPages[$subpagina_id]['sobrinos'] > 0 || $indexedPages[$subpagina_id]['tiene_evaluacion'])
+            
+            if (($indexedPages[$subpagina_id]['hijos'] > 0 || $indexedPages[$subpagina_id]['sobrinos'] > 0 || $indexedPages[$subpagina_id]['tiene_evaluacion']) && $programa->getCategoria()->getId() != $yml['parameters']['categoria']['competencia'])
             {
                 $pagina_id = $indexedPages[$subpagina_id]['id'];
                 if ($indexedPages[$indexedPages[$subpagina_id]['padre']]['padre'])
@@ -129,8 +136,6 @@ class LeccionController extends Controller
         $lecciones = $f->contenidoLecciones($indexedPages[$pagina_id], $wizard, $session->get('usuario')['id'], $yml, $session->get('empresa')['id']);
         
         //print_r($lecciones);die();
-        $lecciones['wizard'] = $wizard;
-
         
         $id_pagina_log = $wizard ? $lecciones['subpaginas'][0]['id'] : $lecciones['id'];
         $logs = $f->startLesson($indexedPages, $id_pagina_log, $session->get('usuario')['id'], $yml['parameters']['estatus_pagina']['iniciada']);

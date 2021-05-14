@@ -134,7 +134,7 @@ bg-white
    <input type="hidden" style="width: 5%;" id="muroActivo{{ lecciones.id }}" name="muroActivo{{ lecciones.id }}" value="{{ lecciones.muro_activo ? '1' : '0' }}">
    <div class="tab-pane fade show active" id="unico" role="tabpanel" aria-labelledby="one-tab">
       <div class="lesson-container container py-4 text-center j-lesson">
-         <h2>{{ lecciones.nombre }}</h2>
+         <h2>{{ lecciones.nombre }}competencia</h2>
          {% if lecciones.foto %}
          {% set img = uploads~lecciones.foto %}
          <img src="{{ img }}" alt="" class="img-fluid my-5 rounded">
@@ -156,11 +156,7 @@ bg-white
          {% endif %}
       </div>
       <nav class="container text-center">
-      {% if (lecciones.vista is defined)  and (programa.categoria.id == competencia_parametros) %}
-          <div class="btn-primary btn btnAp black-text" id="next_subpage" data-url="{{ path('_finLecciones', { 'programa_id': programa.id, 'subpagina_id': lecciones.id }) }}" data="{{ programa.id }}-{{ lecciones.id }}-{{ lecciones.next_subpage }}">{{ boton_terminado|trans }}</div>
-      {% else %}
          <div class="btn-primary btn" id="next_subpage" data-url="{{ path('_finLecciones', { 'programa_id': programa.id, 'subpagina_id': lecciones.id }) }}" data="{{ programa.id }}-{{ lecciones.id }}-{{ lecciones.next_subpage }}">{{ boton_continuar|trans }}</div>
-      {% endif %}
       </nav>
    </div>
    {% else %}
