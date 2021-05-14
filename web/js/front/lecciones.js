@@ -97,13 +97,19 @@ $(document).ready(function() {
 		var step = arr[2];
 		var last = arr[3];
 		if ($('#categoria_padre').val() == $('#competencia_parametros').val()){
-			console.log('Agregando clases');
-			button.addClass("btnAp");
-			button.addClass("black-text");
-			button.html('Terminado');
+			//Marcar el boton como terminado y colocar el check en el side bar solo para recursos de competencias
+			if(!button.hasClass("btnAp")){
+				var paginaViendo = $('#pagina_id_viendo').val();
+				var opcionMenu = document.getElementById(`m-${paginaViendo}`);
+				button.addClass("btnAp");
+				button.addClass("black-text");
+				button.html('Terminado');
+				opcionMenu.insertAdjacentHTML('afterbegin','<i class="material-icons">check_circle</i>');
+			}
+
 		}
 		if (last == 1 )
-		{
+		{ 
 			   var faltante = 0;
 			   var pagina_faltante = 0;	
 			// Es la última lección. Se determina qué lección falta por ver antes de finalizar.
@@ -123,13 +129,15 @@ $(document).ready(function() {
 					});
 				}else{
 					pagina_faltante = recursosFaltantes(programa_id);
-					faltante = 1;
+					if (pagina_faltante != $('#pagina_id_viendo').val()){
+						faltante = 1;
+					}
+					
 				}
 				
 				
 				if (faltante == 1)
 				{
-					console.log('Detecto que falta una pagina, y es: '+pagina_faltante);
 					// Nos vamos al primer tab faltante
 					$('#wait').hide();
 					$('.btn-primary').show();
@@ -305,7 +313,6 @@ function recursosFaltantes(programa_id){
 			data: { programa_id: programa_id },
 			dataType: "json",
 			success: function(data) {
-				console.log(data);
 				recurso_id = data.recurso_id;
 			},
 			error: function(){
