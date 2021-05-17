@@ -209,9 +209,8 @@ $(document).ready(function() {
 		}
 	});
 
-	$('#next_subpage').click(function(){
-		
-		$('#next_subpage').hide();
+	$('.next_subpage').click(function(){
+		$(this).hide();
 		$('#wait').show();
 		var str = $(this).attr('data');
 		var arr = str.split('-');
