@@ -156,7 +156,7 @@ bg-white
          {% endif %}
       </div>
       <nav class="container text-center">
-         <div class="btn-primary btn" id="next_subpage" data-url="{{ path('_finLecciones', { 'programa_id': programa.id, 'subpagina_id': lecciones.id }) }}" data="{{ programa.id }}-{{ lecciones.id }}-{{ lecciones.next_subpage }}">{{ boton_continuar|trans }}</div>
+         <div class="btn-primary btn next_subpage" id="next_subpage" data-url="{{ path('_finLecciones', { 'programa_id': programa.id, 'subpagina_id': lecciones.id }) }}" data="{{ programa.id }}-{{ lecciones.id }}-{{ lecciones.next_subpage }}">{{ boton_continuar|trans }}</div>
       </nav>
    </div>
    {% else %}
@@ -192,9 +192,9 @@ bg-white
          {% endif %}
          {% if subpagina.tiene_evaluacion %}
             {% if subpagina.vista %}
-               <div class="btn-primary btn  btnAp black-text" id="next_subpage" data-url="{{ path('_finLecciones', { 'programa_id': programa.id, 'subpagina_id': subpagina.id }) }}" data="{{ programa.id }}-{{ subpagina.id }}-{{ lecciones.next_subpage}}">{{ boton_terminado|trans }}</div>
+               <div class="btn-primary btn  btnAp black-text next_subpage" id="next_subpage" data-url="{{ path('_finLecciones', { 'programa_id': programa.id, 'subpagina_id': subpagina.id }) }}" data="{{ programa.id }}-{{ subpagina.id }}-{{ lecciones.next_subpage}}">{{ boton_terminado|trans }}</div>
             {% else %}
-                <div class="btn-primary btn" id="next_subpage" data-url="{{ path('_finLecciones', { 'programa_id': programa.id, 'subpagina_id': subpagina.id }) }}" data="{{ programa.id }}-{{ subpagina.id }}-{{ lecciones.next_subpage}}">{{ boton_continuar|trans }}</div>
+                <div class="btn-primary btn next_subpage" id="next_subpage" data-url="{{ path('_finLecciones', { 'programa_id': programa.id, 'subpagina_id': subpagina.id }) }}" data="{{ programa.id }}-{{ subpagina.id }}-{{ lecciones.next_subpage}}">{{ boton_continuar|trans }}</div>
             {% endif %}
          {% else %}
             {% if subpagina.vista and programa.categoria.id == competencia_parametros %}
@@ -306,6 +306,13 @@ bg-white
 
    const allImages = document.querySelectorAll('.j-lesson img');
    const allIframes = document.querySelectorAll('.j-lesson iframe'); 
+   const categoriaPadre         = document.querySelector('#categoria_padre');
+   const competenciaParametros  = document.querySelector('#competencia_parametros');
+   const tooltipVolver          = document.querySelector('#tooltip-volver');
+   
+   if (categoriaPadre.value == competenciaParametros.value ){
+      tooltipVolver.title =  "{{ 'Volver a la competencia'|trans }}"
+   }
 
    $(document).ready(function() {
       resizeImages(allImages);
