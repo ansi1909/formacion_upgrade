@@ -14,6 +14,9 @@
       width: 100%;
       max-width: 800px;
    }
+   .black-text{
+      color: #000000;
+   }
 </style>
 {% endblock %}
 {% block clbody %}
@@ -77,7 +80,7 @@ bg-white
 <input type="hidden" id="usuario_id" name="usuario_id" value="{{ app.session.get('usuario').id }}">
 <input type="hidden" id="programa_id" name="programa_id" value="{{ programa.id }}">
 <input type="hidden" id="subpagina_id" name="subpagina_id" value="{{ subpagina_id }}">
-<input type="hidden" id="pagina_id_viendo" name="pagina_id_viendo" value="{{ wizard ? lecciones.subpaginas[0].id : lecciones.id }}">
+<input type="hidden" id="pagina_id_viendo" name="pagina_id_viendo" value="">
 <input type="hidden" id="wizard" name="wizard" value="{{ wizard and lecciones.subpaginas|length > 1 ? '1' : '0' }}">
 <input type="hidden" id="url_next" name="url_next" value="{{ path('_lecciones', { 'programa_id': programa.id }) }}">
 <input type="hidden" id="url_fin" name="url_fin" value="{{ path('_finLecciones', { 'programa_id': programa.id, 'subpagina_id': lecciones.id }) }}">
@@ -90,7 +93,10 @@ bg-white
 <input type="hidden" id="puntos_agregados" name="puntos_agregados" value="{{ puntos }}">
 <input type="hidden" id="prefix" name="prefix" value="recientes">
 <input type="hidden" id="ver_comentarios" name="ver_comentarios" value="{{'Ver Comentarios' |trans}}">
-
+<input type="hidden" id="ultimo_recurso" name="ultimo_recurso" value="">
+<input type="hidden" id="competencia_parametros" name="competencia_parametros" value="{{competencia_parametros}}">
+<input type="hidden" id="categoria_padre" name="categoria_padre" value="{{ programa.categoria.id }}">
+<input type="hidden" id="url_recursos_faltantes" name="url_recursos_faltantes" value="{{ path('_ajaxRecursosFaltantes') }}">
 <div class="d-flex d-md-none flex-column text-center lesson_title_small_devices mx-auto border-bottom">
       <h4 class="my-1 color-grey" >{{ titulo }} </h4>
       <h6 class="mt-0 color-grey" >{{ subtitulo }}</h6>
@@ -150,7 +156,7 @@ bg-white
          {% endif %}
       </div>
       <nav class="container text-center">
-         <div class="btn-primary btn" id="next_subpage" data-url="{{ path('_finLecciones', { 'programa_id': programa.id, 'subpagina_id': lecciones.id }) }}" data="{{ programa.id }}-{{ lecciones.id }}-{{ lecciones.next_subpage }}">{{ boton_continuar|trans }}</div>
+         <div class="btn-primary btn next_subpage" id="next_subpage" data-url="{{ path('_finLecciones', { 'programa_id': programa.id, 'subpagina_id': lecciones.id }) }}" data="{{ programa.id }}-{{ lecciones.id }}-{{ lecciones.next_subpage }}">{{ boton_continuar|trans }}</div>
       </nav>
    </div>
    {% else %}
@@ -185,9 +191,17 @@ bg-white
          <div class="btn-warning btn before_lesson" data="{{ programa.id }}-{{ subpagina.id }}-{{ loop.index }}-{{ last }}">{{ 'Anterior'|trans }}</div>
          {% endif %}
          {% if subpagina.tiene_evaluacion %}
-            <div class="btn-primary btn" id="next_subpage" data-url="{{ path('_finLecciones', { 'programa_id': programa.id, 'subpagina_id': subpagina.id }) }}" data="{{ programa.id }}-{{ subpagina.id }}-{{ lecciones.next_subpage}}">{{ boton_continuar|trans }}</div>
+            {% if subpagina.vista %}
+               <div class="btn-primary btn  btnAp black-text next_subpage" id="next_subpage" data-url="{{ path('_finLecciones', { 'programa_id': programa.id, 'subpagina_id': subpagina.id }) }}" data="{{ programa.id }}-{{ subpagina.id }}-{{ lecciones.next_subpage}}">{{ boton_terminado|trans }}</div>
+            {% else %}
+                <div class="btn-primary btn next_subpage" id="next_subpage" data-url="{{ path('_finLecciones', { 'programa_id': programa.id, 'subpagina_id': subpagina.id }) }}" data="{{ programa.id }}-{{ subpagina.id }}-{{ lecciones.next_subpage}}">{{ boton_continuar|trans }}</div>
+            {% endif %}
          {% else %}
-            <div class="btn-primary btn next_lesson" data="{{ programa.id }}-{{ subpagina.id }}-{{ loop.index }}-{{ last }}">{{ boton_continuar|trans }}</div>
+            {% if subpagina.vista and programa.categoria.id == competencia_parametros %}
+               <div class="btn-primary btn btnAp black-text next_lesson" data="{{ programa.id }}-{{ subpagina.id }}-{{ loop.index }}-{{ last }}">{{ boton_terminado|trans }}</div>
+            {% else %}
+               <div class="btn-primary btn next_lesson" data="{{ programa.id }}-{{ subpagina.id }}-{{ loop.index }}-{{ last }}">{{ boton_continuar|trans }}</div>
+            {% endif %}
          {% endif %}
          
       </nav>
@@ -292,6 +306,13 @@ bg-white
 
    const allImages = document.querySelectorAll('.j-lesson img');
    const allIframes = document.querySelectorAll('.j-lesson iframe'); 
+   const categoriaPadre         = document.querySelector('#categoria_padre');
+   const competenciaParametros  = document.querySelector('#competencia_parametros');
+   const tooltipVolver          = document.querySelector('#tooltip-volver');
+   
+   if (categoriaPadre.value == competenciaParametros.value ){
+      tooltipVolver.title =  "{{ 'Volver a la competencia'|trans }}"
+   }
 
    $(document).ready(function() {
       resizeImages(allImages);
