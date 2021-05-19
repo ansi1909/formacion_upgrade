@@ -5535,9 +5535,10 @@ p.up {
   background-color: #cfe65c;
 }
 .notification-ranking__image {
-  margin-right: 0.3rem;
   position: absolute;
-  left: -3rem;
+  left: 1.9rem;
+  width: 4rem;
+  margin-right: 0.3rem;
   filter: drop-shadow(2px 4px 6px rgba(0, 0, 0, 0.2));
 }
 .notification-ranking__text {
