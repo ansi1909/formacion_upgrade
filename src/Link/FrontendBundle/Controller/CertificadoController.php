@@ -75,16 +75,16 @@ class CertificadoController extends Controller
 
 		            /*certificado numero 2*/
 					$comodines   = array('%%categoria%%');
-			        $reemplazos  = array($categoria->getPronombre().' '.$categoria->getNombre());
+			        $reemplazos  = array($categoria->getPronombre().' '.strtolower($categoria->getNombre()));
 			        $descripcion = str_replace($comodines, $reemplazos, $certificado->getDescripcion());
 
             		$certificado_pdf = new Html2Pdf('L','A4','es','true','UTF-8',array(0, 15, 0, 0));
 					$pagina_uno = '<page title="Certificado" pageset="new" backimg="'.$file.'" backimgw="90%" backimgx="center">
 									<div style="margin-left:910px; ">'.$ruta.'</div>
 									<div style="font-size:22px; margin-top:90px; text-align:center">'.$certificado->getEncabezado().'</div>
-									<div style="text-align:center; font-size:40px; margin-top:25px; text-transform:uppercase;">'.$session->get('usuario')['nombre'].' '.$session->get('usuario')['apellido'].'</div>
+									<div style="text-align:center; font-size:35px; margin-top:25px; text-transform:uppercase;">'.$session->get('usuario')['nombre'].' '.$session->get('usuario')['apellido'].'</div>
 									<div style="text-align:center; font-size:24px; margin-top:25px; ">'.$descripcion.'</div>
-									<div style="text-align:center; font-size:40px; margin-top:25px; text-transform:uppercase;">'.$pagina->getNombre().'</div>
+									<div style="text-align:center; font-size:35px; margin-top:25px; text-transform:uppercase;width: 1000px;height: 100px;margin-left:57px">'.$pagina->getNombre().'</div>
 									<div style="text-align:center; margin-top:40px; font-size:14px;">'.$this->get('translator')->trans('Fecha inicio').':'.$pagina_log->getFechaInicio()->format("d/m/Y").'   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'.$this->get('translator')->trans('Fecha fin').':'.$pagina_log->getFechaFin()->format("d/m/Y").' </div>';
 				    
 					if($categoria->getHoras())
