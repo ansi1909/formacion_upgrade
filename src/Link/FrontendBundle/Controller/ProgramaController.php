@@ -322,9 +322,9 @@ class ProgramaController extends Controller
         );
         $paso_actual_intro = $intro_del_usuario[0]->getPasoActual();
         $cancelar_intro = $intro_del_usuario[0]->getCancelado();
-        $texto_bienvenida = $this->get('translator')->trans('Bienvenido '.trim($categoria->getBienvenida().' '.trim($categoria->getNombre())));
+        $texto_bienvenida = $this->get('translator')->trans('Bienvenido '.trim($categoria->getBienvenida().' '.strtolower(trim($categoria->getNombre()))));
         $titulo_tarjetas = $this->get('translator')->trans(trim($categoria->getTarjetas()));
-        $texto_progreso = $this->get('translator')->trans('Tu progreso en '.trim($categoria->getPronombre()).' '.trim($categoria->getNombre()));
+        $texto_progreso = $this->get('translator')->trans('Tu progreso en '.trim($categoria->getPronombre()).' '.strtolower(trim($categoria->getNombre())));
 
         return $this->render('LinkFrontendBundle:Programa:index.html.twig', array('pagina' => $pagina,
                                                                                   'texto_bienvenida' => $texto_bienvenida,
