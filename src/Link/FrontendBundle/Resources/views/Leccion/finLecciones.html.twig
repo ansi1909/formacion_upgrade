@@ -91,7 +91,7 @@
                
                 {% set nombre_pagina = continue_button.evaluacion != 0 ? continue_button.evaluacion != subpagina.id ? continue_button.nombre_pagina : subpagina.nombre : subpagina.nombre %}
 
-                <h3>{{ 'Has completado con éxito los contenidos '~subpagina.notas~' '~subpagina.categoria}}:</h3>
+                <h3>{{ 'Has completado con éxito los contenidos '~subpagina.notas~' '~subpagina.categoria|lower}}:</h3>
                 <h3><strong>{{ nombre_pagina }}</strong>.</h3>
             </div>
         </div>
