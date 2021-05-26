@@ -1475,7 +1475,7 @@ public function obtenerEstructuraJson($pagina_id){
       AND pl.estatusPagina IN (:vista)')
       ->setParameters(array('pagina_id' => $pagina_id,
         'usuario_id' => $usuario_id,
-              'vista' => array($yml['parameters']['estatus_pagina']['completada'], $yml['parameters']['estatus_pagina']['en_evaluacion'])));
+              'vista' => array($yml['parameters']['estatus_pagina']['completada'])));
       $vista = $query->getSingleScalarResult();
 
       return $vista;
@@ -3974,7 +3974,6 @@ public function obtenerEstructuraJson($pagina_id){
       $em = $this->em;
       $ids = array();
       
-      $categoria = $yml['parameters']['categoria']['modulo'];
 
       $query = $em->createQuery('SELECT p FROM LinkComunBundle:CertiPagina p
                                  WHERE p.pagina =:pagina_id
@@ -3982,7 +3981,7 @@ public function obtenerEstructuraJson($pagina_id){
                 ->setParameters(['pagina_id'=> $pagina_id]);
       $modulos = $query->getResult();
 
-      if ($categoria_id == $yml['parameters']['categoria']['modulo'] || $yml['parameters']['categoria']['competencia']) {
+      if ($categoria_id == $yml['parameters']['categoria']['modulo'] || $categoria_id == $yml['parameters']['categoria']['recurso']) {
         $paginas = $modulos;
       }elseif ($categoria_id == $yml['parameters']['categoria']['materia'] || $categoria_id == $yml['parameters']['categoria']['leccion'] ) {
         foreach ($modulos as $modulo) {
