@@ -20,6 +20,10 @@
   margin-top: 7rem;
 }
 
+.max-w-40r {
+  max-width: 40rem;
+}
+
 .mt-12v {
   margin-top: 12vh;
 }
@@ -3672,12 +3676,12 @@ p.up {
 
 .ranking_categories {
   background: #fff;
-  max-width: 40rem;
+  max-width: 60rem;
   margin: 0 auto;
-  border: 1px solid #e0e0e0;
   border-top-left-radius: 10px;
   border-top-right-radius: 10px;
   border: 1px solid #e0e0e0;
+  border-bottom: none;
 }
 .ranking_categories__category {
   display: flex;
@@ -3691,7 +3695,7 @@ p.up {
 .card-table {
   position: relative;
   width: 100%;
-  max-width: 40rem;
+  max-width: 60rem;
   height: auto;
   display: flex;
   flex-direction: column;
@@ -3720,6 +3724,25 @@ p.up {
   font-weight: 500;
   line-height: calc(2rem - 4px);
   text-align: center;
+}
+.card-table .card_body .ranking_members_list__member.my_user img {
+  width: 6rem;
+}
+.card-table .card_body .ranking_members_list__member img {
+  width: 4rem;
+  border-radius: 50%;
+}
+.card-table .card_body .ranking_members_list__member p {
+  font-size: 0.9rem;
+  max-width: 10rem;
+}
+
+.ranking_members_amount {
+  font-size: 1rem;
+}
+.ranking_members_amount span {
+  font-size: 1.5rem;
+  color: #5CAEE6;
 }
 
 .card-datos {
@@ -5515,6 +5538,7 @@ p.up {
   top: 5rem;
   right: 0.7rem;
   z-index: 9999;
+  max-width: 90vw;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -5528,11 +5552,34 @@ p.up {
   outline: none;
 }
 
-/*NOTIFICACIONES DEL RANKING*/
+/*NOTIFICACIONES*/
 .notification-ranking {
   padding-left: 7rem;
   overflow: hidden;
-  background-color: #cfe65c;
+  background-color: #DFE9F8;
+}
+.notification-ranking .stickerNotify {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 3rem;
+  width: 3rem;
+  margin: 0 1rem 0 0;
+  border-radius: 50rem;
+  box-shadow: 1px 1px 5px rgba(58, 58, 58, 0.5);
+}
+.notification-ranking .stickerNotify.anunSticker {
+  background: #ef6e62;
+}
+.notification-ranking .stickerNotify.rankingSticker {
+  background: #B0A4CB;
+}
+.notification-ranking .stickerNotify .icNotify {
+  margin: 0 auto;
+  position: relative;
+  top: 0;
+  color: #212529;
+  font-size: calc(1.2rem + 8px);
 }
 .notification-ranking__image {
   position: absolute;
@@ -5547,6 +5594,7 @@ p.up {
   padding: 0.3rem;
   border-radius: 9px;
   font-weight: 500;
+  color: #5c6266;
 }
 
 .titulo_faqs {
