@@ -4062,3 +4062,4 @@ public function obtenerEstructuraJson($pagina_id){
       }
       return $_SERVER['REMOTE_ADDR'];
 }
+}
