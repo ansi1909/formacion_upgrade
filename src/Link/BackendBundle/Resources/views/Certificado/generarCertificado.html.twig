@@ -20,10 +20,11 @@
         <div class="col-sm-16 col-md-16 col-lg-16 col-xl-16">
             <div class="card">
                 <div class="card-header"  style=" background: linear-gradient(to right, #d5ff00 0%, #A3C300 100%); ">
-                    <h5 class="card-title">{{ encabezado }}</h5>
+                    <h5 class="card-title">{{ encabezado }} </h5>
                 </div>
                 <div class="card-block">
-                    {# if not usuario_empresa #}
+                    {% if app.session.get('usuario')['empresa'] == false  %}
+
                         <label for="texto" class="col-sm-7 col-md-7 col-lg-7 offset-sm-4 offset-md-4 offset-lg-4">{{'Empresa' | trans }}</label>
                         <div class="row">
                             <div class="col-sm-7 col-md-7 col-lg-7 offset-sm-4 offset-md-4 offset-lg-4">
@@ -42,7 +43,13 @@
                             </div>
                         </div>
                         <br>
-
+                    {% else %}
+                         {% for empresa in empresas %}
+                            {% if empresa.id == empresa_select %}
+                                <input type="hidden" id="empresa_id" name="empresa_id" value="{{ empresa.id }}">
+                            {% endif %}
+                        {% endfor %}
+                    {% endif %}
                     <label for="texto" class="col-sm-7 col-md-7 col-lg-7 offset-sm-4 offset-md-4 offset-lg-4">{{'Programas' |trans}}</label>
                     <div class="row">
                         <div class="col-sm-7 col-md-7 col-lg-7 offset-sm-4 offset-md-4 offset-lg-4">

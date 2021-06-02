@@ -49,7 +49,7 @@ begin
                                         AND  u.activo = true
                                         AND ru.rol_id = 2
                                         AND n.nombre not like 'revisor%'
-                                        AND n.nombre not like 'tutor%'
+                                        AND n.nombre not like 'tutor%';
 
     activost = activost + ut;
 
