@@ -70,7 +70,7 @@
                 </div>
                 <div class="navbar-brand justify-content-center align-items-center " href="#">
                     <h2 class="titulo_eval mx-0">{{ programa.categoria.nombre }}: {{ programa.nombre }}</h2>
-                    <h5 class="sub_titulo_eval mx-0">{{ 'Evaluación'|trans }} {{ articulo }} {{ categoria }}: {{ prueba_log.prueba.pagina.nombre }}</h5>
+                    <h5 class="sub_titulo_eval mx-0">{{ 'Evaluación'|trans }} {{ articulo }} {{ categoria|lower }}: {{ prueba_log.prueba.pagina.nombre }}</h5>
                 </div>
                 <div class="countDownHMS" id="divCountD">
                     <div class="countDownC classCountD"></div>

@@ -21,6 +21,7 @@ Actividades en curso: Actividades en curso
 Actividades Recientes: Actividades Recientes
 Activo: Activo
 Activos: Activos
+Actualizando la lista de participantes conectados: Actualizando la lista de participantes conectados
 Actualizando la lista de usuarios conectados: Actualizando la lista de usuarios conectados
 Advertencia: Advertencia
 Administración: Administración
@@ -90,6 +91,9 @@ Biblioteca virtual: Biblioteca virtual
 Bienvenida: Bienvenida
 Bienvenido: Bienvenido
 Bienvenido al: Bienvenido al
+Bienvenido al curso: Bienvenido al curso
+Bienvenido al programa: Bienvenido al programa
+Bienvenido a la competencia: Bienvenido a la competencia
 Bien hecho: Bien hecho
 Buen trabajo: Buen trabajo
 Buscar: Buscar
@@ -208,6 +212,7 @@ Crear nuevo tema: Crear nuevo tema
 Curso / Programa: Curso / Programa
 Curso: Curso
 Customización: Customización
+Culminaste satisfactoriamente: Culminaste satisfactoriamente 
 Dato en nulo.: Dato en nulo.
 Datos Básicos: Datos Básicos
 Datos de la Aplicación: Datos de la Aplicación
@@ -461,6 +466,7 @@ Estimado: Estimado
 ¡Estimado participante! Envía tus comentarios o dudas sobre cualquier aspecto relacionado con los programas de certificación.: ¡Estimado participante! Envía tus comentarios o dudas sobre cualquier aspecto relacionado con los programas de certificación.
 Estimado participante, si decides salir de la evaluación en este momento, perderás las respuestas que hayas marcado hasta ahora: Estimado participante, si decides salir de la evaluación en este momento, perderás las respuestas que hayas marcado hasta ahora
 Estimado participante, si usted decide salir antes de terminar la evaluación perderá todas las respuestas que haya contestado hasta los momentos: Estimado participante, si usted decide salir antes de terminar la evaluación perderá todas las respuestas que haya contestado hasta los momentos
+Estimado participante, ha expirado el tiempo de duración de la evaluación. Se calcularán los resultados de acuerdo a las respuestas dadas hasta los momentos.: Estimado participante, ha expirado el tiempo de duración de la evaluación. Se calcularán los resultados de acuerdo a las respuestas dadas hasta los momentos.
 Estos son los resultados que has obtenido: Estos son los resultados que has obtenido
 Estructura: Estructura
 Estructura de la página: Estructura de la página
@@ -1035,6 +1041,7 @@ También puede solicitar la carga del certificado para esta página a través de
 Teléfono de contacto: Teléfono de Contacto
 Tema: Tema
 Terminar: Terminar 
+Terminado: Terminado
 Tema seleccionado: Tema seleccionado
 Tendrás: Tendrás
 Thumbnails de la plantilla: Thumbnails de la plantilla
@@ -1073,6 +1080,9 @@ Tu calificación: Tu calificación
 Tu comentario: Tu comentario
 Tu respuesta: Tu respuesta
 Tu progreso en: Tu progreso en
+Tu progreso en el curso: Tu progreso en el curso
+Tu progreso en el programa: Tu progreso en el programa
+Tu progreso en la competencia: Tu progreso en la competencia
 Tutorial: Tutorial
 Tutoriales: Tutoriales
 Última conexión: Última conexión
@@ -1122,6 +1132,7 @@ Ver Comentarios: Ver Comentarios
 Vista previa: Vista previa
 Vista previa del dashboard: Vista previa del dashboard
 Volver: Volver
+Volver a la competencia: Volver a la competencia
 Volver a biblioteca: Volver a biblioteca
 Volver a noticias: Volver a noticias
 Volver al contenido: Volver al contenido

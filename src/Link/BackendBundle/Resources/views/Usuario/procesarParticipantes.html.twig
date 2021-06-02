@@ -21,9 +21,13 @@
                 <div class="row" style="margin-bottom: 0px;">
                     <div class="col-sm-8 col-md-8 col-lg-8 offset-sm-4 offset-md-4 offset-lg-4" style="margin-bottom: 0px;">
                         <div class="alert alert-success" role="alert">
+                        {% if error %}
+                            <h4 class="alert-heading">{{ error }}</h4>
+                        {% else %}
                             <h4 class="alert-heading">{{ 'Archivo procesado con éxito'|trans }}!</h4>
                             <p>{{ 'Registros nuevos'|trans }}: <b>{{ return.inserts }} {{ 'participantes'|trans }}</b>.</p>
                             <p>{{ 'Registros actualizados'|trans }}: <b>{{ return.updates }} {{ 'participantes'|trans }}</b>.</p>
+                        {% endif %}
                         </div>
                     </div>
                 </div>

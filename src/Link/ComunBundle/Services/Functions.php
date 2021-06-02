@@ -237,6 +237,14 @@ class Functions
   //verifica si el usuario aprobo el curso y alguna evaluacion correspondiente
   public function notasDisponibles($pagina_id,$usuario_id,$yml){
     $em = $this->em;
+    $pagina = $em->getRepository('LinkComunBundle:CertiPagina')->findOneById($pagina_id);
+    
+    if ($pagina->getCategoria()->getId() == $yml['parameters']['categoria']['curso'] || $pagina->getCategoria()->getId() == $yml['parameters']['categoria']['programa'] ){
+        $categoria = $yml['parameters']['categoria']['modulo'];
+    }elseif($pagina->getCategoria()->getId() == $yml['parameters']['categoria']['competencia']){
+        $categoria = $yml['parameters']['categoria']['recurso'];
+    }
+
     $buscar = array($pagina_id);
     $estructura = array($pagina_id);
     $cn_pruebas = 0;
@@ -244,7 +252,7 @@ class Functions
     //obtener estructura del programa
     while ($buscar!=NULL) {
       $pag_id = array_pop($buscar);
-      $paginas = $em->getRepository('LinkComunBundle:CertiPagina')->findBy(array('pagina'=>$pag_id,'estatusContenido'=>$yml['parameters']['estatus_contenido']['activo'],'categoria'=>$yml['parameters']['categoria']['modulo']));
+      $paginas = $em->getRepository('LinkComunBundle:CertiPagina')->findBy(array('pagina'=>$pag_id,'estatusContenido'=>$yml['parameters']['estatus_contenido']['activo'],'categoria'=>$categoria));
       foreach ($paginas as $pagina) {
         array_push($buscar,$pagina->getId());
         array_push($estructura,$pagina->getId());
@@ -1457,6 +1465,23 @@ public function obtenerEstructuraJson($pagina_id){
 
   }
 
+
+  //Verifica si la pagina fue vista 
+  public function paginaVista($pagina_id,$yml,$usuario_id){
+      $em = $this->em;
+      $query = $em->createQuery('SELECT COUNT(pl.id) FROM LinkComunBundle:CertiPaginaLog pl
+      WHERE pl.pagina = :pagina_id
+      AND pl.usuario = :usuario_id
+      AND pl.estatusPagina IN (:vista)')
+      ->setParameters(array('pagina_id' => $pagina_id,
+        'usuario_id' => $usuario_id,
+              'vista' => array($yml['parameters']['estatus_pagina']['completada'])));
+      $vista = $query->getSingleScalarResult();
+
+      return $vista;
+  }
+
+  
   // Retorna un arreglo con toda la información de la lecciones de una página, con su muro.
   public function contenidoLecciones($pagina_arr, $wizard, $usuario_id, $yml, $empresa_id)
   {
@@ -1465,13 +1490,16 @@ public function obtenerEstructuraJson($pagina_id){
     $lecciones = array();
 
     $pagina = $em->getRepository('LinkComunBundle:CertiPagina')->find($pagina_arr['id']);
-
     $lecciones = $pagina_arr;
     $lecciones['descripcion'] = $pagina->getDescripcion();
     $lecciones['contenido'] = $pagina->getContenido();
     $lecciones['foto'] = $pagina->getFoto();
     $lecciones['pdf'] = $pagina->getPdf();
     $lecciones['next_subpage'] = 0;
+    if($pagina->getCategoria()->getId() == $yml['parameters']['categoria']['recurso']){
+      $lecciones['vista'] = $this->paginaVista($pagina->getId(),$yml,$usuario_id);
+    }
+ 
     $bloqueada = 0;
     if ($pagina_arr['prelacion'])
     {
@@ -1493,19 +1521,19 @@ public function obtenerEstructuraJson($pagina_id){
     $muros_valorados = $this->muroPaginaValorados($pagina_arr['id'], 0, 5, $usuario_id, $empresa_id, $yml['parameters']['social']);
     $lecciones['muros_recientes'] = $muros_recientes;
     $lecciones['muros_valorados'] = $muros_valorados;
-
     $sublecciones = array();
     $i = 0;
         foreach ($pagina_arr['subpaginas'] as $subpagina_arr)
     {
-
+      
       if (!$wizard && $i==0 && $subpagina_arr['acceso'])
       {
+        //cursos y programas
         // Al terminar la lectura del contenido, el botón "Siguiente" se debe redireccionar al primer hijo con acceso
         $lecciones['next_subpage'] = $subpagina_arr['id'];
         $i++;
       }
-
+      
       $subpagina = $em->getRepository('LinkComunBundle:CertiPagina')->find($subpagina_arr['id']);
       $subleccion = $subpagina_arr;
       $subleccion['descripcion'] = $subpagina->getDescripcion();
@@ -1513,6 +1541,10 @@ public function obtenerEstructuraJson($pagina_id){
       $subleccion['foto'] = $subpagina->getFoto();
       $subleccion['pdf'] = $subpagina->getPdf();
       $bloqueada = 0;
+      
+       // Se verifica si esta sublección ya fue vista
+       $subleccion['vista'] = $this->paginaVista($subpagina_arr['id'],$yml,$usuario_id);
+
       if ($subpagina_arr['prelacion'])
       {
         // Se determina si el contenido estará bloqueado
@@ -1528,16 +1560,7 @@ public function obtenerEstructuraJson($pagina_id){
       }
       $subleccion['bloqueada'] = $bloqueada;
 
-      // Se verifica si esta sublección ya fue vista
-      $query = $em->createQuery('SELECT COUNT(pl.id) FROM LinkComunBundle:CertiPaginaLog pl
-                                  WHERE pl.pagina = :pagina_id
-                                  AND pl.usuario = :usuario_id
-                                  AND pl.estatusPagina IN (:vista)')
-                  ->setParameters(array('pagina_id' => $subpagina_arr['id'],
-                              'usuario_id' => $usuario_id,
-                                    'vista' => array($yml['parameters']['estatus_pagina']['completada'], $yml['parameters']['estatus_pagina']['en_evaluacion'])));
-      $vista = $query->getSingleScalarResult();
-      $subleccion['vista'] = $vista;
+     
 
       $muros_recientes = $this->muroPagina($subpagina_arr['id'], 'id', 'DESC', 0, 5, $usuario_id, $empresa_id, $yml['parameters']['social']);
       $muros_valorados = $this->muroPaginaValorados($subpagina_arr['id'], 0, 5, $usuario_id, $empresa_id, $yml['parameters']['social']);
@@ -2250,6 +2273,7 @@ public function obtenerEstructuraJson($pagina_id){
                                   $query->execute();
                                   $gc = $query->fetchAll();
                                   $paginas = json_decode($gc[0]['resultado'],true);
+                                  
 
                                     if (!$paginas)  //validamos que la empresa tenga paginas activas
                                     {
@@ -2791,7 +2815,6 @@ public function obtenerEstructuraJson($pagina_id){
   {
 
     $em = $this->em;
-
     $next_lesson = 0;
     $evaluacion = 0;
     $duracion = 0;
@@ -3950,8 +3973,7 @@ public function obtenerEstructuraJson($pagina_id){
       $paginas = null;
       $em = $this->em;
       $ids = array();
-      //$activo = $yml['parameters']['estatus_contenido']['activo'];
-      $categoria = $yml['parameters']['categoria']['modulo'];
+      
 
       $query = $em->createQuery('SELECT p FROM LinkComunBundle:CertiPagina p
                                  WHERE p.pagina =:pagina_id
@@ -3959,7 +3981,7 @@ public function obtenerEstructuraJson($pagina_id){
                 ->setParameters(['pagina_id'=> $pagina_id]);
       $modulos = $query->getResult();
 
-      if ($categoria_id == $yml['parameters']['categoria']['modulo']) {
+      if ($categoria_id == $yml['parameters']['categoria']['modulo'] || $categoria_id == $yml['parameters']['categoria']['recurso']) {
         $paginas = $modulos;
       }elseif ($categoria_id == $yml['parameters']['categoria']['materia'] || $categoria_id == $yml['parameters']['categoria']['leccion'] ) {
         foreach ($modulos as $modulo) {
@@ -4034,11 +4056,10 @@ public function obtenerEstructuraJson($pagina_id){
       if (!empty($_SERVER['HTTP_CLIENT_IP']))
           return $_SERVER['HTTP_CLIENT_IP'];
 
-      if (!empty($_SERVER['HTTP_X_FORWARDED_FOR']))
-          return $_SERVER['HTTP_X_FORWARDED_FOR'];
-
+      if (!empty($_SERVER['HTTP_X_FORWARDED_FOR'])){
+          $aux = explode(",",$_SERVER['HTTP_X_FORWARDED_FOR']);
+          return $aux[0];
+      }
       return $_SERVER['REMOTE_ADDR'];
-    }
-
-
+}
 }

@@ -60,6 +60,11 @@
     <div class="col-sm-8 col-md-8 col-lg-8 alert alert-danger" role="alert" id="div-error" style="display:none;">
         <ul></ul>
     </div>
+    {% if limite_usuarios != ' ' %}
+        <div class="col-sm-8 col-md-8 col-lg-8 alert alert-danger" role="alert" id="limite_usuarios">
+            <ul>{{limite_usuarios}}</ul>
+        </div>
+    {% endif %}
 </div>
 <div class="row">
 	<div class="col-sm-16">
@@ -383,6 +388,16 @@
     <script type="text/javascript" src="{{ asset('assets/vendor/bootstrap-multiselect-master/dist/js/bootstrap-multiselect.js') }}"></script>
     <script type="text/javascript" src="{{ asset('js/admin/usuario.js') }}"></script>
     <script type="text/javascript">
+
+        $(document).ready(function() {
+            const errorMessage = document.getElementById('limite_usuarios');
+
+            if (errorMessage) {
+                setTimeout(() => {
+                    errorMessage.style = 'display: none;'
+                }, 10000);
+            }
+        });
         
         $('#roles').multiSelect({
             selectableHeader: "<div class='sty__title'>{{ 'Roles a seleccionar'|trans }}</div>",

@@ -49,6 +49,7 @@
 {% block body %}
 
 {% set uri = app.request.getbasepath %}
+
 <br><br>
 <input type="hidden" id="avatar" name="avatar" value="{{ asset('img/user.png') }}">
 <div class="row align-items-center justify-content-start">
@@ -58,6 +59,11 @@
     <div class="col-sm-8 col-md-8 col-lg-8 alert alert-danger" role="alert" id="div-error" style="display:none;">
         <ul></ul>
     </div>
+    {% if limite_usuarios != ' ' %}
+        <div class="col-sm-8 col-md-8 col-lg-8 alert alert-danger" role="alert" id="limite_usuarios">
+            <ul>{{limite_usuarios}}</ul>
+        </div>
+    {% endif %}
 </div>
 <div class="row">
     <div class="col-sm-16">
@@ -346,6 +352,16 @@
     <script type="text/javascript" src="{{ asset('assets/vendor/bootstrap-multiselect-master/dist/js/bootstrap-multiselect.js') }}"></script>
     <script type="text/javascript" src="{{ asset('js/admin/usuario.js') }}"></script>
     <script type="text/javascript">
+
+    $(document).ready(function() {
+        const errorMessage = document.getElementById('limite_usuarios');
+
+        if (errorMessage) {
+            setTimeout(() => {
+                errorMessage.style = 'display: none;'
+            }, 10000);
+        }
+    });
         
         $('#finish').click(function(){
             var valid = $("#form").valid();
@@ -365,11 +381,11 @@
                 var html = '';
 
                 // Validar que uno de los correos sea ingresado
-                if (correo_personal == '' && correo_corporativo == '')
+               /* if (correo_personal == '' && correo_corporativo == '')
                 {
                     valid = false;
                     html += "<li>- {{ 'Debes ingresar el correo personal o el correo corporativo'|trans }}.</li>";
-                }
+                }*/
 
                 if (!valid){
                     $('#div-error ul').html(html);

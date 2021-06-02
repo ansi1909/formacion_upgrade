@@ -105,8 +105,14 @@
                         <div class="col-12 my-3 text-center">
                             <h2 class="titulo-resul">¡{{ 'FELICITACIONES'|trans }}!</h2>
                             <h3>{{ 'Has aprobado con éxito la evaluación'|trans }}</h3>
+                             <span class="calif">{{ 'Tu calificación'|trans }}: <span class="num">{{ prueba_log.nota|round }}/100</span></span>
                         </div>
-                        {% if not try_button and continue_button.evaluacion == 0 and continue_button.next_lesson == 0 %}
+                        {% if (not try_button and continue_button.evaluacion == 0 and continue_button.next_lesson == 0) or (programa.categoria.id == competencia_parametros and aprobo_competencia  ) %}
+
+                        {# Aqui iria el texto de programa aprobado #}
+                            <div class="col-12 my-3 text-center">
+                                <h4>{{ 'Culminaste satisfactoriamente'|trans ~' '~programa.categoria.pronombre|trans~' '~programa.categoria.nombre|trim|trans|lower ~': '~programa.nombre }}</h3>
+                            </div>
                             <ul class="panelBtn d-flex px-0">
                                 <li class="seccBtn aling-certficados d-flex flex-column justify-content-start my-3 mx-5">
                                     <a href="{{ path('_generarCertificado', { 'programa_id': programa.id }) }}" target="_blank">
@@ -132,11 +138,7 @@
                             </ul>
                         {% endif %}
                     </div>
-                    <div class="row align-items-center justify-content-center">
-                        <div class="col-12 my-3 text-center">
-                            <span class="calif">{{ 'Tu calificación'|trans }}: <span class="num">{{ prueba_log.nota|round }}/100</span></span>
-                        </div>
-                    </div>
+
                     {% if not try_button %}
                         {% if continue_button.evaluacion != 0 %}
                             <div class="row align-items-center justify-content-center">

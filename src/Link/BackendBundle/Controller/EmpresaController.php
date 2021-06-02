@@ -17,6 +17,8 @@ class EmpresaController extends Controller
 
         $session = new Session();
         $f = $this->get('funciones');
+        $em = $this->getDoctrine()->getManager();
+        $yml = Yaml::parse(file_get_contents($this->get('kernel')->getRootDir().'/config/parametros.yml'));
       
         if (!$session->get('ini') || $f->sesionBloqueda($session->get('sesion_id')))
         {
@@ -38,12 +40,24 @@ class EmpresaController extends Controller
         $empresas = array();
         foreach ($empresas_db as $empresa)
         {
+            $query = $em->createQuery('SELECT COUNT(u.id) FROM LinkComunBundle:AdminRolUsuario ru
+                                        JOIN ru.usuario u
+                                        WHERE u.empresa = :empresa_id
+                                        AND  u.activo = :activo
+                                        AND ru.rol = :rol_id')
+                        ->setParameters(array('empresa_id' => $empresa->getId(),
+                                              'activo' => 'true',
+                                              'rol_id' => $yml['parameters']['rol']['participante']));
+            $usuarios_activos = $query->getSingleScalarResult();
+
             $empresas[] = array('id' => $empresa->getId(),
                                 'nombre' => $empresa->getNombre(),
                                 'pais' => $empresa->getPais(),
                                 'fechaCreacion' => $empresa->getFechaCreacion(),
                                 'activo' => $empresa->getActivo(),
-                                'delete_disabled' => $f->linkEliminar($empresa->getId(), 'AdminEmpresa'));
+                                'delete_disabled' => $f->linkEliminar($empresa->getId(), 'AdminEmpresa'),
+                                'limite_usuarios' => $empresa->getLimiteUsuarios() ? $empresa->getLimiteUsuarios() : 0,
+                                'usuarios_acceso' => $usuarios_activos);
         }
 
         return $this->render('LinkBackendBundle:Empresa:index.html.twig', array('empresas'=>$empresas));
@@ -104,6 +118,7 @@ class EmpresaController extends Controller
             $nombre = $request->request->get('nombre');
             $pais_id = $request->request->get('pais_id');
             $zona_id = $request->request->get('zona_id');
+            $limite_usuarios = $request->request->get('limite_usuarios');
             $bienvenida = $request->request->get('bienvenida');
             $activo = $request->request->get('activo');
             $activo2 = $request->request->get('activo2');
@@ -117,6 +132,7 @@ class EmpresaController extends Controller
             $empresa->setBienvenida($bienvenida);
             $empresa->setPais($pais);
             $empresa->setZonaHoraria($zona);
+            $empresa->setLimiteUsuarios($limite_usuarios ? $limite_usuarios : null);
             $em->persist($empresa);
             $em->flush();
             $f->subDirEmpresa($empresa->getId(), $this->container->getParameter('folders'));

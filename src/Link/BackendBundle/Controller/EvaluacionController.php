@@ -176,11 +176,15 @@ class EvaluacionController extends Controller
         $paginas = $query->getResult();
 
         $query = $em->createQuery("SELECT c FROM LinkComunBundle:CertiCategoria c
-                                    WHERE c.id <> 1 AND c.id <> 5
-                                    ORDER BY c.id ASC");
+                                    WHERE c.id NOT IN (:excluir)
+                                    ORDER BY c.id ASC")
+                    ->setParameter('excluir',[
+                                                 $yml['parameters']['categoria']['curso'], 
+                                                 $yml['parameters']['categoria']['programa'], 
+                                                 $yml['parameters']['categoria']['competencia'] 
+                                              ]);
         $categorias = $query->getResult();
-
-        //return new response(var_dump($form['class']));
+        
         return $this->render('LinkBackendBundle:Evaluacion:edit.html.twig', array('form' => $form->createView(),
                                                                                   'prueba' => $prueba,
                                                                                   'paginas' => $paginas,

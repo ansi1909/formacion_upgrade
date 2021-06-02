@@ -84,64 +84,96 @@ $(document).ready(function() {
 	{
 		nextPage(subpagina_id);
 	}
-
 	$('.next_lesson').click(function(){
 		var button = $(this);
 		button.hide();
 		$('.before_lesson').hide();
 		$('#wait').show();
+
 		var str = button.attr('data');
 		var arr = str.split('-');
 		var programa_id = arr[0];
 		var subpagina_id = arr[1];
 		var step = arr[2];
 		var last = arr[3];
-		if (last == 1)
-		{
-			// Es la última lección. Se determina qué lección falta por ver antes de finalizar.
-			var faltante = 0;
-			var pagina_faltante = 0;
-			$('.circle-nav').each(function(index){
-				var nav_a = $(this);
-				var class_str = nav_a.attr('class');
-				if ((class_str.indexOf('circle-less-vista') == -1) && (class_str.indexOf('circle-less-viendo') == -1))
-				{
-					if (faltante == 0)
-					{
-						pagina_faltante = nav_a.attr('data');
-					}
-					faltante = 1;
-				}
-			});
-			if (faltante == 1)
-			{
-				// Nos vamos al primer tab faltante
-				$('#wait').hide();
-				$('.btn-primary').show();
-				$('.before_lesson').show();
-				nextPage(pagina_faltante);
+		if ($('#categoria_padre').val() == $('#competencia_parametros').val()){
+			//Marcar el boton como terminado y colocar el check en el side bar solo para recursos de competencias
+			if(!button.hasClass("btnAp")){
+				var paginaViendo = $('#pagina_id_viendo').val();
+				var opcionMenu = document.getElementById(`m-${paginaViendo}`);
+				button.addClass("btnAp");
+				button.addClass("black-text");
+				button.html('Terminado');
+				opcionMenu.insertAdjacentHTML('afterbegin','<i class="material-icons">check_circle</i>');
 			}
-			else {
-				// Se finaliza esta última lección y se redirige a la pantalla de final
-				finishLesson(programa_id, subpagina_id);
+
+		}
+		if (last == 1 )
+		{ 
+			   var faltante = 0;
+			   var pagina_faltante = 0;	
+			// Es la última lección. Se determina qué lección falta por ver antes de finalizar.
+				if ($('#categoria_padre').val() != $('#competencia_parametros').val()){
+					//Si la categoria padre no es una competencia
+					$('.circle-nav').each(function(index){
+						var nav_a = $(this);
+						var class_str = nav_a.attr('class');
+						if ((class_str.indexOf('circle-less-vista') == -1) && (class_str.indexOf('circle-less-viendo') == -1))
+						{
+							if (faltante == 0)
+							{
+								pagina_faltante = nav_a.attr('data');
+							}
+							faltante = 1;
+						}
+					});
+				}else{
+					pagina_faltante = recursosFaltantes(programa_id);
+					if (pagina_faltante != $('#pagina_id_viendo').val()){
+						faltante = 1;
+					}
+					
+				}
+				
+				
+				if (faltante == 1)
+				{
+					// Nos vamos al primer tab faltante
+					$('#wait').hide();
+					$('.btn-primary').show();
+					$('.before_lesson').show();
+					nextPage(pagina_faltante);
+				}
+				else {
+					// Se finaliza esta última lección y se redirige a la pantalla de final
+					finishLesson(programa_id, subpagina_id);
+					setTimeout(function() {
+						// Esperar a que responda el servidor
+						window.location.replace($('#url_fin').val()+'/'+$('#puntos_agregados').val());
+					}, 3000);
+				}
+		}
+		else {
+			if($('#ultimo_recurso').val() == 1){
+				finishLesson(programa_id,subpagina_id);
 				setTimeout(function() {
 					// Esperar a que responda el servidor
 					window.location.replace($('#url_fin').val()+'/'+$('#puntos_agregados').val());
-			    }, 3000);
+				}, 3000);
 			}
-		}
-		else {
-			// Continuar a la siguiente lección
-			$('.tab-'+step).addClass('circle-less-vista');
-			step = parseInt(step)+parseInt(1);
-			var id_str = $('.tab-'+step).attr('id');
-			if (id_str != 'one-tab')
-			{
-				$('#wait').hide();
-				$('.btn-primary').show();
-				$('.before_lesson').show();
-				id_arr = id_str.split('-');
-				nextPage(id_arr[1]);
+			else{
+				// Continuar a la siguiente lección
+				$('.tab-'+step).addClass('circle-less-vista');
+				step = parseInt(step)+parseInt(1);
+				var id_str = $('.tab-'+step).attr('id');
+				if (id_str != 'one-tab')
+				{
+					$('#wait').hide();
+					$('.btn-primary').show();
+					$('.before_lesson').show();
+					id_arr = id_str.split('-');
+					nextPage(id_arr[1]);
+				}
 			}
 		}
 	});
@@ -177,25 +209,27 @@ $(document).ready(function() {
 		}
 	});
 
-	$('#next_subpage').click(function(){
-		
-		$('#next_subpage').hide();
+	$('.next_subpage').click(function(){
+		$(this).hide();
 		$('#wait').show();
 		var str = $(this).attr('data');
 		var arr = str.split('-');
 		var prog_id = arr[0];
 		var pagina_id = arr[1];
 		var subpag_id = arr[2];
-
+		var url_inicio = $(this).data('url');
 		finishLesson(prog_id, pagina_id);
 		setTimeout(function() {
 			// Esperar a que responda el servidor
+			
 			if (subpag_id > 0)
 			{
+				
 				window.location.replace($('#url_next').val()+'/'+subpag_id+'/'+$('#puntos_agregados').val());
 			}
 			else {
-				window.location.replace($('#url_fin').val()+'/'+$('#puntos_agregados').val());
+				
+				window.location.replace(url_inicio+'/'+$('#puntos_agregados').val());
 			}
 	    }, 3000);
 
@@ -232,7 +266,7 @@ $(document).ready(function() {
 					},
 					error: function(){
 						$('#comentario').val('');
-						console.log('Error comentando el muro'); // Hay que implementar los mensajes de error para el frontend
+						// Hay que implementar los mensajes de error para el frontend
 						$('#button-comment').show();
 
 					}
@@ -243,50 +277,6 @@ $(document).ready(function() {
 
 	$('.tab_rv').click(function(e){
 		e.preventDefault();
-		// var prefix = $('#prefix').val();
-		// var pagina_id = $('#pagina_id_viendo').val();
-		// var link_tab = $(this);
-		// var dirty = $('#dirty_'+pagina_id).val();
-		// var link_tab_id = $(this).attr('id');
-		// var link_tab_arr = link_tab_id.split('_');
-		// var last_tab = $('#mas_'+prefix+'_comments-'+pagina_id);
-		// var new_tab = $('#mas_'+link_tab_arr[1]+'_comments-'+pagina_id);
-		// if (link_tab_arr[1] != $('#prefix').val())
-		// {
-		// 	$('#mas_'+prefix).removeClass('active-line');
-		// 	$('#prefix').val(link_tab_arr[1]);
-		// 	link_tab.addClass('active-line');
-		// 	if (dirty == 1)
-		// 	{
-		// 		// Refrescar el tab
-		// 		$.ajax({
-		// 			type: "GET",
-		// 			url: $('#url_refresh').val(),
-		// 			async: false,
-		// 			data: { pagina_id: pagina_id, prefix: $('#prefix').val() },
-		// 			dataType: "json",
-		// 			success: function(data) {
-		// 				new_tab.html(data.html);
-		// 				observeMuro();
-		// 				observeLikeLecciones();
-		// 				observeMore();
-		// 				observeMoreResponses();
-		// 				last_tab.hide(1000);
-		// 				new_tab.show(1000);
-		// 				$('#dirty_'+pagina_id).val(0);
-		// 				//clearTimeout( timerId );
-		// 			},
-		// 			error: function(){
-		// 				console.log('Error refrescando el muro'); // Hay que implementar los mensajes de error para el frontend
-		// 			}
-		// 		});
-		// 	}
-		// 	else {
-		// 		// Solo mostrar lo que ya está cargado en el tab
-		// 		last_tab.hide(1000);
-		// 		new_tab.show(1000);
-		// 	}
-		// }
 	});
 
 	observeMuroLecciones();
@@ -312,6 +302,27 @@ function nextPage(pagina_id)
 
 }
 
+
+function recursosFaltantes(programa_id){
+	var recurso_id = 0;
+		$.ajax({
+			type: "POST",
+			url: $('#url_recursos_faltantes').val(),
+			async: false,
+			data: { programa_id: programa_id },
+			dataType: "json",
+			success: function(data) {
+				recurso_id = data.recurso_id;
+			},
+			error: function(){
+				console.log('Error consultando recursos faltantes'); // Hay que implementar los mensajes de error para el frontend
+			}
+		});
+
+	return recurso_id;
+}
+
+
 function startLesson(programa_id, pagina_id)
 {
 	$.ajax({
@@ -321,7 +332,11 @@ function startLesson(programa_id, pagina_id)
 		data: { programa_id: programa_id, pagina_id: pagina_id },
 		dataType: "json",
 		success: function(data) {
-			console.log('Logs iniciados:');
+			$('#pagina_id_viendo').val(pagina_id);
+			if (data.ultimo_recurso >= 0 ){
+				$('#ultimo_recurso').val(data.ultimo_recurso);
+			}
+			
 			document.getElementById('verComent').innerHTML= $('#ver_comentarios').val()+' ( '+data.comentarios+' )';
 		},
 		error: function(){
@@ -331,7 +346,8 @@ function startLesson(programa_id, pagina_id)
 }
 
 function finishLesson(programa_id, pagina_id)
-{
+{   
+	
 	$.ajax({
 		type: "POST",
 		url: $('#url_procesar').val(),
@@ -339,7 +355,6 @@ function finishLesson(programa_id, pagina_id)
 		data: { programa_id: programa_id, pagina_id: pagina_id },
 		dataType: "json",
 		success: function(data) {
-			console.log('Log_puntos procesado: '+data.id);
 			// Se van sumando los puntos obtenidos en la lección
 			var str = data.id;
 			var log_puntos = str.split('_');
@@ -422,7 +437,7 @@ function observeReply()
 						//clearTimeout( timerId );
 					},
 					error: function(data){
-						console.log(data.mensaje);
+						
 						//console.log('Error respondiendo al comentario'); // Hay que implementar los mensajes de error para el frontend
 						$('#radar-comment-'+muro_id).hide();
 						$('#button-reply-'+muro_id).show();
