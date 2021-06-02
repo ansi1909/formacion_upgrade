@@ -43,7 +43,7 @@
                             </div>
                         </div>
                         <br>
-                    {% elseif or app.session.get('empresa') != false %}
+                    {% elseif app.session.get('empresa') != false %}
                          {% for empresa in empresas %}
                             {% if empresa.id == empresa_select %}
                                 <input type="hidden" id="empresa_id" name="empresa_id" value="{{ empresa.id }}">
