@@ -23,7 +23,7 @@
                     <h5 class="card-title">{{ encabezado }} </h5>
                 </div>
                 <div class="card-block">
-                    {% if empresa_select and app.session.get('empresa') == 'true' %}
+                    {% if empresa_select and app.session.get('empresa') != '0' and app.session.get('empresa') !='false' %}
                     
                         {% for empresa in empresas %}
                             {% if empresa.id == empresa_select %}
