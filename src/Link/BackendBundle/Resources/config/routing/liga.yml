@@ -1,0 +1,15 @@
+_ligas:
+    path:     /listado/{app_id}
+    defaults: { _controller: LinkBackendBundle:Liga:index }
+
+_ajaxUpdateLiga:
+    path:     /ajaxUpdateLiga
+    defaults: { _controller: LinkBackendBundle:Liga:ajaxUpdateLiga }
+    requirements:
+        method: POST
+
+_ajaxEditLiga:
+    path:     /ajaxEditLiga
+    defaults: { _controller: LinkBackendBundle:Liga:ajaxEditLiga }
+    requirements:
+        method: GET

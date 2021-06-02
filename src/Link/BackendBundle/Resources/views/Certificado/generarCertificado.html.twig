@@ -27,7 +27,7 @@
                         <label for="texto" class="col-sm-7 col-md-7 col-lg-7 offset-sm-4 offset-md-4 offset-lg-4">{{'Empresa' | trans }}</label>
                         <div class="row">
                             <div class="col-sm-7 col-md-7 col-lg-7 offset-sm-4 offset-md-4 offset-lg-4">
-                                <select class="form_sty_sel form-control" style="border-radius: 5px" id="empresa_id" name="empresa_id" {% if empresa_select %} {{'disabled'}} {% endif %}>
+                                <select class="form_sty_sel form-control" style="border-radius: 5px" id="empresa_id" name="empresa_id" >
                                     <option value=""></option>
                                     {% for empresa in empresas %}
                                         {% if empresa.id == empresa_select %}

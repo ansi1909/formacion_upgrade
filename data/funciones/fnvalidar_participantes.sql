@@ -42,11 +42,14 @@ begin
          
     END LOOP;
 
-    SELECT COUNT(u.id) INTO ut FROM Admin_usuario u
-                                    INNER JOIN admin_rol_usuario ru ON ru.usuario_id = u.id
-                                    WHERE u.empresa_id = pempresa_id
-                                    AND  u.activo = true
-                                    AND ru.rol_id = 2;
+    SELECT COUNT(u.id) FROM Admin_Rol_Usuario ru
+                                       INNER JOIN admin_usuario u on ru.usuario_id = u.id
+                                          INNER join admin_nivel n on u.nivel_id = n.id
+                                        WHERE u.empresa_id = 36
+                                        AND  u.activo = true
+                                        AND ru.rol_id = 2
+                                        AND n.nombre not like 'revisor%'
+                                        AND n.nombre not like 'tutor%'
 
     activost = activost + ut;
 

@@ -278,6 +278,7 @@ class PaginaController extends Controller
             ->setMethod('POST')
             ->add('nombre', TextType::class, array('label' => $this->get('translator')->trans('Nombre')))
             ->add('horasAcademicas', IntegerType::class, array('label' => $this->get('translator')->trans('Horas académicas')))
+            ->add('puntuacion', IntegerType::class, array('label' => $this->get('translator')->trans('puntuacion')))
             ->add('categoria', EntityType::class, array('class' => 'Link\\ComunBundle\\Entity\\CertiCategoria',
                                                         'choice_label' => 'nombre',
                                                         'expanded' => false,
