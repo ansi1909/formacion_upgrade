@@ -615,6 +615,7 @@ class CertificadoController extends Controller
 
         $empresa_id = $request->request->get('empresa_id');
         $pagina_id = $request->request->get('programa_id');
+        //return new response($empresa_id.'  '.$pagina_id);
         $fechaD = $request->request->get('fechaD');
         $fechaH = $request->request->get('fechaH');
         $fi = explode("/", $fechaD);

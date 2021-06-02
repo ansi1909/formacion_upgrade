@@ -300,13 +300,19 @@ class UsuarioController extends Controller
             {
                 $query = $em->createQuery('SELECT COUNT(u.id) FROM LinkComunBundle:AdminRolUsuario ru
                                         JOIN ru.usuario u
+                                        join u.nivel n
                                         WHERE u.empresa = :empresa_id
                                         AND  u.activo = :activo
-                                        AND ru.rol = :rol_id')
+                                        AND ru.rol = :rol_id
+                                        and n.nombre not like :revisor
+                                        and n.nombre not like :tutor')
                             ->setParameters(array('empresa_id' => $empresa->getId(),
                                             'activo' => 'true',
-                                            'rol_id' => $yml['parameters']['rol']['participante']));
+                                            'rol_id' => $yml['parameters']['rol']['participante'],
+                                            'revisor' => '%revisor%',
+                                            'tutor' => '%tutor%'));
                 $usuarios_activos = $query->getSingleScalarResult();
+                return new response($usuarios_activos);
                 foreach( $roles_seleccionados as $rol)
                 {
                     if($rol == $yml['parameters']['rol']['participante'] && $activo )
@@ -738,12 +744,17 @@ class UsuarioController extends Controller
 
             $query = $em->createQuery('SELECT COUNT(u.id) FROM LinkComunBundle:AdminRolUsuario ru
                                     JOIN ru.usuario u
+                                    join u.nivel n
                                     WHERE u.empresa = :empresa_id
                                     AND  u.activo = :activo
-                                    AND ru.rol = :rol_id')
+                                    AND ru.rol = :rol_id
+                                    and n.nombre not like :revisor
+                                    and n.nombre not like :tutor')
                         ->setParameters(array('empresa_id' => $empresa->getId(),
                                         'activo' => 'true',
-                                        'rol_id' => $yml['parameters']['rol']['participante']));
+                                        'rol_id' => $yml['parameters']['rol']['participante'],
+                                        'revisor' => '%revisor%',
+                                        'tutor' => '%tutor%'));
             $usuarios_activos = $query->getSingleScalarResult();
 
             //return new response($empresa->getlimiteUsuarios().'   '.$usuarios_activos);

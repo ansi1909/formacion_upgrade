@@ -1,0 +1,54 @@
+Link\ComunBundle\Entity\AdminMedallasUsuario:
+    type: entity
+    table: admin_medallas_usuario
+    indexes:
+        IDX_66DDE05CDB38439E:
+            columns:
+                - usuario_id
+        IDX_66DDE05C91691364:
+            columns:
+                - medalla_id
+        IDX_66DDE05C57991ECF:
+            columns:
+                - pagina_id
+    id:
+        id:
+            type: integer
+            nullable: false
+            options:
+                unsigned: false
+            id: true
+            generator:
+                strategy: SEQUENCE
+    manyToOne:
+        usuario:
+            targetEntity: AdminUsuario
+            cascade: {  }
+            fetch: LAZY
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                usuario_id:
+                    referencedColumnName: id
+            orphanRemoval: false
+        medalla:
+            targetEntity: AdminMedallas
+            cascade: {  }
+            fetch: LAZY
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                medalla_id:
+                    referencedColumnName: id
+            orphanRemoval: false
+        pagina:
+            targetEntity: CertiPagina
+            cascade: {  }
+            fetch: LAZY
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                pagina_id:
+                    referencedColumnName: id
+            orphanRemoval: false
+    lifecycleCallbacks: {  }

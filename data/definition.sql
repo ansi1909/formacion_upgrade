@@ -163,6 +163,7 @@ usuario_id integer,
 orden integer,
 encuesta text,
 horas_academicas integer,
+puntuacion_max integer,
  PRIMARY KEY (id),
  FOREIGN KEY (pagina_id) REFERENCES certi_pagina (id),
  FOREIGN KEY (categoria_id) REFERENCES certi_categoria (id),
@@ -726,5 +727,31 @@ fecha date,
 cantidad integer,
  PRIMARY KEY (id));
 
+CREATE TABLE admin_medallas(
+-- Attributes --
+id serial,
+nombre varchar(100),
+descripcion varchar(500),
+puntos integer,
+ PRIMARY KEY (id));
+
+CREATE TABLE admin_ligas(
+-- Attributes --
+id serial,
+nombre varchar(100),
+descripcion varchar(500),
+puntuacion integer,
+ PRIMARY KEY (id));
+
+CREATE TABLE admin_medallas_usuario(
+-- Attributes --
+id serial,
+usuario_id integer,
+medalla_id integer,
+pagina_id integer,
+ PRIMARY KEY (id),
+ FOREIGN KEY (usuario_id) REFERENCES admin_usuario (id),
+ FOREIGN KEY (medalla_id) REFERENCES admin_medallas (id),
+ FOREIGN KEY (pagina_id) REFERENCES certi_pagina (id));
 
 

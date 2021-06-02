@@ -84,6 +84,11 @@ Link\ComunBundle\Entity\CertiPagina:
             options:
                 unsigned: false
             column: horas_academicas
+        puntuacion:
+            type: integer
+            nullable: true
+            options:
+                unsigned: false
     manyToOne:
         categoria:
             targetEntity: CertiCategoria
