@@ -1,0 +1,137 @@
+{% extends '::admin.html.twig' %}
+
+{% block body %}
+<input type="hidden" id="url_edit" name="url_edit" value="{{ path('_ajaxEditMedalla') }}">
+<input type="hidden" id="url_list" name="url_list" value="{{ path('_medallas', { 'app_id': app.session.get('app_id') }) }}">
+<br>
+<div class="row align-items-center justify-ccategoríantent-between">
+    <div class="col-12 col-sm-12 page-title">
+        <h3>{{'Medallas' |trans}}</h3>
+    </div>
+   <div class="col text-right">
+       <button type="button" class="bttn__nr new" data-toggle="modal" data-target="#formModal"><span class="fa fa-plus"></span><span class="text__nr">{{'Nuevo registro' | trans}}</span></button>
+   </div>
+</div>
+<div class="row">
+    <div class="col-sm-12 offset-2">
+        <div class="card">
+            <div class="card-header"  style=" background: linear-gradient(to right, #d5ff00 0%, #A3C300 100%); ">
+                <h5 class="card-title">{{ 'Listado de medallas' |trans}}</h5>
+            </div>
+            <div class="card-block">
+                <table class="table">
+                    <thead class="sty__title">
+                        <tr>
+                            <th class="hd__title">{{'Nombre' |trans}}</th>
+                            <th class="hd__title">{{'Descripción' |trans}}</th>
+                            <th class="hd__title">{{'Puntos' |trans}}</th>
+                            <th class="hd__title">{{'Acciones'|trans }}</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                      {% for medalla in medallas %}
+                            {% set eo = cycle(['odd', 'even'], loop.index) %}
+                            <tr class="{{eo}}">
+                                <td>{{ medalla.nombre }}</td>
+                                <td>{{ medalla.descripcion }}</td>
+                                <td>{{ medalla.puntos }}</td>
+                                <td>
+                                    <a href="#" title="{{ 'Editar'|trans }}" class="btn btn-link btn-sm edit" data-toggle="modal" data-target="#formModal" data="{{ medalla.id }}"><span class="fa fa-pencil"></span></a>
+                                    <a href="#" title="{{ 'Eliminar'|trans }}" class="btn btn-link btn-sm {% if medalla.delete_disabled == '' %}delete{% endif %} {{ medalla.delete_disabled }}" data="{{medalla.id}}"><span class="fa fa-trash"></span></a>
+                                </td>
+                            </tr>
+                      {% endfor %}
+                    </tbody>
+                </table>                 
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+{% block formModal %}
+<div class="modal-header" style="background: linear-gradient(to right, #0084db 0%, #00558D 100%); color: #fff;">
+    <h5 class="modal-title" id="exampleModalLongTitle">{{'Configuración de la medalla'|trans}}</h5>
+    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+        <span aria-hidden="true" style="color: #fff;">&times;</span>
+    </button>
+</div>
+<div class="modal-body">
+    <form id="form" name="form" action="{{ path( '_ajaxUpdateMedalla')}}"  method="POST">
+        <input type="hidden" id="medalla_id" name="medalla_id" value="">
+        <div class="form-group">
+            <label for="recipient-name" class="form-control-label">{{ 'Nombre'|trans }}:</label>
+            <input type="text" class="form-control form_sty_modal" id="nombre" name="nombre" value="">
+        </div>
+        <div class="form-group">
+            <label for="message-text" class="form-control-label">{{ 'Descripcion'|trans }}:</label>
+            <textarea class="form-control"  id="descripcion" name="descripcion" value=""></textarea>
+        </div>
+        <div class="form-group">
+            <label for="recipient-name" class="form-control-label">{{ 'Puntos'|trans }}:</label>
+            <input type="text" class="form-control form_sty_modal" id="puntos" name="puntos" value="">
+        </div>
+    </form>
+    <div class="alert alert-success" role="alert" id="alert-success" style="display:none;"> 
+        <strong>{{ 'Bien hecho'|trans }}!</strong> {{ 'La medalla ha sido almacenada con éxito'|trans }}. 
+    </div>
+    <div class="card" id="detail" style="display:none;">
+        <div class="card-header" style="background: linear-gradient(to right, #0084db 0%, #00558D 100%);">
+            <h4 class="card-title" style="color: #fff; text-transform: uppercase">{{'Datos Básicos'|trans}}</h4>
+        </div>
+        <div class="card-block">
+            <div class="container">
+                <div class="row justify-content-between">
+                    <div class="col-sm-16 col-md-16 show__details">
+                        <h5>{{ 'Categoría'|trans }}:</h5>
+                        <p id="p-nombre">Lorem Ipsum</p>
+                    </div>
+                </div>
+                <br>
+            </div>
+        </div>
+        <div class="card-footer">
+            <div class="col-sm-16 col-md-16 text-right">
+                <button type="button" class="bttn__edit edit" data-toggle="tooltip" data-placement="bottom" title="{{'Editar' |trans}}" id="detail-edit" data=""><span class="fa fa-pencil"></span></button>
+                <button type="button" class="bttn__elim" data-toggle="tooltip" data-placement="bottom" title="{{'Eliminar'|trans}}" id="detail-delete" data=""><span class="fa fa-trash"></span></button>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+
+{% block javascripts %}
+    {{ parent() }}
+    <script type="text/javascript" src="{{ asset('jq/jquery-validation-1.15.0/dist/jquery.validate.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('js/admin/medalla.js') }}"></script>
+    <script type="text/javascript">
+
+        $("#form").validate({
+            rules: {
+                'nombre': {
+                    required: true,
+                    minlength: 3
+                },
+                'puntos': {
+                    required: true,
+                    minlength: 2,
+                    number: true
+                }
+            },
+            messages: {
+                'nombre': {
+                    required: "{{ 'Este campo es requerido.'|trans }}",
+                    minlength: "{{ 'Debe ser mínimo de 3 caracteres.'|trans }}"
+                },
+                'puntos': {
+                    required: "{{ 'Este campo es requerido.'|trans }}",
+                    minlength: "{{ 'Debe ser mínimo de 2 caracteres.'|trans }}",
+                    number: "- {{ 'El valor de los puntos debe ser un valor numérico.'|trans }}"
+                }
+            }
+        });
+
+        
+    </script>
+{% endblock %}

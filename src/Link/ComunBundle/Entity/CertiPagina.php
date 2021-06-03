@@ -479,4 +479,33 @@ class CertiPagina
     {
         return $this->estatusContenido;
     }
+    /**
+     * @var int|null
+     */
+    private $puntuacion;
+
+
+    /**
+     * Set puntuacion.
+     *
+     * @param int|null $puntuacion
+     *
+     * @return CertiPagina
+     */
+    public function setPuntuacion($puntuacion = null)
+    {
+        $this->puntuacion = $puntuacion;
+    
+        return $this;
+    }
+
+    /**
+     * Get puntuacion.
+     *
+     * @return int|null
+     */
+    public function getPuntuacion()
+    {
+        return $this->puntuacion;
+    }
 }

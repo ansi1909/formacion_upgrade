@@ -102,12 +102,26 @@ parameters:
         evaluacion: 0.2
     puntos:
         mitad_periodo: 100
-        aprobar_primer_intento: 500
-        aprobar_perfecto: 1000
-        escribir_muro: 50
+        aprobar_primer_intento: 150
+        aprobar_perfecto: 100
+        escribir_muro: 10
         like_recibido: 100
-        respuesta_muro: 50
+        respuesta_muro: 20
         espacio_colaborativo: 100
+        influencer_1: 50
+        influencer_2: 100
+        influencer_3: 150
+        amigable_1: 20
+        amigable_2: 40
+        amigable_3: 60
+        super_smart: 400
+        perfeccionista: 350
+        imparable: 300
+        primer_lugar: 200
+        segundo_lugar: 150
+        tercer_lugar: 100
+        graduado: 50
+        vencedor: 500
     secret: 315e95c941de6274d88f8529c9adf0a2c2b6613b
     search_locale: 0
     mailer_user: tutorvirtual@formacion2puntocero.com
@@ -152,6 +166,21 @@ parameters:
         intentos: 100
     fecha_reportes:
         inicio: '1900-01-01 00:00:00'
+    medallas:
+        influencer_1: 1
+        influencer_2: 2
+        influencer_3: 3
+        amigable_1: 4
+        amigable_2: 5
+        amigable_3: 6
+        super_smart: 7
+        perfeccionista: 8
+        imparable: 9
+        primer_lugar: 10
+        segundo_lugar: 11
+        tercer_lugar: 12
+        graduado: 13
+        vencedor: 14
 
         
 
