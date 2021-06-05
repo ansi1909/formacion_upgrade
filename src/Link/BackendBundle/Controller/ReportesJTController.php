@@ -300,7 +300,10 @@ class ReportesJTController extends Controller
         else {
 
             $archivo = '';
-
+            $auxModulos  = ($isPrograma)? $this->get('translator')->trans('Módulos vistos'):$this->get('translator')->trans('Recursos vistos');
+            $auxPromedio = ($isPrograma)? $this->get('translator')->trans('Promedio evaluación módulo'):$this->get('translator')->trans('Promedio evaluación recursos');
+            $auxEstatus  = ($isPrograma)? $this->get('translator')->trans('Estatus del programa'): $this->get('translator')->trans('Estatus de la competencia');
+            $auxVisibility = (!$isPrograma)?'style="display:none"':'';
             $html = '<table class="table" id="dt">
                 <thead class="sty__title">
                     <tr>
@@ -308,10 +311,10 @@ class ReportesJTController extends Controller
                         <th class="hd__title">'.$this->get('translator')->trans('Usuario').'</th>
                         <th class="hd__title">'.$this->get('translator')->trans('Nivel').'</th>
                         <th class="hd__title">'.$this->get('translator')->trans('Correo').'</th>
-                        <th class="hd__title">'.$this->get('translator')->trans('Módulos vistos').'</th>
-                        <th class="hd__title">'.$this->get('translator')->trans('Materias vistas').'</th>
-                        <th class="hd__title">'.$this->get('translator')->trans('Promedio evaluación módulo').'</th>
-                        <th class="hd__title">'.$this->get('translator')->trans('Estatus del programa').'</th>
+                        <th class="hd__title">'.$auxModulos.'</th>
+                        <th class="hd__title" '.$auxVisibility.'>'.$this->get('translator')->trans('Materias vistas').'</th>
+                        <th class="hd__title">'.$auxPromedio.'</th>
+                        <th class="hd__title">'.$auxEstatus.'</th>
                         <th class="hd__title">'.$this->get('translator')->trans('Fecha inicio').'</th>
                         <th class="hd__title">'.$this->get('translator')->trans('Fecha fin').'</th>
                     </tr>
@@ -347,7 +350,7 @@ class ReportesJTController extends Controller
                             <td>'.$registro['nivel'].'</td>
                             <td>'.$correo.'</td>
                             <td>'.$registro['modulos'].'</td>
-                            <td>'.$registro['materias'].'</td>
+                            <td '.$auxVisibility.'>'.$registro['materias'].'</td>
                             <td>'.$promedio.'</td>
                             <td>'.$this->get('translator')->trans($estatusProragama[$status]).'</td>
                             <td>'.$fecha_in.'</td>
