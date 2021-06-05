@@ -168,21 +168,21 @@ class ReportesJTController extends Controller
 
 
         $pagina = $this->getDoctrine()->getRepository('LinkComunBundle:CertiPagina')->find($pagina_id);
-
+        $isPrograma = (in_array($pagina->getCategoria()->getId(),array($yml['parameters']['categoria']['programa'],$yml['parameters']['categoria']['curso'])))? 1:0;
+        $tituloCategoria = ($isPrograma)? 'Programa':'Competencia';
+        $auxTitulo  = ($isPrograma)? 'Avance en programas':'Avance en competencias';
         $listado = $rs->avanceProgramas($empresa_id, $pagina_id, $desde, $hasta);
-
         if ($excel==1)
         {
 
            $readerXlsx  = $this->get('phpoffice.spreadsheet')->createReader('Xlsx');
-           $fileWithPath = $this->container->getParameter('folders')['dir_project'].'docs/formatos/avanceProgramas.xlsx';
+           $fileWithPath = ($isPrograma)? $this->container->getParameter('folders')['dir_project'].'docs/formatos/avanceProgramas.xlsx':$this->container->getParameter('folders')['dir_project'].'docs/formatos/avanceCompetencias.xlsx';
            $spreadsheet = $readerXlsx->load($fileWithPath);
            $objWorksheet = $spreadsheet->setActiveSheetIndex(0);
            $columnNames = array('A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z');
-
             // Encabezado
-            $objWorksheet->setCellValue('A1', $this->get('translator')->trans('Avance en programas').'. '.$this->get('translator')->trans('Desde').': '.$desdef.'. '.$this->get('translator')->trans('Hasta').': '.$hastaf.'. '.$this->get('translator')->trans('Huso horario').': '.$timeZoneReport);
-                $objWorksheet->setCellValue('A2', $this->get('translator')->trans('Empresa').': '.$empresa->getNombre().'. '.$this->get('translator')->trans('Programa').': '.$pagina->getNombre().'.');
+            $objWorksheet->setCellValue('A1', $this->get('translator')->trans($auxTitulo).'. '.$this->get('translator')->trans('Desde').': '.$desdef.'. '.$this->get('translator')->trans('Hasta').': '.$hastaf.'. '.$this->get('translator')->trans('Huso horario').': '.$timeZoneReport);
+                $objWorksheet->setCellValue('A2', $this->get('translator')->trans('Empresa').': '.$empresa->getNombre().'. '.$this->get('translator')->trans($tituloCategoria).': '.$pagina->getNombre().'.');
 
             if (!count($listado))
             {
@@ -267,14 +267,17 @@ class ReportesJTController extends Controller
                     $objWorksheet->setCellValue('N'.$row, $participante['campo3']);
                     $objWorksheet->setCellValue('O'.$row, $participante['campo4']);
                     $objWorksheet->setCellValue('P'.$row, trim($participante['modulos']));
-                    $objWorksheet->setCellValue('Q'.$row, trim($participante['materias']));
-                    $objWorksheet->setCellValue('R'.$row, trim($promedio));
-                    $objWorksheet->setCellValue('S'.$row, trim($estatusProragama[$status]));
-                    $objWorksheet->setCellValue('T'.$row, ($status != 0)? $fecha_inicio->fecha:'');
-                    $objWorksheet->setCellValue('U'.$row, ($status!= 0)? $fecha_inicio->hora:'');
-                    $objWorksheet->setCellValue('V'.$row, ($status == 3)? $fecha_fin->fecha:'');
-                    $objWorksheet->setCellValue('W'.$row, ($status == 3)? $fecha_fin->hora:'');
-                    $objWorksheet->setCellValue('X'.$row, ($status == 3)? $totalTime:'');
+                    //Columnas que varian segun la categoria 
+                    $objWorksheet->setCellValue('Q'.$row,($isPrograma)?  trim($participante['materias']):trim($promedio));
+                    $objWorksheet->setCellValue('R'.$row, ($isPrograma)? trim($promedio):trim($estatusProragama[$status]));
+                    $objWorksheet->setCellValue('S'.$row, ($isPrograma)? trim($estatusProragama[$status]):($status != 0)? $fecha_inicio->fecha:'');
+                    $objWorksheet->setCellValue('T'.$row, ($isPrograma)? ($status != 0)? $fecha_inicio->fecha:'' : ($status!= 0)? $fecha_inicio->hora:'');
+                    $objWorksheet->setCellValue('U'.$row, ($isPrograma)? ($status!= 0)? $fecha_inicio->hora:'' : ($status == 3)? $fecha_fin->fecha:'');
+                    $objWorksheet->setCellValue('V'.$row, ($isPrograma)? ($status == 3)? $fecha_fin->fecha:'' : ($status == 3)? $fecha_fin->hora:'');
+                    $objWorksheet->setCellValue('W'.$row, ($isPrograma)? ($status == 3)? $fecha_fin->hora:'' : ($status == 3)? $totalTime:'');
+                   if ($isPrograma){
+                        $objWorksheet->setCellValue('X'.$row, ($status == 3)? $totalTime:'');
+                   }
                     $row++;
 
                 }
@@ -298,7 +301,10 @@ class ReportesJTController extends Controller
         else {
 
             $archivo = '';
-
+            $auxModulos  = ($isPrograma)? $this->get('translator')->trans('Módulos vistos'):$this->get('translator')->trans('Recursos vistos');
+            $auxPromedio = ($isPrograma)? $this->get('translator')->trans('Promedio evaluación módulo'):$this->get('translator')->trans('Promedio evaluación recursos');
+            $auxEstatus  = ($isPrograma)? $this->get('translator')->trans('Estatus del programa'): $this->get('translator')->trans('Estatus de la competencia');
+            $auxVisibility = (!$isPrograma)?'style="display:none"':'';
             $html = '<table class="table" id="dt">
                 <thead class="sty__title">
                     <tr>
@@ -306,10 +312,10 @@ class ReportesJTController extends Controller
                         <th class="hd__title">'.$this->get('translator')->trans('Usuario').'</th>
                         <th class="hd__title">'.$this->get('translator')->trans('Nivel').'</th>
                         <th class="hd__title">'.$this->get('translator')->trans('Correo').'</th>
-                        <th class="hd__title">'.$this->get('translator')->trans('Módulos vistos').'</th>
-                        <th class="hd__title">'.$this->get('translator')->trans('Materias vistas').'</th>
-                        <th class="hd__title">'.$this->get('translator')->trans('Promedio evaluación módulo').'</th>
-                        <th class="hd__title">'.$this->get('translator')->trans('Estatus del programa').'</th>
+                        <th class="hd__title">'.$auxModulos.'</th>
+                        <th class="hd__title" '.$auxVisibility.'>'.$this->get('translator')->trans('Materias vistas').'</th>
+                        <th class="hd__title">'.$auxPromedio.'</th>
+                        <th class="hd__title">'.$auxEstatus.'</th>
                         <th class="hd__title">'.$this->get('translator')->trans('Fecha inicio').'</th>
                         <th class="hd__title">'.$this->get('translator')->trans('Fecha fin').'</th>
                     </tr>
@@ -345,7 +351,7 @@ class ReportesJTController extends Controller
                             <td>'.$registro['nivel'].'</td>
                             <td>'.$correo.'</td>
                             <td>'.$registro['modulos'].'</td>
-                            <td>'.$registro['materias'].'</td>
+                            <td '.$auxVisibility.'>'.$registro['materias'].'</td>
                             <td>'.$promedio.'</td>
                             <td>'.$this->get('translator')->trans($estatusProragama[$status]).'</td>
                             <td>'.$fecha_in.'</td>
@@ -367,7 +373,6 @@ class ReportesJTController extends Controller
 
 
     }
-
 
     public function ajaxConexionesUsuarioAction(Request $request)
     {
