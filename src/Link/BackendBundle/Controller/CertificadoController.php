@@ -615,12 +615,13 @@ class CertificadoController extends Controller
 
         $empresa_id = $request->request->get('empresa_id');
         $pagina_id = $request->request->get('programa_id');
+        //return new response($empresa_id.'  '.$pagina_id);
         $fechaD = $request->request->get('fechaD');
         $fechaH = $request->request->get('fechaH');
         $fi = explode("/", $fechaD);
         $inicio = $fi[2].'-'.$fi[1].'-'.$fi[0];
         $ff = explode("/", $fechaH);
-        $fin = $ff[2].'-'.$ff[1].'-'.$ff[0];
+        $fin = $ff[2].'-'.$ff[1].'-'.$ff[0].' 23:59:59';
         //return new response($inicio);
         $uploads = Yaml::parse(file_get_contents($this->get('kernel')->getRootDir().'/config/parameters.yml'));
         $values = Yaml::parse(file_get_contents($this->get('kernel')->getRootDir().'/config/parametros.yml'));

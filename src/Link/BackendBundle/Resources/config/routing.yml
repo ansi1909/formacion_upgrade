@@ -131,3 +131,11 @@ foro:
 _reordenarAsignacion:
     path:     /reordenarAsignacion/{empresa_id}
     defaults: { _controller: LinkBackendBundle:Default:reordenarAsignacion }
+
+medalla:
+    resource: "@LinkBackendBundle/Resources/config/routing/medalla.yml"
+    prefix: /medalla
+
+liga:
+    resource: "@LinkBackendBundle/Resources/config/routing/liga.yml"
+    prefix: /liga

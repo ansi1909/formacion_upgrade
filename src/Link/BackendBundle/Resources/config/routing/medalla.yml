@@ -1,0 +1,15 @@
+_medallas:
+    path:     /listado/{app_id}
+    defaults: { _controller: LinkBackendBundle:Medalla:index }
+
+_ajaxUpdateMedalla:
+    path:     /ajaxUpdateMedalla
+    defaults: { _controller: LinkBackendBundle:Medalla:ajaxUpdateMedalla }
+    requirements:
+        method: POST
+
+_ajaxEditMedalla:
+    path:     /ajaxEditMedalla
+    defaults: { _controller: LinkBackendBundle:Medalla:ajaxEditMedalla }
+    requirements:
+        method: GET
