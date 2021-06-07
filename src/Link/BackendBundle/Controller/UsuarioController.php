@@ -309,8 +309,8 @@ class UsuarioController extends Controller
                             ->setParameters(array('empresa_id' => $empresa->getId(),
                                             'activo' => 'true',
                                             'rol_id' => $yml['parameters']['rol']['participante'],
-                                            'revisor' => '%revisor%',
-                                            'tutor' => '%tutor%'));
+                                            'revisor' => 'revisor%',
+                                            'tutor' => 'tutor%'));
                 $usuarios_activos = $query->getSingleScalarResult();
                 return new response($usuarios_activos);
                 foreach( $roles_seleccionados as $rol)
@@ -753,8 +753,8 @@ class UsuarioController extends Controller
                         ->setParameters(array('empresa_id' => $empresa->getId(),
                                         'activo' => 'true',
                                         'rol_id' => $yml['parameters']['rol']['participante'],
-                                        'revisor' => '%revisor%',
-                                        'tutor' => '%tutor%'));
+                                        'revisor' => 'revisor%',
+                                        'tutor' => 'tutor%'));
             $usuarios_activos = $query->getSingleScalarResult();
 
             //return new response($empresa->getlimiteUsuarios().'   '.$usuarios_activos);
