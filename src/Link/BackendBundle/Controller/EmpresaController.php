@@ -61,7 +61,7 @@ class EmpresaController extends Controller
                                 'fechaCreacion' => $empresa->getFechaCreacion(),
                                 'activo' => $empresa->getActivo(),
                                 'delete_disabled' => $f->linkEliminar($empresa->getId(), 'AdminEmpresa'),
-                                'limite_usuarios' => $empresa->getLimiteUsuarios() ? $empresa->getLimiteUsuarios() : 0,
+                                'limite_usuarios' => $empresa->getLimiteUsuarios() ? $empresa->getLimiteUsuarios() : 'N/A',
                                 'usuarios_acceso' => $usuarios_activos);
         }
 

@@ -321,7 +321,7 @@ class UsuarioController extends Controller
                             if($usuarios_activos >= $empresa->getLimiteUsuarios())
                             {
                                 //return new response(var_dump($roles));
-                                $limite_usuarios = $this->get('translator')->trans('La empresa excede el limite de usuarios con acceso permitido').'. '.$usuarios_activos.'/'.$empresa->getlimiteUsuarios();
+                                $limite_usuarios = $this->get('translator')->trans('Se ha excedido el límite de usuarios con acceso permitido para la empresa').'. '.$usuarios_activos.'/'.$empresa->getlimiteUsuarios();
                                 return $this->render('LinkBackendBundle:Usuario:usuario.html.twig', array('usuario' => $usuario,
                                                                                                         'paises' => $paises,
                                                                                                         'empresas' => $empresas,
@@ -764,7 +764,7 @@ class UsuarioController extends Controller
                 {
                     if($usuarios_activos >= $empresa->getLimiteUsuarios())
                     {
-                        $limite_usuarios = $this->get('translator')->trans('La empresa excede el limite de usuarios con acceso permitido').'. '.$usuarios_activos.'/'.$empresa->getlimiteUsuarios();
+                        $limite_usuarios = $this->get('translator')->trans('Se ha excedido el límite de usuarios con acceso permitido para la empresa').'. '.$usuarios_activos.'/'.$empresa->getlimiteUsuarios();
                         //return new response($limite_usuarios);
                         return $this->render('LinkBackendBundle:Usuario:nuevoParticipante.html.twig', array('usuario' => $usuario,
                                                                                                             'paises' => $paises,
@@ -1525,7 +1525,7 @@ class UsuarioController extends Controller
                     //return new response(var_dump($r));
                     $usuarios_totales = $r[0]['resultado'];
                     //return new response( var_dump($usuarios_totales));
-                    $error = $this->get('translator')->trans('La empresa excede el limite de usuarios con acceso permitido').'. '.$usuarios_totales.'/'.$empresa->getlimiteUsuarios();
+                    $error = $this->get('translator')->trans('Se ha excedido el límite de usuarios con acceso permitido para la empresa').'. '.$usuarios_totales.'/'.$empresa->getlimiteUsuarios();
                     return $this->render('LinkBackendBundle:Usuario:procesarParticipantes.html.twig', array('empresa' => $empresa,
                                                                                                             'return' => null,
                                                                                                             'error' => $error));
