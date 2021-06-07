@@ -304,8 +304,8 @@ class UsuarioController extends Controller
                                         WHERE u.empresa = :empresa_id
                                         AND  u.activo = :activo
                                         AND ru.rol = :rol_id
-                                        and n.nombre not like :revisor
-                                        and n.nombre not like :tutor')
+                                        and LOWER(n.nombre) not like :revisor
+                                        and LOWER(n.nombre) not like :tutor')
                             ->setParameters(array('empresa_id' => $empresa->getId(),
                                             'activo' => 'true',
                                             'rol_id' => $yml['parameters']['rol']['participante'],
@@ -748,8 +748,8 @@ class UsuarioController extends Controller
                                     WHERE u.empresa = :empresa_id
                                     AND  u.activo = :activo
                                     AND ru.rol = :rol_id
-                                    and n.nombre not like :revisor
-                                    and n.nombre not like :tutor')
+                                    and LOWER(n.nombre) not like :revisor
+                                    and LOWER(n.nombre) not like :tutor')
                         ->setParameters(array('empresa_id' => $empresa->getId(),
                                         'activo' => 'true',
                                         'rol_id' => $yml['parameters']['rol']['participante'],
