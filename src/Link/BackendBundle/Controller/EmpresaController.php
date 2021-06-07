@@ -42,12 +42,17 @@ class EmpresaController extends Controller
         {
             $query = $em->createQuery('SELECT COUNT(u.id) FROM LinkComunBundle:AdminRolUsuario ru
                                         JOIN ru.usuario u
+                                        join u.nivel n
                                         WHERE u.empresa = :empresa_id
                                         AND  u.activo = :activo
-                                        AND ru.rol = :rol_id')
+                                        AND ru.rol = :rol_id
+                                        and LOWER(n.nombre) not like :revisor
+                                        and LOWER(n.nombre) not like :tutor')
                         ->setParameters(array('empresa_id' => $empresa->getId(),
-                                              'activo' => 'true',
-                                              'rol_id' => $yml['parameters']['rol']['participante']));
+                                            'activo' => 'true',
+                                            'rol_id' => $yml['parameters']['rol']['participante'],
+                                            'revisor' => 'revisor%',
+                                            'tutor' => 'tutor%'));
             $usuarios_activos = $query->getSingleScalarResult();
 
             $empresas[] = array('id' => $empresa->getId(),
@@ -56,7 +61,7 @@ class EmpresaController extends Controller
                                 'fechaCreacion' => $empresa->getFechaCreacion(),
                                 'activo' => $empresa->getActivo(),
                                 'delete_disabled' => $f->linkEliminar($empresa->getId(), 'AdminEmpresa'),
-                                'limite_usuarios' => $empresa->getLimiteUsuarios() ? $empresa->getLimiteUsuarios() : 0,
+                                'limite_usuarios' => $empresa->getLimiteUsuarios() ? $empresa->getLimiteUsuarios() : 'N/A',
                                 'usuarios_acceso' => $usuarios_activos);
         }
 
