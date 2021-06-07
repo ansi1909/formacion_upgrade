@@ -324,7 +324,7 @@ class Functions
 
             //$correo = ($tutor->getCorreoCorporativo()) ? $tutor->getCorreoCorporativo() : ($tutor->getCorreoPersonal()) ? $tutor->getCorreoPersonal() : null;
 
-            $correo = ($tutor->getCorreoCorporativo())? $tutor->getCorreoCorporativo():(($tutor->getCorreoPersonal()? $tutor->getCorreoPersonal : null));
+            $correo = ($tutor->getCorreoCorporativo())? $tutor->getCorreoCorporativo():(($tutor->getCorreoPersonal()? $tutor->getCorreoPersonal() : null));
 
 
             // El usuario debe estar dentro del nivel asignado para ver el contenido de la página
