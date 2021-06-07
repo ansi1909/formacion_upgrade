@@ -48,8 +48,8 @@ begin
                                         WHERE u.empresa_id = 36
                                         AND  u.activo = true
                                         AND ru.rol_id = 2
-                                        AND LOWER(nombre) not like 'revisor%'
-                                        AND LOWER(nombre) not like 'tutor%';
+                                        AND LOWER(n.nombre) not like 'revisor%'
+                                        AND LOWER(n.nombre) not like 'tutor%';
 
     activost = activost + ut;
 
