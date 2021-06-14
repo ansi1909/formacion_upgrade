@@ -270,11 +270,11 @@ class ReportesJTController extends Controller
                     //Columnas que varian segun la categoria 
                     $objWorksheet->setCellValue('Q'.$row,($isPrograma)?  trim($participante['materias']):trim($promedio));
                     $objWorksheet->setCellValue('R'.$row, ($isPrograma)? trim($promedio):trim($estatusProragama[$status]));
-                    $objWorksheet->setCellValue('S'.$row, ($isPrograma)? trim($estatusProragama[$status]):($status != 0)? $fecha_inicio->fecha:'');
-                    $objWorksheet->setCellValue('T'.$row, ($isPrograma)? ($status != 0)? $fecha_inicio->fecha:'' : ($status!= 0)? $fecha_inicio->hora:'');
-                    $objWorksheet->setCellValue('U'.$row, ($isPrograma)? ($status!= 0)? $fecha_inicio->hora:'' : ($status == 3)? $fecha_fin->fecha:'');
-                    $objWorksheet->setCellValue('V'.$row, ($isPrograma)? ($status == 3)? $fecha_fin->fecha:'' : ($status == 3)? $fecha_fin->hora:'');
-                    $objWorksheet->setCellValue('W'.$row, ($isPrograma)? ($status == 3)? $fecha_fin->hora:'' : ($status == 3)? $totalTime:'');
+                    $objWorksheet->setCellValue('S'.$row, ($isPrograma)? trim($estatusProragama[$status]):(($status !=0)? $fecha_inicio->fecha:''));
+                    $objWorksheet->setCellValue('T'.$row, ($isPrograma)? (($status != 0)? $fecha_inicio->fecha:'' ) : (($status!= 0)? $fecha_inicio->hora:''));
+                    $objWorksheet->setCellValue('U'.$row, ($isPrograma)? (($status!= 0)? $fecha_inicio->hora:'') : (($status == 3)? $fecha_fin->fecha:''));
+                    $objWorksheet->setCellValue('V'.$row, ($isPrograma)? (($status == 3)? $fecha_fin->fecha:'' ): (($status == 3)? $fecha_fin->hora:''));
+                    $objWorksheet->setCellValue('W'.$row, ($isPrograma)? (($status == 3)? $fecha_fin->hora:'') : (($status == 3)? $totalTime:''));
                    if ($isPrograma){
                         $objWorksheet->setCellValue('X'.$row, ($status == 3)? $totalTime:'');
                    }
