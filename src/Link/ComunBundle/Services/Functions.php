@@ -1963,6 +1963,72 @@ public function obtenerEstructuraJson($pagina_id){
           $estatus_pagina = $em->getRepository('LinkComunBundle:CertiEstatusPagina')->find($yml['parameters']['estatus_pagina']['completada']);
           $pagina_padre_log->setEstatusPagina($estatus_pagina);
           $pagina_padre_log->setFechaFin(new \DateTime('now'));
+
+          $estructura = $this->obtenerEstructura($pagina_padre_id, $yml);
+
+          $query = $em->createQuery("SELECT pl FROM LinkComunBundle:CertiPruebaLog pl
+                                      JOIN pl.prueba p
+                                      WHERE pl.usuario = :usuario_id
+                                      AND p.pagina IN :paginas_id
+                                      ORDER BY pl.id DESC")
+                      ->setParameters(array('usuario_id' => $usuario_id,
+                                            'paginas_id' => $estructura));
+          $pruebas_logs = $query->getResult();
+
+          $query = $em->createQuery("SELECT COUNT(p.id) FROM LinkComunBundle:CertiPrueba p
+                                      AND p.pagina IN :paginas_id
+                                      ORDER BY p.id DESC")
+                      ->setParameter('paginas_id', $estructura);
+          $pruebas_total = $query->getResult();
+
+          $pagina = $this->getDoctrine()->getRepository('LinkComunBundle:CertiPagina')->find($pagina_padre_id);
+          $usuario = $this->getDoctrine()->getRepository('LinkComunBundle:AdminUsuario')->find($usuario_id);
+          
+          $contador = 0;
+
+          if($pruebas_logs == $pruebas_total)
+          {
+            $medallaUsuario = $em->getRepository('LinkComunBundle:AdminMedasllaUsuario')->findOneBy(array('pagina' => $pagina_padre->getId(),
+                                                                                                          'usuario' => $muro_padre->getUsuario()->getId(),
+                                                                                                          'medalla' => $yml['parameters']['medallas']['super_smart']));
+            if(!$medallaUsuario)
+            {
+              $medalla = $this->getDoctrine()->getRepository('LinkComunBundle:AdminMedallas')->find($yml['parameters']['medallas']['super_smart']);
+
+              $medalla = new AdminMedallasUsuario();
+              $medalla->setUsuario($usuario);
+              $medalla->setMedalla($medalla->getId());
+              $medalla->setPagina($pagina);
+              $em->persist($medalla);
+              $em->flush();
+
+              $puntos = $puntos + $yml['parameters']['puntos']['super_smart'];
+            }
+          }
+
+          foreach($pruebas_logs as $prueba)
+          {
+            if($prueba->getEstado() == $yml['parameters']['estatus_pagina']['completada'] && $prueba->getNota() == '100.00' )
+            {
+              $contador = $contador + 1;
+
+            }
+          }
+
+          if($contador == $pruebas_total)
+          {
+            $medalla = $this->getDoctrine()->getRepository('LinkComunBundle:AdminMedallas')->find($yml['parameters']['medallas']['perfeccionista']);
+
+            $medalla = new AdminMedallasUsuario();
+            $medalla->setUsuario($usuario);
+            $medalla->setMedalla($medalla->getId());
+            $medalla->setPagina($pagina);
+            $em->persist($medalla);
+            $em->flush();
+
+            $puntos = $puntos + $yml['parameters']['puntos']['perfeccionista'];
+          }
+
         }
         else {
           if ($subpaginas_completadas && $indexedPages[$pagina_padre_id]['tiene_evaluacion'])
@@ -1975,8 +2041,8 @@ public function obtenerEstructuraJson($pagina_id){
         // Puntos agregados
         $puntos_agregados = $pagina_padre_log->getPuntos() + $puntos;
         $pagina_padre_log->setPuntos($puntos_agregados);
-              $em->persist($pagina_padre_log);
-            $em->flush();
+        $em->persist($pagina_padre_log);
+        $em->flush();
 
       }
 
