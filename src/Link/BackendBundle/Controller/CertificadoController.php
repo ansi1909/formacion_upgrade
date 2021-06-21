@@ -612,17 +612,22 @@ class CertificadoController extends Controller
         $session = new Session();
         $em = $this->getDoctrine()->getManager();
         $f = $this->get('funciones');
-
+        $yml = Yaml::parse(file_get_contents($this->get('kernel')->getRootDir().'/config/parametros.yml'));
         $empresa_id = $request->request->get('empresa_id');
+        $empresa = $this->getDoctrine()->getRepository('LinkComunBundle:AdminEmpresa')->find($empresa_id);
+        $timeZoneEmpresa = ($empresa->getZonaHoraria())? $empresa->getZonaHoraria()->getNombre():$yml['parameters']['time_zone']['default'];
         $pagina_id = $request->request->get('programa_id');
-        //return new response($empresa_id.'  '.$pagina_id);
+        
         $fechaD = $request->request->get('fechaD');
         $fechaH = $request->request->get('fechaH');
         $fi = explode("/", $fechaD);
         $inicio = $fi[2].'-'.$fi[1].'-'.$fi[0];
         $ff = explode("/", $fechaH);
         $fin = $ff[2].'-'.$ff[1].'-'.$ff[0].' 23:59:59';
-        //return new response($inicio);
+        $desdeUtc = $f->converDate($inicio,$timeZoneEmpresa,$yml['parameters']['time_zone']['default'],false);
+        $desde = $desdeUtc->fecha.' '.$desdeUtc->hora;
+        $hastaUtc = $f->converDate($fin,$timeZoneEmpresa,$yml['parameters']['time_zone']['default'],false);
+        $hasta = $hastaUtc->fecha.' '.$hastaUtc->hora;
         $uploads = Yaml::parse(file_get_contents($this->get('kernel')->getRootDir().'/config/parameters.yml'));
         $values = Yaml::parse(file_get_contents($this->get('kernel')->getRootDir().'/config/parametros.yml'));
 
