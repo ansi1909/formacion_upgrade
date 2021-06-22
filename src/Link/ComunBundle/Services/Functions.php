@@ -23,6 +23,9 @@ use Link\ComunBundle\Entity\AdminCorreo;
 use Link\ComunBundle\Entity\AdminUsuario;
 use Link\ComunBundle\Entity\AdminEvento;
 use Link\ComunBundle\Entity\AdminNoticia;
+use Link\ComunBundle\Entity\AdminMedasllaUsuario;
+use Link\ComunBundle\Entity\AdminMedasllas;
+
 
 
 
@@ -1988,17 +1991,17 @@ public function obtenerEstructuraJson($pagina_id){
 
           if($pruebas_logs == $pruebas_total)
           {
-            $medallaUsuario = $em->getRepository('LinkComunBundle:AdminMedasllaUsuario')->findOneBy(array('pagina' => $pagina_padre->getId(),
+            $medallaUsuario = $em->getRepository('LinkComunBundle:AdminMedallasUsuario')->findOneBy(array('pagina' => $pagina_padre->getId(),
                                                                                                           'usuario' => $muro_padre->getUsuario()->getId(),
                                                                                                           'medalla' => $yml['parameters']['medallas']['super_smart']));
             if(!$medallaUsuario)
             {
               $medalla = $this->getDoctrine()->getRepository('LinkComunBundle:AdminMedallas')->find($yml['parameters']['medallas']['super_smart']);
 
-              $medalla = new AdminMedallasUsuario();
-              $medalla->setUsuario($usuario);
-              $medalla->setMedalla($medalla->getId());
-              $medalla->setPagina($pagina);
+              $medallaUsuario = new AdminMedallasUsuario();
+              $medallaUsuario->setUsuario($usuario);
+              $medallaUsuario->setMedalla($medalla);
+              $medallaUsuario->setPagina($pagina);
               $em->persist($medalla);
               $em->flush();
 
@@ -2017,16 +2020,97 @@ public function obtenerEstructuraJson($pagina_id){
 
           if($contador == $pruebas_total)
           {
-            $medalla = $this->getDoctrine()->getRepository('LinkComunBundle:AdminMedallas')->find($yml['parameters']['medallas']['perfeccionista']);
+            $medallaUsuario = $em->getRepository('LinkComunBundle:AdminMedallasUsuario')->findOneBy(array('pagina' => $pagina_padre->getId(),
+                                                                                                          'usuario' => $muro_padre->getUsuario()->getId(),
+                                                                                                          'medalla' => $yml['parameters']['medallas']['perfeccionista']));
+            if(!$medallaUsuario)
+            {
+              $medalla = $this->getDoctrine()->getRepository('LinkComunBundle:AdminMedallas')->find($yml['parameters']['medallas']['perfeccionista']);
+              $medallaUsuario = new AdminMedallasUsuario();
+              $medallaUsuario->setUsuario($usuario);
+              $medallaUsuario->setMedalla($medalla);
+              $medallaUsuario->setPagina($pagina);
+              $em->persist($medalla);
+              $em->flush();
 
-            $medalla = new AdminMedallasUsuario();
-            $medalla->setUsuario($usuario);
-            $medalla->setMedalla($medalla->getId());
-            $medalla->setPagina($pagina);
-            $em->persist($medalla);
-            $em->flush();
+              $puntos = $puntos + $yml['parameters']['puntos']['perfeccionista'];
+            }
+          }
 
-            $puntos = $puntos + $yml['parameters']['puntos']['perfeccionista'];
+          $query = $em->createQuery('SELECT u.id FROM LinkComunBundle:AdminRolUsuario ru
+                                    JOIN ru.usuario u
+                                    join u.nivel n
+                                    WHERE u.empresa = :empresa_id
+                                    AND  u.activo = :activo
+                                    AND ru.rol = :rol_id
+                                    and LOWER(n.nombre) not like :revisor
+                                    and LOWER(n.nombre) not like :tutor')
+                        ->setParameters(array('empresa_id' => $usuario->getEmpresa()->getId(),
+                                              'activo' => 'true',
+                                              'rol_id' => $yml['parameters']['rol']['participante'],
+                                              'revisor' => 'revisor%',
+                                              'tutor' => 'tutor%'));
+            $usuarios_activos = $query->getSingleScalarResult();
+
+          $query = $em->createQuery("SELECT COUNT(pl.id) FROM LinkComunBundle:CertiPruebaLog pl
+                                      JOIN pl.prueba p
+                                      WHERE pl.usuario IN :usuario_id
+                                      AND p.pagina = :pagina_id
+                                      AND pl.estado != :estado
+                                      ORDER BY pl.id DESC")
+                      ->setParameters(array('usuario_id' => $usuarios_activos,
+                                  'pagina_id' => $pagina_padre_id,
+                                  'estado' => $yml['parameters']['estado_prueba']['completado']));
+          $cantidad_usuarios_aprobados = $query->getResult();
+          
+          if($cantidad_usuarios_aprobados == 1){
+            $medalla = $this->getDoctrine()->getRepository('LinkComunBundle:AdminMedallas')->find($yml['parameters']['medallas']['primer_lugar']);
+            
+              $medallaUsuario = new AdminMedallasUsuario();
+              $medallaUsuario->setUsuario($usuario);
+              $medallaUsuario->setMedalla($medalla);
+              $medallaUsuario->setPagina($pagina);
+              $em->persist($medalla);
+              $em->flush();
+
+              $puntos = $puntos + $yml['parameters']['puntos']['primer_lugar'];
+            
+          }elseif ($cantidad_usuarios_aprobados == 2){
+            $medalla = $this->getDoctrine()->getRepository('LinkComunBundle:AdminMedallas')->find($yml['parameters']['medallas']['segundo_lugar']);
+            
+              $medallaUsuario = new AdminMedallasUsuario();
+              $medallaUsuario->setUsuario($usuario);
+              $medallaUsuario->setMedalla($medalla);
+              $medallaUsuario->setPagina($pagina);
+              $em->persist($medalla);
+              $em->flush();
+
+              $puntos = $puntos + $yml['parameters']['puntos']['segundo_lugar'];
+            
+          }elseif ($cantidad_usuarios_aprobados == 3){
+            $medalla = $this->getDoctrine()->getRepository('LinkComunBundle:AdminMedallas')->find($yml['parameters']['medallas']['tercer_lugar']);
+            
+              $medallaUsuario = new AdminMedallasUsuario();
+              $medallaUsuario->setUsuario($usuario);
+              $medallaUsuario->setMedalla($medalla);
+              $medallaUsuario->setPagina($pagina);
+              $em->persist($medalla);
+              $em->flush();
+
+              $puntos = $puntos + $yml['parameters']['puntos']['tercer_lugar'];
+            
+          }else{
+            $medalla = $this->getDoctrine()->getRepository('LinkComunBundle:AdminMedallas')->find($yml['parameters']['medallas']['graduado']);
+            
+              $medallaUsuario = new AdminMedallasUsuario();
+              $medallaUsuario->setUsuario($usuario);
+              $medallaUsuario->setMedalla($medalla);
+              $medallaUsuario->setPagina($pagina);
+              $em->persist($medalla);
+              $em->flush();
+
+              $puntos = $puntos + $yml['parameters']['puntos']['graduado'];
+            
           }
 
         }
