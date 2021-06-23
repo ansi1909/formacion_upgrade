@@ -640,8 +640,8 @@ class CertificadoController extends Controller
         $query->bindValue(':re', $re, \PDO::PARAM_STR);
         $query->bindValue(':pempresa_id', $empresa_id, \PDO::PARAM_INT);
         $query->bindValue(':ppagina_id', $pagina_id, \PDO::PARAM_INT);
-        $query->bindValue(':pinicio', $inicio, \PDO::PARAM_STR);
-        $query->bindValue(':pfin', $fin, \PDO::PARAM_STR);
+        $query->bindValue(':pinicio', $desde, \PDO::PARAM_STR);
+        $query->bindValue(':pfin', $hasta, \PDO::PARAM_STR);
         $query->execute();
         $rs = $query->fetchAll();
 
