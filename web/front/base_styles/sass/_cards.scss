@@ -412,12 +412,12 @@
 
 .ranking_categories {
     background: #fff;
-    max-width: 40rem;
+    max-width: 60rem;
     margin: 0 auto;
-    border: 1px solid #e0e0e0;
     border-top-left-radius: 10px;
     border-top-right-radius: 10px;
     border: 1px solid #e0e0e0;
+    border-bottom: none;
 
     &__category {
         display: flex;
@@ -435,7 +435,7 @@
 .card-table{
     position: relative;
     width: 100%;
-    max-width: 40rem;
+    max-width: 60rem;
     height: auto;
     display: flex;
     flex-direction: column;
@@ -464,6 +464,37 @@
             text-align: center;
         }
 
+    }
+
+    .card_body {
+        .ranking_members_list {
+            &__member {
+
+                &.my_user {
+                    img {
+                        width: 6rem;
+                    }
+                }
+                img {
+                    width: 4rem;
+                    border-radius: 50%;
+                }
+
+                p {
+                    font-size: 0.9rem;
+                    max-width: 10rem;
+                }
+            }
+        }
+    }
+}
+
+.ranking_members_amount {
+    font-size: 1rem;
+
+    span {
+        font-size: 1.5rem;
+        color: $headings-color;
     }
 }
 
