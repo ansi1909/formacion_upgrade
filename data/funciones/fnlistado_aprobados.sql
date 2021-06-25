@@ -13,8 +13,8 @@ CREATE OR REPLACE FUNCTION fnlistado_aprobados(
 $BODY$
 
 begin
-     
-        IF pnivel_id > 0 THEN 
+
+        IF pnivel_id > 0 THEN
         OPEN resultado FOR
             SELECT count(a.id) as logueado,
                     u.codigo as codigo,
@@ -63,7 +63,6 @@ begin
                 INNER JOIN certi_pagina_log cpl ON cpl.usuario_id = u.id
                 LEFT JOIN admin_sesion a ON u.id = a.usuario_id
                 WHERE u.empresa_id = pempresa_id
-                AND u.activo
                 AND u.nivel_id = pnivel_id
                     AND u.id IN
                         (SELECT pl.usuario_id FROM certi_pagina_log pl
@@ -74,7 +73,7 @@ begin
                 AND cpl.fecha_fin BETWEEN pfecha_inicio::timestamp AND pfecha_fin::timestamp
                 GROUP BY u.id,u.codigo,u.nombre,u.apellido,u.login,u.correo_personal,u.correo_corporativo,u.activo,u.fecha_registro,u.fecha_nacimiento,u.pais_id,n.nombre,u.campo1,u.campo2,u.campo3,u.campo4,u.clave
                 ORDER BY u.nombre ASC;
-            
+
             ElSIF pnivel_id = 0 THEN
              OPEN resultado FOR
                 SELECT count(a.id) as logueado,
@@ -124,7 +123,6 @@ begin
                 INNER JOIN certi_pagina_log cpl ON cpl.usuario_id = u.id
                 LEFT JOIN admin_sesion a ON u.id = a.usuario_id
                 WHERE u.empresa_id = pempresa_id
-                AND u.activo
                     AND u.id IN
                         (SELECT pl.usuario_id FROM certi_pagina_log pl
                             WHERE pl.pagina_id = ppagina_id AND pl.estatus_pagina_id = 3 )
@@ -142,4 +140,3 @@ $BODY$
   LANGUAGE plpgsql VOLATILE
 
   --select * from fnlistado_aprobados('re', 1,1,'2020-12-01 00:00:00','2020-12-31 23:59:59') as resultado; fetch all from re;
- 
