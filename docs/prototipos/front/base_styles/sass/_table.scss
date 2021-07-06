@@ -1,28 +1,30 @@
 .rank-table{
-    max-width: 28rem;
-    width: 28rem;
+    width: 100%;
     margin: auto;
     padding: 0 1rem;
     thead{
         border-bottom: 1px solid $gray-400;
         th{
-            color: $gray-600;
+            color: $gray-800;
             @extend %font-table;
             padding: calc(1rem - 8px);
             text-align: center;
             text-shadow: 0 1px 1px rgba(0, 0, 0, 0.1);
             vertical-align: middle;
+            border-right: 1px solid #DAE1E6;
+            font-size: 1.2rem;
+            padding: 1rem;
             &:first-child{
-                text-align: center;
+                border-right: none;
             }
             &:nth-child(2){
+                text-align: left;
+                padding-left: 0px;
             }
             &:nth-child(3){
             }
-            &:nth-child(4){
-                padding: calc(1rem - 8px) 0;
-            }
             &:last-child{
+                border-right: none;
             }
         }
     }
@@ -31,7 +33,9 @@
             color: $blue;
             cursor: default;
             td{
+                height: 5rem;
                 padding: calc(1rem - 7px) 0;
+                border-right: 1px solid #DAE1E6;
                 &:first-child{
                     font-family: $primary-font;	
                     font-size: $h4-font-size;	
@@ -39,27 +43,22 @@
                     line-height: calc(2rem - 4px);
                     text-align: center;
                     vertical-align:middle;
+                    border-right: none;
                 }
                 &:nth-child(2){
-                    .up{
-                        width: 2rem;
-                        height: auto;
-                        position: relative;
-                        left: 0rem;
-                        border-radius: calc(3rem + 4px);
-                        text-align: center;
-                    }
+                   text-align: left ;
+                   font-size: 1.3rem;
                 }
                 &:nth-child(3){
                     @extend %font-table;
-                    text-align: left;
-                    padding-left: 2rem;
+                    text-align: center;
                 }
                 &:nth-child(4){
                     @extend %font-table;
+                    text-align: center;
                 }
                 &:last-child{
-                    text-align: left;
+                    border-right: none;
                     .img-coin{
                         position: relative;
                         .starShiney{
@@ -79,6 +78,14 @@
                             font-weight: $font-weight-normal-hard;
                         }
                     }
+                }
+
+                .rank-badge {
+                    width: 1.5rem;
+                }
+
+                .rank-badge-number {
+                    width: 3rem;
                 }
             }
             &:hover{
@@ -101,6 +108,10 @@
                         animation-fill-mode: both;
                     }
                 }
+            }
+
+            & td {
+                border-right: none;
             }
         }
     }
@@ -157,7 +168,7 @@
 
 %font-table{
     font-family: $primary-font;	
-    font-size: $font-size-sm;	
+    font-size: 1.3rem;	
     line-height: 1rem;
     font-weight: $font-weight-normal;
 }

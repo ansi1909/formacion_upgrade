@@ -127,4 +127,76 @@ class RankingController extends Controller
 
     }
 
+ 
+    public function obtenerPuntosUsuarioLogueado($indices){
+        $em = $this->getDoctrine()->getManager();
+        $session = new Session();
+
+        #obtenemos los puntos que el usuario logueado recaudo en el programa 
+        $query = $em->createQuery('SELECT SUM(cpl.puntos) 
+                                                    FROM LinkComunBundle:CertiPaginaLog cpl
+                                                    WHERE cpl.pagina IN (:paginas)
+                                                    AND cpl.usuario = :usuario')
+                                            ->setParameters(array('usuario' => $session->get('usuario')['id'],
+                                                            'paginas' => $indices));
+                                                            
+        $puntos_usuario_logueado = $query->getSingleScalarResult();
+
+        return $puntos_usuario_logueado;
+
+    }
+
+
+    public function obtenerEstructuraPrograma($ppagina_id){
+        #retorna la estructura del programa a consultar
+        $em = $this->getDoctrine()->getManager();
+        $session = new Session();
+        $indices = array();
+
+
+        $query = $em->getConnection()->prepare('SELECT
+                                                fnobtener_estructura(:ppagina_id) as
+                                                resultado;');
+        $query->bindValue(':ppagina_id', $ppagina_id, \PDO::PARAM_INT);
+        $query->execute();
+
+        $rs = $query->fetchAll();
+        $resultado = json_decode($rs[0]['resultado'],true);
+        foreach($resultado as $clave  => $array ){
+            if($clave == 'padre'){
+                array_push($indices,$array['id']);
+            }else{
+                foreach($array as $hijo){
+                    array_push($indices,$hijo['id']);
+                }
+            }
+        }
+
+        return $indices;
+    }
+
+    
+
+    public function newAction(){
+        $em = $this->getDoctrine()->getManager();
+        $ppagina_id = 4514;
+
+        $estructura = $this->obtenerEstructuraPrograma($ppagina_id);
+        $puntos_usuario_logueado = $this->obtenerPuntosUsuarioLogueado($estructura);
+        $programa = $em->getRepository('LinkComunBundle:CertiPagina')->findOneByPagina($ppagina_id);
+        
+
+        #print_r($puntos_usuario_logueado);die();
+        $estructura = json_encode($estructura);
+        $estructura = str_replace("[","{",$estructura);
+        $estructura = str_replace("]","}",$estructura);
+
+        return $this->render('LinkFrontendBundle:Ranking:new.html.twig');
+
+
+        $response->headers->setCookie(new Cookie('Peter', 'Griffina', time() + 36, '/'));
+
+        return $response; 
+    }
+
 }
