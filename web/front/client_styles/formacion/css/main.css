@@ -3688,8 +3688,15 @@ p.up {
   flex-direction: column;
   align-items: center;
 }
+
+.ranking_categories__category img{
+  width: 3.6rem;
+  height: 3.6rem;
+}
+
 .ranking_categories__category--current img {
   width: 4.2rem;
+  height: 4.2rem;
 }
 
 .card-table {
@@ -3726,10 +3733,12 @@ p.up {
   text-align: center;
 }
 .card-table .card_body .ranking_members_list__member.my_user img {
-  width: 6rem;
+  width: 7rem;
+  height: 7rem;
 }
 .card-table .card_body .ranking_members_list__member img {
   width: 4rem;
+  height: 4rem;
   border-radius: 50%;
 }
 .card-table .card_body .ranking_members_list__member p {

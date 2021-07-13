@@ -91,7 +91,7 @@
             &:hover {
                 cursor: pointer;
                 color: #3D93CC;
-            }    
+            }
         }
 
     }
@@ -129,12 +129,12 @@
 
 .cards-section{
     @include media-breakpoint-down(md) {
-        
+
         margin: auto;
     }
     @include media-breakpoint-down(xs) {
         padding: 0 !important;
-        
+
     }
 }
 
@@ -337,7 +337,7 @@
     max-width: 50rem;
     word-wrap: normal;
     overflow: hidden;
-    @include media-breakpoint-up(sm) { 
+    @include media-breakpoint-up(sm) {
         width: 80%;
     }
     @include media-breakpoint-up(lg) {
@@ -353,7 +353,7 @@
         @include media-breakpoint-up(md) {
             width: 25%;
         }
-        
+
     }
 
     .wraper {
@@ -418,14 +418,18 @@
     border-top-right-radius: 10px;
     border: 1px solid #e0e0e0;
     border-bottom: none;
-
+    img {
+        width: 3.8rem;
+        height: 3.8rem;
+    }
     &__category {
         display: flex;
         flex-direction: column;
         align-items: center;
         &--current {
             img {
-                width: 4.2rem;
+                width: 4.8rem;
+                height: 4.8rem;
             }
         }
     }
@@ -472,11 +476,13 @@
 
                 &.my_user {
                     img {
-                        width: 6rem;
+                        width: 7rem;
+                        height: 7rem;
                     }
                 }
                 img {
                     width: 4rem;
+                    height: 4rem;
                     border-radius: 50%;
                 }
 
@@ -806,7 +812,7 @@
     margin: 0 auto;
     margin-bottom: calc(1rem + 2px);
     @include media-breakpoint-down(md) {
-        // width: 15rem;    
+        // width: 15rem;
     }
     .card_biblio-left{
         height: 100%;
@@ -832,7 +838,7 @@
             font-weight: $font-weight-normal-hard;
             line-height: calc(1rem + 3px);
             @include media-breakpoint-down(md) {
-                font-size: .8rem;   
+                font-size: .8rem;
             }
         }
         .pos-recurso{
@@ -876,7 +882,7 @@
             font-size: calc($h5-font-size + 2px);
             line-height: calc(1rem + 8px);
         }
-        
+
         .icEditEcT{
             @extend %ic_Ed_Del;
             &:hover{
@@ -1154,7 +1160,7 @@
                 display: block;
                 width: 100%;
                 height: 100%;
-    
+
                 .card-anuncio {
                     width: 100%;
                     height: 100%;
@@ -1294,7 +1300,7 @@
         }
     }
 
-    @include media-breakpoint-down(sm){ 
+    @include media-breakpoint-down(sm){
         flex-direction: column;
     }
 }

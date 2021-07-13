@@ -24,11 +24,16 @@
             visibility: visible;
             display: block;
         }
+
+        .len{
+            width: 12%;
+            height: 12%;
+        }
     </style>
 {% endblock %}
 
 {% block body %}
-
+<input type="hidden" id="url_ranking" name="url_ranking" value="{{ path('_ajaxRankingAction') }}">
 <div class="modal ranking-loader justify-content-center align-items-center">
     <div class="ranking-loader__spinner">
     </div>
@@ -40,37 +45,48 @@
         Proident exercitation Lorem exercitation quis sunt.
     </p>
     <div class="container d-flex flex-wrap justify-content-center align-items-center ">
+        {# Curso #}
+
+        {% for programa in  programas %}
         <div class="card d-flex flex-column">
-            <img class="card-img-top" src="{{ asset('front/assets/img/liderazgo-hrz.png') }}" alt="">
-            <div class="wraper d-flex flex-column"> 
+            <img class="card-img-top" src="{{ uploads ~ programa.foto}}" alt="">
+            <div class="wraper d-flex flex-column">
                 <div class="card-hrz-body">
-                    <h5 class="title-grey my-3 font-weight-normal"> Curso de prueba </h5>
+                    <h5 class="title-grey my-3 font-weight-normal"> {{ programa.nombre }} </h5>
                 </div>
 
                 <div class="card-hrz-right d-flex flex-column justify-content-top mx-3 pb-1 align-item align-items-center">
-                
-                <button href="#" class="btn btn-sm btn-continuar mt-0 px-3 mb-3 btn-xs-cont j-btn-achievement" data-id="1" data-ranktitle="Curso de prueba"> Ver ranking </button>
+
+                <button href="#" class="btn btn-sm btn-continuar mt-0 px-3 mb-3 btn-xs-cont j-btn-achievement" data-id="{{ programa.id }}" data-ranktitle="{{ programa.nombre }}"> Ver ranking </button>
             </div>
             </div>
         </div>
+        {% endfor %}
 
-        <div class="card d-flex flex-column">
+
+
+        {# Fin Curso#}
+
+        {# Curso #}
+        {#<div class="card d-flex flex-column">
             <img class="card-img-top" src="{{ asset('front/assets/img/liderazgo-hrz.png') }}" alt="">
-            <div class="wraper d-flex flex-column"> 
+            <div class="wraper d-flex flex-column">
                 <div class="card-hrz-body">
                     <h5 class="title-grey my-3 font-weight-normal"> Liderazgo </h5>
                 </div>
 
                 <div class="card-hrz-right d-flex flex-column justify-content-top mx-3 pb-1 align-item align-items-center">
-                
+
                 <button href="#" class="btn btn-sm btn-continuar mt-0 px-3 mb-3 btn-xs-cont j-btn-achievement" data-id="1" data-ranktitle="Curso de prueba"> Ver ranking </button>
             </div>
             </div>
-        </div>
+        </div>#}
+        {# Fin Curso#}
 
     </div>
 </div>
 
+{# Ligas#}
 <div id="achievements-container">
 <button href="#" class="btn btn-sm btn-continuar mt-0 px-3 mb-3 btn-xs-cont mx-auto my-4 d-block j-btn-back-to-plan" data-id="2"> Volver al ranking </button>
     <div class="row align-items-center justify-content-center mt-3">
@@ -83,9 +99,9 @@
         <div class="col-12">
 
             <div class="d-flex flex-column ranking_categories px-4 pt-4">
-                <h4 class="mb-4 max-w-40r w-100 mx-auto">Liga Estrellita</h4>
-                <div class="w-100 d-flex align-items-center justify-content-between max-w-40r w-100 mx-auto">
-                    <div class="ranking_categories__category px-2 pt-2 pb-4">
+                <h4 class="mb-4 max-w-40r w-100 mx-auto" id="leagueName"></h4>
+                <div class="w-100 d-flex align-items-center justify-content-between max-w-40r w-100 mx-auto" id="categories">
+                    {# <div class="ranking_categories__category px-2 pt-2 pb-4">
                         <img class="rank-badge-number mb-2" src="{{ asset('front/assets/img/badge_silver_blank.svg') }}" alt="" />
                         <p>0</p>
                     </div>
@@ -93,7 +109,7 @@
                         <img class="rank-badge-number mb-2" src="{{ asset('front/assets/img/badge_gold_blank.svg') }}" alt="" />
                         <p>200+</p>
                     </div>
-                    <div class="ranking_categories__category ranking_categories__category--current px-2 pt-2 pb-4">
+                    <div class="ranking_categories__category  px-2 pt-2 pb-4 ranking_categories__category--current">
                         <img class="rank-badge-number mb-2" src="{{ asset('front/assets/img/badge_sapphire.svg') }}" alt="" />
                         <p>500+</p>
                     </div>
@@ -104,15 +120,17 @@
                     <div class="ranking_categories__category px-2 pt-2 pb-4">
                         <img class="rank-badge-number mb-2" src="{{ asset('front/assets/img/badge_locked.svg') }}" alt="" />
                         <p>900+</p>
-                    </div>
+                    </div> #}
                 </div>
 
-                <h5 class="mx-auto">¡Necesitas 150 puntos más para ascender de liga!</h5>
+                <h5 class="mx-auto" id="siguienteLiga" style="visibility:hidden">¡Necesitas <span id="puntosProximaLiga"></span> puntos más para ascender de liga!</h5>
             </div>
+            {# Listado de usuarios#}
             <div class="card-table mt-0">
                 <div class="card_body px-4 pt-4">
-                    <div class="ranking_members_list d-flex justify-content-evenly flex-wrap">
-                        <div class="ranking_members_list__member my-3 mx-2 d-flex flex-column justify-content-end align-items-center">
+                    <div class="ranking_members_list d-flex justify-content-evenly flex-wrap" id="userContainer">
+
+                       {# <div class="ranking_members_list__member my-3 mx-2 d-flex flex-column justify-content-end align-items-center">
                             <img alt="" src="{{ asset('front/assets/img/pic9.jpg') }}"/>
                             <p class="font-bold mt-2">María Gabriela Rodriguez</p>
                         </div>
@@ -172,10 +190,10 @@
                         <div class="ranking_members_list__member my-3 mx-2 d-flex flex-column justify-content-end align-items-center">
                             <img alt="" src="{{ asset('front/assets/img/user.svg') }}"/>
                             <p class="font-bold mt-2">María Gabriela Rodriguez</p>
-                        </div>
+                        </div>  #}
                     </div>
 
-                    <p class="text-center mt-4 ranking_members_amount"><span>524</span> participantes más te acompañan en esta liga</p>
+                    <p class="text-center mt-4 ranking_members_amount"><span id="totalParticipantes"></span> participantes más te acompañan en esta liga</p>
                     {# <table class="rank-table" cellpadding="0" cellspacing="0" border="0">
                         <thead class="campo_title">
                             <tr>
@@ -190,7 +208,7 @@
                                 <td>
                                     <img class="rank-badge-number" src="{{ asset('front/assets/img/badge4.png') }}" alt="" />
                                 </td>
-                                
+
                                 <td><span>Yuan Osaka</span></td>
                                 <td>14</td>
                                 <td>
@@ -199,7 +217,7 @@
                             </tr>
                             <tr>
                                 <td><img class="rank-badge-number" src="{{ asset('front/assets/img/badge3.png') }}" alt="" /></td>
-                                
+
                                 <td><span>Donald Malarkey</span></td>
                                 <td>10</td>
                                 <td>
@@ -208,7 +226,7 @@
                             </tr>
                             <tr>
                                 <td><img class="rank-badge-number" src="{{ asset('front/assets/img/badge2.png') }}" alt="" /></td>
-                                
+
                                 <td><span>Ronald Spears</span></td>
                                 <td>8</td>
                                 <td>
@@ -217,7 +235,7 @@
                             </tr>
                             <tr>
                                 <td><img class="rank-badge" src="{{ asset('front/assets/img/badge.png') }}" alt="" /></td>
-                                
+
                                 <td><span>Jessica Chestain</span></td>
                                 <td>7</td>
                                 <td>
@@ -226,7 +244,7 @@
                             </tr>
                             <tr>
                                 <td><img class="rank-badge" src="{{ asset('front/assets/img/badge.png') }}" alt="" /></td>
-                                
+
                                 <td><span>Pat Christensen</span></td>
                                 <td>7</td>
                                 <td>
@@ -235,7 +253,7 @@
                             </tr>
                             <tr>
                                 <td><img class="rank-badge" src="{{ asset('front/assets/img/badge.png') }}" alt="" /></td>
-                                
+
                                 <td><span>Masaki Oki</span></td>
                                 <td>5</td>
                                 <td>
@@ -244,7 +262,7 @@
                             </tr>
                             <tr>
                                 <td><img class="rank-badge" src="{{ asset('front/assets/img/badge.png') }}" alt="" /></td>
-                                
+
                                 <td><span>Alton Moore</span></td>
                                 <td>3</td>
                                 <td>
@@ -253,7 +271,7 @@
                             </tr>
                             <tr class="me-i">
                                 <td><img class="rank-badge" src="{{ asset('front/assets/img/badge.png') }}" alt="" /></td>
-                                
+
                                 <td><span>Rebecca Chambers</span></td>
                                 <td>0</td>
                                 <td>
@@ -262,7 +280,7 @@
                             </tr>
                             <tr>
                                 <td><img class="rank-badge" src="{{ asset('front/assets/img/badge.png') }}" alt="" /></td>
-                                
+
                                 <td><span>Ada Wong</span></td>
                                 <td>0</td>
                                 <td>
@@ -271,7 +289,7 @@
                             </tr>
                             <tr>
                                 <td><img class="rank-badge" src="{{ asset('front/assets/img/badge.png') }}" alt="" /></td>
-                                
+
                                 <td><span>Natasha Romanov</span></td>
                                 <td>0</td>
                                 <td>
@@ -280,7 +298,7 @@
                             </tr>
                             <tr>
                                 <td><img class="rank-badge" src="{{ asset('front/assets/img/badge.png') }}" alt="" /></td>
-                                
+
                                 <td><span>Rodrigo Rodriguez</span></td>
                                 <td>7</td>
                                 <td>

@@ -213,33 +213,4 @@ class AdminLigas
     {
         return $this->imagen;
     }
-    /**
-     * @var int|null
-     */
-    private $porcentajemin;
-
-
-    /**
-     * Set porcentajemin.
-     *
-     * @param int|null $porcentajemin
-     *
-     * @return AdminLigas
-     */
-    public function setPorcentajemin($porcentajemin = null)
-    {
-        $this->porcentajemin = $porcentajemin;
-    
-        return $this;
-    }
-
-    /**
-     * Get porcentajemin.
-     *
-     * @return int|null
-     */
-    public function getPorcentajemin()
-    {
-        return $this->porcentajemin;
-    }
 }
