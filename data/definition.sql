@@ -740,7 +740,9 @@ CREATE TABLE admin_ligas(
 id serial,
 nombre varchar(100),
 descripcion varchar(500),
-puntuacion integer,
+porcentajemin integer,
+porcentajemax integer,
+imagen varchar(255),
  PRIMARY KEY (id));
 
 CREATE TABLE admin_medallas_usuario(
