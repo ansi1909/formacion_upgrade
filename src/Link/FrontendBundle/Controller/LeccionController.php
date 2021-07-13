@@ -412,18 +412,18 @@ class LeccionController extends Controller
             {
                 if($comentariosTotal == 3)
                 {
-                    $medallaUsuario = $em->getRepository('LinkComunBundle:AdminMedasllaUsuario')->findOneBy(array('pagina' => $pagina_padre->getId(),
+                    $medallaUsuario = $em->getRepository('LinkComunBundle:AdminMedallasUsuario')->findOneBy(array('pagina' => $pagina_padre->getId(),
                                                                                                                   'usuario' => $muro_padre->getUsuario()->getId(),
                                                                                                                   'medalla' => $yml['parameters']['medallas']['influencer_1']));
                     if(!$medallaUsuario)
                     {
                         $medalla = $this->getDoctrine()->getRepository('LinkComunBundle:AdminMedallas')->find($yml['parameters']['medallas']['influencer_1']);
                         
-                        $medalla = new AdminMedallasUsuario();
-                        $medalla->setUsuario($usuario);
-                        $medalla->setMedalla($medalla->getId());
-                        $medalla->setPagina($pagina_padre);
-                        $em->persist($medalla);
+                        $medallaUsuario = new AdminMedallasUsuario();
+                        $medallaUsuario->setUsuario($usuario);
+                        $medallaUsuario->setMedalla($medalla);
+                        $medallaUsuario->setPagina($pagina_padre);
+                        $em->persist($medallaUsuario);
                         $em->flush();
 
                         $puntos_agregados = $puntos_agregados + $yml['parameters']['puntos']['influencer_1'];
@@ -432,18 +432,18 @@ class LeccionController extends Controller
                 }
                 elseif($comentariosTotal == 6)
                 {
-                    $medallaUsuario = $em->getRepository('LinkComunBundle:AdminMedasllaUsuario')->findOneBy(array('pagina' => $pagina_padre->getId(),
+                    $medallaUsuario = $em->getRepository('LinkComunBundle:AdminMedallasUsuario')->findOneBy(array('pagina' => $pagina_padre->getId(),
                                                                                                                   'usuario' => $muro_padre->getUsuario()->getId(),
                                                                                                                   'medalla' => $yml['parameters']['medallas']['influencer_2']));
                     if(!$medallaUsuario)
                     {
                         $medalla = $this->getDoctrine()->getRepository('LinkComunBundle:AdminMedallas')->find($yml['parameters']['medallas']['influencer_2']);
                         
-                        $medalla = new AdminMedallasUsuario();
-                        $medalla->setUsuario($usuario);
-                        $medalla->setMedalla($medalla->getId());
-                        $medalla->setPagina($pagina_padre);
-                        $em->persist($medalla);
+                        $medallaUsuario = new AdminMedallasUsuario();
+                        $medallaUsuario->setUsuario($usuario);
+                        $medallaUsuario->setMedalla($medalla);
+                        $medallaUsuario->setPagina($pagina_padre);
+                        $em->persist($medallaUsuario);
                         $em->flush();
 
                         $puntos_agregados = $puntos_agregados + $yml['parameters']['puntos']['influencer_2'];
@@ -452,18 +452,18 @@ class LeccionController extends Controller
                 }
                 elseif($comentariosTotal == 9)
                 {
-                    $medallaUsuario = $em->getRepository('LinkComunBundle:AdminMedasllaUsuario')->findOneBy(array('pagina' => $pagina_padre->getId(),
+                    $medallaUsuario = $em->getRepository('LinkComunBundle:AdminMedallasUsuario')->findOneBy(array('pagina' => $pagina_padre->getId(),
                                                                                                                   'usuario' => $muro_padre->getUsuario()->getId(),
                                                                                                                   'medalla' => $yml['parameters']['medallas']['influencer_3']));
                     if(!$medallaUsuario)
                     {
                         $medalla = $this->getDoctrine()->getRepository('LinkComunBundle:AdminMedallas')->find($yml['parameters']['medallas']['influencer_3']);
                         
-                        $medalla = new AdminMedallasUsuario();
-                        $medalla->setUsuario($usuario);
-                        $medalla->setMedalla($medalla->getId());
-                        $medalla->setPagina($pagina_padre);
-                        $em->persist($medalla);
+                        $medallaUsuario = new AdminMedallasUsuario();
+                        $medallaUsuario->setUsuario($usuario);
+                        $medallaUsuario->setMedalla($medalla);
+                        $medallaUsuario->setPagina($pagina_padre);
+                        $em->persist($medallaUsuario);
                         $em->flush();
 
                         $puntos_agregados = $puntos_agregados + $yml['parameters']['puntos']['influencer_3'];
@@ -473,77 +473,85 @@ class LeccionController extends Controller
                 }
             //return new response($comentarios.'   '.$pagina_id);
             }
-
+            $programa = '';
             $estructura = $f->obtenerEstructura($pagina_padre_id, $yml);
+            $ids = 1;
+            
+            //return new response($usuario->getId());
 
             $query = $em->createQuery('SELECT COUNT(cm.id) FROM LinkComunBundle:CertiMuro cm 
                                     WHERE cm.usuario = :usuario_id
-                                    AND cm.pagina IN :programa')
-                        ->setParameters(array('usuario_id', $usuario->getId(),
-                                              'programa', $estructura));
+                                    AND cm.pagina IN (:programa)')
+                        ->setParameters(array('usuario_id' => $usuario->getId(),
+                                              'programa' => $estructura));
             $comentariosTotal2 = $query->getSingleScalarResult();
+            
 
-            $comentarios = $comentariosTotal / 5;
-
+            $comentarios = $comentariosTotal2 / 5;
+            
             if( is_int($comentarios))
-            {
-                if($comentariosTotal == 5)
+            {   
+                
+                if($comentariosTotal2 == 5)
                 {
-                    $medallaUsuario = $em->getRepository('LinkComunBundle:AdminMedasllaUsuario')->findOneBy(array('pagina' => $pagina_padre->getId(),
-                                                                                                                  'usuario' => $muro_padre->getUsuario()->getId(),
+                    $medallaUsuario = $em->getRepository('LinkComunBundle:AdminMedallasUsuario')->findOneBy(array('pagina' => $pagina_padre->getId(),
+                                                                                                                  'usuario' => $usuario->getId(),
                                                                                                                   'medalla' => $yml['parameters']['medallas']['amigable_1']));
                     if(!$medallaUsuario)
                     {
                         $medalla = $this->getDoctrine()->getRepository('LinkComunBundle:AdminMedallas')->find($yml['parameters']['medallas']['amigable_1']);
                         
-                        $medalla = new AdminMedallasUsuario();
-                        $medalla->setUsuario($usuario);
-                        $medalla->setMedalla($medalla->getId());
-                        $medalla->setPagina($pagina_padre);
-                        $em->persist($medalla);
+                        $medallaUsuario = new AdminMedallasUsuario();
+                        $medallaUsuario->setUsuario($usuario);
+                        $medallaUsuario->setMedalla($medalla);
+                        $medallaUsuario->setPagina($pagina_padre);
+                        $em->persist($medallaUsuario);
                         $em->flush();
 
                         $puntos_agregados = $puntos_agregados + $yml['parameters']['puntos']['amigable_1'];
                         //return new response(var_dump($puntos_agregados));
+                        
                     }
                 }
-                elseif($comentariosTotal == 10)
+                elseif($comentariosTotal2 == 10)
                 {
-                    $medallaUsuario = $em->getRepository('LinkComunBundle:AdminMedasllaUsuario')->findOneBy(array('pagina' => $pagina_padre->getId(),
-                                                                                                                  'usuario' => $muro_padre->getUsuario()->getId(),
-                                                                                                                  'medalla' => $yml['parameters']['medallas']['influamigable_1encer_2']));
+                    $medallaUsuario = $em->getRepository('LinkComunBundle:AdminMedallasUsuario')->findOneBy(array('pagina' => $pagina_padre->getId(),
+                                                                                                                  'usuario' => $usuario->getId(),
+                                                                                                                  'medalla' => $yml['parameters']['medallas']['amigable_2']));
                     if(!$medallaUsuario)
                     {
-                        $medalla = $this->getDoctrine()->getRepository('LinkComunBundle:AdminMedallas')->find($yml['parameters']['medallas']['amigable_1']);
+                        $medalla = $this->getDoctrine()->getRepository('LinkComunBundle:AdminMedallas')->find($yml['parameters']['medallas']['amigable_2']);
                         
-                        $medalla = new AdminMedallasUsuario();
-                        $medalla->setUsuario($usuario);
-                        $medalla->setMedalla($medalla->getId());
-                        $medalla->setPagina($pagina_padre);
-                        $em->persist($medalla);
+                        $medallaUsuario = new AdminMedallasUsuario();
+                        $medallaUsuario->setUsuario($usuario);
+                        $medallaUsuario->setMedalla($medalla);
+                        $medallaUsuario->setPagina($pagina_padre);
+                        $em->persist($medallaUsuario);
                         $em->flush();
 
-                        $puntos_agregados = $puntos_agregados + $yml['parameters']['puntos']['amigable_1'];
+                        $puntos_agregados = $puntos_agregados + $yml['parameters']['puntos']['amigable_2'];
                         //return new response(var_dump($puntos_agregados));
+                        
                     }
                 }
-                elseif($comentariosTotal == 15)
+                elseif($comentariosTotal2 == 15)
                 {
-                    $medallaUsuario = $em->getRepository('LinkComunBundle:AdminMedasllaUsuario')->findOneBy(array('pagina' => $pagina_padre->getId(),
-                                                                                                                  'usuario' => $muro_padre->getUsuario()->getId(),
-                                                                                                                  'medalla' => $yml['parameters']['medallas']['amigable_1']));
+                    
+                    $medallaUsuario = $em->getRepository('LinkComunBundle:AdminMedallasUsuario')->findOneBy(array('pagina' => $pagina_padre->getId(),
+                                                                                                                  'usuario' => $usuario->getId(),
+                                                                                                                  'medalla' => $yml['parameters']['medallas']['amigable_3']));
                     if(!$medallaUsuario)
                     {
-                        $medalla = $this->getDoctrine()->getRepository('LinkComunBundle:AdminMedallas')->find($yml['parameters']['medallas']['amigable_1']);
+                        $medalla = $this->getDoctrine()->getRepository('LinkComunBundle:AdminMedallas')->find($yml['parameters']['medallas']['amigable_3']);
                         
-                        $medalla = new AdminMedallasUsuario();
-                        $medalla->setUsuario($usuario);
-                        $medalla->setMedalla($medalla->getId());
-                        $medalla->setPagina($pagina_padre);
-                        $em->persist($medalla);
+                        $medallaUsuario = new AdminMedallasUsuario();
+                        $medallaUsuario->setUsuario($usuario);
+                        $medallaUsuario->setMedalla($medalla);
+                        $medallaUsuario->setPagina($pagina_padre);
+                        $em->persist($medallaUsuario);
                         $em->flush();
 
-                        $puntos_agregados = $puntos_agregados + $yml['parameters']['puntos']['amigable_1'];
+                        $puntos_agregados = $puntos_agregados + $yml['parameters']['puntos']['amigable_3'];
                         //return new response(var_dump($puntos_agregados));
                     }
 
