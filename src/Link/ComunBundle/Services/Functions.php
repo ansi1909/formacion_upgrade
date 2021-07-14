@@ -2054,7 +2054,7 @@ public function obtenerEstructuraJson($pagina_id){
 
           $query = $em->createQuery("SELECT COUNT(pl.id) FROM LinkComunBundle:CertiPruebaLog pl
                                       JOIN pl.prueba p
-                                      WHERE pl.usuario IN :usuario_id
+                                      WHERE pl.usuario IN (:usuario_id)
                                       AND p.pagina = :pagina_id
                                       AND pl.estado != :estado
                                       ORDER BY pl.id DESC")
