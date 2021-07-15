@@ -23,8 +23,8 @@ use Link\ComunBundle\Entity\AdminCorreo;
 use Link\ComunBundle\Entity\AdminUsuario;
 use Link\ComunBundle\Entity\AdminEvento;
 use Link\ComunBundle\Entity\AdminNoticia;
-use Link\ComunBundle\Entity\AdminMedasllaUsuario;
-use Link\ComunBundle\Entity\AdminMedasllas;
+use Link\ComunBundle\Entity\AdminMedallasUsuario;
+use Link\ComunBundle\Entity\AdminMedallas;
 
 
 
@@ -1979,13 +1979,13 @@ public function obtenerEstructuraJson($pagina_id){
           $pruebas_logs = $query->getResult();
 
           $query = $em->createQuery("SELECT COUNT(p.id) FROM LinkComunBundle:CertiPrueba p
-                                      AND p.pagina IN (:paginas_id)
-                                      ORDER BY p.id DESC")
+                                      WHERE p.pagina IN (:paginas_id)
+                                      GROUP BY p.id")
                       ->setParameter('paginas_id', $estructura);
           $pruebas_total = $query->getResult();
 
-          $pagina = $this->getDoctrine()->getRepository('LinkComunBundle:CertiPagina')->find($pagina_padre_id);
-          $usuario = $this->getDoctrine()->getRepository('LinkComunBundle:AdminUsuario')->find($usuario_id);
+          $pagina =  $em->getRepository('LinkComunBundle:CertiPagina')->find($pagina_padre_id);
+          $usuario =  $em->getRepository('LinkComunBundle:AdminUsuario')->find($usuario_id);
           
           $contador = 0;
 
@@ -2002,7 +2002,7 @@ public function obtenerEstructuraJson($pagina_id){
               $medallaUsuario->setUsuario($usuario);
               $medallaUsuario->setMedalla($medalla);
               $medallaUsuario->setPagina($pagina);
-              $em->persist($medalla);
+              $em->persist($medallaUsuario);
               $em->flush();
 
               $puntos = $puntos + $yml['parameters']['puntos']['super_smart'];
@@ -2025,12 +2025,12 @@ public function obtenerEstructuraJson($pagina_id){
                                                                                                           'medalla' => $yml['parameters']['medallas']['perfeccionista']));
             if(!$medallaUsuario)
             {
-              $medalla = $this->getDoctrine()->getRepository('LinkComunBundle:AdminMedallas')->find($yml['parameters']['medallas']['perfeccionista']);
+              $medalla = $em->getRepository('LinkComunBundle:AdminMedallas')->find($yml['parameters']['medallas']['perfeccionista']);
               $medallaUsuario = new AdminMedallasUsuario();
               $medallaUsuario->setUsuario($usuario);
               $medallaUsuario->setMedalla($medalla);
               $medallaUsuario->setPagina($pagina);
-              $em->persist($medalla);
+              $em->persist($medallaUsuario);
               $em->flush();
 
               $puntos = $puntos + $yml['parameters']['puntos']['perfeccionista'];
@@ -2050,51 +2050,51 @@ public function obtenerEstructuraJson($pagina_id){
                                               'rol_id' => $yml['parameters']['rol']['participante'],
                                               'revisor' => 'revisor%',
                                               'tutor' => 'tutor%'));
-            $usuarios_activos = $query->getSingleScalarResult();
+            $usuarios_activos = $query->getResult();
 
           $query = $em->createQuery("SELECT COUNT(pl.id) FROM LinkComunBundle:CertiPruebaLog pl
                                       JOIN pl.prueba p
                                       WHERE pl.usuario IN (:usuario_id)
                                       AND p.pagina = :pagina_id
-                                      AND pl.estado != :estado
-                                      ORDER BY pl.id DESC")
+                                      AND pl.estado = :estado
+                                      GROUP BY pl.id")
                       ->setParameters(array('usuario_id' => $usuarios_activos,
                                   'pagina_id' => $pagina_padre_id,
-                                  'estado' => $yml['parameters']['estado_prueba']['completado']));
+                                  'estado' => $yml['parameters']['estado_prueba']['aprobado']));
           $cantidad_usuarios_aprobados = $query->getResult();
           
           if($cantidad_usuarios_aprobados == 1){
-            $medalla = $this->getDoctrine()->getRepository('LinkComunBundle:AdminMedallas')->find($yml['parameters']['medallas']['primer_lugar']);
+            $medalla = $em->getRepository('LinkComunBundle:AdminMedallas')->find($yml['parameters']['medallas']['primer_lugar']);
             
               $medallaUsuario = new AdminMedallasUsuario();
               $medallaUsuario->setUsuario($usuario);
               $medallaUsuario->setMedalla($medalla);
               $medallaUsuario->setPagina($pagina);
-              $em->persist($medalla);
+              $em->persist($medallaUsuario);
               $em->flush();
 
               $puntos = $puntos + $yml['parameters']['puntos']['primer_lugar'];
             
           }elseif ($cantidad_usuarios_aprobados == 2){
-            $medalla = $this->getDoctrine()->getRepository('LinkComunBundle:AdminMedallas')->find($yml['parameters']['medallas']['segundo_lugar']);
+            $medalla = $em->getRepository('LinkComunBundle:AdminMedallas')->find($yml['parameters']['medallas']['segundo_lugar']);
             
               $medallaUsuario = new AdminMedallasUsuario();
               $medallaUsuario->setUsuario($usuario);
               $medallaUsuario->setMedalla($medalla);
               $medallaUsuario->setPagina($pagina);
-              $em->persist($medalla);
+              $em->persist($medallaUsuario);
               $em->flush();
 
               $puntos = $puntos + $yml['parameters']['puntos']['segundo_lugar'];
             
           }elseif ($cantidad_usuarios_aprobados == 3){
-            $medalla = $this->getDoctrine()->getRepository('LinkComunBundle:AdminMedallas')->find($yml['parameters']['medallas']['tercer_lugar']);
+            $medalla = $em->getRepository('LinkComunBundle:AdminMedallas')->find($yml['parameters']['medallas']['tercer_lugar']);
             
               $medallaUsuario = new AdminMedallasUsuario();
               $medallaUsuario->setUsuario($usuario);
               $medallaUsuario->setMedalla($medalla);
               $medallaUsuario->setPagina($pagina);
-              $em->persist($medalla);
+              $em->persist($medallaUsuario);
               $em->flush();
 
               $puntos = $puntos + $yml['parameters']['puntos']['tercer_lugar'];
@@ -2102,13 +2102,13 @@ public function obtenerEstructuraJson($pagina_id){
           }
 
             //medalla por pasar el programa
-            $medalla = $this->getDoctrine()->getRepository('LinkComunBundle:AdminMedallas')->find($yml['parameters']['medallas']['graduado']);
+            $medalla = $em->getRepository('LinkComunBundle:AdminMedallas')->find($yml['parameters']['medallas']['graduado']);
             
               $medallaUsuario = new AdminMedallasUsuario();
               $medallaUsuario->setUsuario($usuario);
               $medallaUsuario->setMedalla($medalla);
               $medallaUsuario->setPagina($pagina);
-              $em->persist($medalla);
+              $em->persist($medallaUsuario);
               $em->flush();
 
               $puntos = $puntos + $yml['parameters']['puntos']['graduado'];
@@ -2118,13 +2118,13 @@ public function obtenerEstructuraJson($pagina_id){
             
               if($pagina_padre_log->getInicioFin() < $sesionActiva->getFechaIngreso() )
               {
-                $medalla = $this->getDoctrine()->getRepository('LinkComunBundle:AdminMedallas')->find($yml['parameters']['medallas']['imparable']);
+                $medalla = $em->getRepository('LinkComunBundle:AdminMedallas')->find($yml['parameters']['medallas']['imparable']);
             
                 $medallaUsuario = new AdminMedallasUsuario();
                 $medallaUsuario->setUsuario($usuario);
                 $medallaUsuario->setMedalla($medalla);
                 $medallaUsuario->setPagina($pagina);
-                $em->persist($medalla);
+                $em->persist($medallaUsuario);
                 $em->flush();
 
                 $puntos = $puntos + $yml['parameters']['puntos']['imparable'];
