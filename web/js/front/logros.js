@@ -38,14 +38,10 @@ $(document).ready(function() {
                             imgLeague = document.createElement("img");
                             pLeague = document.createElement("p");
                             pLeague.innerHTML = leagues[index].puntos_min+'+';
-                            //pLeague.style.display = "inline";
                             if(leagues[index].puntos_min == 0){
                                 pLeague.style.visibility = "hidden";
                             }
                             
-                          
-                            
-
                             divLeague.classList.add("ranking_categories__category" ,"px-2" ,"pt-2", "pb-4");
                             if(leagues[index].lograda){
                                 imgLeague.src = leagues[index].imagen;
@@ -122,17 +118,6 @@ $(document).ready(function() {
 
                 }
             });
-            //Viejo
-            // setTimeout(() => {
-            //     $('.ranking-loader').removeClass('d-flex');
-            //     $('#study_plan').removeClass('show');
-            //     $('#achievements-container').addClass('show');
-            //     $("#achievements-container").animate({ scrollTop: 0 }, "fast");
-
-            //     if (rankingTitle) {
-            //         $('.j-ranking-title').text(rankingTitle);
-            //     }
-            // }, 1000);
         }
     });
 
