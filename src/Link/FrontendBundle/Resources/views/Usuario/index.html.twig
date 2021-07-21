@@ -93,6 +93,8 @@
 {% set fecha_nacimiento = app.session.get('usuario')['fecha_nacimiento'] %}
 {% set fecha_nacimiento_formateada = app.session.get('usuario')['fecha_nacimiento_formateada'] %}
 <input type="hidden" id="url_img" name="url_img" value="{{ path('_ajaxImg') }}">
+<input type="hidden" id="url_medallas" name="url_medallas" value="{{ path('_ajaxRankingAction') }}">
+<input type="hidden" id="usuario_medallas" name="usuario_medallas" value="{{ login }}">
 
 <div class="modal ranking-loader justify-content-center align-items-center">
     <div class="ranking-loader__spinner">
@@ -182,6 +184,31 @@
 <div class="for-message  container py-5 px-6 my-4 show" id="study_plan">
     <h4 class="mb-4 text-left">Plan de estudio:</h4>
     <div class="container d-flex flex-column justify-content-center align-items-center ">
+    {# ----------- ESTE ES EL CODIGO VALIDO -------------- #}
+        {# {% for programa in programas %}
+        <div class="card-hrz card-mod d-flex flex-column flex-md-row">
+            <img class="card-hrz-img mr-xl-3 d-flex justify-content-center align-items-center" src="{{programa.foto}}" alt="">
+            <div class="wraper d-flex flex-column flex-md-row justify-content-center"> 
+                <div class="card-hrz-body">
+                    <h5 class="title-grey my-3 font-weight-normal"> {{ programa.nombre }}</h5>
+                    <span class="text-sm title-grey d-lg-block"> Módulo </span>
+                    <span class="text-sm color-light-grey d-lg-block"> {{ programa.modulo }} </span>
+                    <div class="progress mt-4 mb-3 mt-md-2">
+                        <div class="progress-bar" role="progressbar" style="{{programa.progreso}}" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
+                    </div>
+                </div>
+
+                <div class="card-hrz-right d-flex flex-column justify-content-top mx-3 pb-1 align-item align-items-center">
+                <div class="percent text-center mt-1">
+                    <h2 class="color-light-grey mb-0 pb-0 porcent-xs"> {{programa.progreso}} </h2>
+                    <span class="d-block count mt-0 mb-2 text-xs color-light-grey alertTimeDanger">Finaliza en {{programa.fin}} días</span>
+                </div>
+                <button href="#" class="btn btn-sm btn-continuar mt-0 px-3 mb-3 btn-xs-cont j-btn-medals" data-id="{{programa.id}}"> Mis logros </button>
+            </div>
+            </div>
+        </div>
+        {% endfor %} #}
+        {# ------------------------------------------------- #}
         <div class="card-hrz card-mod d-flex flex-column flex-md-row">
             <img class="card-hrz-img mr-xl-3 d-flex justify-content-center align-items-center" src="{{ asset('front/assets/img/liderazgo-hrz.png') }}" alt="">
             <div class="wraper d-flex flex-column flex-md-row justify-content-center"> 
@@ -199,7 +226,7 @@
                     <h2 class="color-light-grey mb-0 pb-0 porcent-xs"> 20% </h2>
                     <span class="d-block count mt-0 mb-2 text-xs color-light-grey alertTimeDanger">Finaliza en 08 días</span>
                 </div>
-                <button href="#" class="btn btn-sm btn-continuar mt-0 px-3 mb-3 btn-xs-cont j-btn-achievement" data-id="1"> Mis logros </button>
+                <button href="#" class="btn btn-sm btn-continuar mt-0 px-3 mb-3 btn-xs-cont j-btn-medals" data-id="1"> Mis logros </button>
             </div>
             </div>
         </div>
@@ -221,7 +248,7 @@
                     <h2 class="color-light-grey mb-0 pb-0 porcent-xs"> 20% </h2>
                     <span class="d-block count mt-0 mb-2 text-xs color-light-grey alertTimeDanger">Finaliza en 08 días</span>
                 </div>
-                <button href="#" class="btn btn-sm btn-continuar mt-0 px-3 mb-3 btn-xs-cont j-btn-achievement" data-id="1"> Mis logros </button>
+                <button href="#" class="btn btn-sm btn-continuar mt-0 px-3 mb-3 btn-xs-cont j-btn-medals" data-id="1"> Mis logros </button>
             </div>
             </div>
         </div>
@@ -233,7 +260,7 @@
 
 <div class="container py-5 px-2 mb-4 flex-column align-items-center" id="achievements-container">
 <button href="#" class="btn btn-sm btn-continuar mt-0 px-3 mb-3 btn-xs-cont j-btn-back-to-plan" data-id="2"> Volver al plan de estudios </button>
-    <h4 class="mb-4">Mis logros en el curso Comunicación para la supervisión:</h4>
+    <h4 class="mb-4" id="achievements-container">Mis logros en el curso Comunicación para la supervisión:</h4>
 
     <div class="card-achievement green-line">
         <img src="{{asset('front/assets/img/recurso-5.png')}}" alt="" class="card-achievement__badge">
