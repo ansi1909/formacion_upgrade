@@ -23,6 +23,9 @@ use Link\ComunBundle\Entity\AdminCorreo;
 use Link\ComunBundle\Entity\AdminUsuario;
 use Link\ComunBundle\Entity\AdminEvento;
 use Link\ComunBundle\Entity\AdminNoticia;
+use Link\ComunBundle\Entity\AdminMedallasUsuario;
+use Link\ComunBundle\Entity\AdminMedallas;
+
 
 
 
@@ -1978,6 +1981,177 @@ public function obtenerEstructuraJson($pagina_id){
           $estatus_pagina = $em->getRepository('LinkComunBundle:CertiEstatusPagina')->find($yml['parameters']['estatus_pagina']['completada']);
           $pagina_padre_log->setEstatusPagina($estatus_pagina);
           $pagina_padre_log->setFechaFin(new \DateTime('now'));
+
+          $estructura = $this->obtenerEstructura($pagina_padre_id, $yml);
+          
+
+          $query = $em->createQuery("SELECT pl FROM LinkComunBundle:CertiPruebaLog pl
+                                      JOIN pl.prueba p
+                                      WHERE pl.usuario = :usuario_id
+                                      AND p.pagina IN (:paginas_id)")
+                      ->setParameters(array('usuario_id' => $usuario_id,
+                                            'paginas_id' => $estructura));
+          $pruebas_logs = $query->getResult();
+          
+
+          $query = $em->createQuery("SELECT COUNT(p.id) FROM LinkComunBundle:CertiPrueba p
+                                      WHERE p.pagina IN (:paginas_id)
+                                      GROUP BY p.id")
+                      ->setParameter('paginas_id', $estructura);
+          $pruebas_total = $query->getResult();
+
+          $pagina =  $em->getRepository('LinkComunBundle:CertiPagina')->find($pagina_padre_id);
+          $usuario =  $em->getRepository('LinkComunBundle:AdminUsuario')->find($usuario_id);
+          
+          $contador = 0;
+
+          if(count($pruebas_logs) == count($pruebas_total))
+          {
+              
+            $medallaUsuario = $em->getRepository('LinkComunBundle:AdminMedallasUsuario')->findOneBy(array('pagina' => $pagina_padre_id,
+                                                                                                          'usuario' => $usuario_id,
+                                                                                                          'medalla' => $yml['parameters']['medallas']['super_smart']));
+            if(!$medallaUsuario)
+            {
+              $medalla = $em->getRepository('LinkComunBundle:AdminMedallas')->find($yml['parameters']['medallas']['super_smart']);
+
+              $medallaUsuario = new AdminMedallasUsuario();
+              $medallaUsuario->setUsuario($usuario);
+              $medallaUsuario->setMedalla($medalla);
+              $medallaUsuario->setPagina($pagina);
+              $em->persist($medallaUsuario);
+              $em->flush();
+
+              $puntos = $puntos + $yml['parameters']['puntos']['super_smart'];
+              
+            }
+          }
+
+          foreach($pruebas_logs as $prueba)
+          {
+             
+            if($prueba->getEstado() == $yml['parameters']['estado_prueba']['aprobado'] && $prueba->getNota() == '100.00' )
+            {
+              $contador = $contador + 1;
+
+            }
+          }
+            
+          if($contador == count($pruebas_total))
+          {
+            $medallaUsuario = $em->getRepository('LinkComunBundle:AdminMedallasUsuario')->findOneBy(array('pagina' => $pagina_padre_id,
+                                                                                                          'usuario' => $usuario_id,
+                                                                                                          'medalla' => $yml['parameters']['medallas']['perfeccionista']));
+            if(!$medallaUsuario)
+            {
+              $medalla = $em->getRepository('LinkComunBundle:AdminMedallas')->find($yml['parameters']['medallas']['perfeccionista']);
+              $medallaUsuario = new AdminMedallasUsuario();
+              $medallaUsuario->setUsuario($usuario);
+              $medallaUsuario->setMedalla($medalla);
+              $medallaUsuario->setPagina($pagina);
+              $em->persist($medallaUsuario);
+              $em->flush();
+
+              $puntos = $puntos + $yml['parameters']['puntos']['perfeccionista'];
+              
+            }
+          }
+
+          $query = $em->createQuery('SELECT u.id FROM LinkComunBundle:AdminRolUsuario ru
+                                    JOIN ru.usuario u
+                                    join u.nivel n
+                                    WHERE u.empresa = :empresa_id
+                                    AND  u.activo = :activo
+                                    AND ru.rol = :rol_id
+                                    and LOWER(n.nombre) not like :revisor
+                                    and LOWER(n.nombre) not like :tutor')
+                        ->setParameters(array('empresa_id' => $usuario->getEmpresa()->getId(),
+                                              'activo' => 'true',
+                                              'rol_id' => $yml['parameters']['rol']['participante'],
+                                              'revisor' => 'revisor%',
+                                              'tutor' => 'tutor%'));
+            $usuarios_activos = $query->getResult();
+
+          $query = $em->createQuery("SELECT COUNT(pl.id) FROM LinkComunBundle:CertiPaginaLog pl
+                                      WHERE pl.usuario IN (:usuario_id)
+                                      AND pl.pagina = :pagina_id
+                                      AND pl.estatusPagina = :estado
+                                      GROUP BY pl.id")
+                      ->setParameters(array('usuario_id' => $usuarios_activos,
+                                  'pagina_id' => $pagina_padre_id,
+                                  'estado' => $yml['parameters']['estatus_pagina']['completada']));
+          $cantidad_usuarios_aprobados = $query->getResult();
+          
+          
+          
+          if(count($cantidad_usuarios_aprobados) == 1){
+            $medalla = $em->getRepository('LinkComunBundle:AdminMedallas')->find($yml['parameters']['medallas']['primer_lugar']);
+            
+              $medallaUsuario = new AdminMedallasUsuario();
+              $medallaUsuario->setUsuario($usuario);
+              $medallaUsuario->setMedalla($medalla);
+              $medallaUsuario->setPagina($pagina);
+              $em->persist($medallaUsuario);
+              $em->flush();
+
+              $puntos = $puntos + $yml['parameters']['puntos']['primer_lugar'];
+            
+          }elseif (count($cantidad_usuarios_aprobados) == 2){
+            $medalla = $em->getRepository('LinkComunBundle:AdminMedallas')->find($yml['parameters']['medallas']['segundo_lugar']);
+            
+              $medallaUsuario = new AdminMedallasUsuario();
+              $medallaUsuario->setUsuario($usuario);
+              $medallaUsuario->setMedalla($medalla);
+              $medallaUsuario->setPagina($pagina);
+              $em->persist($medallaUsuario);
+              $em->flush();
+
+              $puntos = $puntos + $yml['parameters']['puntos']['segundo_lugar'];
+            
+          }elseif (count($cantidad_usuarios_aprobados) == 3){
+            $medalla = $em->getRepository('LinkComunBundle:AdminMedallas')->find($yml['parameters']['medallas']['tercer_lugar']);
+            
+              $medallaUsuario = new AdminMedallasUsuario();
+              $medallaUsuario->setUsuario($usuario);
+              $medallaUsuario->setMedalla($medalla);
+              $medallaUsuario->setPagina($pagina);
+              $em->persist($medallaUsuario);
+              $em->flush();
+
+              $puntos = $puntos + $yml['parameters']['puntos']['tercer_lugar'];
+            
+          }
+
+            //medalla por pasar el programa
+            $medalla = $em->getRepository('LinkComunBundle:AdminMedallas')->find($yml['parameters']['medallas']['graduado']);
+            
+              $medallaUsuario = new AdminMedallasUsuario();
+              $medallaUsuario->setUsuario($usuario);
+              $medallaUsuario->setMedalla($medalla);
+              $medallaUsuario->setPagina($pagina);
+              $em->persist($medallaUsuario);
+              $em->flush();
+
+              $puntos = $puntos + $yml['parameters']['puntos']['graduado'];
+
+              $sesionActiva = $em->getRepository('LinkComunBundle:AdminSesion')->findOneBy(array('disponible' => True,
+                                                                                                   'usuario' => $usuario_id));
+            
+              if($pagina_padre_log->getInicio() < $sesionActiva->getFechaIngreso() )
+              {
+                $medalla = $em->getRepository('LinkComunBundle:AdminMedallas')->find($yml['parameters']['medallas']['imparable']);
+            
+                $medallaUsuario = new AdminMedallasUsuario();
+                $medallaUsuario->setUsuario($usuario);
+                $medallaUsuario->setMedalla($medalla);
+                $medallaUsuario->setPagina($pagina);
+                $em->persist($medallaUsuario);
+                $em->flush();
+
+                $puntos = $puntos + $yml['parameters']['puntos']['imparable'];
+
+              }
+
         }
         else {
           if ($subpaginas_completadas && $indexedPages[$pagina_padre_id]['tiene_evaluacion'])
@@ -1990,8 +2164,8 @@ public function obtenerEstructuraJson($pagina_id){
         // Puntos agregados
         $puntos_agregados = $pagina_padre_log->getPuntos() + $puntos;
         $pagina_padre_log->setPuntos($puntos_agregados);
-              $em->persist($pagina_padre_log);
-            $em->flush();
+        $em->persist($pagina_padre_log);
+        $em->flush();
 
       }
 
