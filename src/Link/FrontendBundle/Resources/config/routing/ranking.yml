@@ -2,3 +2,11 @@ _ranking:
     path:     /ranking
     defaults: { _controller: LinkFrontendBundle:Ranking:index }
 
+_rankingNuevo:
+    path: /rankingNew
+    defaults: { _controller: LinkFrontendBundle:Ranking:new }
+
+_ajaxRankingAction:
+    path: / rankingList
+    defaults: { _controller: LinkFrontendBundle:Ranking:ajaxRanking }
+

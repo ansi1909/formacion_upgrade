@@ -47,7 +47,7 @@
         {# HEADER #}
         <header>
             {% block header %}
-            <nav class="navbar justify-content-between py-0 fixed-top bg-white {{app.session.get('usuario').nombre}}">
+            <nav class="navbar justify-content-between py-0 fixed-top bg-white">
                 <div class="logo d-sm-block d-md-block">
                     <a class="navbar-brand" href="{{ path('_inicio') }}">
                         {% set img_logo = app.session.get('empresa').logo is defined ? app.session.get('empresa').logo is not null and app.session.get('empresa').logo != '' ? uploads~app.session.get('empresa').logo : asset('front/assets/img/logo_formacion_smart.png') : asset('front/assets/img/logo_formacion_smart.png') %}
@@ -55,6 +55,9 @@
                     </a>
                 </div>
                 <div class="navbar-brand d-flex justify-content-center align-items-center">
+                    <div class="d-flex flex-column">
+                        <a href="{{ path('_rankingNuevo') }}" title="{{ 'Ranking'|trans }}"  data-toggle="tooltip" data-placement="bottom"> <img class="ranking-menu-icon" src="{{ asset('front/assets/img/ranking.png') }}"/> </a>
+                    </div>
                     <div class="d-flex flex-column">
                         <div class="wrapperDdApps">
                             <a href="#" id="apps" title="{{ 'Ayuda'|trans }}" data-toggle="tooltip" data-placement="bottom">
@@ -348,6 +351,33 @@
                 </div>
             </div>
         </div>
+
+        <!-- Alert de notificaciones del ranking-->
+        <div class="alert alert-success alert-dismissible fade notification-box notification-ranking pl-3 py-1" role="alert" id="alert_notificacion">
+            <span class="stickerNotify rankingSticker"><i class="material-icons icNotify">emoji_events</i></span>
+            <span class="notification-ranking__text">Ha sido publicado una nueva novedad: Recurso disponible: "Las cinco disfunciones"</span>
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close" class="pl-1">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+
+        <!-- Modal de notificaciones grandes del ranking -->
+        <div class="modal justify-content-center align-items-center modal-notification-ranking" id="modal-ranking-big-notification">
+            <div class="modal-notification-ranking__content d-flex flex-wrap justify-content-center align-items-center">
+                <a class="close btn_close_modal" data-dismiss="modal" aria-label="Close">
+                    <span class="material-icons ic-close-white" aria-hidden="true">close</span>
+                </a>
+                <img class="modal-notification-ranking__badge" src="{{asset('front/assets/img/recurso-8.png')}}"/>
+                <div class="modal-notification-ranking__text-box">
+                    <h2 class="modal-notification-ranking__title">¡Texto principal!</h2>
+                    <p>Descripción o algo del logro en el modal</p>
+                    <a class="mt-4 px-4 py-3 d-flex justify-content-center align-items-center bg-primary text-white btn_close_modal modal-notification-ranking__continue" data-dismiss="modal" aria-label="Close">
+                        Continuar
+                    </a>
+                </div>
+            </div>
+        </div>
+
         {% block javascripts %}
             <script src="{{ asset('front/js/jquery-3.3.1.min.js') }}"></script>
             <script src="{{ asset('jq/jquery-ui.js') }}" charset="utf-8"></script>
@@ -360,6 +390,8 @@
             <script src="{{ asset('front/js/audio.js') }}"></script>
             <script src="{{ asset('js/front/expireSession.js') }}"></script>
             <script src="{{ asset('js/front/soporte_virtual.js') }}"></script>
+            <script type="text/javascript" src="{{ asset('js/front/logros.js') }}"></script>
+            <script type="text/javascript" src="{{ asset('js/front/medallero.js') }}"></script>
         {% endblock %}
     </body>
 </html>

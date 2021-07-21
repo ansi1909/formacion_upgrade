@@ -52,10 +52,12 @@ function getAlarma()
         async: true,
         dataType: "json",
         success: function(data) {
+            const alertNotificacion = document.getElementById("alert_notificacion");
             $('#noti').html(data.html);
-            
             if (data.sonar == 1) {
                 $('#sonar').show();
+                alertNotificacion.classList.add("show");
+                
          
             }
             else{
