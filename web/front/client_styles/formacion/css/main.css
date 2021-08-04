@@ -3683,20 +3683,18 @@ p.up {
   border: 1px solid #e0e0e0;
   border-bottom: none;
 }
+.ranking_categories img {
+  width: 3.8rem;
+  height: 3.8rem;
+}
 .ranking_categories__category {
   display: flex;
   flex-direction: column;
   align-items: center;
 }
-
-.ranking_categories__category img{
-  width: 3.6rem;
-  height: 3.6rem;
-}
-
 .ranking_categories__category--current img {
-  width: 4.2rem;
-  height: 4.2rem;
+  width: 4.8rem;
+  height: 4.8rem;
 }
 
 .card-table {
@@ -5543,8 +5541,6 @@ p.up {
 
 /*CAJITA DE NOTIFICACIONES*/
 .notification-box {
-  position: fixed;
-  top: 5rem;
   right: 0.7rem;
   z-index: 9999;
   max-width: 90vw;
@@ -5562,10 +5558,16 @@ p.up {
 }
 
 /*NOTIFICACIONES*/
+.alert-notif-container {
+  position: fixed;
+  top: 5rem;
+  right: 0;
+}
+
 .notification-ranking {
   padding-left: 7rem;
   overflow: hidden;
-  background-color: #DFE9F8;
+  background-color: #dfe9f8;
 }
 .notification-ranking .stickerNotify {
   display: flex;
@@ -5581,7 +5583,7 @@ p.up {
   background: #ef6e62;
 }
 .notification-ranking .stickerNotify.rankingSticker {
-  background: #B0A4CB;
+  background: #b0a4cb;
 }
 .notification-ranking .stickerNotify .icNotify {
   margin: 0 auto;
