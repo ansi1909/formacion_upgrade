@@ -187,19 +187,19 @@
     {# ----------- ESTE ES EL CODIGO VALIDO -------------- #}
          {% for programa in programas %}
         <div class="card-hrz card-mod d-flex flex-column flex-md-row">
-            <img class="card-hrz-img mr-xl-3 d-flex justify-content-center align-items-center" src="{{uploads ~ programa.foto}}" alt="">
+            <img class="card-hrz-img card-program-img mr-xl-3 d-flex justify-content-center align-items-center" src="{{uploads ~ programa.foto}}" alt="">
             <div class="wraper d-flex flex-column flex-md-row justify-content-center"> 
-                <div class="card-hrz-body">
+                <div class="card-hrz-body d-flex align-items-center">
                     <h5 class="title-grey my-3 font-weight-normal"> {{ programa.nombre }}</h5>
                     
                 </div>
 
-                <div class="card-hrz-right d-flex flex-column justify-content-top mx-3 pb-1 align-item align-items-center">
-                <div class="percent text-center mt-1">
+                <div class="card-hrz-right d-flex flex-column justify-content-center mx-3 pb-1 align-item align-items-center">
+                    <div class="percent text-center mt-1">
                    
+                    </div>
+                    <button href="#" class="btn btn-sm btn-continuar mt-0 px-3 btn-xs-cont j-btn-medals mb-3 mb-md-0" data-id="{{programa.id}}"> Mis logros </button>
                 </div>
-                <button href="#" class="btn btn-sm btn-continuar mt-0 px-3 mb-3 btn-xs-cont j-btn-medals" data-id="{{programa.id}}"> Mis logros </button>
-            </div>
             </div>
         </div>
         {% endfor %} 

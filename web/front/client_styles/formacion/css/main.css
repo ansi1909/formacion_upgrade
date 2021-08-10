@@ -3282,7 +3282,7 @@ p.up {
 .card p {
   font-family: "Open Sans";
   font-size: 12px;
-  color: #797D80;
+  color: #797d80;
   font-weight: normal;
 }
 .card:hover .card-footer {
@@ -3327,12 +3327,12 @@ p.up {
 }
 .card .info-icon span {
   margin: 0px 3px;
-  color: #5CAEE6;
+  color: #5caee6;
   transition: 0.5s;
 }
 .card .info-icon span:hover {
   cursor: pointer;
-  color: #3D93CC;
+  color: #3d93cc;
 }
 
 .card-img-overlay {
@@ -3415,7 +3415,7 @@ p.up {
   display: block;
   font-size: 48px;
   margin: auto;
-  color: #CFE65C;
+  color: #cfe65c;
   opacity: 0.8;
 }
 
@@ -3430,7 +3430,7 @@ p.up {
   display: flex;
   flex-direction: row;
   word-wrap: break-word;
-  background-color: #FAFAFA;
+  background-color: #fafafa;
   background-clip: border-box;
   border: none;
   text-align: left;
@@ -3443,6 +3443,14 @@ p.up {
 @media (max-width: 559.98px) {
   .card-hrz {
     flex-direction: column;
+  }
+}
+.card-hrz .card-program-img {
+  width: 100%;
+}
+@media (min-width: 768px) {
+  .card-hrz .card-program-img {
+    width: 25%;
   }
 }
 .card-hrz .alertTimeGood {
@@ -3665,9 +3673,6 @@ p.up {
 .card-mod .card-mod-less .icVc:hover {
   color: #5CAEE6;
 }
-.card-mod .card-hrz-body {
-  width: 500px;
-}
 @media (max-width: 767.98px) {
   .card-mod .card-hrz-body {
     width: 100%;
@@ -3683,20 +3688,18 @@ p.up {
   border: 1px solid #e0e0e0;
   border-bottom: none;
 }
+.ranking_categories img {
+  width: 3.8rem;
+  height: 3.8rem;
+}
 .ranking_categories__category {
   display: flex;
   flex-direction: column;
   align-items: center;
 }
-
-.ranking_categories__category img{
-  width: 3.6rem;
-  height: 3.6rem;
-}
-
 .ranking_categories__category--current img {
-  width: 4.2rem;
-  height: 4.2rem;
+  width: 4.8rem;
+  height: 4.8rem;
 }
 
 .card-table {
@@ -4095,45 +4098,55 @@ p.up {
 .table-card {
   width: unset !important;
 }
-.table-card .f-table, .table-card .f-table-lt {
+.table-card .f-table,
+.table-card .f-table-lt {
   padding: calc(1rem - 4px) 2rem calc(1rem - 4px) 2rem;
   max-height: 10rem;
   width: unset;
 }
-.table-card .f-table .titulo_f-table, .table-card .f-table-lt .titulo_f-table {
+.table-card .f-table .titulo_f-table,
+.table-card .f-table-lt .titulo_f-table {
   color: #5CAEE6;
   font-family: "Roboto";
   font-size: calc($h5-font-size + 2px);
   line-height: calc(1rem + 8px);
 }
-.table-card .f-table .icEditEcT:hover, .table-card .f-table-lt .icEditEcT:hover {
+.table-card .f-table .icEditEcT:hover,
+.table-card .f-table-lt .icEditEcT:hover {
   color: #FFDC60;
 }
-.table-card .f-table .icDeleEcT:hover, .table-card .f-table-lt .icDeleEcT:hover {
+.table-card .f-table .icDeleEcT:hover,
+.table-card .f-table-lt .icDeleEcT:hover {
   color: #df584c;
 }
-.table-card .f-table .txt-description, .table-card .f-table-lt .txt-description {
+.table-card .f-table .txt-description,
+.table-card .f-table-lt .txt-description {
   color: #AAAFB3;
   font-family: "Roboto";
   font-size: 0.87rem;
   line-height: 1rem;
 }
-.table-card .f-table .foo-esp_col, .table-card .f-table-lt .foo-esp_col {
+.table-card .f-table .foo-esp_col,
+.table-card .f-table-lt .foo-esp_col {
   position: relative;
   top: 0.3rem;
 }
-.table-card .f-table .foo-esp_col .coment_f-table, .table-card .f-table-lt .foo-esp_col .coment_f-table {
+.table-card .f-table .foo-esp_col .coment_f-table,
+.table-card .f-table-lt .foo-esp_col .coment_f-table {
   line-height: calc(1rem - 5px);
 }
-.table-card .f-table .foo-esp_col .resp_ft, .table-card .f-table-lt .foo-esp_col .resp_ft {
+.table-card .f-table .foo-esp_col .resp_ft,
+.table-card .f-table-lt .foo-esp_col .resp_ft {
   line-height: 1rem;
 }
-.table-card .f-table .foo-esp_col .resp_ft .ic-msg, .table-card .f-table-lt .foo-esp_col .resp_ft .ic-msg {
+.table-card .f-table .foo-esp_col .resp_ft .ic-msg,
+.table-card .f-table-lt .foo-esp_col .resp_ft .ic-msg {
   font-size: 1rem;
   position: relative;
   top: calc(1rem - 11px);
 }
-.table-card .f-table .foo-esp_col .resp_ft .ic-msg2, .table-card .f-table-lt .foo-esp_col .resp_ft .ic-msg2 {
+.table-card .f-table .foo-esp_col .resp_ft .ic-msg2,
+.table-card .f-table-lt .foo-esp_col .resp_ft .ic-msg2 {
   font-size: 1rem;
   position: relative;
   top: calc(1rem - 13px);
@@ -4378,16 +4391,16 @@ p.up {
   box-shadow: 3px 3px 0px rgba(220, 220, 220, 0.3);
 }
 .card-achievement.green-line::before {
-  background-color: #24932F;
+  background-color: #24932f;
 }
 .card-achievement.blue-line::before {
   background-color: #075490;
 }
 .card-achievement.lightblue-line::before {
-  background-color: #00A4B1;
+  background-color: #00a4b1;
 }
 .card-achievement.yellow-line::before {
-  background-color: #FCDE21;
+  background-color: #fcde21;
 }
 .card-achievement::before {
   content: "";
@@ -4430,7 +4443,7 @@ p.up {
   position: relative;
   flex: 1;
   height: 0.6rem;
-  background-color: #B7B7B6;
+  background-color: #b7b7b6;
   border-radius: 10px;
   overflow: hidden;
 }
@@ -4443,14 +4456,14 @@ p.up {
   border-bottom-right-radius: 10px;
 }
 .card-achievement__progress__bar__fill.fill-orange {
-  background-color: #EC7E30;
+  background-color: #ec7e30;
 }
 .card-achievement__progress__bar__fill.fill-green {
-  background-color: #76B422;
+  background-color: #76b422;
 }
 .card-achievement__progress__number {
   font-size: 1.7rem;
-  color: #B7B7B6;
+  color: #b7b7b6;
 }
 @media (max-width: 767.98px) {
   .card-achievement {
@@ -4485,7 +4498,9 @@ p.up {
   height: 31.85rem;
 }
 
-.table-card .f-table .foo-esp_col .coment_f-table, .table-card .f-table-lt .foo-esp_col .coment_f-table, .table-card .f-table .foo-esp_col .resp_ft, .table-card .f-table-lt .foo-esp_col .resp_ft, .table-card-det .f-card-det .cont-det .name_ft .coment_ft {
+.table-card .f-table .foo-esp_col .coment_f-table,
+.table-card .f-table-lt .foo-esp_col .coment_f-table, .table-card .f-table .foo-esp_col .resp_ft,
+.table-card .f-table-lt .foo-esp_col .resp_ft, .table-card-det .f-card-det .cont-det .name_ft .coment_ft {
   color: #797D80;
   font-family: "Roboto";
   font-size: 0.75rem;
@@ -4525,7 +4540,8 @@ p.up {
   top: calc(1rem - 15px);
 }
 
-.table-card .f-table .foo-esp_col .name_ft, .table-card .f-table-lt .foo-esp_col .name_ft, .table-card-det .f-card-det .cont-det .name_ft {
+.table-card .f-table .foo-esp_col .name_ft,
+.table-card .f-table-lt .foo-esp_col .name_ft, .table-card-det .f-card-det .cont-det .name_ft {
   color: #5C6266;
   font-family: "Roboto";
   font-size: 0.75rem;
@@ -4563,7 +4579,9 @@ p.up {
   background: url(../../../assets/img/star.svg);
 }
 
-.table-card .f-table .icEditEcT, .table-card .f-table-lt .icEditEcT, .table-card .f-table .icDeleEcT, .table-card .f-table-lt .icDeleEcT {
+.table-card .f-table .icEditEcT,
+.table-card .f-table-lt .icEditEcT, .table-card .f-table .icDeleEcT,
+.table-card .f-table-lt .icDeleEcT {
   color: #adb5bd;
   font-size: calc(1rem + 4px);
   margin: auto calc(1rem - 8px);
