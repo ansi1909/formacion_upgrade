@@ -25,12 +25,24 @@ class UsuarioController extends Controller
         $f->setRequest($session->get('sesion_id'));
 
         $usuario_id = $session->get('usuario')['id'];
+        $empresa_id = $session->get('empresa')['id'];
 
         $usuario = $this->getDoctrine()->getRepository('LinkComunBundle:AdminUsuario')->find($usuario_id);
+
+        $query =  $em->createQuery('SELECT p FROM LinkComunBundle:CertiPagina p
+                                    INNER JOIN LinkComunBundle:CertiPaginaEmpresa pe WITH p.id = pe.pagina
+                                    INNER JOIN LinkComunBundle:CertiNivelPagina np WITH pe.id = np.paginaEmpresa
+                                    WHERE np.nivel = :nivel_id
+                                    AND pe.empresa = :empresa_id
+                                    AND p.pagina IS NULL
+                                    ORDER BY pe.orden ASC')
+                    ->setParameters(array('nivel_id' => $usuario->getNivel()->getId(),
+                                          'empresa_id' => $empresa_id));
+        $programas = $query->getResult();
         
         $query = $em->createQuery('SELECT pl FROM LinkComunBundle:CertiPaginaLog pl
                                    WHERE pl.usuario = :usuario_id')
-                    ->setParameter('usuario_id', $usuario_id);
+                    ->setParameter('usuario_id' , $usuario_id);
         $paginalogs = $query->getResult();
         $puntos = 0;
 
@@ -39,10 +51,11 @@ class UsuarioController extends Controller
             $puntos = $puntos + $paginalog->getPuntos();
         }
         $fechaNacimiento= ($usuario->getFechaNacimiento())? $usuario->getFechaNacimiento()->format('d/m/Y'):'';
-
+        //return new response(count($programas));
         return $this->render('LinkFrontendBundle:Usuario:index.html.twig', array('usuario' => $usuario,
                                                                                  'fecha' => $fechaNacimiento,
-                                                                                 'puntos' => $puntos));
+                                                                                 'puntos' => $puntos,
+                                                                                 'programas' => $programas));
 
     }
 
