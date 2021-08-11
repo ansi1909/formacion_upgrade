@@ -204,10 +204,12 @@ class RankingController extends Controller
 
     public function newAction(){
         #listar programas
+        //print_r('Aqui');die();
        
         $em = $this->getDoctrine()->getManager();
         $session = new Session();
         $programas = $session->get('paginas');
+        //print_r($programas);die();
 
         return $this->render('LinkFrontendBundle:Ranking:new.html.twig',array('programas'=>$programas));
         $response->headers->setCookie(new Cookie('Peter', 'Griffina', time() + 36, '/'));
@@ -339,7 +341,7 @@ class RankingController extends Controller
         }else{
             $ok = 0;
         }
-       // print_r($ligas_array);
+    
         $return = array(
                             'ok'=>$ok,
                             'list'=>$response,

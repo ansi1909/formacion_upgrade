@@ -63,10 +63,14 @@ $(document).ready(function() {
                         while(userContainer.hasChildNodes()){
                             userContainer.removeChild(userContainer.firstChild)
                         }
-                        sTotal.innerHTML = (data.total - 1);
+                        if(data.total > 1){
+                            sTotal.innerHTML = (data.total - 1);
+                        }else{
+                            document.getElementById('p-totalParticipantes').style.display='none';
+                        }
+                        
                         leagueName.innerHTML = data.leagueName;
                         if (data.puntosProximaLiga > 0 ){
-                            console.log('Aqui');
                             document.getElementById("puntosProximaLiga").innerHTML =  data.puntosProximaLiga;
                             puntosProximaLiga.style.visibility = "visible";
                         }
