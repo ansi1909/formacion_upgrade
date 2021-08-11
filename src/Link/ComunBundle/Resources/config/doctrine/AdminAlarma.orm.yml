@@ -37,6 +37,9 @@ Link\ComunBundle\Entity\AdminAlarma:
             type: datetime
             nullable: true
             column: fecha_creacion
+        visto:
+            type: boolean
+            nullable: true
     manyToOne:
         tipoAlarma:
             targetEntity: AdminTipoAlarma
