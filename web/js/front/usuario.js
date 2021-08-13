@@ -150,4 +150,43 @@ $(document).ready(function() {
         }
     });
 
+	$('#pagina_id').click(function(){
+		var pagina_id = $(this);
+		
+    	$.ajax({
+			type: "POST",
+			url: $('#url_medallas').val(),
+			async: true,
+			data: {pagina_id: pagina_id},
+			dataType: "json",
+			success: function(data) {
+				console.log(data);
+				/*if (data.html =='') 
+				{
+					$('#label-correo').html(data.correo);
+					$('#label-correo_corporativo').html(data.correo_corporativo);
+					$('#label-fn').html(data.fechaNacimiento);
+					$('.boton').show();
+					$('#wait_profile').hide(1000);
+					$('#correo_exito').show();
+					setTimeout(function(){ $('#correo_exito').hide(); }, 3000);
+					//$( ".close" ).trigger( "click" );
+
+				}else
+				{
+					$('#correo_usado').html(data.html);
+					$('#correo_usado').show();
+					$('#correo_secundario').focus();
+					$('.boton').show();
+					$('#wait_profile').hide(1000);
+				}*/
+			},
+			error: function(){
+				console.log('Error guardando los datos del perfil del usuario'); // Hay que implementar los mensajes de error para el frontend
+				$('.boton').show();
+				$('#wait_profile').hide(1000);
+			}
+		});
+    });
+
 });

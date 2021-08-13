@@ -93,7 +93,7 @@
 {% set fecha_nacimiento = app.session.get('usuario')['fecha_nacimiento'] %}
 {% set fecha_nacimiento_formateada = app.session.get('usuario')['fecha_nacimiento_formateada'] %}
 <input type="hidden" id="url_img" name="url_img" value="{{ path('_ajaxImg') }}">
-<input type="hidden" id="url_medallas" name="url_medallas" value="{{ path('_ajaxRankingAction') }}">
+<input type="hidden" id="url_medallas" name="url_medallas" value="{{ path('_ajaxMedallasPrograma') }}">
 <input type="hidden" id="usuario_medallas" name="usuario_medallas" value="{{ login }}">
 
 <div class="modal ranking-loader justify-content-center align-items-center">
@@ -198,7 +198,7 @@
                     <div class="percent text-center mt-1">
                    
                     </div>
-                    <button href="#" class="btn btn-sm btn-continuar mt-0 px-3 btn-xs-cont j-btn-medals mb-3 mb-md-0" data-id="{{programa.id}}"> Mis logros </button>
+                    <button href="#" name = "pagina_id" id="pagina_id" class="btn btn-sm btn-continuar mt-0 px-3 btn-xs-cont j-btn-medals mb-3 mb-md-0" data-id="{{programa.id}}"> Mis logros </button>
                 </div>
             </div>
         </div>
