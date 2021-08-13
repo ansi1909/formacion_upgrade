@@ -157,11 +157,11 @@ $(document).ready(function() {
 			type: "POST",
 			url: $('#url_medallas').val(),
 			async: true,
-			data: {pagina_id: pagina_id},
+			data: {pagina_id: pagina_id.data("id")},
 			dataType: "json",
 			success: function(data) {
-				console.log(data);
-				/*if (data.html =='') 
+				//console.log(data);
+				/*if (data.html =='1') 
 				{
 					$('#label-correo').html(data.correo);
 					$('#label-correo_corporativo').html(data.correo_corporativo);

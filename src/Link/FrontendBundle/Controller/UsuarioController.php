@@ -175,12 +175,13 @@ class UsuarioController extends Controller
     public function ajaxMedallasProgramaAction(Request $request)
     {
         
-         $session = new Session();
+        $session = new Session();
         $em = $this->getDoctrine()->getManager();
         $pagina_id = $request->request->get('pagina_id');
         $usuario_id = $session->get('usuario')['id'];
         //return new response($pagina_id.' '.$usuario_id);
         $f = $this->get('funciones');
+        $medallas = array();
 
         $query = $em->createQuery('SELECT mu FROM LinkComunBundle:AdminMedallasUsuario mu
                                    WHERE mu.usuario = :usuario_id
@@ -188,9 +189,23 @@ class UsuarioController extends Controller
                     ->setParameters(array('usuario_id' => $usuario_id,
                                           'pagina_id' => $pagina_id));
         $medallasUsuario = $query->getResult();
-        //return new response(count($medallasUsuario));
+
+        $query = $em->createQuery('SELECT m FROM LinkComunBundle:AdminMedallas m
+                                   ORDER BY m.id ASC');
+        $medallasorden = $query->getResult();
 
 
+        foreach($medallasUsuario as $medallaUsuario)
+        {
+            $medallas = array('id' => $medallaUsuario->getMedalla()->getId(),
+                              'nombre' => $medallaUsuario->getMedalla()->getNombre(),
+                              'descripcion' => $medallaUsuario->getMedalla()->getDescripcion());
+        }
+        return new response(var_dump($medallasorden));
+
+        $return = $medallas;
+
+        $return = json_encode($return);
         return new Response($return, 200, array('Content-Type' => 'application/json'));
 
     }
