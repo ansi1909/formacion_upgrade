@@ -182,6 +182,11 @@ class UsuarioController extends Controller
         //return new response($pagina_id.' '.$usuario_id);
         $f = $this->get('funciones');
         $medallas = array();
+        $html ='';
+        $contador = 0;
+        $repetido = 0;
+        $contador21 = 0;
+        $dir_project = $this->container->getParameter('folders')['dir_project'];
 
         $query = $em->createQuery('SELECT mu FROM LinkComunBundle:AdminMedallasUsuario mu
                                    WHERE mu.usuario = :usuario_id
@@ -191,19 +196,95 @@ class UsuarioController extends Controller
         $medallasUsuario = $query->getResult();
 
         $query = $em->createQuery('SELECT m FROM LinkComunBundle:AdminMedallas m
-                                   ORDER BY m.id ASC');
+                                   ORDER BY m.id DESC');
         $medallasorden = $query->getResult();
 
+        foreach($medallasorden as $medallaorden)
+        {  
+            $medalla = 0;
+            foreach($medallasUsuario as $medallaUsuario)
+            {   
+                if($medallaorden->getId() == $medallaUsuario->getMedalla()->getId())
+                {
+                    if($medallaUsuario->getMedalla()->getId() == '10' || $medallaUsuario->getMedalla()->getId() == '11' || $medallaUsuario->getMedalla()->getId() == '12' || $medallaUsuario->getMedalla()->getId() == '13'  )
+                    {
+                        if($repetido == '0')
+                        {
+                            $repetido = 1;
+                            $medalla = 1;
+                            $html .='<div class="card-achievement green-line">
+                                        <img src="/formacion2.0/web/front/assets/img/recurso-'.$medallaorden->getId().'.png" alt="" class="card-achievement__badge achieved">
+                                        <div class="card-achievement__details">
+                                            <h4 class="card-achievement__title">'.$medallaorden->getNombre().$medallaorden->getId().' true</h4>
+                                            <p class="card-achievement__condition">'.$medallaUsuario->getMedalla()->getDescripcion().'</p>
+                                        </div>
+                                    </div>';
+                        }
 
-        foreach($medallasUsuario as $medallaUsuario)
-        {
-            $medallas = array('id' => $medallaUsuario->getMedalla()->getId(),
-                              'nombre' => $medallaUsuario->getMedalla()->getNombre(),
-                              'descripcion' => $medallaUsuario->getMedalla()->getDescripcion());
+                    }else{
+                        $medalla = 1;
+                        
+                        $html .='<div class="card-achievement green-line">
+                                    <img src="/formacion2.0/web/front/assets/img/recurso-'.$medallaorden->getId().'.png" alt="" class="card-achievement__badge achieved">
+                                    <div class="card-achievement__details">
+                                        <h4 class="card-achievement__title">'.$medallaorden->getNombre().$medallaorden->getId().' true</h4>
+                                        <p class="card-achievement__condition">'.$medallaUsuario->getMedalla()->getDescripcion().'</p>
+                                    </div>
+                                </div>';
+                    }
+                    
+                }
+                
+            }
+            
+            if($medalla == '0' && $repetido == '0')
+            {   
+                
+                if($medallaorden->getId() == '10' || $medallaorden->getId() == '11' || $medallaorden->getId() == '12' || $medallaorden->getId() == '13'  )
+                {    
+                    $contador = $contador + 1;
+                    if($contador == 4)
+                    {
+                        $html .='<div class="card-achievement green-line">
+                                    <img src="/formacion2.0/web/front/assets/img/recurso-'.$medallaorden->getId().'.png" alt="" class="card-achievement__badge ">
+                                    <div class="card-achievement__details">
+                                        <h4 class="card-achievement__title">'.$medallaorden->getNombre().$medallaorden->getId().'</h4>
+                                        <p class="card-achievement__condition">'.$medallaUsuario->getMedalla()->getDescripcion().'</p>
+                                    </div>
+                                </div>';
+                    }
+                }else
+                {
+                    $html .='<div class="card-achievement green-line">
+                                <img src="/formacion2.0/web/front/assets/img/recurso-'.$medallaorden->getId().'.png" alt="" class="card-achievement__badge ">
+                                <div class="card-achievement__details">
+                                    <h4 class="card-achievement__title">'.$medallaorden->getNombre().$medallaorden->getId().'</h4>
+                                    <p class="card-achievement__condition">'.$medallaUsuario->getMedalla()->getDescripcion().'</p>
+                                </div>
+                            </div>';
+                }
+            }
+            else{
+                if($medallaorden->getId() != '10' && $medallaorden->getId() != '11' && $medallaorden->getId() != '12' && $medallaorden->getId() && '13' && $medalla == '0'  )
+                {
+                    
+                    $html .='<div class="card-achievement green-line">
+                                <img src="/formacion2.0/web/front/assets/img/recurso-'.$medallaorden->getId().'.png" alt="" class="card-achievement__badge ">
+                                <div class="card-achievement__details">
+                                    <h4 class="card-achievement__title">'.$medallaorden->getNombre().$medallaorden->getId().'</h4>
+                                    <p class="card-achievement__condition">'.$medallaUsuario->getMedalla()->getDescripcion().'</p>
+                                </div>
+                            </div>';
+                }
+            }
         }
-        return new response(var_dump($medallasorden));
+       // return new response($medalla.' '.$repetido);
+        
 
-        $return = $medallas;
+        
+        //return new response($html);
+
+        $return = $html;
 
         $return = json_encode($return);
         return new Response($return, 200, array('Content-Type' => 'application/json'));
