@@ -4390,16 +4390,16 @@ p.up {
   background-color: #fff;
   box-shadow: 3px 3px 0px rgba(220, 220, 220, 0.3);
 }
-.card-achievement.green-line::before {
+.card-achievement.line-1::before {
   background-color: #24932f;
 }
-.card-achievement.blue-line::before {
+.card-achievement.line-2::before {
   background-color: #075490;
 }
-.card-achievement.lightblue-line::before {
+.card-achievement.line-3::before {
   background-color: #00a4b1;
 }
-.card-achievement.yellow-line::before {
+.card-achievement.line-4::before {
   background-color: #fcde21;
 }
 .card-achievement::before {

@@ -18,8 +18,7 @@ class UsuarioController extends Controller
         $f = $this->get('funciones');
         $session = new Session();
 
-        if (!$session->get('iniFront') || $f->sesionBloqueda($session->get('sesion_id')))
-        {
+        if (!$session->get('iniFront') || $f->sesionBloqueda($session->get('sesion_id'))) {
             return $this->redirectToRoute('_authExceptionEmpresa', array('tipo' => 'sesion'));
         }
         $f->setRequest($session->get('sesion_id'));
@@ -36,27 +35,29 @@ class UsuarioController extends Controller
                                     AND pe.empresa = :empresa_id
                                     AND p.pagina IS NULL
                                     ORDER BY pe.orden ASC')
-                    ->setParameters(array('nivel_id' => $usuario->getNivel()->getId(),
-                                          'empresa_id' => $empresa_id));
+            ->setParameters(array(
+                'nivel_id' => $usuario->getNivel()->getId(),
+                'empresa_id' => $empresa_id
+            ));
         $programas = $query->getResult();
-        
+
         $query = $em->createQuery('SELECT pl FROM LinkComunBundle:CertiPaginaLog pl
                                    WHERE pl.usuario = :usuario_id')
-                    ->setParameter('usuario_id' , $usuario_id);
+            ->setParameter('usuario_id', $usuario_id);
         $paginalogs = $query->getResult();
         $puntos = 0;
 
-        foreach( $paginalogs as $paginalog )
-        {
+        foreach ($paginalogs as $paginalog) {
             $puntos = $puntos + $paginalog->getPuntos();
         }
-        $fechaNacimiento= ($usuario->getFechaNacimiento())? $usuario->getFechaNacimiento()->format('d/m/Y'):'';
+        $fechaNacimiento = ($usuario->getFechaNacimiento()) ? $usuario->getFechaNacimiento()->format('d/m/Y') : '';
         //return new response(count($programas));
-        return $this->render('LinkFrontendBundle:Usuario:index.html.twig', array('usuario' => $usuario,
-                                                                                 'fecha' => $fechaNacimiento,
-                                                                                 'puntos' => $puntos,
-                                                                                 'programas' => $programas));
-
+        return $this->render('LinkFrontendBundle:Usuario:index.html.twig', array(
+            'usuario' => $usuario,
+            'fecha' => $fechaNacimiento,
+            'puntos' => $puntos,
+            'programas' => $programas
+        ));
     }
 
     public function ajaxClaveAction(Request $request)
@@ -67,11 +68,12 @@ class UsuarioController extends Controller
 
         $clave = $request->request->get('password');
 
-        $usuario = $this->getDoctrine()->getRepository('LinkComunBundle:AdminUsuario')->find($session->get('usuario')['id']); 
-        if( $clave == $usuario->getClave())
-        {
-            $return = array('ok' => 2,
-                            'mensaje' => 'La contraseña debe ser distinta a la actual');
+        $usuario = $this->getDoctrine()->getRepository('LinkComunBundle:AdminUsuario')->find($session->get('usuario')['id']);
+        if ($clave == $usuario->getClave()) {
+            $return = array(
+                'ok' => 2,
+                'mensaje' => 'La contraseña debe ser distinta a la actual'
+            );
             $return = json_encode($return);
             return new Response($return, 200, array('Content-Type' => 'application/json'));
         }
@@ -79,11 +81,12 @@ class UsuarioController extends Controller
         $em->persist($usuario);
         $em->flush();
 
-        $return = array('ok' => 1,
-                        'mensaje' => 'Cambio de contraseña realizado');
+        $return = array(
+            'ok' => 1,
+            'mensaje' => 'Cambio de contraseña realizado'
+        );
         $return = json_encode($return);
         return new Response($return, 200, array('Content-Type' => 'application/json'));
-        
     }
 
     public function ajaxImagenAction(Request $request)
@@ -107,26 +110,26 @@ class UsuarioController extends Controller
 
         $return = json_encode(array('id' => $usuario->getId()));
         return new Response($return, 200, array('Content-Type' => 'application/json'));
-
     }
 
     public function ajaxUploadFotoUsuarioAction(Request $request)
     {
-        
+
         // Parámetro adicional
         $base_upload = $request->request->get('base_upload');
 
         $dir_uploads = $this->container->getParameter('folders')['dir_uploads'];
         $uploads = $this->container->getParameter('folders')['uploads'];
-        $upload_dir = $dir_uploads.$base_upload;
-        $upload_url = $uploads.$base_upload;
-        $options = array('upload_dir' => $upload_dir,
-                         'upload_url' => $upload_url);
+        $upload_dir = $dir_uploads . $base_upload;
+        $upload_url = $uploads . $base_upload;
+        $options = array(
+            'upload_dir' => $upload_dir,
+            'upload_url' => $upload_url
+        );
         $upload_handler = new UploadHandler($options);
 
         $return = json_encode($upload_handler);
         return new Response($return, 200, array('Content-Type' => 'application/json'));
-
     }
 
     public function ajaxSavePerfilAction(Request $request)
@@ -136,21 +139,19 @@ class UsuarioController extends Controller
         $em = $this->getDoctrine()->getManager();
         $correo_secundario = trim($request->request->get('correo_secundario'));
         $f = $this->get('funciones');
-        
+
         // Actualización del correo en la BD
         $usuario = $this->getDoctrine()->getRepository('LinkComunBundle:AdminUsuario')->find($session->get('usuario')['id']);
         $html = '';
-        $validarCorreo = ($correo_secundario!='')? $f->searchMail($correo_secundario,$usuario->getEmpresa(),$usuario->getId()): false;
+        $validarCorreo = ($correo_secundario != '') ? $f->searchMail($correo_secundario, $usuario->getEmpresa(), $usuario->getId()) : false;
 
         if ($correo_secundario != '' && $usuario->getCorreoPersonal() == $correo_secundario) {
 
-             $html .= $this->get('translator')->trans('Este correo no puede ser igual al corporativo');    
-        }
-        else if($correo_secundario != '' && $validarCorreo != 0 ){
+            $html .= $this->get('translator')->trans('Este correo no puede ser igual al corporativo');
+        } else if ($correo_secundario != '' && $validarCorreo != 0) {
             $html .= $this->get('translator')->trans('Este correo se encuentra registrado');
-        }
-        else {
-            $html ='';            
+        } else {
+            $html = '';
             $usuario->setCorreoCorporativo($correo_secundario && $correo_secundario != '' ? $correo_secundario : null);
             $em->persist($usuario);
             $em->flush();
@@ -159,22 +160,22 @@ class UsuarioController extends Controller
             $datosUsuario = $session->get('usuario');
             $datosUsuario['correo_corporativo'] = $usuario->getCorreoCorporativo();
             $session->set('usuario', $datosUsuario);
-            
         }
 
-        $return = array('correo' => $usuario->getCorreoPersonal(),
-                        'correo_corporativo' => $usuario->getCorreoCorporativo(),
-                        'fechaNacimiento' => $usuario->getFechaNacimiento()->format('d/m/Y'),
-                        'html' => $html);
+        $return = array(
+            'correo' => $usuario->getCorreoPersonal(),
+            'correo_corporativo' => $usuario->getCorreoCorporativo(),
+            'fechaNacimiento' => $usuario->getFechaNacimiento()->format('d/m/Y'),
+            'html' => $html
+        );
 
         $return = json_encode($return);
         return new Response($return, 200, array('Content-Type' => 'application/json'));
-
     }
 
     public function ajaxMedallasProgramaAction(Request $request)
     {
-        
+
         $session = new Session();
         $em = $this->getDoctrine()->getManager();
         $pagina_id = $request->request->get('pagina_id');
@@ -182,7 +183,7 @@ class UsuarioController extends Controller
         //return new response($pagina_id.' '.$usuario_id);
         $f = $this->get('funciones');
         $medallas = array();
-        $html ='';
+        $html = '';
         $contador = 0;
         $repetido = 0;
         $contador21 = 0;
@@ -191,104 +192,90 @@ class UsuarioController extends Controller
         $query = $em->createQuery('SELECT mu FROM LinkComunBundle:AdminMedallasUsuario mu
                                    WHERE mu.usuario = :usuario_id
                                    AND mu.pagina = :pagina_id')
-                    ->setParameters(array('usuario_id' => $usuario_id,
-                                          'pagina_id' => $pagina_id));
+            ->setParameters(array(
+                'usuario_id' => $usuario_id,
+                'pagina_id' => $pagina_id
+            ));
         $medallasUsuario = $query->getResult();
 
         $query = $em->createQuery('SELECT m FROM LinkComunBundle:AdminMedallas m
                                    ORDER BY m.id DESC');
         $medallasorden = $query->getResult();
 
-        foreach($medallasorden as $medallaorden)
-        {  
+        foreach ($medallasorden as $medallaorden) {
             $medalla = 0;
-            foreach($medallasUsuario as $medallaUsuario)
-            {   
-                if($medallaorden->getId() == $medallaUsuario->getMedalla()->getId())
-                {
-                    if($medallaUsuario->getMedalla()->getId() == '10' || $medallaUsuario->getMedalla()->getId() == '11' || $medallaUsuario->getMedalla()->getId() == '12' || $medallaUsuario->getMedalla()->getId() == '13'  )
-                    {
-                        if($repetido == '0')
-                        {
+            foreach ($medallasUsuario as $medallaUsuario) {
+                if ($medallaorden->getId() == $medallaUsuario->getMedalla()->getId()) {
+                    if ($medallaUsuario->getMedalla()->getId() == '10' || $medallaUsuario->getMedalla()->getId() == '11' || $medallaUsuario->getMedalla()->getId() == '12' || $medallaUsuario->getMedalla()->getId() == '13') {
+                        if ($repetido == '0') {
                             $repetido = 1;
                             $medalla = 1;
-                            $html .='<div class="card-achievement green-line">
-                                        <img src="/formacion2.0/web/front/assets/img/recurso-'.$medallaorden->getId().'.png" alt="" class="card-achievement__badge achieved">
+                            $html .= '<div class="card-achievement green-line">
+                                        <img src="/formacion2.0/web/front/assets/img/recurso-' . $medallaorden->getId() . '.png" alt="" class="card-achievement__badge achieved">
                                         <div class="card-achievement__details">
-                                            <h4 class="card-achievement__title">'.$medallaorden->getNombre().$medallaorden->getId().' true</h4>
-                                            <p class="card-achievement__condition">'.$medallaUsuario->getMedalla()->getDescripcion().'</p>
+                                            <h4 class="card-achievement__title">' . $medallaorden->getNombre() . $medallaorden->getId() . ' true</h4>
+                                            <p class="card-achievement__condition">' . $medallaUsuario->getMedalla()->getDescripcion() . '</p>
                                         </div>
                                     </div>';
                         }
-
-                    }else{
+                    } else {
                         $medalla = 1;
-                        
-                        $html .='<div class="card-achievement green-line">
-                                    <img src="/formacion2.0/web/front/assets/img/recurso-'.$medallaorden->getId().'.png" alt="" class="card-achievement__badge achieved">
+
+                        $html .= '<div class="card-achievement green-line">
+                                    <img src="/formacion2.0/web/front/assets/img/recurso-' . $medallaorden->getId() . '.png" alt="" class="card-achievement__badge achieved">
                                     <div class="card-achievement__details">
-                                        <h4 class="card-achievement__title">'.$medallaorden->getNombre().$medallaorden->getId().' true</h4>
-                                        <p class="card-achievement__condition">'.$medallaUsuario->getMedalla()->getDescripcion().'</p>
+                                        <h4 class="card-achievement__title">' . $medallaorden->getNombre() . $medallaorden->getId() . ' true</h4>
+                                        <p class="card-achievement__condition">' . $medallaUsuario->getMedalla()->getDescripcion() . '</p>
                                     </div>
                                 </div>';
                     }
-                    
                 }
-                
             }
-            
-            if($medalla == '0' && $repetido == '0')
-            {   
-                
-                if($medallaorden->getId() == '10' || $medallaorden->getId() == '11' || $medallaorden->getId() == '12' || $medallaorden->getId() == '13'  )
-                {    
+
+            if ($medalla == '0' && $repetido == '0') {
+
+                if ($medallaorden->getId() == '10' || $medallaorden->getId() == '11' || $medallaorden->getId() == '12' || $medallaorden->getId() == '13') {
                     $contador = $contador + 1;
-                    if($contador == 4)
-                    {
-                        $html .='<div class="card-achievement green-line">
-                                    <img src="/formacion2.0/web/front/assets/img/recurso-'.$medallaorden->getId().'.png" alt="" class="card-achievement__badge ">
+                    if ($contador == 4) {
+                        $html .= '<div class="card-achievement green-line">
+                                    <img src="/formacion2.0/web/front/assets/img/recurso-' . $medallaorden->getId() . '.png" alt="" class="card-achievement__badge ">
                                     <div class="card-achievement__details">
-                                        <h4 class="card-achievement__title">'.$medallaorden->getNombre().$medallaorden->getId().'</h4>
-                                        <p class="card-achievement__condition">'.$medallaUsuario->getMedalla()->getDescripcion().'</p>
+                                        <h4 class="card-achievement__title">' . $medallaorden->getNombre() . $medallaorden->getId() . '</h4>
+                                        <p class="card-achievement__condition">' . $medallaorden->getDescripcion() . '</p>
                                     </div>
                                 </div>';
                     }
-                }else
-                {
-                    $html .='<div class="card-achievement green-line">
-                                <img src="/formacion2.0/web/front/assets/img/recurso-'.$medallaorden->getId().'.png" alt="" class="card-achievement__badge ">
+                } else {
+                    $html .= '<div class="card-achievement green-line">
+                                <img src="/formacion2.0/web/front/assets/img/recurso-' . $medallaorden->getId() . '.png" alt="" class="card-achievement__badge ">
                                 <div class="card-achievement__details">
-                                    <h4 class="card-achievement__title">'.$medallaorden->getNombre().$medallaorden->getId().'</h4>
-                                    <p class="card-achievement__condition">'.$medallaUsuario->getMedalla()->getDescripcion().'</p>
+                                    <h4 class="card-achievement__title">' . $medallaorden->getNombre() . $medallaorden->getId() . '</h4>
+                                    <p class="card-achievement__condition">' . $medallaorden->getDescripcion() . '</p>
                                 </div>
                             </div>';
                 }
-            }
-            else{
-                if($medallaorden->getId() != '10' && $medallaorden->getId() != '11' && $medallaorden->getId() != '12' && $medallaorden->getId() && '13' && $medalla == '0'  )
-                {
-                    
-                    $html .='<div class="card-achievement green-line">
-                                <img src="/formacion2.0/web/front/assets/img/recurso-'.$medallaorden->getId().'.png" alt="" class="card-achievement__badge ">
+            } else {
+                if ($medallaorden->getId() != '10' && $medallaorden->getId() != '11' && $medallaorden->getId() != '12' && $medallaorden->getId() && '13' && $medalla == '0') {
+
+                    $html .= '<div class="card-achievement green-line">
+                                <img src="/formacion2.0/web/front/assets/img/recurso-' . $medallaorden->getId() . '.png" alt="" class="card-achievement__badge ">
                                 <div class="card-achievement__details">
-                                    <h4 class="card-achievement__title">'.$medallaorden->getNombre().$medallaorden->getId().'</h4>
-                                    <p class="card-achievement__condition">'.$medallaUsuario->getMedalla()->getDescripcion().'</p>
+                                    <h4 class="card-achievement__title">' . $medallaorden->getNombre() . $medallaorden->getId() . '</h4>
+                                    <p class="card-achievement__condition">' . $medallaorden->getDescripcion() . '</p>
                                 </div>
                             </div>';
                 }
             }
         }
-       // return new response($medalla.' '.$repetido);
-        
+        // return new response($medalla.' '.$repetido);
 
-        
+
+
         //return new response($html);
 
         $return = $html;
 
         $return = json_encode($return);
         return new Response($return, 200, array('Content-Type' => 'application/json'));
-
     }
-
 }
