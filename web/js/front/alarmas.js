@@ -1,5 +1,5 @@
 $(document).ready(function() {
-
+    mostrarBotonRanking();
     getAlarma();
     getNotificaciones();
     removeNotificacionesPush();
@@ -254,4 +254,23 @@ function crearDivAlert(notificaciones){
         removeNotificationBox();
     });
 
+}
+
+function mostrarBotonRanking(){
+    $.ajax({
+        type: "POST",
+        url: $('#url_boton_ranking').val(),
+        async: true,
+        dataType: "json",
+        success: function(data) {
+            if(data.ligas){
+                $('#boton_ranking').show();
+            }else{
+                $('#boton_ranking').hide();
+            }
+        },
+        error: function(){
+            console.log('Error en consulta de liga'); // Hay que implementar los mensajes de error para el frontend
+        }
+    });
 }

@@ -2137,7 +2137,7 @@ public function obtenerEstructuraJson($pagina_id){
               $sesionActiva = $em->getRepository('LinkComunBundle:AdminSesion')->findOneBy(array('disponible' => True,
                                                                                                    'usuario' => $usuario_id));
             
-              if($pagina_padre_log->getInicio() < $sesionActiva->getFechaIngreso() )
+              if($pagina_padre_log->getFechaInicio() < $sesionActiva->getFechaIngreso() )
               {
                 $medalla = $em->getRepository('LinkComunBundle:AdminMedallas')->find($yml['parameters']['medallas']['imparable']);
             

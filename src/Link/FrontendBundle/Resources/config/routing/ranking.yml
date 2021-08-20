@@ -10,3 +10,8 @@ _ajaxRankingAction:
     path: / rankingList
     defaults: { _controller: LinkFrontendBundle:Ranking:ajaxRanking }
 
+
+_ajaxBotonRanking:
+    path: /ajaxBotonRanking
+    defaults: { _controller: LinkFrontendBundle:Ranking:ajaxBotonRanking }
+

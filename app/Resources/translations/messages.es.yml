@@ -174,6 +174,7 @@ Configurar asignación de sub-páginas: Configurar asignación de sub-páginas
 Configurar evaluación: Configurar evaluación
 Configurar página: Configurar página
 Configuración de permisos: Configuración de permisos
+Configuración de la liga: Configuración de la liga
 Confirmar: Confirmar
 Configuración de la categoría: Configuración de la categoría
 Confirmar contraseña: Confirmar contraseña
@@ -257,7 +258,8 @@ Debe seleccionar la página destino: Debe seleccionar la página destino
 Debes seleccionar tanto la empresa como el nivel: Debe seleccionar tanto la empresa como el nivel
 Debe seleccionar una fecha de publicación.: Debe seleccionar una fecha de publicación.
 Debe seleccionar una fecha de vencimiento.: Debe seleccionar una fecha de vencimiento.
-Debe ser mínimo de 3 caracteres.: Debe ser mínimo de 3 caracteres.
+Debe ser mínimo de 3 caracteres: Debe ser mínimo de 3 caracteres
+Debe ser mínimo de 1 caracter: Debe ser mínimo de 1 caracter
 del: del
 Descarga el archivo a través del siguiente enlace: Descarga el archivo a través del siguiente enlace
 Descargar: Descargar
@@ -355,6 +357,7 @@ El nombre del tutorial debe ser mínimo de 3 caracteres: El nombre del tutorial 
 El nombre del tutorial es requerido: El nombre del tutorial es requerido
 El nombre del usuario debe ser mínimo de 3 caracteres: El nombre del usuario debe ser mínimo de 3 caracteres
 El nombre del usuario es requerido: El nombre del usuario es requerido
+El porcentaje de puntos debe ser un valor numérico: El porcentaje de puntos debe ser un valor numérico
 El país es requerido.: El país es requerido.
 El país no existe en la base de datos: El país no existe en la base de datos
 El participante: El participante
@@ -573,6 +576,7 @@ Huso horario requerido: Huso horario requerido
 Icono: Icono
 Icono de la empresa: Icono de la empresa
 Imagen: Imagen
+Imagen de la liga: Imagen de la liga
 Imagen lado: Imagen lado
 Imprimir certificado: Imprimir certificado
 Imprimir constancia de notas: Imprimir constancia de notas
@@ -648,6 +652,7 @@ La fecha de vencimiento es requerida.: La fecha de vencimiento es requerida.
 La fecha de vencimiento no puede ser menor que la fecha de inicio.: La fecha de vencimiento no puede ser menor que la fecha de inicio.
 La fecha final debe ser mayor que la fecha inicial: La fecha final debe ser mayor que la fecha inicial
 La foto principal de la página es requerida: La foto principal de la página es requerida
+La medalla ha sido almacenada con éxito: La medalla ha sido almacenada con éxito 
 La imagen es requerida.: La imagen es requerida.
 La imagen lado A es requerida.: La imagen lado A es requerida.
 La notificación ha sido almacenada con éxito: La notificación ha sido almacenada con éxito
@@ -668,6 +673,7 @@ Leidos: Leidos
 Libro: Libro
 Libros: Libros
 Línea: Línea
+Ligas: Ligas 
 Lista de archivos: Lista de archivos
 Listado de: Listado de
 Archivos para el comentario de: Archivos para el comentario de
@@ -680,6 +686,7 @@ Listado de empresas activas: Listado de empresas activas
 Listado de empresas inactivas: Listado de empresas inactivas
 Listado de evaluaciones: Listado de evaluaciones
 Listado de grupos: Listado de grupos
+Listado de ligas: Listado de ligas
 Listado de niveles: Listado de niveles
 Listado de notificaciones: Listado de notificaciones
 Listado de participantes: Listado de participantes
@@ -713,9 +720,12 @@ Más valorados: Más valorados
 Materia: Materia
 Material complementario: Material complementario
 Materias vistas: Materias vistas
+Máximo: Máximo
 Mensaje: Mensaje
 Mensaje del servidor: Mensaje del servidor
+medallas: medals 
 Mi avance: Mi avance
+Mínimo: Mínimo
 Miércoles: Miércoles
 minutos: minutos
 minutos para completar la evaluación: minutos para completar la evaluación
@@ -869,6 +879,7 @@ Permisos por Rol: Permisos por Rol
 Plan de estudio: Plan de estudio
 Plantilla: Plantilla
 Porcentaje: Porcentaje
+Porcentaje de puntos requeridos: Porcentaje de puntos requeridos 
 Por favor, ingresa tu usuario y contraseña: Por favor, ingresa tu usuario y contraseña
 Por medio de la presente se certifica que el participante arriba indicado ha cursado y aprobado las pruebas correspondientes a: Por medio de la presente se certifica que el participante arriba indicado ha cursado y aprobado las pruebas correspondientes a
 Preferencias de la empresa: Preferencias de la empresa
@@ -911,6 +922,7 @@ Puede contactar con el Administrador del Sistema para otorgarle permisos de acce
 Puede ingresar de nuevo desde la pantalla de login: Puede ingresar de nuevo desde la pantalla de login
 Puede solicitar crear una evaluación para esta página a través del Administrador de Contenido del equipo de Formación Smart: Puede solicitar crear una evaluación para esta página a través del Administrador de Contenido del equipo de Formación Smart
 Puntaje: Puntaje
+Puntos: Puntos
 Puntaje con que se aprueba: Puntaje con que se aprueba
 Puntaje definitivo del programa: Puntaje definitivo del programa
 Puntaje definitivo del curso: Puntaje definitivo del curso

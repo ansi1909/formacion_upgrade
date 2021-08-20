@@ -33,6 +33,7 @@
             </style>
         {% endblock %}
     </head>
+    
     <body class="{% block clbody %}{% endblock %}">
 
         {% set uri = app.request.getbasepath %}
@@ -42,6 +43,8 @@
             <input type="hidden" id="url_leido" name="url_leido" value="{{ path('_ajaxLeido') }}">
             <input type="hidden" id="url_NotiMuro" name="url_NotiMuro" value="{{ path('_ajaxNotiMuro') }}">
             <input type="hidden" id="url_like" name="url_like" value="{{ path('_ajaxLike') }}">
+            <input type="hidden" id="url_boton_ranking" name="url_boton_ranking" value="{{ path('_ajaxBotonRanking') }}">
+            
         {% endblock %}
 
         {# HEADER #}
@@ -56,7 +59,7 @@
                 </div>
                 <div class="navbar-brand d-flex justify-content-center align-items-center">
                     <div class="d-flex flex-column">
-                        <a href="{{ path('_rankingNuevo') }}" title="{{ 'Ranking'|trans }}"  data-toggle="tooltip" data-placement="bottom"> <img class="ranking-menu-icon" src="{{ asset('front/assets/img/ranking.png') }}"/> </a>
+                        <a href="{{ path('_rankingNuevo') }}" title="{{ 'Ranking'|trans }}" id="boton_ranking"  style="display:none" data-toggle="tooltip" data-placement="bottom"> <img class="ranking-menu-icon" src="{{ asset('front/assets/img/ranking.png') }}"/> </a>
                     </div>
                     <div class="d-flex flex-column">
                         <div class="wrapperDdApps">
@@ -361,23 +364,6 @@
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div> #}
-        </div>
-
-        <!-- Modal de notificaciones grandes del ranking -->
-        <div class="modal justify-content-center align-items-center modal-notification-ranking" id="modal-ranking-big-notification">
-            <div class="modal-notification-ranking__content d-flex flex-wrap justify-content-center align-items-center">
-                <a class="close btn_close_modal" data-dismiss="modal" aria-label="Close">
-                    <span class="material-icons ic-close-white" aria-hidden="true">close</span>
-                </a>
-                <img class="modal-notification-ranking__badge" src="{{asset('front/assets/img/recurso-8.png')}}"/>
-                <div class="modal-notification-ranking__text-box">
-                    <h2 class="modal-notification-ranking__title">¡Texto principal!</h2>
-                    <p>Descripción o algo del logro en el modal</p>
-                    <a class="mt-4 px-4 py-3 d-flex justify-content-center align-items-center bg-primary text-white btn_close_modal modal-notification-ranking__continue" data-dismiss="modal" aria-label="Close">
-                        Continuar
-                    </a>
-                </div>
-            </div>
         </div>
 
         {% block javascripts %}
