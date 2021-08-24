@@ -80,7 +80,7 @@ bg-white
 <input type="hidden" id="usuario_id" name="usuario_id" value="{{ app.session.get('usuario').id }}">
 <input type="hidden" id="programa_id" name="programa_id" value="{{ programa.id }}">
 <input type="hidden" id="subpagina_id" name="subpagina_id" value="{{ subpagina_id }}">
-<input type="text" id="pagina_id_viendo" name="pagina_id_viendo" value="{{subpagina_id}}">
+<input type="text" id="pagina_id_viendo" name="pagina_id_viendo" value="{{pagina_actual}}">
 <input type="hidden" id="wizard" name="wizard" value="{{ wizard and lecciones.subpaginas|length > 1 ? '1' : '0' }}">
 <input type="hidden" id="url_next" name="url_next" value="{{ path('_lecciones', { 'programa_id': programa.id }) }}">
 <input type="hidden" id="url_fin" name="url_fin" value="{{ path('_finLecciones', { 'programa_id': programa.id, 'subpagina_id': lecciones.id }) }}">

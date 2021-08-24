@@ -36,7 +36,7 @@
         </style>
         
         <!-- Modal de notificaciones grandes del ranking -->
-        <div class="modal justify-content-center align-items-center modal-notification-ranking  show" id="modal-ranking-big-notification">
+       {# <div class="modal justify-content-center align-items-center modal-notification-ranking  show" id="modal-ranking-big-notification">
             <div class="modal-notification-ranking__content d-flex flex-wrap justify-content-center align-items-center">
                 <a class="close btn_close_modal" data-dismiss="modal" aria-label="Close">
                     <span class="material-icons ic-close-white" aria-hidden="true">close</span>
@@ -50,7 +50,7 @@
                     </a>
                 </div>
             </div>
-        </div>
+        </div> #}s
 
         <input type="hidden" id="url_programa" name="url_programa" value="{{ path('_programa', { 'programa_id': programa.id }) }}">
         <input type="hidden" id="url_inicio" name="url_inicio" value="{{ path('_inicio') }}">
