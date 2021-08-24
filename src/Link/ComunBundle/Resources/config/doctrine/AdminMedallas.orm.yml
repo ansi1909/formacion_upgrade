@@ -20,10 +20,15 @@ Link\ComunBundle\Entity\AdminMedallas:
         descripcion:
             type: string
             nullable: true
-            length: 100
+            length: 500
             options:
                 fixed: false
         puntos:
+            type: integer
+            nullable: true
+            options:
+                unsigned: false
+        categoria:
             type: integer
             nullable: true
             options:
