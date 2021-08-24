@@ -150,7 +150,7 @@ $(document).ready(function () {
     },
   });
 
-  $("#pagina_id").click(function () {
+  $(".pagina_id").click(function () {
     var pagina_id = $(this);
     $(".ranking-loader").addClass("d-flex");
 

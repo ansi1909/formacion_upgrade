@@ -210,10 +210,10 @@ class UsuarioController extends Controller
                         if ($repetido == '0') {
                             $repetido = 1;
                             $medalla = 1;
-                            $html .= '<div class="card-achievement green-line">
+                            $html .= '<div class="card-achievement line-'.$medallaorden->getCategoria().'">
                                         <img src="/formacion2.0/web/front/assets/img/recurso-' . $medallaorden->getId() . '.png" alt="" class="card-achievement__badge achieved">
                                         <div class="card-achievement__details">
-                                            <h4 class="card-achievement__title">' . $medallaorden->getNombre() . $medallaorden->getId() . ' true</h4>
+                                            <h4 class="card-achievement__title">' . $medallaorden->getNombre() . '</h4>
                                             <p class="card-achievement__condition">' . $medallaUsuario->getMedalla()->getDescripcion() . '</p>
                                         </div>
                                     </div>';
@@ -221,10 +221,10 @@ class UsuarioController extends Controller
                     } else {
                         $medalla = 1;
 
-                        $html .= '<div class="card-achievement green-line">
+                        $html .= '<div class="card-achievement line-'.$medallaorden->getCategoria().'">
                                     <img src="/formacion2.0/web/front/assets/img/recurso-' . $medallaorden->getId() . '.png" alt="" class="card-achievement__badge achieved">
                                     <div class="card-achievement__details">
-                                        <h4 class="card-achievement__title">' . $medallaorden->getNombre() . $medallaorden->getId() . ' true</h4>
+                                        <h4 class="card-achievement__title">' . $medallaorden->getNombre() . '</h4>
                                         <p class="card-achievement__condition">' . $medallaUsuario->getMedalla()->getDescripcion() . '</p>
                                     </div>
                                 </div>';
@@ -237,19 +237,19 @@ class UsuarioController extends Controller
                 if ($medallaorden->getId() == '10' || $medallaorden->getId() == '11' || $medallaorden->getId() == '12' || $medallaorden->getId() == '13') {
                     $contador = $contador + 1;
                     if ($contador == 4) {
-                        $html .= '<div class="card-achievement green-line">
+                        $html .= '<div class="card-achievement line-'.$medallaorden->getCategoria().'">
                                     <img src="/formacion2.0/web/front/assets/img/recurso-' . $medallaorden->getId() . '.png" alt="" class="card-achievement__badge ">
                                     <div class="card-achievement__details">
-                                        <h4 class="card-achievement__title">' . $medallaorden->getNombre() . $medallaorden->getId() . '</h4>
+                                        <h4 class="card-achievement__title">' . $medallaorden->getNombre() . '</h4>
                                         <p class="card-achievement__condition">' . $medallaorden->getDescripcion() . '</p>
                                     </div>
                                 </div>';
                     }
                 } else {
-                    $html .= '<div class="card-achievement green-line">
+                    $html .= '<div class="card-achievement line-'.$medallaorden->getCategoria().'">
                                 <img src="/formacion2.0/web/front/assets/img/recurso-' . $medallaorden->getId() . '.png" alt="" class="card-achievement__badge ">
                                 <div class="card-achievement__details">
-                                    <h4 class="card-achievement__title">' . $medallaorden->getNombre() . $medallaorden->getId() . '</h4>
+                                    <h4 class="card-achievement__title">' . $medallaorden->getNombre() . '</h4>
                                     <p class="card-achievement__condition">' . $medallaorden->getDescripcion() . '</p>
                                 </div>
                             </div>';
@@ -257,10 +257,10 @@ class UsuarioController extends Controller
             } else {
                 if ($medallaorden->getId() != '10' && $medallaorden->getId() != '11' && $medallaorden->getId() != '12' && $medallaorden->getId() && '13' && $medalla == '0') {
 
-                    $html .= '<div class="card-achievement green-line">
+                    $html .= '<div class="card-achievement line-'.$medallaorden->getCategoria().'">
                                 <img src="/formacion2.0/web/front/assets/img/recurso-' . $medallaorden->getId() . '.png" alt="" class="card-achievement__badge ">
                                 <div class="card-achievement__details">
-                                    <h4 class="card-achievement__title">' . $medallaorden->getNombre() . $medallaorden->getId() . '</h4>
+                                    <h4 class="card-achievement__title">' . $medallaorden->getNombre() . '</h4>
                                     <p class="card-achievement__condition">' . $medallaorden->getDescripcion() . '</p>
                                 </div>
                             </div>';

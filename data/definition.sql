@@ -733,6 +733,7 @@ id serial,
 nombre varchar(100),
 descripcion varchar(500),
 puntos integer,
+categoria integer,
  PRIMARY KEY (id));
 
 CREATE TABLE admin_ligas(
