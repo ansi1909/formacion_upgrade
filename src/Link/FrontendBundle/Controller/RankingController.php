@@ -204,10 +204,12 @@ class RankingController extends Controller
 
     public function newAction(){
         #listar programas
+        //print_r('Aqui');die();
        
         $em = $this->getDoctrine()->getManager();
         $session = new Session();
         $programas = $session->get('paginas');
+        //print_r($programas);die();
 
         return $this->render('LinkFrontendBundle:Ranking:new.html.twig',array('programas'=>$programas));
         $response->headers->setCookie(new Cookie('Peter', 'Griffina', time() + 36, '/'));
@@ -248,7 +250,7 @@ class RankingController extends Controller
                     "descripcion"  =>  $liga->getDescripcion(),
                     "puntos_min"   =>  round($liga_pts_min),
                     "puntos_max"   =>  round($liga_pts_max),
-                    "imagen"       =>  $baseUrl.$liga->getImagen(),
+                    "imagen"       =>  $uploads.'recursos/ligas/'.$liga->getId().'/'.$liga->getImagen(),
                     "lograda"      =>  ($puntos_usuario_logueado >= $liga_pts_min )? 1 : 0
                 ];
                 $ligas_array[$liga->getId()] = $liga_aux;
@@ -339,7 +341,7 @@ class RankingController extends Controller
         }else{
             $ok = 0;
         }
-       // print_r($ligas_array);
+    
         $return = array(
                             'ok'=>$ok,
                             'list'=>$response,
@@ -355,6 +357,15 @@ class RankingController extends Controller
                         );
         $return = json_encode($return);
         return new Response($return, 200, array('Content-Type' => 'application/json'));
+    }
+
+    public function ajaxBotonRankingAction(Request $request){
+        $em = $this->getDoctrine()->getManager();
+        $ligas = $em->getRepository('LinkComunBundle:AdminLigas')->findAll();
+        $return = array('ligas' => ( count($ligas) > 0 )? 1:0 );
+        $return = json_encode($return);
+        return new Response($return, 200, array('Content-Type' => 'application/json'));
+
     }
 
 }

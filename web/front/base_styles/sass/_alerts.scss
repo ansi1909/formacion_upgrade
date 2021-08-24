@@ -1,71 +1,93 @@
 /*CAJITA DE NOTIFICACIONES*/
 
 .notification-box {
-    position: fixed;
-    top: 5rem;
-    right: 0.7rem;
-    z-index: 9999;
-    max-width: 90vw;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    border-radius: 7px;
-    box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.2);
+  right: 0.7rem;
+  z-index: 9999;
+  max-width: 90vw;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 7px;
+  box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.2);
 
-    button.close {
-        height: 94%;
+  button.close {
+    height: 94%;
 
-        &:focus, &:active {
-            outline: none;
-        }
+    &:focus,
+    &:active {
+      outline: none;
     }
+  }
 }
 
 /*NOTIFICACIONES*/
+.alert-notif-container {
+  position: fixed;
+  top: 5rem;
+  right: 0;
+}
 
 .notification-ranking {
-    padding-left: 7rem;
-    overflow: hidden;
-    background-color: #DFE9F8;
+  padding-left: 7rem;
+  overflow: hidden;
+  background-color: #dfe9f8;
 
-    .stickerNotify {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        height: 3rem;
-        width: 3rem;
-        margin: 0 1rem 0 0;
-        border-radius: 50rem;
-        box-shadow: 1px 1px 5px rgb(58 58 58 / 50%);
+  .stickerNotify {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 3rem;
+    width: 3rem;
+    margin: 0 1rem 0 0;
+    border-radius: 50rem;
+    box-shadow: 1px 1px 5px rgba(58, 58, 58, 50);
 
-        &.anunSticker {
-            background: #ef6e62;
-        }
-        &.rankingSticker {
-            background: #B0A4CB;
-        }
-        .icNotify {
-            margin: 0 auto;
-            position: relative;
-            top: 0;
-            color: #212529;
-            font-size: calc(1.2rem + 8px);
-        }
+    &.anunSticker {
+      background: #ef6e62;
     }
-    &__image {
-        position: absolute;
-        left: 1.9rem;
-        width: 4rem;
-        margin-right: 0.3rem;
-        filter: drop-shadow(2px 4px 6px rgba(0,0,0,0.2));
+    &.rankingSticker {
+      background: #b0a4cb;
     }
+    &.notiSticker{
+      background:  #dbea8f;
+    }
+    &.muroSticker{
+        background: #FFDC60;
+    }
+    &.ecpSticker{
+        background: #80CCFF;
+    }
+    &.ectSticker{
+        background:  #CFE65C;
+    }
+    &.calenSticker{
+        background: #ee63b1;
+    }
+    &.biblioSticker{
+        background: #ffc68e;
+    }
+    .icNotify {
+      margin: 0 auto;
+      position: relative;
+      top: 0;
+      color: #212529;
+      font-size: calc(1.2rem + 8px);
+    }
+  }
+  &__image {
+    position: absolute;
+    left: 1.9rem;
+    width: 4rem;
+    margin-right: 0.3rem;
+    filter: drop-shadow(2px 4px 6px rgba(0, 0, 0, 0.2));
+  }
 
-    &__text {
-        position: relative;
-        z-index: 10;
-        padding: 0.3rem;
-        border-radius: 9px;
-        font-weight: 500;
-        color: $black-300;
-    }
+  &__text {
+    position: relative;
+    z-index: 10;
+    padding: 0.3rem;
+    border-radius: 9px;
+    font-weight: 500;
+    color: $black-300;
+  }
 }

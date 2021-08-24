@@ -146,6 +146,7 @@ class LeccionController extends Controller
         $totalComentarios = count($totalComentarios);
         
         return $this->render('LinkFrontendBundle:Leccion:index.html.twig', array('programa' => $programa,
+                                                                                'pagina_actual' => $id_pagina_log,
                                                                                  'subpagina_id' => $subpagina_id,
                                                                                  'lecciones' => $lecciones,
                                                                                  'titulo' => $titulo,
@@ -403,7 +404,7 @@ class LeccionController extends Controller
             $f = $this->get('funciones');
             $yml = Yaml::parse(file_get_contents($this->get('kernel')->getRootDir().'/config/parametros.yml'));
             $tipoMensaje = 'Publicó';
-            $usuarioPadre = '';
+            $usuario_padre_id = 0;
             $mensajePadre = '';
             $is_tutor = $session->get('usuario')['tutor']? 1:0;
             $pagina_id = $request->request->get('pagina_id');
@@ -437,7 +438,7 @@ class LeccionController extends Controller
                 $puntos_recibidos = $yml['parameters']['puntos']['respuesta_muro'];
                 $muro_padre = $this->getDoctrine()->getRepository('LinkComunBundle:CertiMuro')->find($muro_id);
                 $mensajePadre = $muro_padre->getMensaje();
-                $usuarioPadre = $muro_padre->getUsuario()->getNombre().' '.$muro_padre->getUsuario()->getApellido();
+                $usuario_padre_id = $muro_padre->getUsuario()->getId();
                 $muro->setMuro($muro_padre);
                 //return new response($muro_padre->getPagina()->getId());
                 $pagina_log_padre = $em->getRepository('LinkComunBundle:CertiPaginaLog')->findOneBy(array('pagina' => $muro_padre->getPagina()->getId(),
@@ -664,7 +665,7 @@ class LeccionController extends Controller
             $link_plataforma = $this->container->getParameter('link_plataforma').$empresa->getId();
             $categoria = $f->obtenerProgramaCurso($pagina);
             $tutores = $f->getTutoresEmpresa($empresa->getId(), $yml);
-            $sendMails = $f->sendMailNotificationsMuro($tutores, $yml, $muro, $categoria, $tipoMensaje, $background, $logo, $link_plataforma);
+            $sendMails = $f->sendMailNotificationsMuro($tutores, $yml, $muro, $categoria, $tipoMensaje, $background, $logo, $link_plataforma, $usuario_padre_id);
 
             $puntos = $pagina_log->getPuntos() + $puntos_agregados;
             $pagina_log->setPuntos($puntos);
@@ -686,9 +687,9 @@ class LeccionController extends Controller
                 $em->flush();
                     
                 //crea la notificacion para el usuario cuando el usuario que publica
-                $descripcion = $f->tipoDescripcion($tipoMensaje, $muro, $muro_padre->getUsuario()->getNombre().' '.$muro_padre->getUsuario()->getApellido());
-                $tipoAlarma = ($tipoMensaje=='Respondió') ? 'respuesta_muro' : 'aporte_muro';
-                $f->newAlarm($yml['parameters']['tipo_alarma'][$tipoAlarma], $descripcion, $muro_padre->getUsuario(), $muro->getId());
+                //$descripcion = $f->tipoDescripcion($tipoMensaje, $muro, $muro_padre->getUsuario()->getNombre().' '.$muro_padre->getUsuario()->getApellido());
+                //$tipoAlarma = ($tipoMensaje=='Respondió') ? 'respuesta_muro' : 'aporte_muro';
+                //$f->newAlarm($yml['parameters']['tipo_alarma'][$tipoAlarma], $descripcion, $muro_padre->getUsuario(), $muro->getId());
 
             }
 

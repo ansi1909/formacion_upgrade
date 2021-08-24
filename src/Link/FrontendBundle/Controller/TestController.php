@@ -668,6 +668,7 @@ class TestController extends Controller
     public function resultadosAction($programa_id, $prueba_log_id, $puntos, Request $request)
     {
 
+        
         $session = new Session();
         $f = $this->get('funciones');
         $yml = Yaml::parse(file_get_contents($this->get('kernel')->getRootDir().'/config/parametros.yml'));
@@ -777,8 +778,27 @@ class TestController extends Controller
             }
         }
         
+        $culmino = (!$try_button and !$continue_button['evaluacion']  and !$continue_button['next_lesson'] ) or ($programa->getCategoria()->getId() == $yml['parameters']['categoria']['competencia'] and $aprobo_competencia)? 1:0;
+        $podio = 0;
+        if($culmino){
+            $query = $em->createQuery("SELECT mu FROM LinkComunBundle:AdminMedallasUsuario mu
+                                        WHERE mu.pagina = :pagina
+                                        AND mu.usuario = :usuario
+                                        AND (mu.medalla = :medalla1 OR mu.medalla = :medalla2 OR mu.medalla = :medalla3)")
+                            ->setParameters(array('pagina'   =>  $programa->getId(),
+                                                  'usuario'  =>  $session->get('usuario')['id'],
+                                                  'medalla1' =>  $yml['parameters']['medallas']['primer_lugar'],
+                                                  'medalla2' =>  $yml['parameters']['medallas']['segundo_lugar'],
+                                                  'medalla3' =>  $yml['parameters']['medallas']['tercer_lugar']
+                                                ));
+                            $podio = $query->getResult();
+
+            if($podio){
+                $podio = $podio[0]->getId();
+            }
+        }
         
-        //return new Response(var_dump($continue_button));
+
 
         return $this->render('LinkFrontendBundle:Test:resultados.html.twig', array('prueba_log' => $prueba_log,
                                                                                    'preguntas' => $preguntas,
@@ -787,8 +807,10 @@ class TestController extends Controller
                                                                                    'continue_button' => $continue_button,
                                                                                    'estados' => $yml['parameters']['estado_prueba'],
                                                                                    'puntos' => $puntos,
-                                                                                   'competencia_parametros' => $yml['parameters']['categoria']['competencia'],
-                                                                                   'aprobo_competencia' => $aprobo_competencia ));
+                                                                                   'aprobo_competencia' => $aprobo_competencia,
+                                                                                   'culmino' => $culmino,
+                                                                                   'podio'   => $podio
+                                                                                ));
 
     }
 

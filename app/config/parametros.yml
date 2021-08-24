@@ -181,6 +181,12 @@ parameters:
         tercer_lugar: 12
         graduado: 13
         vencedor: 14
+    notificaciones_push:
+        mostrar_maximo: 3
+        maximo_minutos: 1
+        minimo_segundos: 1
+        maximo_segundos: 59
+        
 
         
 

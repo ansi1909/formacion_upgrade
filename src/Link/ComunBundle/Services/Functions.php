@@ -317,7 +317,7 @@ class Functions
   }
 
   ////// Envia los correo y notificaciones a los tutores indicando actividad en el muro
-    public function sendMailNotificationsMuro($tutores, $yml, $muro, $categoria, $tipoMensaje, $background, $logo, $link_plataforma)
+    public function sendMailNotificationsMuro($tutores, $yml, $muro, $categoria, $tipoMensaje, $background, $logo, $link_plataforma, $usuario_padre_id = 0)
     {
 
         $em = $this->em;
@@ -341,7 +341,7 @@ class Functions
             //query revisado
 
             //verificar si el usuario es tutor, en caso de ser falso envia el correo al tutor
-            if($muro->getUsuario()->getId()!= $tutor->getId() && $nivel_asignado && $correo)
+            if( ($muro->getUsuario()->getId()!= $tutor->getId() && $nivel_asignado)  &&  ($correo) && ($tutor->getId() != $usuario_padre_id))
             {
 
                 $encabezadoUsuario = 'El usuario: '.$muro->getUsuario()->getNombre().' '.$muro->getUsuario()->getApellido().', '.mb_strtolower($tipoMensaje, 'UTF-8').' lo siguiente: ';
@@ -2137,7 +2137,7 @@ public function obtenerEstructuraJson($pagina_id){
               $sesionActiva = $em->getRepository('LinkComunBundle:AdminSesion')->findOneBy(array('disponible' => True,
                                                                                                    'usuario' => $usuario_id));
             
-              if($pagina_padre_log->getInicio() < $sesionActiva->getFechaIngreso() )
+              if($pagina_padre_log->getFechaInicio() < $sesionActiva->getFechaIngreso() )
               {
                 $medalla = $em->getRepository('LinkComunBundle:AdminMedallas')->find($yml['parameters']['medallas']['imparable']);
             

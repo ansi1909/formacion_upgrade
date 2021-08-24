@@ -47,19 +47,21 @@
     <div class="container d-flex flex-wrap justify-content-center align-items-center ">
         {# Curso #}
         {% for programa in  programas %}
-        <div class="card d-flex flex-column">
-            <img class="card-img-top" src="{{ uploads ~ programa.foto}}" alt="">
-            <div class="wraper d-flex flex-column">
-                <div class="card-hrz-body">
-                    <h5 class="title-grey my-3 font-weight-normal"> {{ programa.nombre }} </h5>
+            {% if programa.categoria !='Competencia' %}
+                <div class="card d-flex flex-column">
+                    <img class="card-img-top" src="{{ uploads ~ programa.foto}}" alt="">
+                    <div class="wraper d-flex flex-column">
+                        <div class="card-hrz-body">
+                            <h5 class="title-grey my-3 font-weight-normal"> {{ programa.nombre }} </h5>
+                        </div>
+
+                        <div class="card-hrz-right d-flex flex-column justify-content-top mx-3 pb-1 align-item align-items-center">
+
+                        <button href="#" class="btn btn-sm btn-continuar mt-0 px-3 mb-3 btn-xs-cont j-btn-achievement" data-id="{{ programa.id }}" data-ranktitle="{{ programa.nombre }}"> Ver ranking </button>
+                    </div>
+                    </div>
                 </div>
-
-                <div class="card-hrz-right d-flex flex-column justify-content-top mx-3 pb-1 align-item align-items-center">
-
-                <button href="#" class="btn btn-sm btn-continuar mt-0 px-3 mb-3 btn-xs-cont j-btn-achievement" data-id="{{ programa.id }}" data-ranktitle="{{ programa.nombre }}"> Ver ranking </button>
-            </div>
-            </div>
-        </div>
+            {% endif %}
         {% endfor %}
     </div>
 </div>
@@ -100,7 +102,7 @@
                      #}
                     </div>
 
-                    <p class="text-center mt-4 ranking_members_amount"><span id="totalParticipantes"></span> {{ 'participantes más te acompañan en esta liga'|trans }}</p>
+                    <p class="text-center mt-4 ranking_members_amount" id="p-totalParticipantes" style="display:visible"><span id="totalParticipantes"></span> {{ 'participantes más te acompañan en esta liga'|trans }}</p>
                     {# <table class="rank-table" cellpadding="0" cellspacing="0" border="0">
                         <thead class="campo_title">
                             <tr>

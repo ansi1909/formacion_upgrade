@@ -22,6 +22,7 @@
 			tmp/						# Aquí se guardan temporalmente los certificados generados de forma masiva
 			thumbnails/					# Aquí se almacenan los archivos para los thumbnails de las plantillas
 										# 	OJO: Podemos importar las imágenes iniciales a este directorio desde docs/prototipos/front/thumbnails
+			ligas/						# Aqui se almacenaran las imagenes portada de las ligas que se creen
 			decorate_certificado.png	# Tomar la imagen de web/front/assets/img/
 			logo_formacion_smart.png	# Tomar la imagen de web/img/
 

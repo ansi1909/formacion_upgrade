@@ -174,6 +174,7 @@ Configurar asignación de sub-páginas: Configure sub-pages assignment
 Configurar evaluación: Configure test
 Configurar página: Configure page
 Configuración de permisos: Permission settings
+Configuración de la liga: League Settings
 Confirmar: Confirm
 Configuración de la categoría: Category settings
 Confirmar contraseña: Confirm password
@@ -257,7 +258,8 @@ Debe seleccionar la página destino: You must select the destination page
 Debes seleccionar tanto la empresa como el nivel: You must select both the company and the level
 Debe seleccionar una fecha de publicación.: You must select a publication date.
 Debe seleccionar una fecha de vencimiento.: You must select a due date.
-Debe ser mínimo de 3 caracteres.: This field must have at least 3 characters.
+Debe ser mínimo de 3 caracteres: This field must have at least 3 characters
+Debe ser mínimo de 1 caracter: Must be a minimum of 1 character
 del: of the
 Descarga el archivo a través del siguiente enlace: Download file through following link
 Descargar: Download
@@ -355,6 +357,7 @@ El nombre del tutorial debe ser mínimo de 3 caracteres: Tutorial name must have
 El nombre del tutorial es requerido: Tutorial name is required
 El nombre del usuario debe ser mínimo de 3 caracteres: User first name must have at least 3 characters
 El nombre del usuario es requerido: User first name is required
+El porcentaje de puntos debe ser un valor numérico: The percentage of points must be a numerical value
 El país es requerido.: Country is required.
 El país no existe en la base de datos: Country does not exist in database
 El participante: The participant
@@ -573,6 +576,7 @@ Huso horario requerido: Required time zone
 Icono: Icon
 Icono de la empresa: Company icon
 Imagen: Image
+Imagen de la liga: League image
 Imagen lado: Image side
 Imprimir certificado: Print certificate
 Imprimir constancia de notas: Print proof of notes
@@ -648,6 +652,7 @@ La fecha de vencimiento es requerida.: Expiration date is required.
 La fecha de vencimiento no puede ser menor que la fecha de inicio.: Expiration date must be later than start date.
 La fecha final debe ser mayor que la fecha inicial: Finish date must be greater or equal than initial date
 La foto principal de la página es requerida: Main picture is required
+La medalla ha sido almacenada con éxito: The medal has been stored successfully
 La imagen es requerida.: Image is required.
 La imagen lado A es requerida.: Side A image is required.
 La notificación ha sido almacenada con éxito: Notification has been saved successfully
@@ -668,6 +673,7 @@ Leidos: Read
 Libro: Book
 Libros: Books
 Línea: Line
+Ligas: Leagues
 Lista de archivos: List of files
 Archivos para el comentario de: Files for the comment of
 Listado de: List of
@@ -680,6 +686,7 @@ Listado de empresas activas: List of active companies
 Listado de empresas inactivas: List of inactive companies
 Listado de evaluaciones: List of tests
 Listado de grupos: List of groups
+Listado de ligas: List of leagues
 Listado de niveles: List of levels
 Listado de notificaciones: List of notifications
 Listado de participantes: List of participants
@@ -713,9 +720,12 @@ Más valorados: Most valued
 Materia: Subject
 Material complementario: Complementary content
 Materias vistas: Subjects seen
+Máximo: Maximum
 Mensaje: Message
 Mensaje del servidor: Server message
+medallas: medals
 Mi avance: My progress
+Mínimo: Minimum
 Miércoles: Wednesday
 minutos: minutes
 minutos para completar la evaluación: minutes for completing the evaluation
@@ -869,6 +879,7 @@ Permisos por Rol: Permissions by Role
 Plan de estudio: Study planning
 Plantilla: Template
 Porcentaje: Percentage
+Porcentaje de puntos requeridos: Percentage of points required
 Por favor, ingresa tu usuario y contraseña: Please, enter your username and password
 Por medio de la presente se certifica que el participante arriba indicado ha cursado y aprobado las pruebas correspondientes a: It is hereby certified that the above-mentioned participant has completed and approved the corresponding tests
 Preferencias de la empresa: Preferences of company
@@ -911,6 +922,7 @@ Puede ingresar de nuevo desde la pantalla de login: You can try loging in again
 Puede solicitar crear una evaluación para esta página a través del Administrador de Contenido del equipo de Formación Smart: You can request create a test for this page through the Content Administrator of Formación Smart team
 Puntaje: Score
 Puntaje con que se aprueba: Score with which it is approved
+Puntos: Points
 Puntaje definitivo del programa: Definitive score of the program
 Puntaje definitivo del curso: Final score of the course
 Puntaje definitivo de la competencia: Final score of the competition
