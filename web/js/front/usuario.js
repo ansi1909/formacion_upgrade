@@ -1,4 +1,38 @@
 $(document).ready(function () {
+
+  function getPageMedals (event) {
+    const pagina_id = typeof event === "number" ? event : $(this).data("id")
+    $("input#pagina_id").val("");
+    $(".ranking-loader").addClass("d-flex");
+
+    $.ajax({
+      type: "POST",
+      url: $("#url_medallas").val(),
+      async: true,
+      data: { pagina_id },
+      dataType: "json",
+      success: function (data) {
+        $(".ranking-loader").removeClass("d-flex");
+        if (data) {
+          $("#achivements_result_container").html(data);
+          $("#achievements-container").addClass("show");
+          $("#study_plan").removeClass("show");
+        }
+      },
+      error: function () {
+        $(".ranking-loader").removeClass("d-flex");
+        console.log("Error guardando los datos del perfil del usuario"); // Hay que implementar los mensajes de error para el frontend
+        $(".boton").show();
+        $("#wait_profile").hide(1000);
+      },
+    });
+  }
+
+  if ($("input#pagina_id").val().trim() !== "") {
+      const pagina_id = $("input#pagina_id").val().trim();
+      getPageMedals(Number(pagina_id))
+  }
+
   $("#modificar").click(function () {
     var valid = $("#form").valid();
     if (valid) {
@@ -150,30 +184,5 @@ $(document).ready(function () {
     },
   });
 
-  $(".pagina_id").click(function () {
-    var pagina_id = $(this);
-    $(".ranking-loader").addClass("d-flex");
-
-    $.ajax({
-      type: "POST",
-      url: $("#url_medallas").val(),
-      async: true,
-      data: { pagina_id: pagina_id.data("id") },
-      dataType: "json",
-      success: function (data) {
-        $(".ranking-loader").removeClass("d-flex");
-        if (data) {
-          $("#achivements_result_container").html(data);
-          $("#achievements-container").addClass("show");
-          $("#study_plan").removeClass("show");
-        }
-      },
-      error: function () {
-        $(".ranking-loader").removeClass("d-flex");
-        console.log("Error guardando los datos del perfil del usuario"); // Hay que implementar los mensajes de error para el frontend
-        $(".boton").show();
-        $("#wait_profile").hide(1000);
-      },
-    });
-  });
+  $(".pagina_id").click(getPageMedals);
 });
