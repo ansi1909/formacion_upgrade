@@ -68,6 +68,7 @@ parameters:
         novedad : 6
         biblioteca : 7
         aporte_muro: 8
+        medalla: 9
     tipo_correo:
         notificacion_programada: 1
         espacio_colaborativo: 2

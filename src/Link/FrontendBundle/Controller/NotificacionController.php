@@ -185,6 +185,18 @@ class NotificacionController extends Controller {
 
 				}
 
+			} elseif ($notificacion->getTipoAlarma()->getId() == $yml['parameters']['tipo_alarma']['medalla']) {
+				
+				$html .= '<a href="' . $this->generateUrl('_usuariop', array('pagina_id' => $notificacion->getEntidadId())) . '">';
+				if ($push) {
+					$auxNotificacion["id"] = $notificacion->getId();
+					$auxNotificacion["entidad"] = $notificacion->getEntidadId();
+					$auxNotificacion["icono"] = $notificacion->getTipoAlarma()->getIcono();
+					$auxNotificacion["css"] = $notificacion->getTipoAlarma()->getCss();
+					$auxNotificacion["descripcion"] = $notificacion->getDescripcion();
+					$auxNotificacion["href"] = $this->generateUrl('_usuariop', array('pagina_id' => $notificacion->getEntidadId()));
+				}
+				$mostrar = 1;
 			}
 
 			if (!$vencido && $mostrar) {

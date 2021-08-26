@@ -12,7 +12,7 @@ use Link\ComunBundle\Model\UploadHandler;
 class UsuarioController extends Controller
 {
 
-    public function indexAction(Request $request)
+    public function indexAction($pagina_id, Request $request)
     {
         $em = $this->getDoctrine()->getManager();
         $f = $this->get('funciones');
@@ -25,6 +25,7 @@ class UsuarioController extends Controller
 
         $usuario_id = $session->get('usuario')['id'];
         $empresa_id = $session->get('empresa')['id'];
+        $pagina_id = $pagina_id ? $pagina_id : ' ';
 
         $usuario = $this->getDoctrine()->getRepository('LinkComunBundle:AdminUsuario')->find($usuario_id);
 
@@ -56,7 +57,8 @@ class UsuarioController extends Controller
             'usuario' => $usuario,
             'fecha' => $fechaNacimiento,
             'puntos' => $puntos,
-            'programas' => $programas
+            'programas' => $programas,
+            'pagina_id' => $pagina_id
         ));
     }
 

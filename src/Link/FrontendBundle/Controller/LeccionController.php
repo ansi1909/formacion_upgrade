@@ -526,7 +526,11 @@ class LeccionController extends Controller
                         $em->flush();
 
                         $puntos_agregados = $puntos_agregados + $yml['parameters']['puntos']['influencer_1'];
-                        //return new response(var_dump($puntos_agregados));
+                        
+                        $tipo_alarma_id = $yml['parameters']['tipo_alarma']['medalla'];
+                        $descripcion = 'Has obtenido una medalla';
+                        
+                        $f->newAlarm($tipo_alarma_id,$descripcion,$usuario,$pagina_padre->getId());
                     }
                 }
                 elseif($comentariosTotal == 6)
@@ -546,7 +550,11 @@ class LeccionController extends Controller
                         $em->flush();
 
                         $puntos_agregados = $puntos_agregados + $yml['parameters']['puntos']['influencer_2'];
-                        //return new response(var_dump($puntos_agregados));
+                        
+                        $tipo_alarma_id = $yml['parameters']['tipo_alarma']['medalla'];
+                        $descripcion = 'Has obtenido una medalla';
+                        
+                        $f->newAlarm($tipo_alarma_id,$descripcion,$usuario,$pagina_padre->getId());
                     }
                 }
                 elseif($comentariosTotal == 9)
@@ -566,7 +574,12 @@ class LeccionController extends Controller
                         $em->flush();
 
                         $puntos_agregados = $puntos_agregados + $yml['parameters']['puntos']['influencer_3'];
-                        //return new response(var_dump($puntos_agregados));
+
+                        $tipo_alarma_id = $yml['parameters']['tipo_alarma']['medalla'];
+                        $descripcion = 'Has obtenido una medalla';
+                        
+                        $f->newAlarm($tipo_alarma_id,$descripcion,$usuario,$pagina_padre->getId());
+
                     }
 
                 }
@@ -584,7 +597,7 @@ class LeccionController extends Controller
                         ->setParameters(array('usuario_id' => $usuario->getId(),
                                               'programa' => $estructura));
             $comentariosTotal2 = $query->getSingleScalarResult();
-            
+            //return new response ($comentariosTotal2);
 
             $comentarios = $comentariosTotal2 / 5;
             
@@ -608,7 +621,11 @@ class LeccionController extends Controller
                         $em->flush();
 
                         $puntos_agregados = $puntos_agregados + $yml['parameters']['puntos']['amigable_1'];
-                        //return new response(var_dump($puntos_agregados));
+
+                        $tipo_alarma_id = $yml['parameters']['tipo_alarma']['medalla'];
+                        $descripcion = 'Has obtenido una medalla';
+                        
+                        $f->newAlarm($tipo_alarma_id,$descripcion,$usuario,$pagina_padre->getId());
                         
                     }
                 }
@@ -630,6 +647,11 @@ class LeccionController extends Controller
 
                         $puntos_agregados = $puntos_agregados + $yml['parameters']['puntos']['amigable_2'];
                         //return new response(var_dump($puntos_agregados));
+
+                        $tipo_alarma_id = $yml['parameters']['tipo_alarma']['medalla'];
+                        $descripcion = 'Has obtenido una medalla';
+                        
+                        $f->newAlarm($tipo_alarma_id,$descripcion,$usuario,$pagina_padre->getId());
                         
                     }
                 }
@@ -652,6 +674,11 @@ class LeccionController extends Controller
 
                         $puntos_agregados = $puntos_agregados + $yml['parameters']['puntos']['amigable_3'];
                         //return new response(var_dump($puntos_agregados));
+
+                        $tipo_alarma_id = $yml['parameters']['tipo_alarma']['medalla'];
+                        $descripcion = 'Has obtenido una medalla';
+                        
+                        $f->newAlarm($tipo_alarma_id,$descripcion,$usuario,$pagina_padre->getId());
                     }
 
                 }

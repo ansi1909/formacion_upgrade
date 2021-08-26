@@ -1,6 +1,6 @@
 _usuariop:
-    path:     /usuario
-    defaults: { _controller: LinkFrontendBundle:Usuario:index }
+    path:     /usuario/{pagina_id}
+    defaults: { _controller: LinkFrontendBundle:Usuario:index, pagina_id: 0  }
 
 _ajaxSavePerfil:
     path:     /ajaxSavePerfil
