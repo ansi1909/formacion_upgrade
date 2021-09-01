@@ -3263,7 +3263,11 @@ public function obtenerEstructuraJson($pagina_id){
   // Retorna el id de la página padre de todas
   public function paginaRaiz($pagina)
   {
-
+    $em = $this->em;
+    if(!is_object($pagina)){
+      $pagina = $em->getRepository('LinkComunBundle:CertiPagina')->find($pagina);
+    }
+    
     if ($pagina->getPagina())
     {
       return $this->paginaRaiz($pagina->getPagina());
