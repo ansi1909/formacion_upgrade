@@ -528,7 +528,7 @@ class LeccionController extends Controller
                         $puntos_agregados = $puntos_agregados + $yml['parameters']['puntos']['influencer_1'];
                         
                         $tipo_alarma_id = $yml['parameters']['tipo_alarma']['medalla'];
-                        $descripcion = 'Has obtenido una medalla';
+                        $descripcion = $descripcion = $this->translator->trans('Has optenido la medalla').': '. $this->translator->trans($medalla->getNombre());;
                         
                         $f->newAlarm($tipo_alarma_id,$descripcion,$usuario,$pagina_padre->getId());
                     }
@@ -552,7 +552,7 @@ class LeccionController extends Controller
                         $puntos_agregados = $puntos_agregados + $yml['parameters']['puntos']['influencer_2'];
                         
                         $tipo_alarma_id = $yml['parameters']['tipo_alarma']['medalla'];
-                        $descripcion = 'Has obtenido una medalla';
+                        $descripcion = $descripcion = $this->translator->trans('Has optenido la medalla').': '. $this->translator->trans($medalla->getNombre());;
                         
                         $f->newAlarm($tipo_alarma_id,$descripcion,$usuario,$pagina_padre->getId());
                     }
@@ -576,7 +576,7 @@ class LeccionController extends Controller
                         $puntos_agregados = $puntos_agregados + $yml['parameters']['puntos']['influencer_3'];
 
                         $tipo_alarma_id = $yml['parameters']['tipo_alarma']['medalla'];
-                        $descripcion = 'Has obtenido una medalla';
+                        $descripcion = $descripcion = $this->translator->trans('Has optenido la medalla').': '. $this->translator->trans($medalla->getNombre());;
                         
                         $f->newAlarm($tipo_alarma_id,$descripcion,$usuario,$pagina_padre->getId());
 
@@ -623,7 +623,7 @@ class LeccionController extends Controller
                         $puntos_agregados = $puntos_agregados + $yml['parameters']['puntos']['amigable_1'];
 
                         $tipo_alarma_id = $yml['parameters']['tipo_alarma']['medalla'];
-                        $descripcion = 'Has obtenido una medalla';
+                        $descripcion = $descripcion = $this->translator->trans('Has optenido la medalla').': '. $this->translator->trans($medalla->getNombre());;
                         
                         $f->newAlarm($tipo_alarma_id,$descripcion,$usuario,$pagina_padre->getId());
                         
@@ -649,7 +649,7 @@ class LeccionController extends Controller
                         //return new response(var_dump($puntos_agregados));
 
                         $tipo_alarma_id = $yml['parameters']['tipo_alarma']['medalla'];
-                        $descripcion = 'Has obtenido una medalla';
+                        $descripcion = $descripcion = $this->translator->trans('Has optenido la medalla').': '. $this->translator->trans($medalla->getNombre());;
                         
                         $f->newAlarm($tipo_alarma_id,$descripcion,$usuario,$pagina_padre->getId());
                         
@@ -676,7 +676,7 @@ class LeccionController extends Controller
                         //return new response(var_dump($puntos_agregados));
 
                         $tipo_alarma_id = $yml['parameters']['tipo_alarma']['medalla'];
-                        $descripcion = 'Has obtenido una medalla';
+                        $descripcion = $descripcion = $this->translator->trans('Has optenido la medalla').': '. $this->translator->trans($medalla->getNombre());;
                         
                         $f->newAlarm($tipo_alarma_id,$descripcion,$usuario,$pagina_padre->getId());
                     }

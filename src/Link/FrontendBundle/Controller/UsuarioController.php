@@ -269,11 +269,7 @@ class UsuarioController extends Controller
                 }
             }
         }
-        // return new response($medalla.' '.$repetido);
 
-
-
-        //return new response($html);
 
         $return = $html;
 

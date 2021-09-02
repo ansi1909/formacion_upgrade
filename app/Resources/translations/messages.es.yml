@@ -24,6 +24,9 @@ Activos: Activos
 Actualizando la lista de participantes conectados: Actualizando la lista de participantes conectados
 Actualizando la lista de usuarios conectados: Actualizando la lista de usuarios conectados
 Advertencia: Advertencia
+Amigable NIVEL 1: Amigable NIVEL 1
+Amigable NIVEL 2: Amigable NIVEL 2
+Amigable NIVEL 3: Amigable NIVEL 3
 Administración: Administración
 Administrar ayuda: Manage help
 Administrar páginas: Administrar páginas
@@ -536,12 +539,14 @@ Firma del Supervisor: Firma del Supervisor
 Formato de correo inválido: Formato de correo inválido
 Formato sugerido se especifica en: Formato sugerido se especifica en
 Foto de la página: Foto de la página
+Fotogénico: Fotogénico
 Generar: Generar
 Generar certificados: Generar certificados
 Gráfica: Gráfica
 Gráfica horas de conexión: Gráfica horas de conexión
 Gráfica conexiones por dispositivo: Gráfica conexiones por dispositivo
 Gráfico del promedio de conexiones: Grafico del promedio de conexiones
+Graduado: Graduado
 Grupo seleccionado: Grupo seleccionado
 Grupos: Grupos
 Guardar: Guardar
@@ -561,6 +566,7 @@ Ha sido publicado el evento: Ha sido publicado el evento
 ha subido un archivo en el espacio colaborativo de: ha subido un archivo en el espacio colaborativo de
 Has aprobado con éxito la evaluación: Has aprobado con éxito la evaluación
 Has completado con éxito los contenidos: Has completado con éxito los contenidos
+Has optenido la medalla: Has optenido la medalla
 Has ganado: Has ganado
 Hasta: Hasta
 Hemos detectado que estás usando un navegador no recomendado, te invitamos a usar Google Chrome, Mozilla Firefox o Microsoft Edge en sus últimas versiones para garantizar una correcta funcionalidad de la plataforma : Hemos detectado que estás usando un navegador no recomendado, te invitamos a usar Google Chrome, Mozilla Firefox o Microsoft Edge en sus últimas versiones para garantizar una correcta funcionalidad de la plataforma
@@ -582,9 +588,13 @@ Icono de la empresa: Icono de la empresa
 Imagen: Imagen
 Imagen de la liga: Imagen de la liga
 Imagen lado: Imagen lado
+Imparable: Imparable
 Imprimir certificado: Imprimir certificado
 Imprimir constancia de notas: Imprimir constancia de notas
 Inactivos: Inactivos
+Influencer NIVEL 1: Influencer NIVEL 1
+Influencer NIVEL 2: Influencer NIVEL 2
+Influencer NIVEL 3: Influencer NIVEL 3
 Índice: Índice
 Ingrese su correo: Ingrese su correo
 Ingrese un correo valido: Ingrese un correo valido
@@ -872,6 +882,7 @@ Participantes no iniciados en programas: Participantes no iniciados en programas
 participantes más te acompañan en esta liga: participantes más te acompañan en esta liga
 Pdf: Pdf
 PDF requerido: PDF requerido
+Perfeccionista: Perfeccionista
 Perfil de usuario: Perfil de usuario
 Perfil del participante: Perfil del participante
 Perfil Empresarial: Perfil Empresarial
@@ -899,6 +910,7 @@ Prelación: Prelación
 Prelada por: Prelada por
 Presiona el botón finalizar para completar: Presiona el botón finalizar para completar
 Primera conexión: Primera conexión
+Primer lugar: Primer lugar
 Procesando: Procesando
 primero: primero
 Pronombre: Pronombre
@@ -1001,6 +1013,7 @@ Sábado: Sábado
 Salir: Salir
 Salir de la evaluación: Salir de la evaluación
 se calcularán los resultados quedando estas preguntas sin contestar. Si deseas completar sus respuestas presiona: se calcularán los resultados quedando estas preguntas sin contestar. Si deseas completar sus respuestas presiona
+Segundo lugar: Segundo Lugar
 Seleccionado: Seleccionado
 segundo: segundo
 Seleccione el archivo: Seleccione el archivo
@@ -1062,6 +1075,7 @@ Subir Archivo de participantes: Subir Archivo de participantes
 Sub-Aplicación de: Sub-Aplicación de
 Sub-Aplicaciones de: Sub-Aplicaciones de
 Sub-páginas: Sub-páginas
+Súper Smart: Súper Smart
 Tarjetas: Tarjetas
 También puede solicitar la carga del certificado para esta página a través del Administrador de Contenido del equipo de Formación Smart: También puede solicitar la carga del certificado para esta página a través del Administrador de Contenido del equipo de Formación Smart
 Teléfono de contacto: Teléfono de Contacto
@@ -1069,6 +1083,7 @@ Tema: Tema
 Terminar: Terminar 
 Terminado: Terminado
 Tema seleccionado: Tema seleccionado
+Tercer lugar: Tercer lugar 
 tercero: tercero 
 Tendrás: Tendrás
 Thumbnails de la plantilla: Thumbnails de la plantilla
@@ -1141,6 +1156,7 @@ Veces cursadas: Veces cursadas
 Vencido: Vencido
 Vencimiento: Vencimiento
 Vence hoy: Vence hoy
+Vencedor: Vencedor
 Ver: Ver
 Ver historial: Ver historial
 Ver más: Ver más

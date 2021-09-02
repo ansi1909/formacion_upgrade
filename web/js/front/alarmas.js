@@ -155,7 +155,7 @@ function getNotificaciones()
 function removeNotificacionesPush(){
     timer = setInterval(function(){
         removeNotificationBox();
-    }, 20000);
+    }, 60000);
 }
 
 function removeNotificationBox(){
