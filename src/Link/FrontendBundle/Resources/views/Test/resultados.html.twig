@@ -34,23 +34,23 @@
                 font-family: 12px;
             }
         </style>
-        
+        {% set imgPodio = imgPodio %}
         <!-- Modal de notificaciones grandes del ranking -->
-       {# <div class="modal justify-content-center align-items-center modal-notification-ranking  show" id="modal-ranking-big-notification">
+        <div class="modal justify-content-center align-items-center modal-notification-ranking  " id="modal-ranking-big-notification">
             <div class="modal-notification-ranking__content d-flex flex-wrap justify-content-center align-items-center">
-                <a class="close btn_close_modal" data-dismiss="modal" aria-label="Close">
+                {#<a class="close btn_close_modal close" data-dismiss="modal" aria-label="Close">
                     <span class="material-icons ic-close-white" aria-hidden="true">close</span>
-                </a>
-                <img class="modal-notification-ranking__badge" src="{{asset('front/assets/img/recurso-8.png')}}"/>
+                </a> #}
+                <img class="modal-notification-ranking__badge" src="{{ imgPodio }}"/>
                 <div class="modal-notification-ranking__text-box">
-                    <h2 class="modal-notification-ranking__title">¡Texto principal!</h2>
-                    <p>Descripción o algo del logro en el modal</p>
-                    <a class="mt-4 px-4 py-3 d-flex justify-content-center align-items-center bg-primary text-white btn_close_modal modal-notification-ranking__continue" data-dismiss="modal" aria-label="Close">
-                        Continuar
+                    <h2 class="modal-notification-ranking__title">¡{{ 'Felicidades'|trans }}!</h2>
+                    <p>{{ 'Eres el'| trans }}&nbsp;{{ posicion }} {{ 'de tus compañeros'|trans }} <BR> {{ 'en completar el curso exitosamente'|trans }}.</p>
+                    <a class="mt-4 px-4 py-3 d-flex justify-content-center align-items-center bg-primary text-white btn_close_modal modal-notification-ranking__continue" id ="closeModal" data-dismiss="modal" aria-label="Close">
+                        {{ 'Continuar'|trans }}
                     </a>
                 </div>
             </div>
-        </div> #}
+        </div> 
 
         <input type="hidden" id="url_programa" name="url_programa" value="{{ path('_programa', { 'programa_id': programa.id }) }}">
         <input type="hidden" id="url_inicio" name="url_inicio" value="{{ path('_inicio') }}">
@@ -58,6 +58,7 @@
         <input type="hidden" id="url_test" name="url_test" value="{{ path('_test', { 'pagina_id': continue_button.evaluacion, 'programa_id': programa.id }) }}">
         <input type="hidden" id="url_content" name="url_content" value="{{ path('_lecciones', { 'programa_id': programa.id, 'subpagina_id': prueba_log.prueba.pagina.id }) }}">
         <input type="hidden" id="podio" name="podio" value = "{{ podio }}">
+        <input type="hidden" id="culmino" name="culmino" value = "{{ culmino }}">
         {% set categoria = prueba_log.prueba.pagina.categoria.nombre %}
         {% if categoria == 'Materia' %}
             {% set articulo = 'de la'|trans %}

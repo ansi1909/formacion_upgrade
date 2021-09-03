@@ -1,14 +1,14 @@
 {% if tipo_elemento_pregunta == tipo_elemento.texto %}
     {% for opcion in opciones %}
-        <div class="row mgn {% if loop.first %} {{intro_class}} {% endif %}">
-            <div class="col-6">
-                <div class="opc_lado-a text-center opc_lado-a__{{ pregunta_id }}" style="border-color:{{ opcion.borde_color }}" data="a__{{ pregunta_id }}_{{ opcion.pregunta_asociada_id }}" telement="{{ tipo_elemento_pregunta }}">
+        <div class="row {% if loop.first %} {{intro_class}} {% endif %}">
+            <div class="col-6 match-side-a" data-column="side-a">
+                <div class="match-opc match-opc--a opc_lado-a text-center opc_lado-a__{{ pregunta_id }}" data="a__{{ pregunta_id }}_{{ opcion.pregunta_asociada_id }}" telement="{{ tipo_elemento_pregunta }}">
                     <input type="hidden" id="{{ pregunta_id }}_{{ opcion.pregunta_asociada_id }}" name="pregunta_id{{ pregunta_id }}[]" value="{{ opcion.pregunta_asociada_id }}_0">
                     <p class="opc_ra">{{ opcion.enunciado }}</p>
                 </div>
             </div>
-            <div class="col-6">
-                <div class="opc_lado-b text-center opc_lado-b__{{ pregunta_id }}" style="" data="b__{{ opcion.opcion_asociada_id }}">
+            <div class="col-6 match-side-b" data-column="side-b">
+                <div class="match-opc match-opc--b opc_lado-b text-center opc_lado-b__{{ pregunta_id }}" style="" data="b__{{ opcion.opcion_asociada_id }}">
                     <p class="opc_rb">{{ opcion.descripcion }}</p>
                 </div>
             </div>

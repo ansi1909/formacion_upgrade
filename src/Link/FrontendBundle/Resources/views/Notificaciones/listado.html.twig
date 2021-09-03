@@ -9,6 +9,8 @@
         <a href="{{ path('_noticiaDetalle', { 'noticia_id': alarma.entidad }) }}" class="click" data="{{ alarma.id }}">
     {% elseif alarma.tipo == 7 %}
         <a href="{{ path('_bibliotecaDetalle', { 'biblioteca_id': alarma.entidad }) }}" class="click" data="{{ alarma.id }}">
+    {% elseif alarma.tipo == 9 %}
+        <a href="{{ path('_usuariop', { 'pagina_id': alarma.entidad }) }}" class="click" data="{{ alarma.id }}">
     {% endif %}
     {% if not alarma.leido %}
         {% if loop.first %}

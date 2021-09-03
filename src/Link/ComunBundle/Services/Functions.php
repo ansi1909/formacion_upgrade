@@ -1982,7 +1982,9 @@ public function obtenerEstructuraJson($pagina_id){
           $pagina_padre_log->setEstatusPagina($estatus_pagina);
           $pagina_padre_log->setFechaFin(new \DateTime('now'));
 
-          $estructura = $this->obtenerEstructura($pagina_padre_id, $yml);
+          $raiz = $this->paginaRaiz($pagina_padre_id);
+
+          $estructura = $this->obtenerEstructura($raiz, $yml);
           
 
           $query = $em->createQuery("SELECT pl FROM LinkComunBundle:CertiPruebaLog pl
@@ -2000,7 +2002,7 @@ public function obtenerEstructuraJson($pagina_id){
                       ->setParameter('paginas_id', $estructura);
           $pruebas_total = $query->getResult();
 
-          $pagina =  $em->getRepository('LinkComunBundle:CertiPagina')->find($pagina_padre_id);
+          $pagina =  $em->getRepository('LinkComunBundle:CertiPagina')->find($raiz);
           $usuario =  $em->getRepository('LinkComunBundle:AdminUsuario')->find($usuario_id);
           
           $contador = 0;
@@ -2008,7 +2010,7 @@ public function obtenerEstructuraJson($pagina_id){
           if(count($pruebas_logs) == count($pruebas_total))
           {
               
-            $medallaUsuario = $em->getRepository('LinkComunBundle:AdminMedallasUsuario')->findOneBy(array('pagina' => $pagina_padre_id,
+            $medallaUsuario = $em->getRepository('LinkComunBundle:AdminMedallasUsuario')->findOneBy(array('pagina' => $raiz,
                                                                                                           'usuario' => $usuario_id,
                                                                                                           'medalla' => $yml['parameters']['medallas']['super_smart']));
             if(!$medallaUsuario)
@@ -2023,6 +2025,9 @@ public function obtenerEstructuraJson($pagina_id){
               $em->flush();
 
               $puntos = $puntos + $yml['parameters']['puntos']['super_smart'];
+              $tipo_alarma_id = $yml['parameters']['tipo_alarma']['medalla'];
+               $descripcion = $this->translator->trans('Has optenido la medalla').': '. $this->translator->trans($medalla->getNombre());
+              $this->newAlarm($tipo_alarma_id,$descripcion,$usuario,$pagina->getId());
               
             }
           }
@@ -2039,7 +2044,7 @@ public function obtenerEstructuraJson($pagina_id){
             
           if($contador == count($pruebas_total))
           {
-            $medallaUsuario = $em->getRepository('LinkComunBundle:AdminMedallasUsuario')->findOneBy(array('pagina' => $pagina_padre_id,
+            $medallaUsuario = $em->getRepository('LinkComunBundle:AdminMedallasUsuario')->findOneBy(array('pagina' => $raiz,
                                                                                                           'usuario' => $usuario_id,
                                                                                                           'medalla' => $yml['parameters']['medallas']['perfeccionista']));
             if(!$medallaUsuario)
@@ -2053,6 +2058,11 @@ public function obtenerEstructuraJson($pagina_id){
               $em->flush();
 
               $puntos = $puntos + $yml['parameters']['puntos']['perfeccionista'];
+
+              $tipo_alarma_id = $yml['parameters']['tipo_alarma']['medalla'];
+              $descripcion =  $this->translator->trans('Has optenido la medalla').': '. $this->translator->trans($medalla->getNombre());
+
+              $this->newAlarm($tipo_alarma_id,$descripcion,$usuario,$pagina->getId());
               
             }
           }
@@ -2078,7 +2088,7 @@ public function obtenerEstructuraJson($pagina_id){
                                       AND pl.estatusPagina = :estado
                                       GROUP BY pl.id")
                       ->setParameters(array('usuario_id' => $usuarios_activos,
-                                  'pagina_id' => $pagina_padre_id,
+                                  'pagina_id' => $raiz,
                                   'estado' => $yml['parameters']['estatus_pagina']['completada']));
           $cantidad_usuarios_aprobados = $query->getResult();
           
@@ -2095,6 +2105,11 @@ public function obtenerEstructuraJson($pagina_id){
               $em->flush();
 
               $puntos = $puntos + $yml['parameters']['puntos']['primer_lugar'];
+
+              $tipo_alarma_id = $yml['parameters']['tipo_alarma']['medalla'];
+              $descripcion = $this->translator->trans('Has optenido la medalla').': '. $this->translator->trans($medalla->getNombre());
+
+              $this->newAlarm($tipo_alarma_id,$descripcion,$usuario,$pagina->getId());
             
           }elseif (count($cantidad_usuarios_aprobados) == 2){
             $medalla = $em->getRepository('LinkComunBundle:AdminMedallas')->find($yml['parameters']['medallas']['segundo_lugar']);
@@ -2107,6 +2122,11 @@ public function obtenerEstructuraJson($pagina_id){
               $em->flush();
 
               $puntos = $puntos + $yml['parameters']['puntos']['segundo_lugar'];
+
+              $tipo_alarma_id = $yml['parameters']['tipo_alarma']['medalla'];
+               $descripcion = $this->translator->trans('Has optenido la medalla').': '. $this->translator->trans($medalla->getNombre());
+
+              $this->newAlarm($tipo_alarma_id,$descripcion,$usuario,$pagina->getId());
             
           }elseif (count($cantidad_usuarios_aprobados) == 3){
             $medalla = $em->getRepository('LinkComunBundle:AdminMedallas')->find($yml['parameters']['medallas']['tercer_lugar']);
@@ -2119,6 +2139,11 @@ public function obtenerEstructuraJson($pagina_id){
               $em->flush();
 
               $puntos = $puntos + $yml['parameters']['puntos']['tercer_lugar'];
+
+              $tipo_alarma_id = $yml['parameters']['tipo_alarma']['medalla'];
+              $descripcion =  $this->get('translator')->trans('Has optenido la medalla').': '. $this->get('translator')->trans($medalla->getNombre());
+
+              $this->newAlarm($tipo_alarma_id,$descripcion,$usuario,$pagina->getId());
             
           }
 
@@ -2133,6 +2158,11 @@ public function obtenerEstructuraJson($pagina_id){
               $em->flush();
 
               $puntos = $puntos + $yml['parameters']['puntos']['graduado'];
+
+              $tipo_alarma_id = $yml['parameters']['tipo_alarma']['medalla'];
+               $descripcion = $this->translator->trans('Has optenido la medalla').': '. $this->translator->trans($medalla->getNombre());
+
+              $this->newAlarm($tipo_alarma_id,$descripcion,$usuario,$pagina->getId());
 
               $sesionActiva = $em->getRepository('LinkComunBundle:AdminSesion')->findOneBy(array('disponible' => True,
                                                                                                    'usuario' => $usuario_id));
@@ -2149,6 +2179,11 @@ public function obtenerEstructuraJson($pagina_id){
                 $em->flush();
 
                 $puntos = $puntos + $yml['parameters']['puntos']['imparable'];
+
+                $tipo_alarma_id = $yml['parameters']['tipo_alarma']['medalla'];
+                $descripcion = $this->$translator->trans('Has optenido la medalla').': '. $this->translator->trans($medalla->getNombre());
+
+                $this->newAlarm($tipo_alarma_id,$descripcion,$usuario,$pagina->getId());
 
               }
 
@@ -3227,7 +3262,11 @@ public function obtenerEstructuraJson($pagina_id){
   // Retorna el id de la página padre de todas
   public function paginaRaiz($pagina)
   {
-
+    $em = $this->em;
+    if(!is_object($pagina)){
+      $pagina = $em->getRepository('LinkComunBundle:CertiPagina')->find($pagina);
+    }
+    
     if ($pagina->getPagina())
     {
       return $this->paginaRaiz($pagina->getPagina());

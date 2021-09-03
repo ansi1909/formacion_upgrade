@@ -9,6 +9,7 @@ $(document).ready(function() {
         info: false,
         fnDrawCallback: function(){
          observe();
+		 afterPaginate();
         },
         oLanguage: {
             "sProcessing":    "Procesando...",

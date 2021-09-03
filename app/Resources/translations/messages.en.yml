@@ -25,6 +25,9 @@ Actualizando la lista de participantes conectados: Updating the list of connecte
 Actualizando la lista de participantes conectados: Updating the list of connected participants
 Advertencia: Warning
 Administración: Administration
+Amigable NIVEL 1: Friendly NIVEL 1
+Amigable NIVEL 2: Friendly NIVEL 2
+Amigable NIVEL 3: Friendly NIVEL 3
 Administrar ayuda: Manage help
 Administrar páginas: Manage Pages
 Administrar empresa: Manage company
@@ -289,7 +292,9 @@ Domingo: Sunday
 Duplicar página y sub-páginas: Duplicate page and sub-pages
 Duplicar página y sub-páginas 1: Duplicate page and sub-pages 1
 Duplicar evaluación: Duplicate test
+de tus compañeros: of your classmates
 el: the
+en completar el curso exitosamente: to successfully complete the course
 Editar: Edit
 Editar asignación: Edit assignment
 Editar comentario: Edit comment
@@ -432,6 +437,7 @@ Error al obtener las subaplicaciones.: Error ocurred retrieving subapps.
 Error al obtener los thumbnails: Error ocurred retrieving thumbnails
 Error de Excepción: Exception Error
 Error en el servidor: Error on server
+Eres el: You are
 Error la empresa no existe: Error the company does not exist
 Errores: Errors
 Errores de validación: Validation errors
@@ -510,6 +516,7 @@ Fecha de Vencimiento: Due date
 Fecha inicio requerida: Start date required
 Fecha fin requerida: End date required
 FELICITACIONES: CONGRATULATIONS
+Felicidades: Congratulations 
 Fila: Row
 filtrado de un total de: filtered of a total of
 Filtrar comentarios del foro: Filter forum comments
@@ -532,12 +539,14 @@ Firma del Supervisor: Signature of supervisor
 Formato de correo inválido: invalid email format
 Formato sugerido se especifica en: Suggested format, see
 Foto de la página: Page picture
+Fotogénico: Photogenic
 Generar: Generate
 Generar certificados: Certificate generator
 Gráfica: Graph
 Gráfica horas de conexión: Graph connection hours
 Gráfica conexiones por dispositivo: Connections by device graph
 Gráfico del promedio de conexiones: Connections average graph
+Graduado: Graduate
 Grupo seleccionado: Selected group
 Grupos: Groups
 Guardar: Save
@@ -558,6 +567,7 @@ ha subido un archivo en el espacio colaborativo de: has uploaded a file into the
 Has aprobado con éxito la evaluación: You have approved successfully the test
 Has completado con éxito los contenidos: You have successfully completed the contents
 Has ganado: You win
+Has optenido la medalla: You have obtained the medal
 Hasta: Until
 Hemos detectado que estás usando un navegador no recomendado, te invitamos a usar Google Chrome, Mozilla Firefox o Microsoft Edge en sus últimas versiones para garantizar una correcta funcionalidad de la plataforma: We have detected that you are using a nonrecommended browser, we invite you to use Google Chrome, Mozilla Firefox or Microsoft Edge in its latest versions to ensure correct functionality of the platform
 Historial de programaciones de: Programation history of
@@ -578,9 +588,13 @@ Icono de la empresa: Company icon
 Imagen: Image
 Imagen de la liga: League image
 Imagen lado: Image side
+Imparable: Unstoppable
 Imprimir certificado: Print certificate
 Imprimir constancia de notas: Print proof of notes
 Inactivos: Inactive
+Influencer NIVEL 1: Influencer LEVEL 1
+Influencer NIVEL 2: Influencer LEVEL 2
+Influencer NIVEL 3: Influencer LEVEL 3
 Índice: Index
 Ingrese su correo: Enter your email
 Ingrese un correo valido: Enter a valid email
@@ -868,6 +882,7 @@ Participantes no iniciados en programas: Participants not initiated in programs
 participantes más te acompañan en esta liga: more participants accompany you in this league
 Pdf: Pdf
 PDF requerido: PDF is required
+Perfeccionista: Perfectionist
 Perfil de usuario: User profile
 Perfil del participante: Participant profile
 Perfil Empresarial: Company Profile
@@ -895,6 +910,8 @@ Prelación: Prelation
 Prelada por: Preached by
 Presiona el botón finalizar para completar: Press finish button to complete
 Primera conexión: First connection
+Primer lugar: First place
+primero: first
 Procesando: Processing
 Pronombre: Pronoun
 Procesar: Process
@@ -996,7 +1013,9 @@ Sábado: Saturday
 Salir: Log out
 Salir de la evaluación: Leave the evaluation
 se calcularán los resultados quedando estas preguntas sin contestar. Si deseas completar sus respuestas presiona: the results will be calculated leaving these questions unanswered. If you want to complete your answers press
+Segundo lugar: Second place
 Seleccionado: Selected
+segundo: second
 Seleccione el archivo: Select the file
 Seleccione el/los usuarios: Select the user
 Seleccione el nivel: Select the level
@@ -1056,6 +1075,7 @@ Subir Archivo de participantes: Upload participants file
 Sub-Aplicación de: Sub-Application of
 Sub-Aplicaciones de: Sub-Applications of
 Sub-páginas: Sub-pages
+Súper Smart: Super Smart
 Tarjetas: Cards
 También puede solicitar la carga del certificado para esta página a través del Administrador de Contenido del equipo de Formación Smart: You can also request the upload of this certificate through the Content Manager of Formación Smart team
 Teléfono de contacto: Contact Number
@@ -1063,6 +1083,8 @@ Tema: Theme
 Terminar: End up
 Terminado: Finished
 Tema seleccionado: Selected subject
+Tercer lugar: Third place 
+tercero: third 
 Tendrás: You will have
 Thumbnails de la plantilla: Thumbnails of template
 Thumbnails inexistentes: No thumbnails
@@ -1134,6 +1156,7 @@ Veces cursadas: Times Coursed
 Vencido: Expired
 Vencimiento: Expiration
 Vence hoy: Expire today
+Vencedor: Victorious
 Ver: See
 Ver historial: See history
 Ver más: See more
