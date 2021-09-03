@@ -1,0 +1,650 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link href="https://fonts.googleapis.com/css?family=Merriweather:400,700|Open+Sans:300,400,400i,600,600i,700|Roboto:300,400,500,700" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="stylesheet" href="base_styles/css/bootstrap/bootstrap.css">
+    <link rel="stylesheet" href="client_styles/formacion/css/main.css">
+    <title>Ranking - Usuario</title>
+</head>
+<body>
+
+
+    <!-- HEADER -->
+    <header>
+        <nav class="navbar justify-content-between py-0 fixed-top bg-white">
+            <a class="navbar-brand" href="#">
+                <img class="img-fluid py-1 imgLogoHor" src="assets/img/logo_formacion.png" width= "200" alt="logo formación 2.0">
+            </a>
+            <div class="navbar-brand d-flex justify-content-center align-items-center">
+                <div class="d-flex flex-column">
+                    <div class="wrapperDdApps">
+                        <a href="#" id="apps">
+                            <div class="appFun">
+                                <i class="material-icons mr-3 color-light-grey">apps</i>
+                            </div>
+                        </a>
+                        <span class="markApps"></span>
+                        <div class="dropDownApps">
+                            <div class="row align-items-center justify-content-between px-0 py-0 mx-0 my-1">
+                                <div class="col-4 px-0 py-0">
+                                    <a href="">
+                                        <div class="opcApps text-center">
+                                            <svg class="imgApps changeApp" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+                                                 viewBox="0 0 512 512" style="enable-background:new 0 0 512 512;" xml:space="preserve">
+                                                <rect x="161.3" y="473.3" class="st0" width="183.6" height="33.7"/>
+                                                <path class="st0" d="M5,4v447.4h502V4H5z M487,404H19V23h468V404z"/>
+                                                <path d="M468.2,400H37.8c-8.2,0-14.8-6.6-14.8-14.7V47.7C23,39.6,29.6,33,37.8,33h430.4c8.2,0,14.8,6.6,14.8,14.7v337.6
+                                                         C483,393.4,476.3,400,468.2,400L468.2,400z M32.5,349.1v36.2c0,2.9,2.4,5.3,5.3,5.3h430.4c2.9,0,5.3-2.4,5.3-5.3v-36.2H32.5z
+                                                         M32.5,339.7h441V80.2h-441V339.7z M32.5,70.8h441V47.7c0-2.9-2.4-5.3-5.3-5.3H37.8c-2.9,0-5.3,2.4-5.3,5.3V70.8z M119,380.9
+                                                         c-2.6,0-4.7-2.1-4.7-4.7v-2.4H49.8c-2.6,0-4.7-2.1-4.7-4.7c0-2.6,2.1-4.7,4.7-4.7h64.4v-2.6c0-2.6,2.1-4.7,4.7-4.7
+                                                         c2.6,0,4.7,2.1,4.7,4.7v2.6h332.5c2.6,0,4.7,2.1,4.7,4.7c0,2.6-2.1,4.7-4.7,4.7H123.7v2.4C123.7,378.8,121.6,380.9,119,380.9
+                                                         L119,380.9z M452.8,61.3H115.4c-2.6,0-4.7-2.1-4.7-4.7c0-2.6,2.1-4.7,4.7-4.7h337.4c2.6,0,4.7,2.1,4.7,4.7
+                                                         C457.6,59.2,455.5,61.3,452.8,61.3L452.8,61.3z M82.4,61.3h-0.5c-2.6,0-4.7-2.1-4.7-4.7c0-2.6,2.1-4.7,4.7-4.7h0.5
+                                                         c2.6,0,4.7,2.1,4.7,4.7C87.1,59.2,85,61.3,82.4,61.3L82.4,61.3z M64.4,61.3h-0.5c-2.6,0-4.7-2.1-4.7-4.7c0-2.6,2.1-4.7,4.7-4.7h0.5
+                                                         c2.6,0,4.7,2.1,4.7,4.7C69.2,59.2,67,61.3,64.4,61.3L64.4,61.3z M46.5,61.3H46c-2.6,0-4.7-2.1-4.7-4.7c0-2.6,2.1-4.7,4.7-4.7h0.5
+                                                         c2.6,0,4.7,2.1,4.7,4.7C51.2,59.2,49.1,61.3,46.5,61.3L46.5,61.3z M46.5,61.3"/>
+                                                <path d="M253.6,160.6c-35.3,0-64.1,23.7-64.1,52.9c0,29.2,28.8,52.9,64.1,52.9c35.4,0,64.1-23.7,64.1-52.9
+                                                         C317.7,184.3,288.9,160.6,253.6,160.6z M253.6,259.8c-31,0-56.1-20.8-56.1-46.3c0-25.5,25.2-46.3,56.1-46.3
+                                                         c31,0,56.1,20.8,56.1,46.3C309.7,239,284.5,259.8,253.6,259.8z"/>
+                                                <path d="M287.7,210.6l-51.3-24.4c-1.2-0.6-2.8-0.6-4,0c-1.2,0.6-2,1.7-2,2.8v48.8c0,1.2,0.8,2.3,2,2.8c0.6,0.3,1.3,0.4,2,0.4
+                                                         c0.7,0,1.4-0.2,2-0.4l51.3-24.4c1.2-0.6,2-1.7,2-2.8C289.7,212.3,288.9,211.2,287.7,210.6z M238.4,232.2v-37.5l39.3,18.7
+                                                         L238.4,232.2z"/>
+                                            </svg>
+                                            <p class="tituloApps">Tutoriales</p>
+                                        </div>
+                                    </a>
+                                </div>
+                                <div class="col-4 px-0 py-0">
+                                    <a href="">
+                                        <div class="opcApps text-center">
+                                            <svg class="imgApps changeApp" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+                                                 viewBox="0 0 512 512" style="enable-background:new 0 0 512 512;" xml:space="preserve">
+                                                <g>
+                                                    <path d="M255.5,3C116.1,3,3,116,3,255.3C3,394.9,116.1,508,255.5,508C395,508,508,394.9,508,255.3C508,116,395,3,255.5,3L255.5,3z
+                                                             M273.5,395.9c-5.9,5.2-12.7,7.8-20.4,7.8c-7.9,0-14.9-2.6-20.8-7.7c-5.9-5.2-8.9-12.4-8.9-21.6c0-8.2,2.9-15.2,8.6-20.8
+                                                             c5.8-5.6,12.8-8.4,21.1-8.4c8.2,0,15.2,2.8,20.8,8.4c5.6,5.6,8.4,12.5,8.4,20.8C282.3,383.5,279.4,390.6,273.5,395.9L273.5,395.9z
+                                                             M346.6,214.6c-4.6,8.4-9.9,15.6-16.1,21.6c-6.2,6.1-17.3,16.3-33.4,30.6c-4.4,4-8,7.6-10.7,10.7c-2.6,3.1-4.6,5.8-5.9,8.4
+                                                             c-1.3,2.6-2.3,5.1-3.1,7.7c-0.7,2.5-1.8,7-3.2,13.4c-2.5,13.5-10.3,20.3-23.3,20.3c-6.8,0-12.5-2.2-17.1-6.6c-4.6-4.5-7-11-7-19.8
+                                                             c0-11,1.7-20.5,5.1-28.5c3.4-8,7.9-15.1,13.5-21.1c5.6-6.1,13.2-13.3,22.7-21.7c8.4-7.3,14.4-12.8,18.1-16.5
+                                                             c3.8-3.7,6.9-7.8,9.4-12.4c2.6-4.5,3.8-9.5,3.8-14.9c0-10.4-3.9-19.3-11.6-26.4c-7.8-7.2-17.8-10.8-30.1-10.8
+                                                             c-14.3,0-24.9,3.6-31.7,10.9c-6.8,7.2-12.5,17.9-17.2,32c-4.5,14.8-12.9,22.1-25.2,22.1c-7.3,0-13.5-2.6-18.5-7.7
+                                                             c-5-5.2-7.5-10.7-7.5-16.7c0-12.4,3.9-25,11.9-37.7c8-12.8,19.6-23.3,34.8-31.7c15.3-8.4,33.1-12.5,53.4-12.5
+                                                             c18.9,0,35.6,3.5,50.1,10.5c14.5,7,25.7,16.5,33.6,28.5c7.9,12,11.8,25.1,11.8,39.2C353.4,196.5,351.1,206.2,346.6,214.6
+                                                             L346.6,214.6z M346.6,214.6"/>
+                                                </g>
+                                            </svg>
+                                            <p class="tituloApps">FAQS</p>
+                                        </div>
+                                    </a>
+                                </div>
+                                <div class="col-4 px-0 py-0">
+                                    <a href="" data-toggle="modal" data-target="#modalSv">
+                                        <div class="opcApps text-center">
+                                            <svg class="imgApps changeApp" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+                                                 viewBox="0 0 512 512" style="enable-background:new 0 0 512 512;" xml:space="preserve">
+                                                <path d="M496,6H12v432h484V6z M508,453.8V505H3v-51.2h227.2v10.9h50.7v-10.9H508z M255.5,81.8 M483.9,372h-94.2v-17.7
+                                                         c0-21.4-16.2-47.9-36-58.6l-45.5-24.7l-30,71.1l-14.8-46c-3.2,0.7-6.2,1.6-9.5,1.6c-3.1,0-6.3-0.9-9.4-1.6l-15.7,48.4l-30.6-72.7
+                                                         l-44.1,23.9c-19.9,10.7-36.1,37.2-36.1,58.5V372H24V21h460L483.9,372L483.9,372z M166.9,209.8c5.6,24.9,19.3,46.5,38.7,60.6
+                                                         c0.3,4.2,3.1,8.7,7.6,11.3c6.1,3.7,13.1,2.5,15.4-2.5c2.3-5-0.9-12.1-7-15.7c-3.8-2.2-7.7-2.5-10.9-1.3
+                                                         c-16.8-12.1-29.1-30.6-34.6-52c5.6-1.9,9.7-7.9,9.7-14.9v-6.9c7.5,42.9,35.1,82.7,68.1,82.7c33,0,60.6-39.8,68-82.7v6.9
+                                                         c0,8.7,6.2,15.7,13.9,15.7c7.6,0,13.8-7,13.8-15.7v-32.8c0-5.5-2.5-10.4-6.4-13.2c-5.1-51.1-43.2-90.8-89.4-90.8
+                                                         s-84.2,39.8-89.4,90.8c-3.8,2.8-6.4,7.7-6.4,13.2v32.8C158.2,201.8,161.8,207.5,166.9,209.8L166.9,209.8z M254,68.5
+                                                         c40.6,0,74.1,34.1,80.1,78.4c-4.6,0.7-8.4,4-10.5,8.4c-4-43.6-33.6-66.7-69.6-66.7c-35.9,0-65.5,23.1-69.6,66.7
+                                                         c-1.5-3.2-3.8-5.9-6.9-7.3c-0.5-1-1.3-1.8-2.2-2.2c-0.5-0.3-0.9-0.3-1.3-0.3C180.5,101.8,213.9,68.5,254,68.5L254,68.5z M266,402.5
+                                                         c0,6.9-5.4,12.5-12,12.5s-12-5.6-12-12.5s5.4-12.5,12-12.5S266,395.6,266,402.5z M264.2,402.5c0,5.8-4.5,10.5-10.1,10.5
+                                                         s-10.1-4.7-10.1-10.5s4.5-10.5,10.1-10.5S264.2,396.7,264.2,402.5z"/>
+                                            </svg>
+                                            <p class="tituloApps">Soporte Virtual</p>
+                                        </div>
+                                    </a>
+                                </div>
+                            </div>
+                            <div class="row align-items-center px-0 py-0 mx-0 mb-1">
+                                <div class="col-4 px-0 py-0">
+                                    <a href="">
+                                        <div class="opcApps text-center">
+                                            <svg class="imgApps changeApp" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+                                                 viewBox="0 0 512 512" style="enable-background:new 0 0 512 512;" xml:space="preserve">
+                                                <path d="M493,41H380V17.5c0-6.9-5.6-12.5-12.5-12.5S355,10.6,355,17.5V41H157V17.5c0-6.9-5.6-12.5-12.5-12.5S132,10.6,132,17.5V41
+                                                         H19c-7.7,0-14,6.3-14,14v389c0,2,5,10,11,10c18,0,54.8,0,57,0c0,0,8.7,7.7,9,8c14,11,31,20,31,20c21,12,48,18,48,18c15,4,37,6,47,6
+                                                         c288.8-51.2,245.6-43.5,288-52c7.9-1.6,11-7,11-12V55C507,47.3,500.7,41,493,41z M18.9,448c-3.9,0-7.9-3.4-7.9-7.4L10.9,376
+                                                         c14.1,41,28.2,55.5,53,72H18.9z M501,433c0,10-5.3,14.9-11,16c-45,9-247,44.8-283,48c-78,7-199-77-195-194l1-148h488V433z M501,148
+                                                         H13V63c0-7.7,6.3-14,14-14h105c0.3,6.7,5.7,12,12.5,12s12.2-5.3,12.5-12H355c0.3,6.7,5.7,12,12.5,12s12.2-5.3,12.5-12h109
+                                                         c7.7,0,12,4.3,12,12V148z"/>
+                                                <path class="st0" d="M247.8,249.6c-3.2-26.7-24.9-48.3-51.6-51.3c-2.3-0.3-4.5-0.4-6.8-0.4c-15.7,0-30.5,6.1-41.6,17.3
+                                                                     c-11.1,11.1-17.3,25.9-17.3,41.6v0.7c0,0.7,0.6,1.3,1.3,1.3h37.5c0.7,0,1.3-0.6,1.3-1.3c0-10.8,8.4-19.4,18.8-19.4
+                                                                     c0.2,0,0.4,0,0.6,0c9.8,0.3,17.8,8.3,18.1,18.1c0.2,5-1.7,9.8-5.2,13.5c-3.7,3.8-8.8,6-14.1,6h-5.2c-0.7,0-1.3,0.6-1.3,1.3v37.5
+                                                                     c0,0.7,0.6,1.3,1.3,1.3h5.2c5.3,0,10.4,2.2,14.1,6c3.5,3.7,5.4,8.5,5.2,13.5c-0.3,9.8-8.3,17.8-18.1,18.1c-0.2,0-0.4,0-0.6,0
+                                                                     c-10.4,0-18.8-8.7-18.8-19.3c0-0.7-0.6-1.3-1.3-1.3h-37.5c-0.7,0-1.3,0.6-1.3,1.3v0.5c0,32.5,26.4,58.9,58.8,58.9
+                                                                     c2.2,0,4.5-0.1,6.8-0.4c26.7-3,48.5-24.6,51.6-51.3c1.8-14.9-2.1-29.6-10.7-41.6l-3.2-4.4l3.2-4.4
+                                                                     C245.7,279.2,249.5,264.4,247.8,249.6L247.8,249.6z M247.8,249.6"/>
+                                                <path class="st0" d="M331.3,199.8h-10.6c-27.4,0-49.8,22.3-49.8,49.8v92.7c0,27.4,22.3,49.8,49.8,49.8h10.6
+                                                                     c27.4,0,49.8-22.3,49.8-49.8v-92.7C381,222.1,358.7,199.8,331.3,199.8L331.3,199.8z M341.9,332.1c0,8-6.5,14.5-14.5,14.5h-2.9
+                                                                     c-8,0-14.5-6.5-14.5-14.5v-72.4c0-8,6.5-14.5,14.5-14.5h2.9c8,0,14.5,6.5,14.5,14.5V332.1z M341.9,332.1"/>
+                                            </svg>
+                                            <p class="tituloApps">Calendario</p>
+                                        </div>
+                                    </a>
+                                </div>
+                                <div class="col-4 px-0 py-0">
+                                    <a href="#">
+                                        <div class="opcApps text-center">
+                                            <svg class="imgApps changeApp" version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+                                                 viewBox="0 0 421.1 512" style="enable-background:new 0 0 421.1 512;" xml:space="preserve">
+                                                <path d="M418,405.4c0-15.8-7.2-26.6-14.9-38c-13.2-19.7-31.3-46.6-31.3-123.3v-34.5c0-72.9-48.7-134.5-115.3-154.4v-6.8
+                                                         c0-25.4-20.7-46.1-46.1-46.1S164.4,23,164.4,48.4v6.8C97.8,75.1,49.1,136.7,49.1,209.6v34.5c0,76.7-18.1,103.6-31.3,123.3
+                                                         C10.2,378.8,3,389.6,3,405.4c0,37.5,78.3,50.7,141.9,55.3c8.9,28.5,35.1,48.4,65.6,48.4s56.7-19.9,65.6-48.4
+                                                         C339.7,456.1,418,442.9,418,405.4z M187.4,48.4c0-12.7,10.3-23,23.1-23s23.1,10.3,23.1,23v1.8c-7.6-1.1-15.2-1.8-23.1-1.8
+                                                         s-15.5,0.8-23.1,1.8V48.4z"/>
+                                            </svg>
+                                            <p class="tituloApps">Notificaciones</p>
+                                        </div>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="d-flex flex-column">
+                    <div class="wrapperDdNotify">
+                        <a href="#" id="notify">
+                            <div class="notify">
+                                <i class="material-icons mr-3 color-light-grey">notifications</i>
+                                <div class="sonar"></div>
+                            </div>
+                        </a>
+                        <span class="markNotify"></span>
+                        <ul class="dropDownNotify">
+                            <a href="#">
+                                <li class="AnunListNotify notiSinLeer">
+                                    <div class="anunNotify">
+                                        <span class="stickerNotify anunSticker"><i class="material-icons icNotify">volume_down</i></span>
+                                        <p class="textNotify text-justify">Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor...</p>
+                                    </div>
+                                </li>
+                            </a>
+                            <a href="#">
+                                <li class="AnunListNotify notiSinLeer">
+                                    <div class="anunNotify">
+                                        <span class="stickerNotify notiSticker"><i class="material-icons icNotify">library_books</i></span>
+                                        <p class="textNotify text-justify">Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor...</p>
+                                    </div>
+                                </li>
+                            </a>
+                            <a href="#" data-toggle="modal" data-target="#modalMn">
+                                <li class="AnunListNotify">
+                                    <div class="anunNotify">
+                                        <span class="stickerNotify muroSticker"><i class="material-icons icNotify">mail</i></span>
+                                        <p class="textNotify text-justify">Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor...</p>
+                                    </div>
+                                </li>
+                            </a>
+                            <a href="#">
+                                <li class="AnunListNotify notiSinLeer">
+                                    <div class="anunNotify">
+                                        <span class="stickerNotify ectSticker"><i class="material-icons icNotify">speaker_notes</i></span>
+                                        <p class="textNotify text-justify">Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor...</p>
+                                    </div>
+                                </li>
+                            </a>
+                            <a href="#">
+                                <li class="AnunListNotify">
+                                    <div class="anunNotify">
+                                        <span class="stickerNotify ecpSticker"><i class="material-icons icNotify">insert_comment</i></span>
+                                        <p class="textNotify text-justify">Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor...</p>
+                                    </div>
+                                </li>
+                            </a>
+                            <a href="#">
+                                <li class="AnunListNotify">
+                                    <div class="anunNotify">
+                                        <span class="stickerNotify calenSticker"><i class="material-icons icNotify">event_note</i></span>
+                                        <p class="textNotify text-justify">Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor...</p>
+                                    </div>
+                                </li>
+                            </a>
+                            <a href="#">
+                                <li class="AnunListNotify">
+                                    <div class="anunNotify">
+                                        <span class="stickerNotify biblioSticker"><i class="material-icons icNotify">import_contacts</i></span>
+                                        <p class="textNotify text-justify">Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor...</p>
+                                    </div>
+                                </li>
+                            </a>
+                            <li class="listMoreNotify text-center">
+                                <a href="#"><span class="moreNotify"><i class="material-icons icMore">add</i>Ver más</span></a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <div class=" d-flex flex-column ">
+                    <div class="wrapperDdMenu">
+                        <a href="#" class="perfil no-decorate" id="config">
+                            <img class="img-fluid mx-auto avatar-img" src="assets/img/user.svg" alt="usuario"><span class="material-icons color-light-grey icDown">expand_more</span>
+                        </a>
+                        <ul class="dropDownMenu">
+                            <li class="mark"></li>
+                            <a href="">
+                                <li class="opcList">
+                                    <span>Preferencias de usuario <i class="material-icons icMenu">style</i></span>
+                                </li>
+                            </a>
+                            <a href="" data-toggle="modal" data-target="#modalCs">
+                                <li class="opcList markOpc">
+                                    <span>Cerrar sesión<i class="material-icons icMenu">exit_to_app</i></span>
+                                </li>
+                            </a>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+<div class="container-fluid mt-6">
+    <!-- SIDE MENU  -->
+    <nav>
+        <div id="mainSidenav" class="main-sidenav ">
+            <a href="javascript:void(0)" class="closebtn mb-3" onclick="closeNav()"><i id= "menuArrow" class="arrow mr-2"></i></a>
+            <a class="d-flex mt-4 mb-3 text-nowrap  modulo active" href="#"> <i class="material-icons mr-2">home</i> Dashboard </a>
+            <a class="d-flex mb-3 text-nowrap modulo" href="#"> <i class="material-icons mr-2">bookmark</i> Mis Programas </a>
+            <a class="d-flex mb-3 text-nowrap modulo" href="#"> <i class="material-icons mr-2">dashboard</i> Programas </a>
+            <a class="d-flex mb-3 text-nowrap modulo" href="#"> <i class="material-icons mr-2">book</i>  Biblioteca </a>
+            <a class="d-flex mb-3 text-nowrap modulo" href="#"> <i class="material-icons mr-2">event</i>  Calendario </a>
+            <a class="d-flex mb-1 text-nowrap modulo" href="#"> <i class="material-icons mr-2">library_books</i>  Noticias & <br/>novedades </a>
+            <a class="d-flex mb-3 text-nowrap modulo" href="#"> <i class="material-icons mr-2">help</i>  Faqs </a>
+        </div>
+    </nav>
+
+    <div id="main" class="">
+        <section class="card-datos">
+            <div class="row align-items-center justify-content-center">
+                <div class="col-sm-3 col-md-3 col-3 col-lg-3 col-xl-3 text-right">
+                    <div class="pic-img">
+                        <a href="#" class="fileinput-button" data-toggle="tooltip" data-placement="bottom" title="Cambiar imagen">
+                            <img src="assets/img/user.svg" class="img-user-pic">
+                            <input id="fileupload" type="file" name="files[]">
+                        </a>
+                    </div>
+                </div>
+                <div class="col-xs-7 col-sm-7 col-md-7 col-7 col-lg-7 col-xl-7">
+                    <h2 class="name-titulo text-center">Angela Merkel</h2>
+                    <div class="row justify-content-between">
+                        <div class="col-6 text-right">
+                            <span class="info_datos">Nombre de usuario</span>
+                        </div>
+                        <div class="col-6">
+                            <span class="datos_user">amerkel</span>
+                        </div>
+                    </div>
+                    <div class="row justify-content-betwee5">
+                        <div class="col-6 text-right">
+                            <span class="info_datos">Correo corporativo</span>
+                        </div>
+                        <div class="col-6">
+                            <span class="datos_user">amerkel@tuempresa.com</span>
+                        </div>
+                    </div>
+                    <div class="row justify-content-betwee5">
+                        <div class="col-6 text-right">
+                            <span class="info_datos">Correo secundario</span>
+                        </div>
+                        <div class="col-6">
+                            <span class="datos_user">amerkel@gmail.com</span>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-6 text-right">
+                            <span class="info_datos">Fecha de nacimiento </span>
+                        </div>
+                        <div class="col-6">
+                            <span class="datos_user">02/03/1984</span>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            <div class="row align-items-center justify-content-around mt-12v">
+                <div class="col-sm-auto col-md-auto col-auto col-lg-auto col-xl-auto text-center">
+                    <a href="#"><button type="button" class="btn btn-primary">Ver mis certificados</button></a>
+                </div>
+                <div class="col-sm-auto col-md-auto col-auto col-lg-auto col-xl-auto text-center">
+                    <a href="#" data-toggle="modal" data-target="#modaledit"><button type="button" class="btn btn-primary">Editar perfil</button></a>
+                </div>
+                <!--<div class="col-xs-auto col-sm-auto col-md-auto col-auto col-lg-auto col-xl-auto text-center">
+                    <a href="#"><button type="button" class="btn btn-primary">Ver ranking</button></a>
+                </div>-->
+                <div class="col-sm-auto col-md-auto col-auto col-lg-auto col-xl-auto text-center">
+                    <a href="#" data-toggle="modal" data-target="#modalpwd"><button type="button" class="btn btn-primary">Cambiar contraseña</button></a>
+                </div>
+            </div>
+        </section>
+
+        <div class="container py-5 px-2 mb-4 d-flex flex-column align-items-center">
+            <h4 class="mb-4 title-grey font-bold">Mis logros en el curso Comunicación para la supervisión:</h4>
+
+            <!-- CURSANDO -->
+                <div class="card-achievement green-line">
+                    <img src="./assets/img/recurso-5.png" alt="" class="card-achievement__badge">
+                    <div class="card-achievement__details">
+                        <h4 class="card-achievement__title">Súper listo</h4>
+                        <p class="card-achievement__condition">Aprueba todas las evaluaciones al primer intento</p>
+                        <div class="card-achievement__progress">
+                            <div class="card-achievement__progress__bar">
+                                <div class="card-achievement__progress__bar__fill fill-orange" style="width: 50%;"></div>
+                            </div>
+                            <div class="card-achievement__progress__number">
+                                5/13
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="card-achievement green-line">
+                    <img src="./assets/img/recurso-5.png" alt="" class="card-achievement__badge achieved">
+                    <div class="card-achievement__details">
+                        <h4 class="card-achievement__title">Súper listo</h4>
+                        <p class="card-achievement__condition">Aprueba todas las evaluaciones al primer intento</p>
+                        <div class="card-achievement__progress">
+                            <div class="card-achievement__progress__bar">
+                                <div class="card-achievement__progress__bar__fill fill-green" style="width: 100%;"></div>
+                            </div>
+                            <div class="card-achievement__progress__number">
+                                13/13
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="card-achievement green-line">
+                    <img src="./assets/img/recurso-6.png" alt="" class="card-achievement__badge achieved">
+                    <div class="card-achievement__details">
+                        <h4 class="card-achievement__title">Perfeccionista</h4>
+                        <p class="card-achievement__condition">Obtén la nota perfecta 100/100 en todas las evaluaciones</p>
+                        <div class="card-achievement__progress">
+                            <div class="card-achievement__progress__bar">
+                                <div class="card-achievement__progress__bar__fill fill-green" style="width: 100%;"></div>
+                            </div>
+                            <div class="card-achievement__progress__number">
+                                13/13
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card-achievement green-line">
+                    <img src="./assets/img/recurso-7.png" alt="" class="card-achievement__badge achieved">
+                    <div class="card-achievement__details">
+                        <h4 class="card-achievement__title">Imparable</h4>
+                        <p class="card-achievement__condition">Aprueba el programa en una misma sesión</p>
+                    </div>
+                </div>
+
+                <div class="card-achievement lightblue-line">
+                    <img src="./assets/img/recurso-18.png" alt="" class="card-achievement__badge achieved">
+                    <div class="card-achievement__details">
+                        <h4 class="card-achievement__title">Influencer</h4>
+                        <p class="card-achievement__condition">Recibe tres respuestas a tus comentarios en el muro</p>
+                        <div class="card-achievement__progress">
+                            <div class="card-achievement__progress__bar">
+                                <div class="card-achievement__progress__bar__fill fill-orange" style="width: 100%;"></div>
+                            </div>
+                            <div class="card-achievement__progress__number">
+                                3/3
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card-achievement lightblue-line">
+                    <img src="./assets/img/recurso-16.png" alt="" class="card-achievement__badge achieved">
+                    <div class="card-achievement__details">
+                        <h4 class="card-achievement__title">Amigable</h4>
+                        <p class="card-achievement__condition">Escribe cinco comentarios de valor en el muro</p>
+                        <div class="card-achievement__progress">
+                            <div class="card-achievement__progress__bar">
+                                <div class="card-achievement__progress__bar__fill fill-green" style="width: 100%;"></div>
+                            </div>
+                            <div class="card-achievement__progress__number">
+                                5/5
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card-achievement yellow-line">
+                    <img src="./assets/img/recurso-8.png" alt="" class="card-achievement__badge achieved">
+                    <div class="card-achievement__details">
+                        <h4 class="card-achievement__title">Primer lugar</h4>
+                        <p class="card-achievement__condition">Termina el programa primero que los demás</p>
+                    </div>
+                </div>
+
+                <div class="card-achievement blue-line">
+                    <img src="./assets/img/recurso-11.png" alt="" class="card-achievement__badge achieved">
+                    <div class="card-achievement__details">
+                        <h4 class="card-achievement__title">Vencedor</h4>
+                        <p class="card-achievement__condition">Obtén todas las medallas disponibles</p>
+                        <div class="card-achievement__progress">
+                            <div class="card-achievement__progress__bar">
+                                <div class="card-achievement__progress__bar__fill fill-green" style="width: 100%;"></div>
+                            </div>
+                            <div class="card-achievement__progress__number">
+                                8/8
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card-achievement blue-line">
+                    <img src="./assets/img/recurso-12.png" alt="" class="card-achievement__badge achieved">
+                    <div class="card-achievement__details">
+                        <h4 class="card-achievement__title">Leyenda</h4>
+                        <p class="card-achievement__condition">Mantente entre las tres primeras posiciones del ranking por siete días consecutivos</p>
+                        <div class="card-achievement__progress">
+                            <div class="card-achievement__progress__bar">
+                                <div class="card-achievement__progress__bar__fill fill-green" style="width: 100%;"></div>
+                            </div>
+                            <div class="card-achievement__progress__number">
+                                7/7
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card-achievement blue-line">
+                    <img src="./assets/img/recurso-13.png" alt="" class="card-achievement__badge achieved">
+                    <div class="card-achievement__details">
+                        <h4 class="card-achievement__title">Fotogénico</h4>
+                        <p class="card-achievement__condition">Agrega una foto a tu perfil</p>
+                    </div>
+                </div>
+            
+
+        </div>
+
+                    <!-- Modal Editar perfil-->
+                    <div class="modal modalEditP" id="modaledit" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                        <div class="container-fluid">
+                            <div class="row justify-content-end">
+                                <div class="col-auto">
+                                    <a class="close btn_close_modal" data-dismiss="modal" aria-label="Close">
+                                        <span class="material-icons ic-close-white" aria-hidden="true">close</span>
+                                    </a>
+                                </div>
+                            </div>
+                            <div class="row align-items-center justify-content-center mt-4">
+                                <div class="col-12">
+                                    <h4 class="pb-1 title-grey sub-line"> Editar Perfil </h4>
+                                </div>
+                            </div>
+                            <form action="">
+                                <div class="row aling-item-center justify-content-center mt-3 mx-auto">
+                                    <div class="col-10">
+                                        <div class="form-group text-left">
+                                            <label for="nameUser">Nombre de usuario</label>
+                                            <input  type="password" class="form-control mb-4" id="nameUser">
+                                        </div>
+                                        <div class="form-group text-left">
+                                            <label for="mailP">Correo corporativo</label>
+                                            <input type="mail" class="form-control mb-1" id="mailP">
+                                        </div>
+                                        <div class="form-group text-left">
+                                            <label for="mailAd">Correo secundario</label>
+                                            <input  type="mail" class="form-control mb-4" id="mailAd">
+                                        </div>
+                                        <div class="form-group text-left">
+                                            <label for="fechaN">Fecha de nacimiento</label>
+                                            <input  type="date" class="form-control mb-4" id="fechaN">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row aling-item-center justify-content-center">
+                                    <div class="col-6 text-center">
+                                        <button type="submit" class="btn btn-primary">Editar</button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                    
+                    <!-- Modal cambiar contraseña-->
+                    <div class="modal modalChagePwd" id="modalpwd" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                        <div class="container-fluid">
+                            <div class="row justify-content-end mt-3">
+                                <div class="col-auto">
+                                    <a class="btn_close_modal" data-dismiss="modal" aria-label="Close">
+                                        <span class=" close material-icons ic-close-white" aria-hidden="true">close</span>
+                                    </a>
+                                </div>
+                            </div>
+                            <div class="row align-items-center justify-content-center mt-4">
+                                <div class="col-12">
+                                    <h4 class="pb-1 title-grey sub-line "> Cambiar contraseña </h4>
+                                </div>
+                            </div>
+                            <form action="">
+                                <div class="row aling-item-center justify-content-center mt-5">
+                                    <div class="col-10">
+                                        <div class="form-group text-left">
+                                            <label for="pwd_act">Contraseña actual</label>
+                                            <input  type="password" class="form-control mb-4" id="pwd_act">
+                                        </div>
+                                        <div class="form-group text-left">
+                                            <label for="pwd_new">Nueva contraseña</label>
+                                            <input type="password" class="form-control mb-1" id="pwd_new">
+                                        </div>
+                                        <div class="form-group text-left">
+                                            <label for="pwd_conf_new">Confirmar nueva contraseña</label>
+                                            <input type="password" class="form-control mb-1" id="pwd_conf_new">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row aling-item-center justify-content-center mt-5">
+                                    <div class="col-auto">
+                                        <button type="submit" class="btn btn-primary">Cambiar contraseña</button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+        
+        
+                <!-- JAVASCRIPT -->
+                <script src="js/jquery-3.3.1.min.js" ></script>
+                <script src="js/popper.min.js" ></script>
+                <script src="js/plugins/jquery-upload-file/js/vendor/jquery.ui.widget.js" ></script>
+                <script src="js/plugins/jquery-upload-file/js/jquery.iframe-transport.js" ></script>
+                <script src="js/plugins/jquery-upload-file/js/jquery.fileupload.js" ></script>
+                <script src="js/bootstrap.min.js"></script>
+                <script src="js/custom.js"></script>
+                <script>
+                    /*jslint unparam: true */
+                    /*global window, $ */
+                    $(function () {
+                        'use strict';
+                        // Change this to the location of your server-side upload handler:
+                        var url = 'upload.php';
+                        $('#fileupload').fileupload({
+                            url: url,
+                            dataType: 'json',
+                            done: function (e, data) {
+                                $.each(data.result.files, function (index, file) {
+                                    //$('<p/>').text(file.name).appendTo('#files');
+                                    console.log('Archivo subido: '+file.name);
+                                });
+                            },
+                            progressall: function (e, data) {
+                                var progress = parseInt(data.loaded / data.total * 100, 10);
+                                $('#progress .progress-bar').css(
+                                    'width',
+                                    progress + '%'
+                                );
+                            }
+                        }).prop('disabled', !$.support.fileInput)
+                            .parent().addClass($.support.fileInput ? undefined : 'disabled');
+                    });
+                </script>
+
+        <footer class="container footer">
+            <div class="row justify-content-between align-items-center">
+                <div class="col-4 col-lg-3 col-xl-3 col-md-4 col-sm-4 px-0 text-center">
+                    <img src="assets/img/formacion2.0.svg" class="imgForm" alt="">
+                </div>
+                <div class="col-4 col-lg-3 col-xl-3 col-md-4 col-sm-4 px-0 text-center">
+                    <a href="https://linkgerencial.com" class="links">Link Gerencial</a>
+                </div>
+                <div class="col-4 col-lg-3 col-xl-3 col-md-4 col-sm-4 px-0 ">
+                   <ul class="ayudaForm">
+                       <li>
+                           <a href="#" class="links">Reportar un problema</a>
+                       </li>
+                       <li>
+                           <a href="#" class="links">Ayuda</a>
+                       </li>
+                   </ul>
+                </div>
+            </div>
+            <div class="row justify-content-center align-items-center">
+                <div class="col-8 col-lg-8 col-xl-8 col-md-8 col-sm-12 px-0 text-center">
+                    <span class="cpyR">Copyright &copy; 2018 Formación2.0 Todos los derechos reservados</span>
+                </div>
+            </div>
+        </footer>
+    </div>
+</div>
+
+
+<!-- Modal informativo -->
+<div class="modal fade" id="modalInfo" tabindex="-1" role="dialog" aria-labelledby="modalInfo" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h4 class="modal-title text-center w-100 mt-4" id="exampleModalLabel">Modal informativo</h4>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+            <p class="px-4 text-sm">Lorem ipsum dolor sit amet consectetur, adipisicing elit. Sequi odit repellat dolores dicta omnis
+            adipisci consectetur nulla maxime non, velit saepe exercitationem, veniam provident fuga nisi praesentium veritatis aspernatur illo.</p>
+        </div>
+        <div class="modal-footer">
+         
+        </div>
+      </div>
+    </div>
+  </div>
+
+    <!-- JAVASCRIPT -->
+    <script src="js/jquery-3.3.1.min.js" ></script>
+    <script src="js/popper.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <script src="js/custom.js"></script>
+</body>
+</html>

@@ -13,3 +13,8 @@ _ajaxEditLiga:
     defaults: { _controller: LinkBackendBundle:Liga:ajaxEditLiga }
     requirements:
         method: GET
+
+_ajaxUploadFileLiga:
+    path: /_ajaxUploadFileLiga
+    defaults: { _controller: LinkBackendBundle:Liga:ajaxUploadFileLiga }
+    

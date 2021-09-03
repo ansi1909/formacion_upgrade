@@ -19,6 +19,7 @@ DECLARE
     -- Variable para las prelaciones
     pr integer;
     --Variables para las fotos
+    pf varchar(200);
     mf varchar(200);
     maf varchar(200);
     lf varchar (200);
@@ -68,13 +69,19 @@ BEGIN
         AND cp.estatus_contenido_id = 2
         ORDER BY cpe.orden  ASC
         LOOP
+            IF pagina.foto IS NULL THEN
+                pf:='';
+            ELSE
+                pf:=pagina.foto;
+            END IF;
+
             cp:=cp+1;
             IF pagina.prelacion IS NULL THEN
                 pr:=0;
             ELSE
                 pr:=pagina.prelacion;
             END IF;
-            json_response:= json_response||'"'||pagina.id||'" : {"id":'||pagina.id||','||'"orden":'||pagina.orden||','||'"nombre":"'||pagina.pagina||'",'||'"categoria":"'||pagina.categoria||'",'||'"pronombre":"'||pagina.pronombre||'",'||'"binvenida":"'||pagina.bienvenida||'",'||'"notas":"'||pagina.notas||'",'||'"tarjetas":"'||pagina.tarjetas||'",'||'"foto":"'||pagina.foto||'",'||'"tiene_evaluacion":'||pagina.tiene_evaluacion||','||'"acceso":'||pagina.acceso||','||'"muro_activo":'||pagina.muro_activo||','||'"espacio_colaborativo":'||pagina.espacio_colaborativo||','||'"prelacion":'||pr||','||'"inicio":"'||to_char(pagina.inicio,'DD/MM/YYYY')||'",'||'"vencimiento":"'||to_char(pagina.vencimiento,'DD/MM/YYYY')||'"';
+            json_response:= json_response||'"'||pagina.id||'" : {"id":'||pagina.id||','||'"orden":'||pagina.orden||','||'"nombre":"'||pagina.pagina||'",'||'"categoria":"'||pagina.categoria||'",'||'"pronombre":"'||pagina.pronombre||'",'||'"binvenida":"'||pagina.bienvenida||'",'||'"notas":"'||pagina.notas||'",'||'"tarjetas":"'||pagina.tarjetas||'",'||'"foto":"'||pf||'",'||'"tiene_evaluacion":'||pagina.tiene_evaluacion||','||'"acceso":'||pagina.acceso||','||'"muro_activo":'||pagina.muro_activo||','||'"espacio_colaborativo":'||pagina.espacio_colaborativo||','||'"prelacion":'||pr||','||'"inicio":"'||to_char(pagina.inicio,'DD/MM/YYYY')||'",'||'"vencimiento":"'||to_char(pagina.vencimiento,'DD/MM/YYYY')||'"';
             ----Obtener subpaginas
             json_response:=json_response||','||'"subpaginas":{';
             ---Contar cuantos modulos tiene la pagina

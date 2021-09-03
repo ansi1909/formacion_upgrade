@@ -185,11 +185,11 @@ class NovedadController extends Controller
             $usuarios = $query->getResult();
 
             $descripcion = $this->get('translator')->trans('Ha sido publicado').' '.$titulo.' '.$this->get('translator')->trans('en la biblioteca').'.';
-            
+            $fecha_alarma = new \DateTime('now');
             foreach ($usuarios as $usuario){
                 if($nuevo == true)
                 {
-                    $f->newAlarm($yml['parameters']['tipo_alarma']['biblioteca'], $descripcion, $usuario, $biblioteca->getId(), $biblioteca->getFechaPublicacion());
+                    $f->newAlarm($yml['parameters']['tipo_alarma']['biblioteca'], $descripcion, $usuario, $biblioteca->getId(),$fecha_alarma);
                 }
             }
 
@@ -333,7 +333,7 @@ class NovedadController extends Controller
                                               'empresa_id' => $empresa->getId()));
             $usuarios = $query->getResult();
 
-            
+            $fecha_alarma = new \DateTime('now');
 
             foreach($usuarios as $usuario){
 
@@ -341,14 +341,14 @@ class NovedadController extends Controller
                    if($nuevo == true)
                    {
                         $descripcion= 'Ha sido publicado una nueva noticia:  '. $titulo;
-                        $f->newAlarm($yml['parameters']['tipo_alarma']['noticia'], $descripcion, $usuario, $noticia->getId(), $noticia->getFechaPublicacion()); 
+                        $f->newAlarm($yml['parameters']['tipo_alarma']['noticia'], $descripcion, $usuario, $noticia->getId(), $fecha_alarma); 
                    }
                 }
                 elseif ($tipoNoticia->getId() == $yml['parameters']['tipo_noticias']['novedad'] ) {
                     if($nuevo == true)
                     {
                         $descripcion= 'Ha sido publicado una nueva novedad:  '. $titulo;
-                        $f->newAlarm($yml['parameters']['tipo_alarma']['novedad'], $descripcion, $usuario, $noticia->getId(), $noticia->getFechaPublicacion()); 
+                        $f->newAlarm($yml['parameters']['tipo_alarma']['novedad'], $descripcion, $usuario, $noticia->getId(), $fecha_alarma); 
                     }
                 }
                 

@@ -659,6 +659,7 @@ descripcion text,
 usuario_id integer,
 entidad_id integer,
 leido boolean,
+visto boolean,
 fecha_creacion timestamp without time zone,
  PRIMARY KEY (id),
  FOREIGN KEY (tipo_alarma_id) REFERENCES admin_tipo_alarma (id),
@@ -733,6 +734,7 @@ id serial,
 nombre varchar(100),
 descripcion varchar(500),
 puntos integer,
+categoria integer,
  PRIMARY KEY (id));
 
 CREATE TABLE admin_ligas(
@@ -740,7 +742,9 @@ CREATE TABLE admin_ligas(
 id serial,
 nombre varchar(100),
 descripcion varchar(500),
-puntuacion integer,
+porcentajemin integer,
+porcentajemax integer,
+imagen varchar(255),
  PRIMARY KEY (id));
 
 CREATE TABLE admin_medallas_usuario(
@@ -755,3 +759,4 @@ pagina_id integer,
  FOREIGN KEY (pagina_id) REFERENCES certi_pagina (id));
 
 
+1

@@ -126,4 +126,33 @@ class AdminMedallas
     {
         return $this->puntos;
     }
+    /**
+     * @var int|null
+     */
+    private $categoria;
+
+
+    /**
+     * Set categoria.
+     *
+     * @param int|null $categoria
+     *
+     * @return AdminMedallas
+     */
+    public function setCategoria($categoria = null)
+    {
+        $this->categoria = $categoria;
+    
+        return $this;
+    }
+
+    /**
+     * Get categoria.
+     *
+     * @return int|null
+     */
+    public function getCategoria()
+    {
+        return $this->categoria;
+    }
 }

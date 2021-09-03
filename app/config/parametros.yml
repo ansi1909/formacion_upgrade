@@ -68,6 +68,7 @@ parameters:
         novedad : 6
         biblioteca : 7
         aporte_muro: 8
+        medalla: 9
     tipo_correo:
         notificacion_programada: 1
         espacio_colaborativo: 2
@@ -181,6 +182,15 @@ parameters:
         tercer_lugar: 12
         graduado: 13
         vencedor: 14
+        primer_lugar_img:  'primero.png'
+        segundo_lugar_img: 'segundo.png'
+        tercer_lugar_img:  'tercer.png'
+    notificaciones_push:
+        mostrar_maximo: 3
+        maximo_minutos: 1
+        minimo_segundos: 1
+        maximo_segundos: 59
+        
 
         
 

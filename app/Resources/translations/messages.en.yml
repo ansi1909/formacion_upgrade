@@ -25,6 +25,9 @@ Actualizando la lista de participantes conectados: Updating the list of connecte
 Actualizando la lista de participantes conectados: Updating the list of connected participants
 Advertencia: Warning
 Administración: Administration
+Amigable NIVEL 1: Friendly NIVEL 1
+Amigable NIVEL 2: Friendly NIVEL 2
+Amigable NIVEL 3: Friendly NIVEL 3
 Administrar ayuda: Manage help
 Administrar páginas: Manage Pages
 Administrar empresa: Manage company
@@ -174,6 +177,7 @@ Configurar asignación de sub-páginas: Configure sub-pages assignment
 Configurar evaluación: Configure test
 Configurar página: Configure page
 Configuración de permisos: Permission settings
+Configuración de la liga: League Settings
 Confirmar: Confirm
 Configuración de la categoría: Category settings
 Confirmar contraseña: Confirm password
@@ -257,7 +261,8 @@ Debe seleccionar la página destino: You must select the destination page
 Debes seleccionar tanto la empresa como el nivel: You must select both the company and the level
 Debe seleccionar una fecha de publicación.: You must select a publication date.
 Debe seleccionar una fecha de vencimiento.: You must select a due date.
-Debe ser mínimo de 3 caracteres.: This field must have at least 3 characters.
+Debe ser mínimo de 3 caracteres: This field must have at least 3 characters
+Debe ser mínimo de 1 caracter: Must be a minimum of 1 character
 del: of the
 Descarga el archivo a través del siguiente enlace: Download file through following link
 Descargar: Download
@@ -287,7 +292,9 @@ Domingo: Sunday
 Duplicar página y sub-páginas: Duplicate page and sub-pages
 Duplicar página y sub-páginas 1: Duplicate page and sub-pages 1
 Duplicar evaluación: Duplicate test
+de tus compañeros: of your classmates
 el: the
+en completar el curso exitosamente: to successfully complete the course
 Editar: Edit
 Editar asignación: Edit assignment
 Editar comentario: Edit comment
@@ -355,6 +362,7 @@ El nombre del tutorial debe ser mínimo de 3 caracteres: Tutorial name must have
 El nombre del tutorial es requerido: Tutorial name is required
 El nombre del usuario debe ser mínimo de 3 caracteres: User first name must have at least 3 characters
 El nombre del usuario es requerido: User first name is required
+El porcentaje de puntos debe ser un valor numérico: The percentage of points must be a numerical value
 El país es requerido.: Country is required.
 El país no existe en la base de datos: Country does not exist in database
 El participante: The participant
@@ -429,6 +437,7 @@ Error al obtener las subaplicaciones.: Error ocurred retrieving subapps.
 Error al obtener los thumbnails: Error ocurred retrieving thumbnails
 Error de Excepción: Exception Error
 Error en el servidor: Error on server
+Eres el: You are
 Error la empresa no existe: Error the company does not exist
 Errores: Errors
 Errores de validación: Validation errors
@@ -507,6 +516,7 @@ Fecha de Vencimiento: Due date
 Fecha inicio requerida: Start date required
 Fecha fin requerida: End date required
 FELICITACIONES: CONGRATULATIONS
+Felicidades: Congratulations 
 Fila: Row
 filtrado de un total de: filtered of a total of
 Filtrar comentarios del foro: Filter forum comments
@@ -529,12 +539,14 @@ Firma del Supervisor: Signature of supervisor
 Formato de correo inválido: invalid email format
 Formato sugerido se especifica en: Suggested format, see
 Foto de la página: Page picture
+Fotogénico: Photogenic
 Generar: Generate
 Generar certificados: Certificate generator
 Gráfica: Graph
 Gráfica horas de conexión: Graph connection hours
 Gráfica conexiones por dispositivo: Connections by device graph
 Gráfico del promedio de conexiones: Connections average graph
+Graduado: Graduate
 Grupo seleccionado: Selected group
 Grupos: Groups
 Guardar: Save
@@ -555,6 +567,7 @@ ha subido un archivo en el espacio colaborativo de: has uploaded a file into the
 Has aprobado con éxito la evaluación: You have approved successfully the test
 Has completado con éxito los contenidos: You have successfully completed the contents
 Has ganado: You win
+Has optenido la medalla: You have obtained the medal
 Hasta: Until
 Hemos detectado que estás usando un navegador no recomendado, te invitamos a usar Google Chrome, Mozilla Firefox o Microsoft Edge en sus últimas versiones para garantizar una correcta funcionalidad de la plataforma: We have detected that you are using a nonrecommended browser, we invite you to use Google Chrome, Mozilla Firefox or Microsoft Edge in its latest versions to ensure correct functionality of the platform
 Historial de programaciones de: Programation history of
@@ -573,10 +586,15 @@ Huso horario requerido: Required time zone
 Icono: Icon
 Icono de la empresa: Company icon
 Imagen: Image
+Imagen de la liga: League image
 Imagen lado: Image side
+Imparable: Unstoppable
 Imprimir certificado: Print certificate
 Imprimir constancia de notas: Print proof of notes
 Inactivos: Inactive
+Influencer NIVEL 1: Influencer LEVEL 1
+Influencer NIVEL 2: Influencer LEVEL 2
+Influencer NIVEL 3: Influencer LEVEL 3
 Índice: Index
 Ingrese su correo: Enter your email
 Ingrese un correo valido: Enter a valid email
@@ -648,6 +666,7 @@ La fecha de vencimiento es requerida.: Expiration date is required.
 La fecha de vencimiento no puede ser menor que la fecha de inicio.: Expiration date must be later than start date.
 La fecha final debe ser mayor que la fecha inicial: Finish date must be greater or equal than initial date
 La foto principal de la página es requerida: Main picture is required
+La medalla ha sido almacenada con éxito: The medal has been stored successfully
 La imagen es requerida.: Image is required.
 La imagen lado A es requerida.: Side A image is required.
 La notificación ha sido almacenada con éxito: Notification has been saved successfully
@@ -668,6 +687,7 @@ Leidos: Read
 Libro: Book
 Libros: Books
 Línea: Line
+Ligas: Leagues
 Lista de archivos: List of files
 Archivos para el comentario de: Files for the comment of
 Listado de: List of
@@ -680,6 +700,7 @@ Listado de empresas activas: List of active companies
 Listado de empresas inactivas: List of inactive companies
 Listado de evaluaciones: List of tests
 Listado de grupos: List of groups
+Listado de ligas: List of leagues
 Listado de niveles: List of levels
 Listado de notificaciones: List of notifications
 Listado de participantes: List of participants
@@ -713,9 +734,12 @@ Más valorados: Most valued
 Materia: Subject
 Material complementario: Complementary content
 Materias vistas: Subjects seen
+Máximo: Maximum
 Mensaje: Message
 Mensaje del servidor: Server message
+medallas: medals
 Mi avance: My progress
+Mínimo: Minimum
 Miércoles: Wednesday
 minutos: minutes
 minutos para completar la evaluación: minutes for completing the evaluation
@@ -744,6 +768,7 @@ Nivel no existente para esta empresa: No level for this company
 Niveles: Levels
 Niveles por empresas: Levels by companies
 Niveles por empresa: Levels by company
+Necesitas : You need
 no existe: does not exit
 No existe destino al que se pueda mover la página: There is not destination in which the page can be moved
 No existe evaluación para esta página: There is not test for this page
@@ -854,8 +879,10 @@ Participantes registrados en el programa que se han logueado al menos una vez en
 Participantes seleccionados: Sele participants
 Participantes registrados en programas: Participants by company
 Participantes no iniciados en programas: Participants not initiated in programs
+participantes más te acompañan en esta liga: more participants accompany you in this league
 Pdf: Pdf
 PDF requerido: PDF is required
+Perfeccionista: Perfectionist
 Perfil de usuario: User profile
 Perfil del participante: Participant profile
 Perfil Empresarial: Company Profile
@@ -867,6 +894,7 @@ Permisos por Rol: Permissions by Role
 Plan de estudio: Study planning
 Plantilla: Template
 Porcentaje: Percentage
+Porcentaje de puntos requeridos: Percentage of points required
 Por favor, ingresa tu usuario y contraseña: Please, enter your username and password
 Por medio de la presente se certifica que el participante arriba indicado ha cursado y aprobado las pruebas correspondientes a: It is hereby certified that the above-mentioned participant has completed and approved the corresponding tests
 Preferencias de la empresa: Preferences of company
@@ -882,6 +910,8 @@ Prelación: Prelation
 Prelada por: Preached by
 Presiona el botón finalizar para completar: Press finish button to complete
 Primera conexión: First connection
+Primer lugar: First place
+primero: first
 Procesando: Processing
 Pronombre: Pronoun
 Procesar: Process
@@ -909,15 +939,18 @@ Puede ingresar de nuevo desde la pantalla de login: You can try loging in again
 Puede solicitar crear una evaluación para esta página a través del Administrador de Contenido del equipo de Formación Smart: You can request create a test for this page through the Content Administrator of Formación Smart team
 Puntaje: Score
 Puntaje con que se aprueba: Score with which it is approved
+Puntos: Points
 Puntaje definitivo del programa: Definitive score of the program
 Puntaje definitivo del curso: Final score of the course
 Puntaje definitivo de la competencia: Final score of the competition
 que aún no han ingresado a la plataforma: that have not yet entered the platform
+puntos más para ascender de liga: more points to move up in the league
 QR: QR
 Quieres hacer un tour guiado: You want to take a guided tour
 realizó una publicación en el muro de: make a publication on the wall of
 realizó una publicación en el en el espacio colaborativo de: made a publication in the in the collaborative space of
 formación smart, recomendamos utilizar la ultima versión del: formación smart, we recommend using the latest version of the
+Ranking: Ranking
 Recomendación: Recommendation
 Recordarme: Remember me
 Recordar mi contraseña: Remember my password
@@ -980,7 +1013,9 @@ Sábado: Saturday
 Salir: Log out
 Salir de la evaluación: Leave the evaluation
 se calcularán los resultados quedando estas preguntas sin contestar. Si deseas completar sus respuestas presiona: the results will be calculated leaving these questions unanswered. If you want to complete your answers press
+Segundo lugar: Second place
 Seleccionado: Selected
+segundo: second
 Seleccione el archivo: Select the file
 Seleccione el/los usuarios: Select the user
 Seleccione el nivel: Select the level
@@ -1040,6 +1075,7 @@ Subir Archivo de participantes: Upload participants file
 Sub-Aplicación de: Sub-Application of
 Sub-Aplicaciones de: Sub-Applications of
 Sub-páginas: Sub-pages
+Súper Smart: Super Smart
 Tarjetas: Cards
 También puede solicitar la carga del certificado para esta página a través del Administrador de Contenido del equipo de Formación Smart: You can also request the upload of this certificate through the Content Manager of Formación Smart team
 Teléfono de contacto: Contact Number
@@ -1047,6 +1083,8 @@ Tema: Theme
 Terminar: End up
 Terminado: Finished
 Tema seleccionado: Selected subject
+Tercer lugar: Third place 
+tercero: third 
 Tendrás: You will have
 Thumbnails de la plantilla: Thumbnails of template
 Thumbnails inexistentes: No thumbnails
@@ -1118,6 +1156,7 @@ Veces cursadas: Times Coursed
 Vencido: Expired
 Vencimiento: Expiration
 Vence hoy: Expire today
+Vencedor: Victorious
 Ver: See
 Ver historial: See history
 Ver más: See more
@@ -1144,6 +1183,7 @@ Volver al inicio del contenido: Back to the begining of the content
 Volver al programa: Back to program page
 Volver al inicio: Back to home
 Volver al listado: Back to list
+Volver al ranking: Back to the ranking
 y el: and
 y finaliza el: and ends at
 Yo: Me

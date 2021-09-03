@@ -33,6 +33,7 @@
             </style>
         {% endblock %}
     </head>
+    
     <body class="{% block clbody %}{% endblock %}">
 
         {% set uri = app.request.getbasepath %}
@@ -42,12 +43,14 @@
             <input type="hidden" id="url_leido" name="url_leido" value="{{ path('_ajaxLeido') }}">
             <input type="hidden" id="url_NotiMuro" name="url_NotiMuro" value="{{ path('_ajaxNotiMuro') }}">
             <input type="hidden" id="url_like" name="url_like" value="{{ path('_ajaxLike') }}">
+            <input type="hidden" id="url_boton_ranking" name="url_boton_ranking" value="{{ path('_ajaxBotonRanking') }}">
+            
         {% endblock %}
 
         {# HEADER #}
         <header>
             {% block header %}
-            <nav class="navbar justify-content-between py-0 fixed-top bg-white {{app.session.get('usuario').nombre}}">
+            <nav class="navbar justify-content-between py-0 fixed-top bg-white">
                 <div class="logo d-sm-block d-md-block">
                     <a class="navbar-brand" href="{{ path('_inicio') }}">
                         {% set img_logo = app.session.get('empresa').logo is defined ? app.session.get('empresa').logo is not null and app.session.get('empresa').logo != '' ? uploads~app.session.get('empresa').logo : asset('front/assets/img/logo_formacion_smart.png') : asset('front/assets/img/logo_formacion_smart.png') %}
@@ -55,6 +58,9 @@
                     </a>
                 </div>
                 <div class="navbar-brand d-flex justify-content-center align-items-center">
+                    <div class="d-flex flex-column">
+                        <a href="{{ path('_rankingNuevo') }}" title="{{ 'Ranking'|trans }}" id="boton_ranking"  style="display:none" data-toggle="tooltip" data-placement="bottom"> <img class="ranking-menu-icon" src="{{ asset('front/assets/img/ranking.png') }}"/> </a>
+                    </div>
                     <div class="d-flex flex-column">
                         <div class="wrapperDdApps">
                             <a href="#" id="apps" title="{{ 'Ayuda'|trans }}" data-toggle="tooltip" data-placement="bottom">
@@ -348,6 +354,18 @@
                 </div>
             </div>
         </div>
+
+        <!-- Alert de notificaciones del ranking-->
+        <div class="alert-notif-container" id="alert-notif-container">
+            {#<div class="alert alert-success alert-dismissible fade notification-box notification-ranking pl-3 py-1 position-relative show" role="alert">
+                <span class="stickerNotify rankingSticker"><i class="material-icons icNotify">emoji_events</i></span>
+                <a href="#"><span class="notification-ranking__text">Ha sido publicado una nueva novedad: Recurso disponible: "Las cinco disfunciones"</span></a>
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close" class="pl-1">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div> #}
+        </div>
+
         {% block javascripts %}
             <script src="{{ asset('front/js/jquery-3.3.1.min.js') }}"></script>
             <script src="{{ asset('jq/jquery-ui.js') }}" charset="utf-8"></script>
@@ -360,6 +378,8 @@
             <script src="{{ asset('front/js/audio.js') }}"></script>
             <script src="{{ asset('js/front/expireSession.js') }}"></script>
             <script src="{{ asset('js/front/soporte_virtual.js') }}"></script>
+            <script type="text/javascript" src="{{ asset('js/front/logros.js') }}"></script>
+           {# <script type="text/javascript" src="{{ asset('js/front/medallero.js') }}"></script> #}
         {% endblock %}
     </body>
 </html>
