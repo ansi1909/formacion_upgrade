@@ -47,7 +47,7 @@
     <div class="container d-flex flex-wrap justify-content-center align-items-center ">
         {# Curso #}
         {% for programa in  programas %}
-            {% if programa.categoria !='Competencia' %}
+            {% if programa.categoria !='Competencia' and programa.puntuacion > 0 %}
                 <div class="card d-flex flex-column">
                     <img class="card-img-top" src="{{ uploads ~ programa.foto}}" alt="">
                     <div class="wraper d-flex flex-column">
