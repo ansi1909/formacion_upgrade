@@ -759,4 +759,3 @@ pagina_id integer,
  FOREIGN KEY (pagina_id) REFERENCES certi_pagina (id));
 
 
-1
