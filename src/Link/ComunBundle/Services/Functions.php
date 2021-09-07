@@ -2141,7 +2141,7 @@ public function obtenerEstructuraJson($pagina_id){
               $puntos = $puntos + $yml['parameters']['puntos']['tercer_lugar'];
 
               $tipo_alarma_id = $yml['parameters']['tipo_alarma']['medalla'];
-              $descripcion =  $this->get('translator')->trans('Has optenido la medalla').': '. $this->get('translator')->trans($medalla->getNombre());
+              $descripcion =  $this->translator->trans('Has optenido la medalla').': '.$this->translator->trans($medalla->getNombre());
 
               $this->newAlarm($tipo_alarma_id,$descripcion,$usuario,$pagina->getId());
             
@@ -2181,7 +2181,7 @@ public function obtenerEstructuraJson($pagina_id){
                 $puntos = $puntos + $yml['parameters']['puntos']['imparable'];
 
                 $tipo_alarma_id = $yml['parameters']['tipo_alarma']['medalla'];
-                $descripcion = $this->$translator->trans('Has optenido la medalla').': '. $this->translator->trans($medalla->getNombre());
+                $descripcion = $this->translator->trans('Has optenido la medalla').': '. $this->translator->trans($medalla->getNombre());
 
                 $this->newAlarm($tipo_alarma_id,$descripcion,$usuario,$pagina->getId());
 
