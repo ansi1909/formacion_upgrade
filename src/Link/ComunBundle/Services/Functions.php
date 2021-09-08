@@ -1910,12 +1910,13 @@ class Functions
         $avance_total = round($avance_total, 2);
         $pagina_padre_log->setPorcentajeAvance($avance_total > 100 ? 100 : $avance_total);
         if ($avance_total >= 100) {
+          
           $estatus_pagina = $em->getRepository('LinkComunBundle:CertiEstatusPagina')->find($yml['parameters']['estatus_pagina']['completada']);
           $pagina_padre_log->setEstatusPagina($estatus_pagina);
           $pagina_padre_log->setFechaFin(new \DateTime('now'));
 
           $raiz = $this->paginaRaiz($pagina_padre_id);
-
+          
           $estructura = $this->obtenerEstructura($raiz, $yml);
 
 
@@ -1937,7 +1938,7 @@ class Functions
           $pruebas_total = $query->getResult();
 
           $pagina =  $em->getRepository('LinkComunBundle:CertiPagina')->find($raiz);
-          $pagina_log = $em->getRepository('LinkComunBundle:CertiPaginaLog')->find($raiz);
+          $pagina_log = $em->getRepository('LinkComunBundle:CertiPaginaLog')->findOneBy(array('pagina' => $raiz , 'usuario' => $usuario_id));
           $usuario =  $em->getRepository('LinkComunBundle:AdminUsuario')->find($usuario_id);
 
           $contador = 0;
