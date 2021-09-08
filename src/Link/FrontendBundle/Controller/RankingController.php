@@ -268,8 +268,13 @@ class RankingController extends Controller
 
             #obtener proxima liga 
             $ligas_keys = array_keys($ligas_array);
-            $proxima_liga = array_search($actual_id+1,$ligas_keys);
-            $proxima_liga = ($proxima_liga)? $ligas_array[$ligas_keys[$proxima_liga]] : false;
+            if(isset($actual_id)){
+                $proxima_liga = array_search($actual_id+1,$ligas_keys);
+                $proxima_liga = ($proxima_liga)? $ligas_array[$ligas_keys[$proxima_liga]] : false;
+            }else{
+                $proxima_liga = false;
+            }
+
             
 
             #obtener listado de usuarios que pertenecen a la liga
