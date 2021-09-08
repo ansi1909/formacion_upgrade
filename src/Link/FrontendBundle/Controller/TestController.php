@@ -814,6 +814,8 @@ class TestController extends Controller
                     $posicion   = $text[$medallaId];
                 }else{
                     $podio = 0;
+                    $imgPodio = '';
+                    $posicion = '';
                 }
             }else{
                 $podio = 0;
