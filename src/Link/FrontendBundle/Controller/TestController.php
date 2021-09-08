@@ -808,11 +808,13 @@ class TestController extends Controller
                 );
 
                 $medallaId  = $podio[0]->getMedalla()->getId();
-                $podio      = $podio[0]->getId();
-                $imgPodio   = $baseUrl."/front/assets/img/".$images[$medallaId];
-                $posicion   = $text[$medallaId];
-                
-                
+                if(in_array($medallaId,array( $yml['parameters']['medallas']['primer_lugar'], $yml['parameters']['medallas']['segundo_lugar'], $yml['parameters']['medallas']['tercer_lugar']   ))){
+                    $podio      = $podio[0]->getId();
+                    $imgPodio   = $baseUrl."/front/assets/img/".$images[$medallaId];
+                    $posicion   = $text[$medallaId];
+                }else{
+                    $podio = 0;
+                }
             }else{
                 $podio = 0;
             }
