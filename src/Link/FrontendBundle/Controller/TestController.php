@@ -816,6 +816,8 @@ class TestController extends Controller
             }else{
                 $podio = 0;
             }
+        }else{
+            $podio = 0;
         }
         
 
