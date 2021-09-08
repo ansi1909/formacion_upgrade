@@ -779,7 +779,6 @@ class TestController extends Controller
         }
         
         $culmino = (!$try_button and !$continue_button['evaluacion']  and !$continue_button['next_lesson'] ) or ($programa->getCategoria()->getId() == $yml['parameters']['categoria']['competencia'] and $aprobo_competencia)? 1:0;
-        $podio = 0;
         $imgPodio = '';
         $posicion = '';
         if($culmino){
@@ -814,6 +813,8 @@ class TestController extends Controller
                 $posicion   = $text[$medallaId];
                 
                 
+            }else{
+                $podio = 0;
             }
         }
         
