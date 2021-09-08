@@ -3,7 +3,7 @@ $(document).ready(function() {
     const culmino      = $('#culmino').val();
     var   modalPodio   = $('#modal-ranking-big-notification');
 
-    if (podio && culmino){
+    if (podio > 0 && culmino){
         console.log('Aqui');
         modalPodio.addClass("show");
     }
