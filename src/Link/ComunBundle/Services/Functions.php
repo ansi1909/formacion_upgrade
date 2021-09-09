@@ -1910,13 +1910,13 @@ class Functions
         $avance_total = round($avance_total, 2);
         $pagina_padre_log->setPorcentajeAvance($avance_total > 100 ? 100 : $avance_total);
         if ($avance_total >= 100) {
-          
+
           $estatus_pagina = $em->getRepository('LinkComunBundle:CertiEstatusPagina')->find($yml['parameters']['estatus_pagina']['completada']);
           $pagina_padre_log->setEstatusPagina($estatus_pagina);
           $pagina_padre_log->setFechaFin(new \DateTime('now'));
 
           $raiz = $this->paginaRaiz($pagina_padre_id);
-          
+
           $estructura = $this->obtenerEstructura($raiz, $yml);
 
 
@@ -1938,7 +1938,7 @@ class Functions
           $pruebas_total = $query->getResult();
 
           $pagina =  $em->getRepository('LinkComunBundle:CertiPagina')->find($raiz);
-          $pagina_log = $em->getRepository('LinkComunBundle:CertiPaginaLog')->findOneBy(array('pagina' => $raiz , 'usuario' => $usuario_id));
+          $pagina_log = $em->getRepository('LinkComunBundle:CertiPaginaLog')->findOneBy(array('pagina' => $raiz, 'usuario' => $usuario_id));
           $usuario =  $em->getRepository('LinkComunBundle:AdminUsuario')->find($usuario_id);
 
           $contador = 0;
@@ -1962,7 +1962,7 @@ class Functions
 
               $puntos = $puntos + $yml['parameters']['puntos']['super_smart'];
               $tipo_alarma_id = $yml['parameters']['tipo_alarma']['medalla'];
-              $descripcion = $this->translator->trans('Has optenido la medalla') . ': ' . $this->translator->trans($medalla->getNombre());
+              $descripcion = $this->translator->trans('Has obtenido la medalla') . ': ' . $this->translator->trans($medalla->getNombre());
               $this->newAlarm($tipo_alarma_id, $descripcion, $usuario, $pagina->getId());
             }
           }
@@ -1992,7 +1992,7 @@ class Functions
               $puntos = $puntos + $yml['parameters']['puntos']['perfeccionista'];
 
               $tipo_alarma_id = $yml['parameters']['tipo_alarma']['medalla'];
-              $descripcion =  $this->translator->trans('Has optenido la medalla') . ': ' . $this->translator->trans($medalla->getNombre());
+              $descripcion =  $this->translator->trans('Has obtenido la medalla') . ': ' . $this->translator->trans($medalla->getNombre());
 
               $this->newAlarm($tipo_alarma_id, $descripcion, $usuario, $pagina->getId());
             }
@@ -2029,72 +2029,99 @@ class Functions
 
 
 
-          if (count($cantidad_usuarios_aprobados) == 1) {
-            $medalla = $em->getRepository('LinkComunBundle:AdminMedallas')->find($yml['parameters']['medallas']['primer_lugar']);
+          if (count($cantidad_usuarios_aprobados) == '1') {
+            $medallaUsuario = $em->getRepository('LinkComunBundle:AdminMedallasUsuario')->findOneBy(array(
+              'pagina' => $raiz,
+              'usuario' => $usuario_id,
+              'medalla' => $yml['parameters']['medallas']['primer_lugar']
+            ));
+            if (!$medallaUsuario) {
+              $medalla = $em->getRepository('LinkComunBundle:AdminMedallas')->find($yml['parameters']['medallas']['primer_lugar']);
 
-            $medallaUsuario = new AdminMedallasUsuario();
-            $medallaUsuario->setUsuario($usuario);
-            $medallaUsuario->setMedalla($medalla);
-            $medallaUsuario->setPagina($pagina);
-            $em->persist($medallaUsuario);
-            $em->flush();
+              $medallaUsuario = new AdminMedallasUsuario();
+              $medallaUsuario->setUsuario($usuario);
+              $medallaUsuario->setMedalla($medalla);
+              $medallaUsuario->setPagina($pagina);
+              $em->persist($medallaUsuario);
+              $em->flush();
 
-            $puntos = $puntos + $yml['parameters']['puntos']['primer_lugar'];
+              $puntos = $puntos + $yml['parameters']['puntos']['primer_lugar'];
 
-            $tipo_alarma_id = $yml['parameters']['tipo_alarma']['medalla'];
-            $descripcion = $this->translator->trans('Has optenido la medalla') . ': ' . $this->translator->trans($medalla->getNombre());
+              $tipo_alarma_id = $yml['parameters']['tipo_alarma']['medalla'];
+              $descripcion = $this->translator->trans('Has obtenido la medalla') . ': ' . $this->translator->trans($medalla->getNombre());
 
-            $this->newAlarm($tipo_alarma_id, $descripcion, $usuario, $pagina->getId());
-          } elseif (count($cantidad_usuarios_aprobados) == 2) {
-            $medalla = $em->getRepository('LinkComunBundle:AdminMedallas')->find($yml['parameters']['medallas']['segundo_lugar']);
+              $this->newAlarm($tipo_alarma_id, $descripcion, $usuario, $pagina->getId());
+            }
+          } elseif (count($cantidad_usuarios_aprobados) == '2') {
+            $medallaUsuario = $em->getRepository('LinkComunBundle:AdminMedallasUsuario')->findOneBy(array(
+              'pagina' => $raiz,
+              'usuario' => $usuario_id,
+              'medalla' => $yml['parameters']['medallas']['segundo_lugar']
+            ));
+            if (!$medallaUsuario) {
+              $medalla = $em->getRepository('LinkComunBundle:AdminMedallas')->find($yml['parameters']['medallas']['segundo_lugar']);
 
-            $medallaUsuario = new AdminMedallasUsuario();
-            $medallaUsuario->setUsuario($usuario);
-            $medallaUsuario->setMedalla($medalla);
-            $medallaUsuario->setPagina($pagina);
-            $em->persist($medallaUsuario);
-            $em->flush();
+              $medallaUsuario = new AdminMedallasUsuario();
+              $medallaUsuario->setUsuario($usuario);
+              $medallaUsuario->setMedalla($medalla);
+              $medallaUsuario->setPagina($pagina);
+              $em->persist($medallaUsuario);
+              $em->flush();
 
-            $puntos = $puntos + $yml['parameters']['puntos']['segundo_lugar'];
+              $puntos = $puntos + $yml['parameters']['puntos']['segundo_lugar'];
 
-            $tipo_alarma_id = $yml['parameters']['tipo_alarma']['medalla'];
-            $descripcion = $this->translator->trans('Has optenido la medalla') . ': ' . $this->translator->trans($medalla->getNombre());
+              $tipo_alarma_id = $yml['parameters']['tipo_alarma']['medalla'];
+              $descripcion = $this->translator->trans('Has obtenido la medalla') . ': ' . $this->translator->trans($medalla->getNombre());
 
-            $this->newAlarm($tipo_alarma_id, $descripcion, $usuario, $pagina->getId());
-          } elseif (count($cantidad_usuarios_aprobados) == 3) {
-            $medalla = $em->getRepository('LinkComunBundle:AdminMedallas')->find($yml['parameters']['medallas']['tercer_lugar']);
+              $this->newAlarm($tipo_alarma_id, $descripcion, $usuario, $pagina->getId());
+            }
+          } elseif (count($cantidad_usuarios_aprobados) == '3') {
+            $medallaUsuario = $em->getRepository('LinkComunBundle:AdminMedallasUsuario')->findOneBy(array(
+              'pagina' => $raiz,
+              'usuario' => $usuario_id,
+              'medalla' => $yml['parameters']['medallas']['tercer_lugar']
+            ));
+            if (!$medallaUsuario) {
+              $medalla = $em->getRepository('LinkComunBundle:AdminMedallas')->find($yml['parameters']['medallas']['tercer_lugar']);
 
-            $medallaUsuario = new AdminMedallasUsuario();
-            $medallaUsuario->setUsuario($usuario);
-            $medallaUsuario->setMedalla($medalla);
-            $medallaUsuario->setPagina($pagina);
-            $em->persist($medallaUsuario);
-            $em->flush();
+              $medallaUsuario = new AdminMedallasUsuario();
+              $medallaUsuario->setUsuario($usuario);
+              $medallaUsuario->setMedalla($medalla);
+              $medallaUsuario->setPagina($pagina);
+              $em->persist($medallaUsuario);
+              $em->flush();
 
-            $puntos = $puntos + $yml['parameters']['puntos']['tercer_lugar'];
+              $puntos = $puntos + $yml['parameters']['puntos']['tercer_lugar'];
 
-            $tipo_alarma_id = $yml['parameters']['tipo_alarma']['medalla'];
-            $descripcion =  $this->translator->trans('Has optenido la medalla') . ': ' . $this->translator->trans($medalla->getNombre());
+              $tipo_alarma_id = $yml['parameters']['tipo_alarma']['medalla'];
+              $descripcion =  $this->translator->trans('Has obtenido la medalla') . ': ' . $this->translator->trans($medalla->getNombre());
 
-            $this->newAlarm($tipo_alarma_id, $descripcion, $usuario, $pagina->getId());
+              $this->newAlarm($tipo_alarma_id, $descripcion, $usuario, $pagina->getId());
+            }
+          } elseif (count($cantidad_usuarios_aprobados) > '3') {
+            $medallaUsuario = $em->getRepository('LinkComunBundle:AdminMedallasUsuario')->findOneBy(array(
+              'pagina' => $raiz,
+              'usuario' => $usuario_id,
+              'medalla' => $yml['parameters']['medallas']['graduado']
+            ));
+            if (!$medallaUsuario) {
+              $medalla = $em->getRepository('LinkComunBundle:AdminMedallas')->find($yml['parameters']['medallas']['graduado']);
+
+              $medallaUsuario = new AdminMedallasUsuario();
+              $medallaUsuario->setUsuario($usuario);
+              $medallaUsuario->setMedalla($medalla);
+              $medallaUsuario->setPagina($pagina);
+              $em->persist($medallaUsuario);
+              $em->flush();
+
+              $puntos = $puntos + $yml['parameters']['puntos']['graduado'];
+
+              $tipo_alarma_id = $yml['parameters']['tipo_alarma']['medalla'];
+              $descripcion = $this->translator->trans('Has obtenido la medalla') . ': ' . $this->translator->trans($medalla->getNombre());
+
+              $this->newAlarm($tipo_alarma_id, $descripcion, $usuario, $pagina->getId());
+            }
           }
-
-          //medalla por pasar el programa
-          $medalla = $em->getRepository('LinkComunBundle:AdminMedallas')->find($yml['parameters']['medallas']['graduado']);
-
-          $medallaUsuario = new AdminMedallasUsuario();
-          $medallaUsuario->setUsuario($usuario);
-          $medallaUsuario->setMedalla($medalla);
-          $medallaUsuario->setPagina($pagina);
-          $em->persist($medallaUsuario);
-          $em->flush();
-
-          $puntos = $puntos + $yml['parameters']['puntos']['graduado'];
-
-          $tipo_alarma_id = $yml['parameters']['tipo_alarma']['medalla'];
-          $descripcion = $this->translator->trans('Has optenido la medalla') . ': ' . $this->translator->trans($medalla->getNombre());
-
-          $this->newAlarm($tipo_alarma_id, $descripcion, $usuario, $pagina->getId());
 
           $sesionActiva = $em->getRepository('LinkComunBundle:AdminSesion')->findOneBy(array(
             'disponible' => True,
@@ -2102,21 +2129,28 @@ class Functions
           ));
 
           if ($pagina_log->getFechaInicio() > $sesionActiva->getFechaIngreso()) {
-            $medalla = $em->getRepository('LinkComunBundle:AdminMedallas')->find($yml['parameters']['medallas']['imparable']);
+            $medallaUsuario = $em->getRepository('LinkComunBundle:AdminMedallasUsuario')->findOneBy(array(
+              'pagina' => $raiz,
+              'usuario' => $usuario_id,
+              'medalla' => $yml['parameters']['medallas']['imparable']
+            ));
+            if (!$medallaUsuario) {
+              $medalla = $em->getRepository('LinkComunBundle:AdminMedallas')->find($yml['parameters']['medallas']['imparable']);
 
-            $medallaUsuario = new AdminMedallasUsuario();
-            $medallaUsuario->setUsuario($usuario);
-            $medallaUsuario->setMedalla($medalla);
-            $medallaUsuario->setPagina($pagina);
-            $em->persist($medallaUsuario);
-            $em->flush();
+              $medallaUsuario = new AdminMedallasUsuario();
+              $medallaUsuario->setUsuario($usuario);
+              $medallaUsuario->setMedalla($medalla);
+              $medallaUsuario->setPagina($pagina);
+              $em->persist($medallaUsuario);
+              $em->flush();
 
-            $puntos = $puntos + $yml['parameters']['puntos']['imparable'];
+              $puntos = $puntos + $yml['parameters']['puntos']['imparable'];
 
-            $tipo_alarma_id = $yml['parameters']['tipo_alarma']['medalla'];
-            $descripcion = $this->translator->trans('Has optenido la medalla') . ': ' . $this->translator->trans($medalla->getNombre());
+              $tipo_alarma_id = $yml['parameters']['tipo_alarma']['medalla'];
+              $descripcion = $this->translator->trans('Has obtenido la medalla') . ': ' . $this->translator->trans($medalla->getNombre());
 
-            $this->newAlarm($tipo_alarma_id, $descripcion, $usuario, $pagina->getId());
+              $this->newAlarm($tipo_alarma_id, $descripcion, $usuario, $pagina->getId());
+            }
           }
         } else {
           if ($subpaginas_completadas && $indexedPages[$pagina_padre_id]['tiene_evaluacion']) {
