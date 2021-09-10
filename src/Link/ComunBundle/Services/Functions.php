@@ -2029,7 +2029,7 @@ class Functions
 
 
 
-          if (count($cantidad_usuarios_aprobados) == '1') {
+          if (count($cantidad_usuarios_aprobados) == 1) {
             $medallaUsuario = $em->getRepository('LinkComunBundle:AdminMedallasUsuario')->findOneBy(array(
               'pagina' => $raiz,
               'usuario' => $usuario_id,
@@ -2052,7 +2052,7 @@ class Functions
 
               $this->newAlarm($tipo_alarma_id, $descripcion, $usuario, $pagina->getId());
             }
-          } elseif (count($cantidad_usuarios_aprobados) == '2') {
+          } elseif (count($cantidad_usuarios_aprobados) == 2) {
             $medallaUsuario = $em->getRepository('LinkComunBundle:AdminMedallasUsuario')->findOneBy(array(
               'pagina' => $raiz,
               'usuario' => $usuario_id,
@@ -2075,7 +2075,7 @@ class Functions
 
               $this->newAlarm($tipo_alarma_id, $descripcion, $usuario, $pagina->getId());
             }
-          } elseif (count($cantidad_usuarios_aprobados) == '3') {
+          } elseif (count($cantidad_usuarios_aprobados) == 3) {
             $medallaUsuario = $em->getRepository('LinkComunBundle:AdminMedallasUsuario')->findOneBy(array(
               'pagina' => $raiz,
               'usuario' => $usuario_id,
@@ -2098,7 +2098,7 @@ class Functions
 
               $this->newAlarm($tipo_alarma_id, $descripcion, $usuario, $pagina->getId());
             }
-          } elseif (count($cantidad_usuarios_aprobados) > '3') {
+          } elseif (count($cantidad_usuarios_aprobados) > 3) {
             $medallaUsuario = $em->getRepository('LinkComunBundle:AdminMedallasUsuario')->findOneBy(array(
               'pagina' => $raiz,
               'usuario' => $usuario_id,
