@@ -54,7 +54,7 @@ class ForoController extends Controller
             $usuario_empresa = 1;
             
             $query = $em->createQuery("SELECT p FROM LinkComunBundle:CertiPagina p
-                                       JOIN LinkComunBundle:CertiPaginaEmpresa e
+                                       INNER JOIN LinkComunBundle:CertiPaginaEmpresa e WITH p.id = e.pagina
                                        WHERE e.activo = :activo
                                        AND e.colaborativo = :activo
                                        AND e.pagina = p.id
@@ -68,7 +68,7 @@ class ForoController extends Controller
             {
                 
                 $query = $em->createQuery("SELECT COUNT(f.id) FROM LinkComunBundle:CertiForo f
-                                           JOIN LinkComunBundle:CertiPaginaEmpresa e
+                                           INNER JOIN LinkComunBundle:CertiPaginaEmpresa e WITH e.empresa = f.empresa
                                            WHERE e.activo = :activo
                                            AND e.pagina = f.pagina
                                            AND e.empresa = f.empresa
@@ -87,7 +87,7 @@ class ForoController extends Controller
             }
 
             $query2 = $em->createQuery("SELECT m FROM LinkComunBundle:CertiForo m
-                                       JOIN LinkComunBundle:CertiPaginaEmpresa e
+                                       INNER JOIN LinkComunBundle:CertiPaginaEmpresa e WITH e.empresa = m.empresa
                                        WHERE e.activo = :activo
                                        AND e.pagina = m.pagina
                                        AND e.empresa = m.empresa
@@ -143,11 +143,11 @@ class ForoController extends Controller
 
     public function ajaxPaginasForoAction(Request $request)
     {
+    
         $em = $this->getDoctrine()->getManager();
         $empresa_id = $request->query->get('empresa_id');
-
         $query = $em->createQuery("SELECT p FROM LinkComunBundle:CertiPagina p
-                                       JOIN LinkComunBundle:CertiPaginaEmpresa e
+                                       INNER JOIN LinkComunBundle:CertiPaginaEmpresa e WITH p.id = e.pagina
                                        WHERE e.activo = :activo
                                        AND e.colaborativo = :activo
                                        AND e.pagina = p.id
@@ -163,7 +163,7 @@ class ForoController extends Controller
         {
             
             $query = $em->createQuery("SELECT COUNT(f.id) FROM LinkComunBundle:CertiForo f
-                                       JOIN LinkComunBundle:CertiPaginaEmpresa e
+                                       INNER JOIN LinkComunBundle:CertiPaginaEmpresa e WITH f.empresa = e.empresa
                                        WHERE e.activo = :activo
                                        AND e.pagina = f.pagina
                                        AND e.empresa = f.empresa
@@ -188,7 +188,7 @@ class ForoController extends Controller
 
     public function ajaxComentariosForoAction(Request $request)
     {
-        
+        //print_r('Aqui');die();
         $session = new Session();
         $em = $this->getDoctrine()->getManager();
         $f = $this->get('funciones');
@@ -201,10 +201,10 @@ class ForoController extends Controller
 
         $roles=$session->get('usuario')['roles'];
         $answer_delete= (in_array($yml['parameters']['rol']['tutor'],$roles) || in_array($yml['parameters']['rol']['empresa'],$roles)) ? 1 : 0; //verifica si el usuario posee el rol tutor virtual(3) o empresa(5)
-
+        
         if($pagina_id == 0){
             $query2 = $em->createQuery("SELECT m FROM LinkComunBundle:CertiForo m
-                                       JOIN LinkComunBundle:CertiPaginaEmpresa e
+                                        INNER JOIN LinkComunBundle:CertiPaginaEmpresa e WITH m.empresa = e.empresa
                                        WHERE e.activo = :activo 
                                        AND e.pagina = m.pagina
                                        AND e.empresa = m.empresa
@@ -215,8 +215,9 @@ class ForoController extends Controller
                                                'activo' => true));
         }
         else {
+            
             $query2 = $em->createQuery("SELECT m FROM LinkComunBundle:CertiForo m
-                                       JOIN LinkComunBundle:CertiPaginaEmpresa e
+                                       INNER JOIN LinkComunBundle:CertiPaginaEmpresa e WITH m.empresa = e.empresa
                                        WHERE e.activo = :activo
                                        AND e.pagina = m.pagina
                                        AND e.empresa = m.empresa
