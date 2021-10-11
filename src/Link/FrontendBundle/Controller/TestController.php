@@ -563,6 +563,9 @@ class TestController extends Controller
             {
                 $puntos = $puntos/$intentos;
                 $puntos = round($puntos);
+            }elseif ($intentos == 1){
+                
+                $puntos = $yml['parameters']['puntos']['aprobar_primer_intento'] + $puntos;
             }
         }
         else {
@@ -612,10 +615,10 @@ class TestController extends Controller
             }
             else {
                 $estado = $yml['parameters']['estado_prueba']['aprobado'];
-                if ($intentos == 1)
-                {
-                    $puntos = $yml['parameters']['puntos']['aprobar_primer_intento'];
-                }
+            }
+
+            if ($intentos == 1 && $estado == $yml['parameters']['estado_prueba']['aprobado'] ){
+                $puntos = $yml['parameters']['puntos']['aprobar_primer_intento'];
             }
 
         }

@@ -102,23 +102,23 @@ parameters:
     ponderacion:
         evaluacion: 0.2
     puntos:
-        mitad_periodo: 100
+        mitad_periodo: 0
         aprobar_primer_intento: 150
         aprobar_perfecto: 100
-        escribir_muro: 10
-        like_recibido: 100
-        respuesta_muro: 20
-        espacio_colaborativo: 100
+        escribir_muro: 0
+        like_recibido: 0
+        respuesta_muro: 0
+        espacio_colaborativo: 0
         influencer_1: 50
         influencer_2: 100
         influencer_3: 150
         amigable_1: 20
         amigable_2: 40
         amigable_3: 60
-        super_smart: 400
-        perfeccionista: 350
-        imparable: 300
-        primer_lugar: 200
+        super_smart: 0
+        perfeccionista: 0
+        imparable: 0
+        primer_lugar: 0
         segundo_lugar: 150
         tercer_lugar: 100
         graduado: 50
