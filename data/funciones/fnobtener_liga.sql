@@ -1,5 +1,5 @@
 --Obtiene los usuario que pertenecen a una liga
-CREATE OR REPLACE FUNCTION fnobtener_liga(ppagina_id integer, pempresa_id integer,ppuntaje_min integer, ppuntaje_max integer,pestructura text) RETURNS text AS $$
+CREATE OR REPLACE FUNCTION fnobtener_liga(ppagina_id integer, pempresa_id integer,ppuntaje_min integer, ppuntaje_max integer) RETURNS text AS $$
 DECLARE
 	json_respuesta text:='{';
     usuario record;
@@ -9,18 +9,18 @@ BEGIN
 
             --Tabla temporal para obtener la puntuacion de los usuarios que usare para el siguiente qyuery
             WITH certi_puntos as (
-                SELECT au.id as usuario_id, SUM(cpl.puntos) as  puntos
+                SELECT au.id as usuario_id,cpl.puntos as  puntos
                 FROM admin_usuario au 
                 LEFT JOIN certi_pagina_log cpl ON cpl.usuario_id = au.id 
                 INNER JOIN admin_nivel n ON au.nivel_id = n.id
                 INNER JOIN certi_pagina_empresa pe ON pe.empresa_id = au.empresa_id
                 INNER JOIN certi_nivel_pagina cnp ON pe.id = cnp.pagina_empresa_id
-                WHERE cpl.pagina_id = ANY(pestructura::int[])
+                WHERE cpl.pagina_id = ppagina_id
                 AND  (LOWER(n.nombre) NOT LIKE 'revisor%' AND LOWER(n.nombre) NOT LIKE 'tutor%')
                 AND au.empresa_id = pempresa_id
                 AND pe.pagina_id  = ppagina_id
                 AND au.activo
-                GROUP BY au.id
+                GROUP BY au.id, cpl.puntos
             )
             SELECT 
                     au.id as id,

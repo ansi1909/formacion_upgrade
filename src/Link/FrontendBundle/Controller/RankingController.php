@@ -128,17 +128,17 @@ class RankingController extends Controller
     }
 
  
-    public function obtenerPuntosUsuarioLogueado($indices){
+    public function obtenerPuntosUsuarioLogueado($ppagina_id){
         $em = $this->getDoctrine()->getManager();
         $session = new Session();
 
         #obtenemos los puntos que el usuario logueado recaudo en el programa 
         $query = $em->createQuery('SELECT SUM(cpl.puntos) 
                                                     FROM LinkComunBundle:CertiPaginaLog cpl
-                                                    WHERE cpl.pagina IN (:paginas)
+                                                    WHERE cpl.pagina = :pagina
                                                     AND cpl.usuario = :usuario')
                                             ->setParameters(array('usuario' => $session->get('usuario')['id'],
-                                                            'paginas' => $indices));
+                                                            'pagina' => $ppagina_id));
         $puntos_usuario_logueado = $query->getSingleScalarResult();
         
         if(!$puntos_usuario_logueado){
@@ -181,16 +181,15 @@ class RankingController extends Controller
     }
     
 
-    public function obtenerListadoLiga($ppagina_id, $liga_pts_min, $liga_pts_max, $estructura){
+    public function obtenerListadoLiga($ppagina_id, $liga_pts_min, $liga_pts_max){
             $em = $this->getDoctrine()->getManager();
             $session = new Session();
 
-            $query = $em->getConnection()->prepare('SELECT fnobtener_liga(:ppagina_id,:pempresa_id,:ppuntaje_min,:ppuntaje_max,:pestructura) as resultado;');
+            $query = $em->getConnection()->prepare('SELECT fnobtener_liga(:ppagina_id,:pempresa_id,:ppuntaje_min,:ppuntaje_max) as resultado;');
             $query->bindValue(':ppagina_id', $ppagina_id, \PDO::PARAM_INT);
             $query->bindValue(':pempresa_id', $session->get('empresa')['id'], \PDO::PARAM_INT);
             $query->bindValue(':ppuntaje_min', $liga_pts_min, \PDO::PARAM_INT);
             $query->bindValue(':ppuntaje_max', $liga_pts_max, \PDO::PARAM_INT);
-            $query->bindValue(':pestructura', $estructura, \PDO::PARAM_STR);
             $query->execute();
             $rs = $query->fetchAll(); 
             $resultado = $rs[0]['resultado'];
@@ -228,10 +227,10 @@ class RankingController extends Controller
         $ligas_array = array();
         $liga_actual = array();
 
-        $estructura = $this->obtenerEstructuraPrograma($ppagina_id);
+        #$estructura = $this->obtenerEstructuraPrograma($ppagina_id);
         
-        $puntos_usuario_logueado = $this->obtenerPuntosUsuarioLogueado($estructura);
-        
+        $puntos_usuario_logueado = $this->obtenerPuntosUsuarioLogueado($ppagina_id);
+       
         $programa = $em->getRepository('LinkComunBundle:CertiPagina')->findOneById($ppagina_id);
         
         if ($programa->getPuntuacion() ){
@@ -262,9 +261,9 @@ class RankingController extends Controller
 
 
             #preparar estructura para pasar como argumento a la funcion BD
-            $estructura = json_encode($estructura);
-            $estructura = str_replace("[","{",$estructura);
-            $estructura = str_replace("]","}",$estructura);
+            #$estructura = json_encode($estructura);
+            #$estructura = str_replace("[","{",$estructura);
+            #$estructura = str_replace("]","}",$estructura);
 
             #obtener proxima liga 
             $ligas_keys = array_keys($ligas_array);
