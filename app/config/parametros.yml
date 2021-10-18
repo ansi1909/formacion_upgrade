@@ -115,10 +115,10 @@ parameters:
         amigable_1: 20
         amigable_2: 40
         amigable_3: 60
-        super_smart: 0
-        perfeccionista: 0
-        imparable: 0
-        primer_lugar: 0
+        super_smart: 400
+        perfeccionista: 350
+        imparable: 300  
+        primer_lugar: 200
         segundo_lugar: 150
         tercer_lugar: 100
         graduado: 50
