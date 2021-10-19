@@ -379,13 +379,13 @@ class LeccionController extends Controller
         
         $totalComments = $query->getSingleScalarResult();
         $pagina_padre = $this->getDoctrine()->getRepository('LinkComunBundle:CertiPagina')->find($pagina_padre_id);
-        if ($totalComments >= 3) {
+        if ($totalComments >= $yml['parameters']['comentarios_necesarios']['influencer_1']) {
             $pagina_log = $em->getRepository('LinkComunBundle:CertiPaginaLog')->findOneBy(array(
                 'pagina' => $pagina_padre->getId(),
                 'usuario' => $muroPadre->getUsuario()->getId()
             ));
 
-            if ($totalComments == 3) {
+            if ($totalComments == $yml['parameters']['comentarios_necesarios']['influencer_1']) {
                 $medallaUsuario = $em->getRepository('LinkComunBundle:AdminMedallasUsuario')->findOneBy(array(
                     'pagina' => $pagina_padre->getId(),
                     'usuario' => $muroPadre->getUsuario()->getId(),
@@ -408,7 +408,7 @@ class LeccionController extends Controller
 
                     $f->newAlarm($tipo_alarma_id, $descripcion, $muroPadre->getUsuario(), $pagina_padre->getId());
                 }
-            } elseif ($totalComments == 6) {
+            } elseif ($totalComments == $yml['parameters']['comentarios_necesarios']['influencer_2']) {
                 $medallaUsuario = $em->getRepository('LinkComunBundle:AdminMedallasUsuario')->findOneBy(array(
                     'pagina' => $pagina_padre->getId(),
                     'usuario' => $muroPadre->getUsuario()->getId(),
@@ -431,7 +431,7 @@ class LeccionController extends Controller
 
                     $f->newAlarm($tipo_alarma_id, $descripcion, $muroPadre->getUsuario(), $pagina_padre->getId());
                 }
-            } elseif ($totalComments == 9) {
+            } elseif ($totalComments == $yml['parameters']['comentarios_necesarios']['influencer_3']) {
                 $medallaUsuario = $em->getRepository('LinkComunBundle:AdminMedallasUsuario')->findOneBy(array(
                     'pagina' => $pagina_padre->getId(),
                     'usuario' => $muroPadre->getUsuario()->getId(),
@@ -452,6 +452,9 @@ class LeccionController extends Controller
                     $descripcion = $this->get('translator')->trans('Has obtenido la medalla') . ': ' . $this->get('translator')->trans($medalla->getNombre());
 
                     $f->newAlarm($tipo_alarma_id, $descripcion, $muroPadre->getUsuario(), $pagina_padre->getId());
+                    
+                    //revisar si debe asignarce la medalla vencedor
+                    $f->assignWinnerMedal($pagina_padre,$muroPadre->getUsuario(),$yml);
                 }
             }
             $puntos = $pagina_log->getPuntos() + $puntos_agregados;
@@ -474,14 +477,14 @@ class LeccionController extends Controller
                 ));
 
             $comentariosTotal2 = $query->getSingleScalarResult();
-            if ($comentariosTotal2 >= 5) {
+            if ($comentariosTotal2 >= $yml['parameters']['comentarios_necesarios']['amigable_1']) {
                 $pagina_log = $em->getRepository('LinkComunBundle:CertiPaginaLog')->findOneBy(array(
                     'pagina' => $pagina_padre->getId(),
                     'usuario' => $session->get('usuario')['id']
                 ));
                 //print_r($pagina_log->getId());die();
 
-                if ($comentariosTotal2 == 5) {
+                if ($comentariosTotal2 == $yml['parameters']['comentarios_necesarios']['amigable_1']) {
                     $medallaUsuario = $em->getRepository('LinkComunBundle:AdminMedallasUsuario')->findOneBy(array(
                         'pagina' => $pagina_padre->getId(),
                         'usuario' => $session->get('usuario')['id'],
@@ -504,7 +507,7 @@ class LeccionController extends Controller
 
                         $f->newAlarm($tipo_alarma_id, $descripcion, $usuario, $pagina_padre->getId());
                     }
-                } elseif ($comentariosTotal2 == 10) {
+                } elseif ($comentariosTotal2 == $yml['parameters']['comentarios_necesarios']['amigable_2']) {
                     $medallaUsuario = $em->getRepository('LinkComunBundle:AdminMedallasUsuario')->findOneBy(array(
                         'pagina'  => $pagina_padre->getId(),
                         'usuario' => $session->get('usuario')['id'],
@@ -527,7 +530,7 @@ class LeccionController extends Controller
 
                         $f->newAlarm($tipo_alarma_id, $descripcion, $usuario, $pagina_padre->getId());
                     }
-                } elseif ($comentariosTotal2 == 15) {
+                } elseif ($comentariosTotal2 == $yml['parameters']['comentarios_necesarios']['amigable_3']) {
 
                     $medallaUsuario = $em->getRepository('LinkComunBundle:AdminMedallasUsuario')->findOneBy(array(
                         'pagina' => $pagina_padre->getId(),
@@ -551,7 +554,12 @@ class LeccionController extends Controller
                         $descripcion = $this->get('translator')->trans('Has obtenido la medalla') . ': ' . $this->get('translator')->trans($medalla->getNombre());
 
                         $f->newAlarm($tipo_alarma_id, $descripcion, $usuario, $pagina_padre->getId());
+
+                         //revisar si debe asignarce la medalla vencedor
+                         $f->assignWinnerMedal($pagina_padre,$usuario,$yml);
                     }
+
+                   
                 }
                 $puntos = $pagina_log->getPuntos() + $puntos_agregados;
                 $pagina_log->setPuntos($puntos);

@@ -123,6 +123,13 @@ parameters:
         tercer_lugar: 100
         graduado: 50
         vencedor: 500
+    comentarios_necesarios:
+        influencer_1: 3
+        influencer_2: 6
+        influencer_3: 9
+        amigable_1: 5
+        amigable_2: 10
+        amigable_3: 15
     secret: 315e95c941de6274d88f8529c9adf0a2c2b6613b
     search_locale: 0
     mailer_user: tutorvirtual@formacion2puntocero.com

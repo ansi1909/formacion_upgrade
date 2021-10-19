@@ -426,7 +426,6 @@ class TestController extends Controller
 
     public function finAction($programa_id, $prueba_log_id, $cantidad_preguntas, $preguntas_str, Request $request)
     {
-
         $session = new Session();
         $f = $this->get('funciones');
         $yml = Yaml::parse(file_get_contents($this->get('kernel')->getRootDir().'/config/parametros.yml'));
@@ -823,6 +822,8 @@ class TestController extends Controller
             }else{
                 $podio = 0;
             }
+
+            //fin culmino el
         }else{
             $podio = 0;
         }
