@@ -277,7 +277,7 @@ class RankingController extends Controller
             
 
             #obtener listado de usuarios que pertenecen a la liga
-            $resultado = $this->obtenerListadoLiga($ppagina_id, $liga_actual[$actual_id]['puntos_min'], $liga_actual[$actual_id]['puntos_max'], $estructura);
+            $resultado = $this->obtenerListadoLiga($ppagina_id, $liga_actual[$actual_id]['puntos_min'], $liga_actual[$actual_id]['puntos_max']);
             
             $total = count($resultado);
             $keys = array_keys($resultado);

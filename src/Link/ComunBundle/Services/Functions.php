@@ -1850,7 +1850,6 @@ class Functions
 
   public function calculoAvance($indexedPages, $pagina_id, $usuario_id, $yml, $puntos = 0)
   {
-
     $em = $this->em;
 
     if ($indexedPages[$pagina_id]['padre']) {
@@ -2152,6 +2151,8 @@ class Functions
               $this->newAlarm($tipo_alarma_id, $descripcion, $usuario, $pagina->getId());
             }
           }
+
+          $this->assignWinnerMedal($pagina,$usuario,$yml);
         } else {
           if ($subpaginas_completadas && $indexedPages[$pagina_padre_id]['tiene_evaluacion']) {
             $estatus_pagina = $em->getRepository('LinkComunBundle:CertiEstatusPagina')->find($yml['parameters']['estatus_pagina']['en_evaluacion']);
@@ -2159,6 +2160,8 @@ class Functions
           }
         }
 
+        
+        
         // Puntos agregados
         $puntos_agregados = $pagina_padre_log->getPuntos() + $puntos;
         $pagina_padre_log->setPuntos($puntos_agregados);
@@ -2170,6 +2173,86 @@ class Functions
       $this->calculoAvance($indexedPages, $pagina_padre_id, $usuario_id, $yml, $puntos);
     }
   }
+  
+ public function assignWinnerMedal($parentPage,$user,$yml){
+    $em = $this->em;
+    $podium = 3;
+    $medals = array(
+      $yml['parameters']['medallas']['influencer_1'],
+      $yml['parameters']['medallas']['influencer_2'],
+      $yml['parameters']['medallas']['influencer_3'],
+      $yml['parameters']['medallas']['amigable_1'],
+      $yml['parameters']['medallas']['amigable_2'],
+      $yml['parameters']['medallas']['amigable_3'],
+      $yml['parameters']['medallas']['super_smart'],
+      $yml['parameters']['medallas']['perfeccionista'],
+      $yml['parameters']['medallas']['imparable'],
+      $yml['parameters']['medallas']['primer_lugar'],
+      $yml['parameters']['medallas']['segundo_lugar'],
+      $yml['parameters']['medallas']['tercer_lugar'],
+      $yml['parameters']['medallas']['graduado']
+    );
+    
+    $userMedals = $em->getRepository('LinkComunBundle:AdminMedallasUsuario')->findBy(array(
+      'usuario' => $user->getId(),
+      'pagina'  => $parentPage->getId()
+      ));
+
+    $HasWinnerMedal = $em->getRepository('LinkComunBundle:AdminMedallasUsuario')->findOneBy(array(
+      'usuario' => $user->getId(),
+      'pagina'  => $parentPage->getId(),
+      'medalla' => $yml['parameters']['medallas']['vencedor']
+    ));
+    
+    if (!$HasWinnerMedal && (count($userMedals) == count($medals) - ($podium) ) ){
+      
+      $query = $em->createQuery("SELECT COUNT(mu.id) FROM LinkComunBundle:AdminMedallasUsuario mu
+              WHERE mu.usuario = :user_id 
+              AND mu.pagina = :page_id
+              AND mu.medalla IN (:medals)")
+        ->setParameters(array(
+        'user_id' => $user->getId(),
+        'page_id' => $parentPage->getId(),
+        'medals' =>  $medals
+        ));
+       $result = $query->getSingleScalarResult();
+      
+       if( $result = (count($medals) - $podium) ){
+         //asignar puntos
+         $points = $yml['parameters']['puntos']['vencedor'];
+         $paginaLog = $em->getRepository('LinkComunBundle:CertiPaginaLog')->findOneBy(
+           array('pagina'  => $parentPage->getId(),
+                 'usuario' => $user->getId()
+         ));
+         
+         $paginaLog->setPuntos($paginaLog->getPuntos() + $points);
+         $em->persist($paginaLog);
+         $em->flush();
+         //asignar medalla
+         $medal = $em->getRepository('LinkComunBundle:AdminMedallas')->find($yml['parameters']['medallas']['vencedor']);
+         $userMedal = new AdminMedallasUsuario();
+         $userMedal->setUsuario($user);
+         $userMedal->setMedalla($medal);
+         $userMedal->setPagina($parentPage);
+         $em->persist($userMedal);
+         $em->flush();
+
+         //crear alrma
+         $typeAlarmId = $yml['parameters']['tipo_alarma']['medalla'];
+         $description = $this->translator->trans('Has obtenido la medalla') . ': ' . $this->translator->trans($medal->getNombre());
+
+         $this->newAlarm($typeAlarmId, $description, $user, $parentPage->getId());
+
+       } 
+
+
+
+    }
+
+    
+ }
+
+
 
   public function likes($social_id, $entidad_id, $usuario_id)
   {

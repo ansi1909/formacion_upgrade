@@ -80,7 +80,7 @@ class UpdateProgramScoreCommand extends ContainerAwareCommand
             $program->setPuntuacion($points);
             $em->persist($program);
             $em->flush();
-            $output->writeln('La puntuación del programa: '.$program->getNombre().'('.$program->getId().')'.',  se actualizo correctamente ('.$points.')');
+            $output->writeln('La puntuación del programa: '.$program->getNombre().'('.$program->getId().')'.',  se actualizo correctamente (Ptos. '.$points.')');
 
         return 1; //update done
     }
