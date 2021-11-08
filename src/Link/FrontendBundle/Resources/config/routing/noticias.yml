@@ -1,6 +1,6 @@
 _noticias:
-    path:     /noticias
-    defaults: { _controller: LinkFrontendBundle:Noticias:index }
+    path:     /noticias/{filtro}
+    defaults: { _controller: LinkFrontendBundle:Noticias:index, filtro: "" }
 
 _noticiaDetalle:
     path:     /noticiasDetalle/{noticia_id}

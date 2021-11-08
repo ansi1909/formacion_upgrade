@@ -448,33 +448,4 @@ class AdminNoticia
     {
         return $this->tipoBiblioteca;
     }
-    /**
-     * @var string|null
-     */
-    private $tema;
-
-
-    /**
-     * Set tema.
-     *
-     * @param string|null $tema
-     *
-     * @return AdminNoticia
-     */
-    public function setTema($tema = null)
-    {
-        $this->tema = $tema;
-    
-        return $this;
-    }
-
-    /**
-     * Get tema.
-     *
-     * @return string|null
-     */
-    public function getTema()
-    {
-        return $this->tema;
-    }
 }

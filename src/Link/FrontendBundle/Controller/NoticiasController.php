@@ -14,7 +14,7 @@ use Symfony\Component\Validator\Constraints\DateTime;
 class NoticiasController extends Controller
 {
 
-    public function indexAction(Request $request)
+    public function indexAction(Request $request, $filtro )
     {
 
         $em = $this->getDoctrine()->getManager();
@@ -35,13 +35,42 @@ class NoticiasController extends Controller
         $todos = array();
         $noticias = array();
         $novedades = array();
+        $filter = mb_strtolower(trim($filtro));
+        if ($filter ==""){
+            
+            $query = $em->createQuery('SELECT n FROM LinkComunBundle:AdminNoticia n
+                    WHERE n.empresa = :empresa_id
+                    AND n.tipoBiblioteca IS NULL
+                    AND n.fechaVencimiento >= :hoy')
+            ->setParameters(   array(
+                                        'empresa_id' => $empresa_id,
+                                        'hoy' => date('Y-m-d')
+            ));
+            $noticias_db = $query->getResult();
+        }else{
+            $pattern = "/^([\¿\¡a-zA-Z0-9-ñÑáéíóúÁÉÍÓÚ])+((\s*)+([a-zA-Z0-9-ZñÑáéíóúÁÉÍÓÚ\?\!]*)*)+$/";
+            if(preg_match($pattern, $filter)){    
+                $query = $em->createQuery('SELECT n FROM LinkComunBundle:AdminNoticia n
+                                            WHERE n.empresa = :empresa_id
+                                            AND n.tipoBiblioteca IS NULL
+                                            AND (LOWER (n.titulo) LIKE :filtro)
+                                            AND n.fechaVencimiento >= :hoy
+                                            ')
+                ->setParameters(array(
+                                            'empresa_id'  => $empresa_id,
+                                            'filtro'      => '%'.$filter.'%',
+                                            'hoy' => date('Y-m-d')
+                                    )
+                                
+                                );
+
+                $noticias_db = $query->getResult();
+            }else{
+                $noticias_db = [];
+            }
+        }
 
 
-        $query = $em->createQuery('SELECT n FROM LinkComunBundle:AdminNoticia n
-                                   WHERE n.empresa = :empresa_id
-                                   AND n.tipoBiblioteca IS NULL')
-                    ->setParameter('empresa_id', $empresa_id);
-        $noticias_db = $query->getResult();
         
         foreach($noticias_db as $noticia)
         {
@@ -83,10 +112,14 @@ class NoticiasController extends Controller
             }
         }
 
-        return $this->render('LinkFrontendBundle:Noticias:index.html.twig', array('usuario_id' => $usuario_id,
+        return $this->render('LinkFrontendBundle:Noticias:index.html.twig', array(
+                                                                                  'filtro'     => $filtro,
+                                                                                  'usuario_id' => $usuario_id,
                                                                                   'todos' => $todos,
                                                                                   'noticias' => $noticias,
-                                                                                  'novedades' => $novedades));
+                                                                                  'novedades' => $novedades,
+                                                                                  'recursos_disponibles' => $this->get('translator')->trans('Recursos disponibles') . ': ' . count($todos)
+                                                                                ));
 
     }
 
@@ -147,22 +180,27 @@ class NoticiasController extends Controller
         $session = new Session();
         $em = $this->getDoctrine()->getManager();
         $yml = Yaml::parse(file_get_contents($this->get('kernel')->getRootDir().'/config/parametros.yml'));
-        
-        $term = $request->query->get('term');
+        $pattern = "/^([\¿\¡a-zA-Z0-9-ñÑáéíóúÁÉÍÓÚ])+((\s*)+([a-zA-Z0-9-ZñÑáéíóúÁÉÍÓÚ\?\!]*)*)+$/";
+        $term = mb_strtolower($request->query->get('term'));
+        $empresa_id = $session->get('empresa')['id'];
         $noticias = array();
-
-        $qb = $em->createQueryBuilder();
-        $qb->select('n')
-           ->from('LinkComunBundle:AdminNoticia', 'n')
-           ->where('n.tipoNoticia != :biblioteca')
-           ->andWhere('n.titulo LIKE :term')
-           ->andWhere('n.fechaVencimiento > :hoy')
-           ->setParameters(array('biblioteca' => $yml['parameters']['tipo_noticias']['biblioteca_virtual'],
-                                'term' => '%'.$term.'%',
-                                'hoy' => $hoy = new \DateTime()));
-
-        $query = $qb->getQuery();
-        $noticias_db = $query->getResult();
+		if (preg_match($pattern, $term)) {
+			$query = $em->createQuery('SELECT n FROM LinkComunBundle:AdminNoticia n
+										WHERE n.tipoBiblioteca IS NULL
+                                        AND n.empresa = :empresa_id
+										AND ( LOWER(n.titulo) LIKE :term )
+										AND n.fechaVencimiento >= :hoy
+										AND n.pdf IS NOT NULL')
+				->setParameters(array(
+					'term' => '%'.$term.'%',
+					'hoy' => date('Y-m-d'),
+					'empresa_id' => $empresa_id,
+				));
+                
+			$noticias_db = $query->getResult();
+		} else {
+			$noticias_db = [];
+		}
 
         foreach ($noticias_db as $noticia)
         {
@@ -170,7 +208,6 @@ class NoticiasController extends Controller
                              'label' => $noticia->getTitulo(),
                              'value' => $noticia->getTitulo());
         }
-
         $return = json_encode($noticias);
         return new Response($return, 200, array('Content-Type' => 'application/json'));
     }

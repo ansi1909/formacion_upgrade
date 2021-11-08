@@ -1,6 +1,8 @@
 _biblioteca:
-    path:     /Biblioteca
-    defaults: { _controller: LinkFrontendBundle:Biblioteca:index }
+    path:     /Biblioteca/{filtro}
+    defaults: { _controller: LinkFrontendBundle:Biblioteca:index, filtro: "" }
+    requirements: 
+        _method: GET 
 
 _bibliotecaDetalle:
     path:     /bibliotecaDetalle/{biblioteca_id}
