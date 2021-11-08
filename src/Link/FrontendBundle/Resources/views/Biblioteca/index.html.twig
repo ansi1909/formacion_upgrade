@@ -16,6 +16,73 @@
         .ui-autocomplete-loading {
             background: white url("{{ asset('img/ui-anim_basic_16x16.gif') }}") right center no-repeat;
         }
+
+        .ic-search-biblioteca{
+            color: #80ccff;
+            margin-top: 0.5rem;
+            cursor: pointer;
+        }
+
+        .btn-means{
+            position: relative;
+            height: 2.6rem;
+            top: 0.07rem;
+            border: 0px;
+            background: transparent;
+        }
+        
+        .btn-means i {
+            color: #adb5bd;
+            margin-top: 0.5rem;
+        }
+
+        .btn-means span{
+            position: absolute;
+            font-size: 1rem;
+            font-family: "Roboto";
+            font-weight: 500;
+            color: #adb5bd;
+            margin-top: 0.5rem;
+        }
+
+        .btn-means:hover{
+            cursor:pointer;
+        }
+
+        .btn-means:hover i{
+            color: #CFE65C;
+        }
+
+        .btn-means:hover span{
+            text-decoration: underline #CFE65C 3.5px;
+        }
+        
+        .ic-search-biblioteca:hover{
+            color: #CFE65C;
+        }
+
+        .result-column{
+            display: flex;
+            justify-content: flex-start;
+            margin-left: 0rem;
+        }
+
+        .result-text{
+            font-size: 1rem;
+            font-family: "Roboto";
+            font-weight: 500;
+            color: #adb5bd;
+        }
+
+        .means-column{
+            display: flex; 
+            justify-content: flex-start;
+            padding-left: 0.5rem;
+
+        }
+
+
+
     </style>
     
 {% endblock %}
@@ -24,6 +91,7 @@
 
 <input type="hidden" id="url_search" name="url_search" value="{{ path('_ajaxSearchBiblioteca') }}">
 <input type="hidden" id="url_detalle" name="url_detalle" value="{{ path('_bibliotecaDetalle') }}">
+<input type="hidden" id="url_index" name="url_index" value="{{ path('_biblioteca') }}">
 
 <div class="container-fluid">
     <div class="row mt-4">
@@ -32,10 +100,18 @@
         </div>
     </div>
     <div class="cont-noticias">
-        <div class="row align-item-center justify-content-center mt-5">
-            <div class="col-12 col-lg-6 col-xl-6 col-md-8 col-sm-8 col-xs-8">
-                <input type="search" id="search" class="form-control" placeholder="{{ 'Ingrese lo que desea buscar'|trans }}">
-                <button type="button" class="btn-search"><span class="material-icons ic-search">search</span></button>
+        <div class="row align-item-center justify-content-center mt-5 ml-2">
+            <div class="col-10 col-lg-5 col-xl-5 col-md-6 col-sm-6 col-xs-6" >
+                <input type="search" id="search" class="form-control" placeholder="{{ 'Ingrese lo que desea buscar'|trans }}" value="{{ filtro }}">
+                <button type="button" id="filter-button" class="btn-search"><span class="material-icons  ic-search-biblioteca">search</span></button>
+            </div>
+            <div class="col-2 col-lg-2 col-xl-2 col-md-2 col-sm-2 col-xs-2 means-column"  >
+                <button type="button" id="filter-means" class="btn-means"   data-placement="bottom" style="outline:none" ><i class="material-icons ic-means" >restore_page</i><span class="text">Todos</span></button>
+            </div>
+        </div>
+        <div class="row align-item-center justify-content-center">
+            <div class="col-10 col-lg-5 col-xl-5 col-md-6 col-sm-6 col-xs-6 result-column" >
+                <span class="result-text">{{ recursos_disponibles }}</span>
             </div>
         </div>
         <div class="row">
@@ -43,7 +119,7 @@
                 <div class="filter-group d-flex justify-content-around mb-3">
                     <ul class="tabs" id="tab">
                         <li class="activo mt-3 mx-1">
-                            <span>{{'Todos'|trans}}</span>
+                             <i class="material-icons">view_list</i>
                         </li>
                         <li class="mt-3 mx-1">
                             <i class="material-icons">video_library</i><span>Videos</span>
