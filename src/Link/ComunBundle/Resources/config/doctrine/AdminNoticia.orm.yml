@@ -5,15 +5,15 @@ Link\ComunBundle\Entity\AdminNoticia:
         noticia_ndx1:
             columns:
                 - empresa_id
-        IDX_F51CDD1FDB38439E:
-            columns:
-                - usuario_id
-        IDX_F51CDD1F8146238:
-            columns:
-                - tipo_noticia_id
         IDX_F51CDD1F6AED89B7:
             columns:
                 - tipo_biblioteca_id
+        IDX_F51CDD1F8146238:
+            columns:
+                - tipo_noticia_id
+        IDX_F51CDD1FDB38439E:
+            columns:
+                - usuario_id
     id:
         id:
             type: integer
@@ -72,6 +72,12 @@ Link\ComunBundle\Entity\AdminNoticia:
             length: 250
             options:
                 fixed: false
+        tema:
+            type: string
+            nullable: true
+            length: 255
+            options:
+                fixed: false
     manyToOne:
         empresa:
             targetEntity: AdminEmpresa
@@ -83,14 +89,14 @@ Link\ComunBundle\Entity\AdminNoticia:
                 empresa_id:
                     referencedColumnName: id
             orphanRemoval: false
-        usuario:
-            targetEntity: AdminUsuario
+        tipoBiblioteca:
+            targetEntity: AdminTipoBiblioteca
             cascade: {  }
             fetch: LAZY
             mappedBy: null
             inversedBy: null
             joinColumns:
-                usuario_id:
+                tipo_biblioteca_id:
                     referencedColumnName: id
             orphanRemoval: false
         tipoNoticia:
@@ -103,14 +109,14 @@ Link\ComunBundle\Entity\AdminNoticia:
                 tipo_noticia_id:
                     referencedColumnName: id
             orphanRemoval: false
-        tipoBiblioteca:
-            targetEntity: AdminTipoBiblioteca
+        usuario:
+            targetEntity: AdminUsuario
             cascade: {  }
             fetch: LAZY
             mappedBy: null
             inversedBy: null
             joinColumns:
-                tipo_biblioteca_id:
+                usuario_id:
                     referencedColumnName: id
             orphanRemoval: false
     lifecycleCallbacks: {  }

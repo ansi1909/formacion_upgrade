@@ -57,7 +57,7 @@ class BibliotecaController extends Controller {
                                         AND n.tipoNoticia = :tipo
                                         AND n.fechaPublicacion <= :hoy
                                         AND n.fechaVencimiento >= :hoy
-                                        AND ( LOWER(n.titulo) LIKE :filtro OR LOWER(n.autor) LIKE :filtro)
+                                        AND ( LOWER(n.titulo) LIKE :filtro OR LOWER(n.autor) LIKE :filtro OR LOWER(n.tema) LIKE :filtro)
                                         AND n.pdf IS NOT NULL')
 					->setParameters(array(
 						'empresa_id' => $empresa_id,
@@ -227,7 +227,7 @@ class BibliotecaController extends Controller {
 			$query = $em->createQuery('SELECT n FROM LinkComunBundle:AdminNoticia n
 										WHERE n.tipoNoticia = :biblioteca
 										AND n.empresa = :empresa_id
-										AND ( LOWER(n.titulo) LIKE :term OR LOWER(n.autor) LIKE :term)
+										AND ( LOWER(n.titulo) LIKE :term OR LOWER(n.autor) LIKE :term OR LOWER(n.tema) LIKE :term)
 										AND n.fechaPublicacion <= :hoy
 										AND n.fechaVencimiento >= :hoy
 										AND n.pdf IS NOT NULL')

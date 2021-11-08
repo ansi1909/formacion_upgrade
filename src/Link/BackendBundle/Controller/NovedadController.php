@@ -135,6 +135,7 @@ class NovedadController extends Controller
             $empresa_id = $request->request->get('empresa_id');
             $titulo = trim($request->request->get('titulo'));
             $autor = trim($request->request->get('autor')) ? trim($request->request->get('autor')) : '';
+            $tema = trim($request->request->get('tema')) ? trim($request->request->get('tema')) : '';
             $pdf = trim($request->request->get('pdf'));
             $video = trim($request->request->get('video'));
             $audio = trim($request->request->get('audio'));
@@ -158,6 +159,7 @@ class NovedadController extends Controller
             $biblioteca->setTipoNoticia($tipoNoticia);
             $biblioteca->setTipoBiblioteca($tipoBiblioteca);
             $biblioteca->setAutor($autor);
+            $biblioteca->setTema($tema);
             $biblioteca->setTitulo($titulo);
             $biblioteca->setFechaVencimiento(new \DateTime($vencimiento));
             $biblioteca->setFechaPublicacion(new \DateTime($publicacion));
@@ -297,6 +299,7 @@ class NovedadController extends Controller
 
             $titulo = trim($request->request->get('titulo'));
             $autor = trim($request->request->get('autor'));
+            $tema = trim($request->request->get('tema')) ? trim($request->request->get('tema')) : '';
 
             $fecha_vencimiento = trim($request->request->get('fecha_vencimiento'));
             $fv = explode("/", $fecha_vencimiento);
@@ -317,6 +320,7 @@ class NovedadController extends Controller
             $noticia->setTipoNoticia($tipoNoticia);
             $noticia->setTitulo($titulo);
             $noticia->setAutor($autor);
+            $noticia->setTema($tema);
             $noticia->setPdf($pdf);
             $noticia->setImagen($imagen);
             $noticia->setResumen($resumen);
