@@ -2507,6 +2507,12 @@ class Functions
                   {
                     $error = $this->translator->trans('No hay Programas disponibles para la empresa. Contacte al administrador del sistema.');
                   } else {
+                    $pagesRanking = [];
+                    foreach( $paginas as $pagina ){
+                      if ($pagina['ranking']){
+                        array_push($pagesRanking, $pagina['id']);
+                      }
+                    }
 
                     // Se setea los datos del usuario
                     $datosUsuario = array(
@@ -2521,6 +2527,7 @@ class Functions
                       'foto' => $usuario->getFoto(),
                       'participante' => $participante,
                       'tutor' => $tutor
+                      
                     );
                     // Cierre de sesiones activas
                     $sesiones = $em->getRepository('LinkComunBundle:AdminSesion')->findBy(array(
@@ -2551,6 +2558,7 @@ class Functions
                     $session->set('usuario', $datosUsuario);
                     $session->set('empresa', $datos['empresa']);
                     $session->set('paginas', $paginas);
+                    $session->set('pagesRanking',$pagesRanking);
 
                     if ($datos['recordar_datos'] == 1) {
                       //alimentamos el generador de aleatorios

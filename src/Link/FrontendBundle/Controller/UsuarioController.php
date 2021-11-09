@@ -34,11 +34,13 @@ class UsuarioController extends Controller
                                     INNER JOIN LinkComunBundle:CertiNivelPagina np WITH pe.id = np.paginaEmpresa
                                     WHERE np.nivel = :nivel_id
                                     AND pe.empresa = :empresa_id
+                                    AND pe.ranking = :ranking
                                     AND p.pagina IS NULL
                                     ORDER BY pe.orden ASC')
             ->setParameters(array(
-                'nivel_id' => $usuario->getNivel()->getId(),
-                'empresa_id' => $empresa_id
+                'nivel_id'   => $usuario->getNivel()->getId(),
+                'empresa_id' => $empresa_id,
+                'ranking'    => true
             ));
         $programas = $query->getResult();
 
