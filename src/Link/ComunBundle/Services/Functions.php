@@ -1939,10 +1939,15 @@ class Functions
           $pagina =  $em->getRepository('LinkComunBundle:CertiPagina')->find($raiz);
           $pagina_log = $em->getRepository('LinkComunBundle:CertiPaginaLog')->findOneBy(array('pagina' => $raiz, 'usuario' => $usuario_id));
           $usuario =  $em->getRepository('LinkComunBundle:AdminUsuario')->find($usuario_id);
+          $paginaEmpresa =  $em->getRepository('LinkComunBundle:CertiPaginaEmpresa')->findOneBy(array(
+                                                                                                      'pagina'     =>  $raiz,
+                                                                                                      'empresa' =>  $usuario->getEmpresa()->getId()
+                                                                                                    ));
 
+            
           $contador = 0;
 
-          if (count($pruebas_logs) == count($pruebas_total)) {
+          if (count($pruebas_logs) == count($pruebas_total) && $paginaEmpresa->getRanking()) {
 
             $medallaUsuario = $em->getRepository('LinkComunBundle:AdminMedallasUsuario')->findOneBy(array(
               'pagina' => $raiz,
@@ -1973,7 +1978,7 @@ class Functions
             }
           }
 
-          if ($contador == count($pruebas_total)) {
+          if ($contador == count($pruebas_total) && $paginaEmpresa->getRanking()) {
             $medallaUsuario = $em->getRepository('LinkComunBundle:AdminMedallasUsuario')->findOneBy(array(
               'pagina' => $raiz,
               'usuario' => $usuario_id,
@@ -2028,7 +2033,7 @@ class Functions
 
 
 
-          if (count($cantidad_usuarios_aprobados) == 1) {
+          if (count($cantidad_usuarios_aprobados) == 1 && $paginaEmpresa->getRanking()) {
             $medallaUsuario = $em->getRepository('LinkComunBundle:AdminMedallasUsuario')->findOneBy(array(
               'pagina' => $raiz,
               'usuario' => $usuario_id,
@@ -2051,7 +2056,7 @@ class Functions
 
               $this->newAlarm($tipo_alarma_id, $descripcion, $usuario, $pagina->getId());
             }
-          } elseif (count($cantidad_usuarios_aprobados) == 2) {
+          } elseif (count($cantidad_usuarios_aprobados) == 2  && $paginaEmpresa->getRanking() ) {
             $medallaUsuario = $em->getRepository('LinkComunBundle:AdminMedallasUsuario')->findOneBy(array(
               'pagina' => $raiz,
               'usuario' => $usuario_id,
@@ -2074,7 +2079,7 @@ class Functions
 
               $this->newAlarm($tipo_alarma_id, $descripcion, $usuario, $pagina->getId());
             }
-          } elseif (count($cantidad_usuarios_aprobados) == 3) {
+          } elseif (count($cantidad_usuarios_aprobados) == 3  && $paginaEmpresa->getRanking() ) {
             $medallaUsuario = $em->getRepository('LinkComunBundle:AdminMedallasUsuario')->findOneBy(array(
               'pagina' => $raiz,
               'usuario' => $usuario_id,
@@ -2097,7 +2102,7 @@ class Functions
 
               $this->newAlarm($tipo_alarma_id, $descripcion, $usuario, $pagina->getId());
             }
-          } elseif (count($cantidad_usuarios_aprobados) > 3) {
+          } elseif (count($cantidad_usuarios_aprobados) > 3  && $paginaEmpresa->getRanking()) {
             $medallaUsuario = $em->getRepository('LinkComunBundle:AdminMedallasUsuario')->findOneBy(array(
               'pagina' => $raiz,
               'usuario' => $usuario_id,
@@ -2127,7 +2132,7 @@ class Functions
             'usuario' => $usuario_id
           ));
 
-          if ($pagina_log->getFechaInicio() > $sesionActiva->getFechaIngreso()) {
+          if ($pagina_log->getFechaInicio() > $sesionActiva->getFechaIngreso()  && $paginaEmpresa->getRanking()) {
             $medallaUsuario = $em->getRepository('LinkComunBundle:AdminMedallasUsuario')->findOneBy(array(
               'pagina' => $raiz,
               'usuario' => $usuario_id,
@@ -2175,79 +2180,85 @@ class Functions
   }
   
  public function assignWinnerMedal($parentPage,$user,$yml){
-    $em = $this->em;
-    $podium = 3;
-    $medals = array(
-      $yml['parameters']['medallas']['influencer_1'],
-      $yml['parameters']['medallas']['influencer_2'],
-      $yml['parameters']['medallas']['influencer_3'],
-      $yml['parameters']['medallas']['amigable_1'],
-      $yml['parameters']['medallas']['amigable_2'],
-      $yml['parameters']['medallas']['amigable_3'],
-      $yml['parameters']['medallas']['super_smart'],
-      $yml['parameters']['medallas']['perfeccionista'],
-      $yml['parameters']['medallas']['imparable'],
-      $yml['parameters']['medallas']['primer_lugar'],
-      $yml['parameters']['medallas']['segundo_lugar'],
-      $yml['parameters']['medallas']['tercer_lugar'],
-      $yml['parameters']['medallas']['graduado']
-    );
-    
-    $userMedals = $em->getRepository('LinkComunBundle:AdminMedallasUsuario')->findBy(array(
-      'usuario' => $user->getId(),
-      'pagina'  => $parentPage->getId()
-      ));
-
-    $HasWinnerMedal = $em->getRepository('LinkComunBundle:AdminMedallasUsuario')->findOneBy(array(
-      'usuario' => $user->getId(),
-      'pagina'  => $parentPage->getId(),
-      'medalla' => $yml['parameters']['medallas']['vencedor']
-    ));
-    
-    if (!$HasWinnerMedal && (count($userMedals) == count($medals) - ($podium) ) ){
-      
-      $query = $em->createQuery("SELECT COUNT(mu.id) FROM LinkComunBundle:AdminMedallasUsuario mu
-              WHERE mu.usuario = :user_id 
-              AND mu.pagina = :page_id
-              AND mu.medalla IN (:medals)")
-        ->setParameters(array(
-        'user_id' => $user->getId(),
-        'page_id' => $parentPage->getId(),
-        'medals' =>  $medals
+        $em = $this->em;
+        $companyPage =  $em->getRepository('LinkComunBundle:CertiPaginaEmpresa')->findOneBy(array(
+          'pagina'   => $parentPage->getId(),
+          'empresa'  => $user->getEmpresa()->getId()
         ));
-       $result = $query->getSingleScalarResult();
-      
-       if( $result = (count($medals) - $podium) ){
-         //asignar puntos
-         $points = $yml['parameters']['puntos']['vencedor'];
-         $paginaLog = $em->getRepository('LinkComunBundle:CertiPaginaLog')->findOneBy(
-           array('pagina'  => $parentPage->getId(),
-                 'usuario' => $user->getId()
-         ));
-         
-         $paginaLog->setPuntos($paginaLog->getPuntos() + $points);
-         $em->persist($paginaLog);
-         $em->flush();
-         //asignar medalla
-         $medal = $em->getRepository('LinkComunBundle:AdminMedallas')->find($yml['parameters']['medallas']['vencedor']);
-         $userMedal = new AdminMedallasUsuario();
-         $userMedal->setUsuario($user);
-         $userMedal->setMedalla($medal);
-         $userMedal->setPagina($parentPage);
-         $em->persist($userMedal);
-         $em->flush();
+        if($companyPage->getRanking()){
+            $podium = 3;
+            $medals = array(
+              $yml['parameters']['medallas']['influencer_1'],
+              $yml['parameters']['medallas']['influencer_2'],
+              $yml['parameters']['medallas']['influencer_3'],
+              $yml['parameters']['medallas']['amigable_1'],
+              $yml['parameters']['medallas']['amigable_2'],
+              $yml['parameters']['medallas']['amigable_3'],
+              $yml['parameters']['medallas']['super_smart'],
+              $yml['parameters']['medallas']['perfeccionista'],
+              $yml['parameters']['medallas']['imparable'],
+              $yml['parameters']['medallas']['primer_lugar'],
+              $yml['parameters']['medallas']['segundo_lugar'],
+              $yml['parameters']['medallas']['tercer_lugar'],
+              $yml['parameters']['medallas']['graduado']
+            );
+            
+            $userMedals = $em->getRepository('LinkComunBundle:AdminMedallasUsuario')->findBy(array(
+              'usuario' => $user->getId(),
+              'pagina'  => $parentPage->getId()
+              ));
 
-         //crear alrma
-         $typeAlarmId = $yml['parameters']['tipo_alarma']['medalla'];
-         $description = $this->translator->trans('Has obtenido la medalla') . ': ' . $this->translator->trans($medal->getNombre());
+            $HasWinnerMedal = $em->getRepository('LinkComunBundle:AdminMedallasUsuario')->findOneBy(array(
+              'usuario' => $user->getId(),
+              'pagina'  => $parentPage->getId(),
+              'medalla' => $yml['parameters']['medallas']['vencedor']
+            ));
+            
+            if (!$HasWinnerMedal && (count($userMedals) == count($medals) - ($podium) ) ){
+              
+              $query = $em->createQuery("SELECT COUNT(mu.id) FROM LinkComunBundle:AdminMedallasUsuario mu
+                      WHERE mu.usuario = :user_id 
+                      AND mu.pagina = :page_id
+                      AND mu.medalla IN (:medals)")
+                ->setParameters(array(
+                'user_id' => $user->getId(),
+                'page_id' => $parentPage->getId(),
+                'medals' =>  $medals
+                ));
+              $result = $query->getSingleScalarResult();
+              
+              if( $result = (count($medals) - $podium) ){
+                //asignar puntos
+                $points = $yml['parameters']['puntos']['vencedor'];
+                $paginaLog = $em->getRepository('LinkComunBundle:CertiPaginaLog')->findOneBy(
+                  array('pagina'  => $parentPage->getId(),
+                        'usuario' => $user->getId()
+                ));
+                
+                $paginaLog->setPuntos($paginaLog->getPuntos() + $points);
+                $em->persist($paginaLog);
+                $em->flush();
+                //asignar medalla
+                $medal = $em->getRepository('LinkComunBundle:AdminMedallas')->find($yml['parameters']['medallas']['vencedor']);
+                $userMedal = new AdminMedallasUsuario();
+                $userMedal->setUsuario($user);
+                $userMedal->setMedalla($medal);
+                $userMedal->setPagina($parentPage);
+                $em->persist($userMedal);
+                $em->flush();
 
-         $this->newAlarm($typeAlarmId, $description, $user, $parentPage->getId());
+                //crear alrma
+                $typeAlarmId = $yml['parameters']['tipo_alarma']['medalla'];
+                $description = $this->translator->trans('Has obtenido la medalla') . ': ' . $this->translator->trans($medal->getNombre());
 
-       } 
+                $this->newAlarm($typeAlarmId, $description, $user, $parentPage->getId());
+
+              } 
 
 
 
-    }
+            }
+        }
 
     
  }

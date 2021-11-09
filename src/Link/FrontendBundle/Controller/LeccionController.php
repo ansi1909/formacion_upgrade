@@ -378,8 +378,14 @@ class LeccionController extends Controller
             ));
         
         $totalComments = $query->getSingleScalarResult();
-        $pagina_padre = $this->getDoctrine()->getRepository('LinkComunBundle:CertiPagina')->find($pagina_padre_id);
-        if ($totalComments >= $yml['parameters']['comentarios_necesarios']['influencer_1']) {
+        $pagina_padre  = $this->getDoctrine()->getRepository('LinkComunBundle:CertiPagina')->find($pagina_padre_id);
+        $paginaEmpresa = $this->getDoctrine()->getRepository('LinkComunBundle:CertiPaginaEmpresa')->findOneBy(
+            array(
+                'empresa' => $muroPadre->getUsuario()->getEmpresa()->getId(),
+                'pagina'  => $pagina_padre->getId()
+            )
+        );
+        if ($totalComments >= $yml['parameters']['comentarios_necesarios']['influencer_1'] && $paginaEmpresa->getRanking()) {
             $pagina_log = $em->getRepository('LinkComunBundle:CertiPaginaLog')->findOneBy(array(
                 'pagina' => $pagina_padre->getId(),
                 'usuario' => $muroPadre->getUsuario()->getId()
@@ -477,12 +483,17 @@ class LeccionController extends Controller
                 ));
 
             $comentariosTotal2 = $query->getSingleScalarResult();
-            if ($comentariosTotal2 >= $yml['parameters']['comentarios_necesarios']['amigable_1']) {
+            $paginaEmpresa = $em->getRepository('LinkComunBundle:CertiPaginaEmpresa')->findOneBy(
+                array(
+                    'empresa' => $session->get('empresa')['id'],
+                    'pagina'  => $pagina_padre->getId()
+                )
+            );
+            if ($comentariosTotal2 >= $yml['parameters']['comentarios_necesarios']['amigable_1'] && $paginaEmpresa->getRanking()) {
                 $pagina_log = $em->getRepository('LinkComunBundle:CertiPaginaLog')->findOneBy(array(
                     'pagina' => $pagina_padre->getId(),
                     'usuario' => $session->get('usuario')['id']
                 ));
-                //print_r($pagina_log->getId());die();
 
                 if ($comentariosTotal2 == $yml['parameters']['comentarios_necesarios']['amigable_1']) {
                     $medallaUsuario = $em->getRepository('LinkComunBundle:AdminMedallasUsuario')->findOneBy(array(
