@@ -167,6 +167,28 @@
                                             <small id="muroHelp" class="form-text text-muted">{{ 'Si marca SI, el programa tendrá una sección en el que el tutor virtual podrá anexar contenido adicional.'|trans }}.</small>
                                    </div>
                                 {% endif %}
+                                {% if not pagina_empresa.pagina.pagina   %}
+                                    <div class="col-sm-8 col-md-8 col-lg-8" >
+                                            <div class="row">
+                                                <div class="col-sm-8 col-md-8 col-lg-8" >
+                                                    <div class="form-group">
+                                                        <label for="colaborativo" class="col-16 col-form-label">{{ 'Activar ranking'|trans }}</label>
+                                                        <div class="col-4">
+                                                            <div class="can-toggle demo-rebrand-2 small">
+                                                                <input id="f_ranking" name="ranking" type="checkbox" {% if pagina_empresa.ranking %}checked{% endif %}>
+                                                                <label for="f_ranking">
+                                                                    <div class="can-toggle__switch" data-checked="{{ 'Si'|trans }}" data-unchecked="No"></div>
+                                                                </label>
+                                                            </div>
+                                                        </div>
+                                                        
+                                                    </div>
+                                                </div>
+
+                                            </div>
+                                                <small id="rankingHelp" class="form-text text-muted">{{ 'Si marca SI, los participates del programa visualizaran el ranking'|trans }}.</small>
+                                    </div>
+                                {%endif %}
                             </div>
                             <div class="wizard-footer">
                                 <div class="col-sm-16 text-right">
