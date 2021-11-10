@@ -66,6 +66,9 @@
                     display: flex;
                     justify-content: space-evenly;
                 }
+                .user-menu-items .btn-group .btn.dropdown-toggle::after {
+                    visibility: hidden;
+                }
             </style>
 
         {% endblock %}
@@ -115,7 +118,7 @@
                 <div class="sidebar-right pull-right">
                     <ul class="navbar-nav justify-content-end">
                         <li class="nav-item">
-                            <button class="btn-link btn userprofile bttn_user"  data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <button class="btn-link btn userprofile "   aria-haspopup="true" aria-expanded="false">
                                 <span class="userpic">
                                     {% set img = app.session.get('usuario').foto ? uploads~app.session.get('usuario').foto : asset('img/1034.png') %}
                                     <img src="{{ img }}" alt="Usuario"></span>
@@ -143,7 +146,7 @@
             {% block user_menu %}
             <div class="user-menu-items">
                 <div class="list-unstyled btn-group rec_user">
-                    <button class="media btn btn-link dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <button class="media btn btn-link dropdown-toggle"  aria-haspopup="true" aria-expanded="false">
                         <span class="message_userpic">
                             <img src="{{ img }}" alt="Usuario" class="d-flex mr-3">
                         </span>
