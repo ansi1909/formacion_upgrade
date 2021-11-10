@@ -172,7 +172,7 @@
             <a href="{{ path('_misProgramas', { 'activo': 1 }) }}"><button type="button" class="btn btn-primary">{{ 'Ver mis certificados'|trans }}</button></a>
         </div>
         <div class="col-xs-auto col-sm-auto col-md-auto col-auto col-lg-auto col-xl-auto text-center mb-1 mx-auto">
-            <a href="#" data-toggle="modal" data-target="#modaledit"><button type="button" class="btn btn-primary" id="editar">{{ 'Editar perfil'|trans }}</button></a>
+            <a href="#" data-toggle="modal" data-target="#modaledit"><button type="button" class="btn btn-primary" id="editar">{{ 'Añadir correo secundario'|trans }}</button></a>
         </div>
         {#<div class="col-xs-auto col-sm-auto col-md-auto col-auto col-lg-auto col-xl-auto text-center">
             <a href="{{ path('_ranking') }}"><button type="button" class="btn btn-primary">{{ 'Ver ranking'|trans }}</button></a>
@@ -418,7 +418,7 @@
         </div>
         <div class="row align-items-center justify-content-center">
             <div class="col-12">
-                <h4 class="pb-1 title-grey sub-line"> {{ 'Editar perfil'|trans }} </h4>
+                <h4 class="pb-1 title-grey sub-line"> {{ 'Datos personales'|trans }}: </h4>
             </div>
         </div>
         <form id="form" name="form" action="{{ path('_ajaxSavePerfil')}}" method="POST">
@@ -439,10 +439,10 @@
                         <p id="correo_exito" style="display:none; font-size: 1.04rem;text-align: center;   color: #5CAEE6;" class="error__style" >Cambio de correo realizado</p>
 
                     </div>
-                    <div class="form-group text-left">
+                   {# <div class="form-group text-left">
                         <label for="fecha_nacimiento">{{ 'Fecha de nacimiento'|trans }}</label>
                         <input type="date" class="form-control mb-4" id="fecha_nacimiento" name="fecha_nacimiento" value="{{ fecha_nacimiento }}" disabled="disabled" data-date-end-date="-18y">
-                    </div>
+                    </div>#}
                 </div>
             </div>
             <div class="row aling-item-center justify-content-center">
