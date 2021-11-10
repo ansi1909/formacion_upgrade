@@ -12,6 +12,8 @@ Activar: Activar
 Activar chat: Activar chat
 Activar evaluación: Activar evaluación
 Activar muro: Activar muro
+Activar ranking: Activar ranking
+Activar espacio colaborativo: Activar espacio colaborativo
 Activar para ordenar la columna de manera ascendente: Activar para ordenar la columna de manera ascendente
 Activar para ordenar la columna de manera descendente: Activar para ordenar la columna de manera descendente
 Activar webinar: Activar webinar
@@ -52,6 +54,7 @@ Aplicación: Aplicación
 Aplicaciones: Aplicaciones
 Aplicaciones a la que tiene acceso: Aplicaciones a la que tiene acceso
 Aplicar periodo a las sub-páginas: Aplicar periodo a las sub-páginas
+Aplicar activación de muro a las sub-páginas: Aplicar activación de muro a las sub-páginas
 Aprobado: Aprobado
 Aprobados: Aprobados
 Aquellos empleados de la empresa: Aquellos empleados de la empresa
@@ -450,6 +453,7 @@ Escriba su correo: Escriba su correo
 Escriba su mensaje: Escriba su mensaje
 Escriba su respuesta: Escriba su respuesta
 Espacio colaborativo: Espacio colaborativo
+Espacio colaborativo a las subpaginas: Espacio colaborativo a las subpaginas
 Esta evaluación no tiene preguntas configuradas: Esta evaluación no tiene preguntas configuradas
 Esta notificación será enviada por el sistema de forma automática, puede dejar la fecha de hoy: Esta notificación será enviada por el sistema de forma automática, puede dejar la fecha de hoy
 Esta página no tiene evaluación asignada: Esta página no tiene evaluación asignada
@@ -739,6 +743,7 @@ Mensaje: Mensaje
 Mensaje del servidor: Mensaje del servidor
 medallas: medals 
 Mi avance: Mi avance
+Mis logros: My achievements
 Mínimo: Mínimo
 Miércoles: Miércoles
 minutos: minutos
@@ -891,6 +896,7 @@ Permisos: Permisos
 Permisos de Acceso: Permisos de Acceso
 Permisos de Acceso para el rol: Permisos de Acceso para el rol
 Permisos por Rol: Permisos por Rol
+Periodo: Periodo
 Plan de estudio: Plan de estudio
 Plantilla: Plantilla
 Porcentaje: Porcentaje
@@ -1040,9 +1046,11 @@ Si marca SI, la página tendrá una sección en el que los particiantes podrán 
 Si marca SI, los usuarios de la empresa podrán acceder al contenido de esta página, incluso si ellos han aprobado.: Si marca SI, los usuarios de la empresa podrán acceder al contenido de esta página, incluso si ellos han aprobado.
 Si marca SI, los usuarios de la empresa podrán visualizar el enlace de esta página.: Si marca SI, los usuarios de la empresa podrán visualizar el enlace de esta página.
 Si marca SI, todas las sub-página tendrán la misma fecha de inicio y vencimiento.: Si marca SI, todas las sub-página tendrán la misma fecha de inicio y vencimiento.
+Si marca SI, la página tendrá una sección en el que los participantes podrán escribir en el muro.: Si marca SI, la página tendrá una sección en el que los participantes podrán escribir en el muro.
 Si necesitas ayuda escríbenos a: Si necesitas ayuda escribenos a
 Si no realizaste la solicitud de credenciales, comunícate con el equipo de soporte a traves de: Si no realizaste la solicitud de credenciales, comunícate con el equipo de soporte a traves de
 Si presionas: Si presionas
+Si marca SI, los participates del programa visualizaran el ranking: Si marca SI, los participates del programa visualizaran el ranking
 Si marca SI, los participantes de la empresa podrán visualizar el enlace de esta página.: Si marca SI, los participantes de la empresa podrán visualizar el enlace de esta página.
 Si marca SI, los participantes de la empresa podrán acceder al contenido de esta página, incluso si ellos han aprobado.: Si marca SI, los participantes de la empresa podrán acceder al contenido de esta página, incluso si ellos han aprobado.
 Si un nivel ya está registrado en la base de datos no se tomará en cuenta: Si un nivel ya está registrado en la base de datos no se tomará en cuenta

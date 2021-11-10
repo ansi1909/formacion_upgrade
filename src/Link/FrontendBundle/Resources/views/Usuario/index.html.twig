@@ -183,7 +183,7 @@
     </div>
 </section>
 <div class="for-message  container py-5 px-6 my-4 show" id="study_plan">
-    <h4 class="mb-4 text-left">Plan de estudio:</h4>
+    <h4 class="mb-4 text-left">{{ 'Mis logros'|trans }}</h4>
     <div class="container d-flex flex-column justify-content-center align-items-center ">
     {# ----------- ESTE ES EL CODIGO VALIDO -------------- #}
          {% for programa in programas %}
@@ -199,7 +199,7 @@
                     <div class="percent text-center mt-1">
                    
                     </div>
-                    <button href="#" name = "pagina_id" id="pagina_id" class="btn btn-sm btn-continuar mt-0 px-3 btn-xs-cont j-btn-medals mb-3 mb-md-0 pagina_id" data-id="{{programa.id}}"> Mis logros </button>
+                    <button href="#" name = "pagina_id" id="pagina_id" class="btn btn-sm btn-continuar mt-0 px-3 btn-xs-cont j-btn-medals mb-3 mb-md-0 pagina_id" data-id="{{programa.id}}"> {{ 'Ver'|trans }} </button>
                 </div>
             </div>
         </div>
