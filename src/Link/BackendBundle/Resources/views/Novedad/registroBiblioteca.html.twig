@@ -109,6 +109,7 @@
                                             <div class="col-14">
                                                 <select class="form-control form_sty_select" name="empresa_id" id="empresa_id">
                                                     <option value=""></option>
+                                                    <option value="0"> {{ 'Todas las empresas'|trans }} </option>
                                                     {% for empresa in empresas %}
                                                         {% set selected = biblioteca.id ? biblioteca.empresa.id == empresa.id ? 'selected="selected"' : '' : '' %}
                                                         <option value="{{ empresa.id }}" {{ selected }} >{{ empresa.nombre|trim }}</option>
