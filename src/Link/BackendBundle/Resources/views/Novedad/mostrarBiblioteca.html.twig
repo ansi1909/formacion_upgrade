@@ -80,7 +80,11 @@
                                 <div class="col-sm-8 col-md-8 col-lg-8">
                                     <h5>{{ 'Empresa'|trans }}</h5>
                                     <div class="col-14">
-                                        <p>{{ biblioteca.empresa.nombre }}</p>
+                                        {% if todas == 0 %}
+                                            {{ 'Todas las empresas'|trans}}
+                                        {% else %}
+                                            <p>{{ biblioteca.empresa.nombre }}</p>
+                                        {% endif%}
                                     </div>
                                 </div>
                                 <div class="col-sm-8 col-md-8 col-lg-8">

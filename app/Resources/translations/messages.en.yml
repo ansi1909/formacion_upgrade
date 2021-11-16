@@ -12,6 +12,8 @@ Activar: Enable
 Activar chat: Activate chat
 Activar evaluación: Enable test
 Activar muro: Enable wall
+Activar ranking: Activate ranking
+Activar espacio colaborativo: Activate collaborative space
 Activar para ordenar la columna de manera ascendente: Enable to order column ascending
 Activar para ordenar la columna de manera descendente: Enable to order column descending
 Activar webinar: Activate webinar
@@ -52,6 +54,7 @@ Aplicación: Application
 Aplicaciones: Applications
 Aplicaciones a la que tiene acceso: Applications it has access to
 Aplicar periodo a las sub-páginas: Apply period to sub-pages
+Aplicar activación de muro a las sub-páginas: Apply wall activation to subpages
 Aprobado: Approved
 Aprobados: Approved
 Aquellos empleados de la empresa: Those employees of the company
@@ -450,6 +453,7 @@ Escriba su correo: Write your email
 Escriba su mensaje: Write your message
 Escriba su respuesta: Response to this comment
 Espacio colaborativo: Collaborative space
+Espacio colaborativo a las subpaginas: Collaborative space to the subpages
 Esta evaluación no tiene preguntas configuradas: This test has not setted questions
 Esta notificación será enviada por el sistema de forma automática, puede dejar la fecha de hoy: This notification will be sent by the system automatically, you can leave today
 Esta página no tiene evaluación asignada: This page does not have assigned test
@@ -739,6 +743,7 @@ Mensaje: Message
 Mensaje del servidor: Server message
 medallas: medals
 Mi avance: My progress
+Mis logros: My achievements
 Mínimo: Minimum
 Miércoles: Wednesday
 minutos: minutes
@@ -891,6 +896,7 @@ Permisos: Permissions
 Permisos de Acceso: Access Permissions
 Permisos de Acceso para el rol: Access Permissions for role
 Permisos por Rol: Permissions by Role
+Periodo: Period
 Plan de estudio: Study planning
 Plantilla: Template
 Porcentaje: Percentage
@@ -959,6 +965,7 @@ Recurso: Resource
 Recursos: Resources
 Recursos del programa: Program resources
 Recursos vistos: Viewed Resources
+Recursos disponibles: Available resources
 Registrar Empresa: Add/Edit Company
 Registrar Usuario: Add/Edit User
 Registrar participante: Register participant
@@ -1039,9 +1046,11 @@ Si marca SI, la página tendrá una sección en el que los participantes podrán
 Si marca SI, los usuarios de la empresa podrán acceder al contenido de esta página, incluso si ellos han aprobado.: If check YES, users of this company can access to this page content, even if they have approved.
 Si marca SI, los usuarios de la empresa podrán visualizar el enlace de esta página.: If check YES, users of this company can view this page link.
 Si marca SI, todas las sub-página tendrán la misma fecha de inicio y vencimiento.: If check YES, all of sub-pages have same start and expiration date.
+Si marca SI, la página tendrá una sección en el que los participantes podrán escribir en el muro.: If you check YES, the page will have a section in which participants can write on the wall.
 Si necesitas ayuda escríbenos a: If you need help email us to
 Si no realizaste la solicitud de credenciales, comunícate con el equipo de soporte a traves de: If you did not make the credential request, contact the support team through
 Si presionas: If you press
+Si marca SI, los participates del programa visualizaran el ranking: If you mark YES, the participants of the program will see the ranking
 Si marca SI, los participantes de la empresa podrán visualizar el enlace de esta página.: If you check YES, company participants can view the link on this page.
 Si marca SI, los participantes de la empresa podrán acceder al contenido de esta página, incluso si ellos han aprobado.: If you check YES, the participants of the company can access the content of this page, even if they have approved.
 Si un nivel ya está registrado en la base de datos no se tomará en cuenta: If a level is already stored into database, it will not taken into account
@@ -1116,6 +1125,7 @@ Todos los empleados de la empresa: All of the employees of the company
 Todos los niveles: All levels
 Todos los programas: All programs
 TODOS LOS TEMAS: ALL SUBJECTS
+Todos los recursos disponibles: all available resources
 Tomar evaluación: Take test
 Total aprobados: Total approved
 Total de registros: Total records

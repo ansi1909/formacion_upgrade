@@ -109,6 +109,7 @@
                                             <div class="col-14">
                                                 <select class="form-control form_sty_select" name="empresa_id" id="empresa_id">
                                                     <option value=""></option>
+                                                    <option value="0"> {{ 'Todas las empresas'|trans }} </option>
                                                     {% for empresa in empresas %}
                                                         {% set selected = biblioteca.id ? biblioteca.empresa.id == empresa.id ? 'selected="selected"' : '' : '' %}
                                                         <option value="{{ empresa.id }}" {{ selected }} >{{ empresa.nombre|trim }}</option>
@@ -168,10 +169,17 @@
                                             <span class="fa fa-industry"></span>
                                         </div>
                                     </div>
-                                    <div class="col-sm-8 col-md-8 col-lg-8">
+                                    <div class="col-sm-4 col-md-4 col-lg-4">
                                         <label for="texto" class="col-6 col-form-label">{{ 'Autor'|trans }}</label>
                                         <div class="col-14">
                                             <input type="text" class="form-control form_sty1" name="autor" id="autor" value="{{ biblioteca.autor }}">
+                                            <span class="fa fa-industry"></span>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-4 col-md-4 col-lg-4">
+                                        <label for="texto" class="col-6 col-form-label">{{ 'Tema'|trans }}</label>
+                                        <div class="col-14">
+                                            <input type="text" class="form-control form_sty1" name="tema" id="tema" value="{{ biblioteca.tema }}">
                                             <span class="fa fa-industry"></span>
                                         </div>
                                     </div>

@@ -15,16 +15,13 @@ class NovedadController extends Controller
     {
         $session = new Session();
         $f = $this->get('funciones');
-        $yml = Yaml::parse(file_get_contents($this->get('kernel')->getRootDir().'/config/parametros.yml'));
+        $yml = Yaml::parse(file_get_contents($this->get('kernel')->getRootDir() . '/config/parametros.yml'));
 
-        if (!$session->get('ini') || $f->sesionBloqueda($session->get('sesion_id')))
-        {
+        if (!$session->get('ini') || $f->sesionBloqueda($session->get('sesion_id'))) {
             return $this->redirectToRoute('_loginAdmin');
-        }
-        else {
+        } else {
             $session->set('app_id', $app_id);
-            if (!$f->accesoRoles($session->get('usuario')['roles'], $session->get('app_id')))
-            {
+            if (!$f->accesoRoles($session->get('usuario')['roles'], $session->get('app_id'))) {
                 return $this->redirectToRoute('_authException');
             }
         }
@@ -39,19 +36,16 @@ class NovedadController extends Controller
 
         $qb = $em->createQueryBuilder();
         $qb->select('n')
-           ->from('LinkComunBundle:AdminNoticia', 'n')
-           ->orderBy('n.fechaRegistro', 'ASC');
-        
+            ->from('LinkComunBundle:AdminNoticia', 'n')
+            ->orderBy('n.fechaRegistro', 'ASC');
+
         $parametros['tipo_noticia_id'] = $yml['parameters']['tipo_noticias']['biblioteca_virtual'];
-        if ($app_id == $yml['parameters']['aplicacion']['biblioteca'])
-        {
+        if ($app_id == $yml['parameters']['aplicacion']['biblioteca']) {
             $qb->andWhere('n.tipoNoticia = :tipo_noticia_id');
-        }
-        else {
+        } else {
             $qb->andWhere('n.tipoNoticia != :tipo_noticia_id');
         }
-        if ($usuario->getEmpresa())
-        {
+        if ($usuario->getEmpresa()) {
             $qb->andWhere('n.empresa = :empresa_id');
             $parametros['empresa_id'] = $usuario->getEmpresa()->getId();
         }
@@ -59,23 +53,25 @@ class NovedadController extends Controller
         $query = $qb->getQuery();
         $noticiasdb = $query->getResult();
 
-        foreach ($noticiasdb as $noticia)
-        {
-            $noticias[] = array('id' => $noticia->getId(),
-                                'empresa' => $noticia->getEmpresa()->getNombre(),
-                                'tipoNoticia' => $noticia->getTipoNoticia()->getNombre(),
-                                'tipoBiblioteca' => $noticia->getTipoBiblioteca() ? $noticia->getTipoBiblioteca()->getNombre() : '',
-                                'titulo' => $noticia->getTitulo(),
-                                'fechaRegistro' => $noticia->getFechaRegistro()->format('d/m/Y'),
-                                'fechaPublicacion' => $noticia->getFechaPublicacion()->format('d/m/Y'),
-                                'fechaVencimiento' => $noticia->getFechaVencimiento()->format('d/m/Y'),
-                                'delete_disabled' => $f->linkEliminar($noticia->getId(),'AdminNoticia'));
+        foreach ($noticiasdb as $noticia) {
+            $noticias[] = array(
+                'id' => $noticia->getId(),
+                'empresa' => $noticia->getEmpresa()->getNombre(),
+                'tipoNoticia' => $noticia->getTipoNoticia()->getNombre(),
+                'tipoBiblioteca' => $noticia->getTipoBiblioteca() ? $noticia->getTipoBiblioteca()->getNombre() : '',
+                'titulo' => $noticia->getTitulo(),
+                'fechaRegistro' => $noticia->getFechaRegistro()->format('d/m/Y'),
+                'fechaPublicacion' => $noticia->getFechaPublicacion()->format('d/m/Y'),
+                'fechaVencimiento' => $noticia->getFechaVencimiento()->format('d/m/Y'),
+                'delete_disabled' => $f->linkEliminar($noticia->getId(), 'AdminNoticia')
+            );
         }
 
-        return $this->render('LinkBackendBundle:Novedad:index.html.twig', array('noticias' => $noticias,
-                                                                                'usuario' => $usuario,
-                                                                                'encabezado' => $encabezado));
-
+        return $this->render('LinkBackendBundle:Novedad:index.html.twig', array(
+            'noticias' => $noticias,
+            'usuario' => $usuario,
+            'encabezado' => $encabezado
+        ));
     }
 
     public function registroBibliotecaAction($noticia_id, Request $request)
@@ -83,16 +79,13 @@ class NovedadController extends Controller
 
         $session = new Session();
         $f = $this->get('funciones');
-        $yml = Yaml::parse(file_get_contents($this->get('kernel')->getRootDir().'/config/parametros.yml'));
+        $yml = Yaml::parse(file_get_contents($this->get('kernel')->getRootDir() . '/config/parametros.yml'));
         $nuevo = false;
-      
-        if (!$session->get('ini') || $f->sesionBloqueda($session->get('sesion_id')))
-        {
+
+        if (!$session->get('ini') || $f->sesionBloqueda($session->get('sesion_id'))) {
             return $this->redirectToRoute('_loginAdmin');
-        }
-        else {
-            if (!$f->accesoRoles($session->get('usuario')['roles'], $session->get('app_id')))
-            {
+        } else {
+            if (!$f->accesoRoles($session->get('usuario')['roles'], $session->get('app_id'))) {
                 return $this->redirectToRoute('_authException');
             }
         }
@@ -108,76 +101,175 @@ class NovedadController extends Controller
 
         $query = $em->createQuery('SELECT e FROM LinkComunBundle:AdminEmpresa e
                                    WHERE e.activo = :activo ORDER BY e.nombre ASC')
-                    ->setParameters(array('activo' => true));
+            ->setParameters(array('activo' => true));
         $empresas = $query->getResult();
 
         $usuario_empresa = 0;
-        if($session->get('administrador')==false)//si no es administrador
+        if ($session->get('administrador') == false) //si no es administrador
         {
-            if ($usuario->getEmpresa()) 
-                $usuario_empresa = $usuario->getEmpresa()->getId(); 
+            if ($usuario->getEmpresa())
+                $usuario_empresa = $usuario->getEmpresa()->getId();
         }
 
-        if ($noticia_id)
-        {
+        if ($noticia_id) {
             $biblioteca = $em->getRepository('LinkComunBundle:AdminNoticia')->find($noticia_id);
-        }
-        else {
+        } else {
             $biblioteca = new AdminNoticia();
             $biblioteca->setFechaRegistro(new \DateTime('now'));
             $nuevo = true;
         }
 
-        if ($request->getMethod() == 'POST')
-        {
+        if ($request->getMethod() == 'POST') {
 
             $recurso = '';
+            $todas = 0;
             $empresa_id = $request->request->get('empresa_id');
-            $titulo = trim($request->request->get('titulo'));
-            $autor = trim($request->request->get('autor')) ? trim($request->request->get('autor')) : '';
-            $pdf = trim($request->request->get('pdf'));
-            $video = trim($request->request->get('video'));
-            $audio = trim($request->request->get('audio'));
-            $imagen = trim($request->request->get('imagen'));
-            $contenido = trim($request->request->get('contenido'));
-            $fecha_vencimiento = trim($request->request->get('fecha_vencimiento'));
-            $fv = explode("/", $fecha_vencimiento);
-            $vencimiento = $fv[2].'-'.$fv[1].'-'.$fv[0];
-            
-            $fecha_publicacion = trim($request->request->get('fecha_publicacion'));
-            $fp = explode("/", $fecha_publicacion);
-            $publicacion = $fp[2].'-'.$fp[1].'-'.$fp[0];
-            $tipo_biblioteca_id = $request->request->get('tipo_biblioteca_id');
-            
-            $empresa = $em->getRepository('LinkComunBundle:AdminEmpresa')->find($empresa_id);
-            $tipoBiblioteca = $em->getRepository('LinkComunBundle:AdminTipoBiblioteca')->find($tipo_biblioteca_id);
-            $tipoNoticia = $em->getRepository('LinkComunBundle:AdminTipoNoticia')->find($yml['parameters']['tipo_noticias']['biblioteca_virtual']);
 
-            $biblioteca->setUsuario($usuario);
-            $biblioteca->setEmpresa($empresa);
-            $biblioteca->setTipoNoticia($tipoNoticia);
-            $biblioteca->setTipoBiblioteca($tipoBiblioteca);
-            $biblioteca->setAutor($autor);
-            $biblioteca->setTitulo($titulo);
-            $biblioteca->setFechaVencimiento(new \DateTime($vencimiento));
-            $biblioteca->setFechaPublicacion(new \DateTime($publicacion));
-            if ($tipo_biblioteca_id == $yml['parameters']['tipo_biblioteca']['video']) {
-                $recurso = $video;
+            if ($empresa_id == 0) {
+
+
+
+                $titulo = trim($request->request->get('titulo'));
+                $autor = trim($request->request->get('autor')) ? trim($request->request->get('autor')) : '';
+                $tema = trim($request->request->get('tema')) ? trim($request->request->get('tema')) : '';
+                $pdf = trim($request->request->get('pdf'));
+                $video = trim($request->request->get('video'));
+                $audio = trim($request->request->get('audio'));
+                $imagen = trim($request->request->get('imagen'));
+                $contenido = trim($request->request->get('contenido'));
+                $fecha_vencimiento = trim($request->request->get('fecha_vencimiento'));
+                $fv = explode("/", $fecha_vencimiento);
+                $vencimiento = $fv[2] . '-' . $fv[1] . '-' . $fv[0];
+
+                $fecha_publicacion = trim($request->request->get('fecha_publicacion'));
+                $fp = explode("/", $fecha_publicacion);
+                $publicacion = $fp[2] . '-' . $fp[1] . '-' . $fp[0];
+                $tipo_biblioteca_id = $request->request->get('tipo_biblioteca_id');
+
+                $tipoBiblioteca = $em->getRepository('LinkComunBundle:AdminTipoBiblioteca')->find($tipo_biblioteca_id);
+                $tipoNoticia = $em->getRepository('LinkComunBundle:AdminTipoNoticia')->find($yml['parameters']['tipo_noticias']['biblioteca_virtual']);
+                
+                foreach ($empresas as $empresa) {
+                    $biblioteca = new AdminNoticia();
+                    $biblioteca->setFechaRegistro(new \DateTime('now'));
+                    $nuevo = true;
+                    $biblioteca->setUsuario($usuario);
+                    $biblioteca->setEmpresa($empresa);
+                    $biblioteca->setTipoNoticia($tipoNoticia);
+                    $biblioteca->setTipoBiblioteca($tipoBiblioteca);
+                    $biblioteca->setAutor($autor);
+                    $biblioteca->setTema($tema);
+                    $biblioteca->setTitulo($titulo);
+                    $biblioteca->setFechaVencimiento(new \DateTime($vencimiento));
+                    $biblioteca->setFechaPublicacion(new \DateTime($publicacion));
+                    if ($tipo_biblioteca_id == $yml['parameters']['tipo_biblioteca']['video']) {
+                        $recurso = $video;
+                    } else if ($tipo_biblioteca_id == $yml['parameters']['tipo_biblioteca']['podcast']) {
+                        $recurso = $audio;
+                    } else {
+                        $recurso = $pdf;
+                    }
+                    $biblioteca->setPdf($recurso);
+                    $biblioteca->setImagen($imagen);
+                    $biblioteca->setContenido($contenido);
+                    $em->persist($biblioteca);
+                    $em->flush();
+                }
+
+                // Generación de notificaciones a los usuario de la empresa
+                $query = $em->createQuery('SELECT u FROM LinkComunBundle:AdminUsuario u
+                                            WHERE u.activo = :activo 
+                                            AND u.empresa  IN (:empresas)')
+                    ->setParameters(array(
+                        'activo' => true,
+                        'empresas' => $empresas
+                    ));
+                $usuarios = $query->getResult();
+
+                $descripcion = $this->get('translator')->trans('Ha sido publicado') . ' ' . $titulo . ' ' . $this->get('translator')->trans('en la biblioteca') . '.';
+                $fecha_alarma = new \DateTime('now');
+                foreach ($usuarios as $usuario) {
+                    if ($nuevo == true) {
+                        $f->newAlarm($yml['parameters']['tipo_alarma']['biblioteca'], $descripcion, $usuario, $biblioteca->getId(), $fecha_alarma);
+                    }
+                }
+
+                return $this->redirectToRoute('_showBiblioteca', array(
+                    'biblioteca_id' => $biblioteca->getId(),
+                    'todas' => $todas
+                ));
+            } else {
+
+                $todas = 1;
+                $titulo = trim($request->request->get('titulo'));
+                $autor = trim($request->request->get('autor')) ? trim($request->request->get('autor')) : '';
+                $tema = trim($request->request->get('tema')) ? trim($request->request->get('tema')) : '';
+                $pdf = trim($request->request->get('pdf'));
+                $video = trim($request->request->get('video'));
+                $audio = trim($request->request->get('audio'));
+                $imagen = trim($request->request->get('imagen'));
+                $contenido = trim($request->request->get('contenido'));
+                $fecha_vencimiento = trim($request->request->get('fecha_vencimiento'));
+                $fv = explode("/", $fecha_vencimiento);
+                $vencimiento = $fv[2] . '-' . $fv[1] . '-' . $fv[0];
+
+                $fecha_publicacion = trim($request->request->get('fecha_publicacion'));
+                $fp = explode("/", $fecha_publicacion);
+                $publicacion = $fp[2] . '-' . $fp[1] . '-' . $fp[0];
+                $tipo_biblioteca_id = $request->request->get('tipo_biblioteca_id');
+
+                $empresa = $em->getRepository('LinkComunBundle:AdminEmpresa')->find($empresa_id);
+                $tipoBiblioteca = $em->getRepository('LinkComunBundle:AdminTipoBiblioteca')->find($tipo_biblioteca_id);
+                $tipoNoticia = $em->getRepository('LinkComunBundle:AdminTipoNoticia')->find($yml['parameters']['tipo_noticias']['biblioteca_virtual']);
+
+                $biblioteca->setUsuario($usuario);
+                $biblioteca->setEmpresa($empresa);
+                $biblioteca->setTipoNoticia($tipoNoticia);
+                $biblioteca->setTipoBiblioteca($tipoBiblioteca);
+                $biblioteca->setAutor($autor);
+                $biblioteca->setTema($tema);
+                $biblioteca->setTitulo($titulo);
+                $biblioteca->setFechaVencimiento(new \DateTime($vencimiento));
+                $biblioteca->setFechaPublicacion(new \DateTime($publicacion));
+                if ($tipo_biblioteca_id == $yml['parameters']['tipo_biblioteca']['video']) {
+                    $recurso = $video;
+                } else if ($tipo_biblioteca_id == $yml['parameters']['tipo_biblioteca']['podcast']) {
+                    $recurso = $audio;
+                } else {
+                    $recurso = $pdf;
+                }
+                $biblioteca->setPdf($recurso);
+                $biblioteca->setImagen($imagen);
+                $biblioteca->setContenido($contenido);
+                $em->persist($biblioteca);
+                $em->flush();
+
+                // Generación de notificaciones a los usuario de la empresa
+                $query = $em->createQuery('SELECT u FROM LinkComunBundle:AdminUsuario u
+                                            WHERE u.activo = :activo 
+                                            AND u.empresa = :empresa_id')
+                    ->setParameters(array(
+                        'activo' => true,
+                        'empresa_id' => $empresa->getId()
+                    ));
+                $usuarios = $query->getResult();
+
+                $descripcion = $this->get('translator')->trans('Ha sido publicado') . ' ' . $titulo . ' ' . $this->get('translator')->trans('en la biblioteca') . '.';
+                $fecha_alarma = new \DateTime('now');
+                foreach ($usuarios as $usuario) {
+                    if ($nuevo == true) {
+                        $f->newAlarm($yml['parameters']['tipo_alarma']['biblioteca'], $descripcion, $usuario, $biblioteca->getId(), $fecha_alarma);
+                    }
+                }
+
+                return $this->redirectToRoute('_showBiblioteca', array(
+                    'biblioteca_id' => $biblioteca->getId(),
+                    'todas' => $todas
+                ));
             }
-            else if ($tipo_biblioteca_id == $yml['parameters']['tipo_biblioteca']['podcast']) {
-                $recurso = $audio;
-            }
-            else{
-                $recurso = $pdf;
-            }
-            $biblioteca->setPdf($recurso);
-            $biblioteca->setImagen($imagen);
-            $biblioteca->setContenido($contenido);
-            $em->persist($biblioteca);
-            $em->flush();
 
             // Generación de notificaciones a los usuario de la empresa
-            $query = $em->createQuery('SELECT u FROM LinkComunBundle:AdminUsuario u
+            /*$query = $em->createQuery('SELECT u FROM LinkComunBundle:AdminUsuario u
                                        WHERE u.activo = :activo 
                                        AND u.empresa = :empresa_id')
                         ->setParameters(array('activo' => true,
@@ -193,29 +285,26 @@ class NovedadController extends Controller
                 }
             }
 
-            return $this->redirectToRoute('_showBiblioteca', array('biblioteca_id' => $biblioteca->getId()));
-
+            return $this->redirectToRoute('_showBiblioteca', array('biblioteca_id' => $biblioteca->getId()));*/
         }
 
-        return $this->render('LinkBackendBundle:Novedad:registroBiblioteca.html.twig', array('empresas' => $empresas,
-                                                                                             'tipoBibliotecas' => $tipoBibliotecas,
-                                                                                             'biblioteca' => $biblioteca,
-                                                                                             'usuario_empresa' => $usuario_empresa ));
-
+        return $this->render('LinkBackendBundle:Novedad:registroBiblioteca.html.twig', array(
+            'empresas' => $empresas,
+            'tipoBibliotecas' => $tipoBibliotecas,
+            'biblioteca' => $biblioteca,
+            'usuario_empresa' => $usuario_empresa
+        ));
     }
 
-    public function mostrarBibliotecaAction($biblioteca_id)
+    public function mostrarBibliotecaAction($biblioteca_id, $todas)
     {
         $session = new Session();
         $f = $this->get('funciones');
-      
-        if (!$session->get('ini') || $f->sesionBloqueda($session->get('sesion_id')))
-        {
+
+        if (!$session->get('ini') || $f->sesionBloqueda($session->get('sesion_id'))) {
             return $this->redirectToRoute('_loginAdmin');
-        }
-        else {
-            if (!$f->accesoRoles($session->get('usuario')['roles'], $session->get('app_id')))
-            {
+        } else {
+            if (!$f->accesoRoles($session->get('usuario')['roles'], $session->get('app_id'))) {
                 return $this->redirectToRoute('_authException');
             }
         }
@@ -224,9 +313,12 @@ class NovedadController extends Controller
         $em = $this->getDoctrine()->getManager();
 
         $biblioteca = $em->getRepository('LinkComunBundle:AdminNoticia')->find($biblioteca_id);
+        //return new response('aqui');
 
-        return $this->render('LinkBackendBundle:Novedad:mostrarBiblioteca.html.twig', array('biblioteca' => $biblioteca));
-
+        return $this->render('LinkBackendBundle:Novedad:mostrarBiblioteca.html.twig', array(
+            'biblioteca' => $biblioteca,
+            'todas' => $todas
+        ));
     }
 
     public function registroNovedadAction($noticia_id, Request $request)
@@ -234,16 +326,13 @@ class NovedadController extends Controller
 
         $session = new Session();
         $f = $this->get('funciones');
-        $yml = Yaml::parse(file_get_contents($this->get('kernel')->getRootDir().'/config/parametros.yml'));
+        $yml = Yaml::parse(file_get_contents($this->get('kernel')->getRootDir() . '/config/parametros.yml'));
         $nuevo = false;
 
-        if (!$session->get('ini') || $f->sesionBloqueda($session->get('sesion_id')))
-        {
+        if (!$session->get('ini') || $f->sesionBloqueda($session->get('sesion_id'))) {
             return $this->redirectToRoute('_loginAdmin');
-        }
-        else {
-            if (!$f->accesoRoles($session->get('usuario')['roles'], $session->get('app_id')))
-            {
+        } else {
+            if (!$f->accesoRoles($session->get('usuario')['roles'], $session->get('app_id'))) {
                 return $this->redirectToRoute('_authException');
             }
         }
@@ -252,42 +341,37 @@ class NovedadController extends Controller
         $em = $this->getDoctrine()->getManager();
 
         $usuario = $em->getRepository('LinkComunBundle:AdminUsuario')->find($session->get('usuario')['id']);
-        
+
         $query = $em->createQuery('SELECT e FROM LinkComunBundle:AdminEmpresa e
                                    WHERE e.activo = :activo ORDER BY e.nombre ASC')
-                    ->setParameters(array('activo' => true));
+            ->setParameters(array('activo' => true));
         $empresas = $query->getResult();
 
         $query = $em->createQuery('SELECT tn FROM LinkComunBundle:AdminTipoNoticia tn
                                    WHERE tn.id != :tipo ')
-                    ->setParameter('tipo', $yml['parameters']['tipo_noticias']['biblioteca_virtual']);
+            ->setParameter('tipo', $yml['parameters']['tipo_noticias']['biblioteca_virtual']);
         $tipoNoticias = $query->getResult();
 
         $usuario_empresa = 0;
-        if($session->get('administrador')==false)//si no es administrador
+        if ($session->get('administrador') == false) //si no es administrador
         {
-            if ($usuario->getEmpresa()) 
-                $usuario_empresa = $usuario->getEmpresa()->getId(); 
+            if ($usuario->getEmpresa())
+                $usuario_empresa = $usuario->getEmpresa()->getId();
         }
 
-        if ($noticia_id)
-        {
+        if ($noticia_id) {
             $noticia = $em->getRepository('LinkComunBundle:AdminNoticia')->find($noticia_id);
-        }
-        else {
+        } else {
             $noticia = new AdminNoticia();
             $noticia->setFechaRegistro(new \DateTime('now'));
             $nuevo = true;
         }
 
-        if ($request->getMethod() == 'POST')
-        {
+        if ($request->getMethod() == 'POST') {
 
-            if($usuario_empresa != 0)
-            {
+            if ($usuario_empresa != 0) {
                 $empresa = $em->getRepository('LinkComunBundle:AdminEmpresa')->find($usuario->getEmpresa()->getId());
-            }else
-            {
+            } else {
                 $empresa_id = $request->request->get('empresa_id');
                 $empresa = $em->getRepository('LinkComunBundle:AdminEmpresa')->find($empresa_id);
             }
@@ -297,14 +381,15 @@ class NovedadController extends Controller
 
             $titulo = trim($request->request->get('titulo'));
             $autor = trim($request->request->get('autor'));
+            $tema = trim($request->request->get('tema')) ? trim($request->request->get('tema')) : '';
 
             $fecha_vencimiento = trim($request->request->get('fecha_vencimiento'));
             $fv = explode("/", $fecha_vencimiento);
-            $vencimiento = $fv[2].'-'.$fv[1].'-'.$fv[0];
-            
+            $vencimiento = $fv[2] . '-' . $fv[1] . '-' . $fv[0];
+
             $fecha_publicacion = trim($request->request->get('fecha_publicacion'));
             $fp = explode("/", $fecha_publicacion);
-            $publicacion = $fp[2].'-'.$fp[1].'-'.$fp[0];
+            $publicacion = $fp[2] . '-' . $fp[1] . '-' . $fp[0];
 
             $pdf = trim($request->request->get('pdf'));
             $imagen = trim($request->request->get('imagen'));
@@ -317,6 +402,7 @@ class NovedadController extends Controller
             $noticia->setTipoNoticia($tipoNoticia);
             $noticia->setTitulo($titulo);
             $noticia->setAutor($autor);
+            $noticia->setTema($tema);
             $noticia->setPdf($pdf);
             $noticia->setImagen($imagen);
             $noticia->setResumen($resumen);
@@ -329,54 +415,49 @@ class NovedadController extends Controller
             $query = $em->createQuery('SELECT u FROM LinkComunBundle:AdminUsuario u
                                        WHERE u.activo = :activo 
                                        AND u.empresa = :empresa_id')
-                        ->setParameters(array('activo' => true,
-                                              'empresa_id' => $empresa->getId()));
+                ->setParameters(array(
+                    'activo' => true,
+                    'empresa_id' => $empresa->getId()
+                ));
             $usuarios = $query->getResult();
 
             $fecha_alarma = new \DateTime('now');
 
-            foreach($usuarios as $usuario){
+            foreach ($usuarios as $usuario) {
 
-                if ($tipoNoticia->getId() == $yml['parameters']['tipo_noticias']['noticia'] ) {
-                   if($nuevo == true)
-                   {
-                        $descripcion= 'Ha sido publicado una nueva noticia:  '. $titulo;
-                        $f->newAlarm($yml['parameters']['tipo_alarma']['noticia'], $descripcion, $usuario, $noticia->getId(), $fecha_alarma); 
-                   }
-                }
-                elseif ($tipoNoticia->getId() == $yml['parameters']['tipo_noticias']['novedad'] ) {
-                    if($nuevo == true)
-                    {
-                        $descripcion= 'Ha sido publicado una nueva novedad:  '. $titulo;
-                        $f->newAlarm($yml['parameters']['tipo_alarma']['novedad'], $descripcion, $usuario, $noticia->getId(), $fecha_alarma); 
+                if ($tipoNoticia->getId() == $yml['parameters']['tipo_noticias']['noticia']) {
+                    if ($nuevo == true) {
+                        $descripcion = 'Ha sido publicado una nueva noticia:  ' . $titulo;
+                        $f->newAlarm($yml['parameters']['tipo_alarma']['noticia'], $descripcion, $usuario, $noticia->getId(), $fecha_alarma);
+                    }
+                } elseif ($tipoNoticia->getId() == $yml['parameters']['tipo_noticias']['novedad']) {
+                    if ($nuevo == true) {
+                        $descripcion = 'Ha sido publicado una nueva novedad:  ' . $titulo;
+                        $f->newAlarm($yml['parameters']['tipo_alarma']['novedad'], $descripcion, $usuario, $noticia->getId(), $fecha_alarma);
                     }
                 }
-                
             }
 
             return $this->redirectToRoute('_showNovedad', array('noticia_id' => $noticia->getId()));
-
         }
-        
-        return $this->render('LinkBackendBundle:Novedad:registroNovedad.html.twig', array('empresas' => $empresas,
-                                                                                          'tipoNoticias' => $tipoNoticias,
-                                                                                          'noticia' => $noticia,
-                                                                                          'usuario_empresa' => $usuario_empresa));
 
+        return $this->render('LinkBackendBundle:Novedad:registroNovedad.html.twig', array(
+            'empresas' => $empresas,
+            'tipoNoticias' => $tipoNoticias,
+            'noticia' => $noticia,
+            'usuario_empresa' => $usuario_empresa
+        ));
     }
 
-   public function mostrarNoticiaNovedadAction($noticia_id)
+    public function mostrarNoticiaNovedadAction($noticia_id)
     {
         $session = new Session();
         $f = $this->get('funciones');
-      
-        if (!$session->get('ini') || $f->sesionBloqueda($session->get('sesion_id')))
-        {
+
+        if (!$session->get('ini') || $f->sesionBloqueda($session->get('sesion_id'))) {
             return $this->redirectToRoute('_loginAdmin');
-        }
-        else {
-            if (!$f->accesoRoles($session->get('usuario')['roles'], $session->get('app_id')))
-            {
+        } else {
+            if (!$f->accesoRoles($session->get('usuario')['roles'], $session->get('app_id'))) {
                 return $this->redirectToRoute('_authException');
             }
         }
@@ -385,9 +466,7 @@ class NovedadController extends Controller
         $em = $this->getDoctrine()->getManager();
 
         $noticia = $em->getRepository('LinkComunBundle:AdminNoticia')->find($noticia_id);
-        
+
         return $this->render('LinkBackendBundle:Novedad:mostrarNovedad.html.twig', array('noticia' => $noticia));
-
     }
-
 }
