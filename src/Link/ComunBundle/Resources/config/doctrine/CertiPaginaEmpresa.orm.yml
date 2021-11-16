@@ -67,6 +67,9 @@ Link\ComunBundle\Entity\CertiPaginaEmpresa:
             nullable: true
             options:
                 unsigned: false
+        ranking:
+            type: boolean
+            nullable: true
     manyToOne:
         empresa:
             targetEntity: AdminEmpresa

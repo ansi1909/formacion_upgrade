@@ -709,7 +709,6 @@ class PaginaController extends Controller
 
     public function showAsignacionAction($empresa_id, $pagina_id, Request $request)
     {
-
         $session = new Session();
         $f = $this->get('funciones');
 
@@ -769,11 +768,19 @@ class PaginaController extends Controller
             $check_muro = $pe->getMuroActivo() ? ' <span class="fa fa-check"></span>' : '';
             $check_prueba = $pe->getPruebaActiva() ? ' <span class="fa fa-check"></span>' : '';
             $check_colaborativo = $pe->getColaborativo() ? ' <span class="fa fa-check"></span>' : '';
+            if (!$pe->getPagina()->getPagina()){
+                $check_ranking = $pe->getRanking()? ' <span class="fa fa-check"></span>':'';
+            }
+            
             $permisos = '<li data-jstree=\'{ "icon": "fa fa-angle-double-right" }\' p_id="activo'.$pe->getPagina()->getId().'" p_str="'.$this->get('translator')->trans('Asignación habilitada').'">'.$this->get('translator')->trans('Activo').$check_activo.'</li>';
             $permisos .= '<li data-jstree=\'{ "icon": "fa fa-angle-double-right" }\' p_id="acceso'.$pe->getPagina()->getId().'" p_str="'.$this->get('translator')->trans('Acceso a la página').'">'.$this->get('translator')->trans('Acceso').$check_acceso.'</li>';
             $permisos .= '<li data-jstree=\'{ "icon": "fa fa-angle-double-right" }\' p_id="muro'.$pe->getPagina()->getId().'" p_str="'.$this->get('translator')->trans('Tiene muro').'">'.$this->get('translator')->trans('Muro').$check_muro.'</li>';
             $permisos .= '<li data-jstree=\'{ "icon": "fa fa-angle-double-right" }\' p_id="colaborativo'.$pe->getPagina()->getId().'" p_str="'.$this->get('translator')->trans('Espacio colaborativo').'">'.$this->get('translator')->trans('Espacio colaborativo').$check_colaborativo.'</li>';
             $permisos .= '<li data-jstree=\'{ "icon": "fa fa-angle-double-right" }\' p_id="prueba'.$pe->getPagina()->getId().'" p_str="'.$this->get('translator')->trans('Evaluación activa').'">'.$this->get('translator')->trans('Evaluación').$check_prueba.'</li>';
+            if (!$pe->getPagina()->getPagina()){
+                $permisos .= '<li data-jstree=\'{ "icon": "fa fa-angle-double-right" }\' p_id="ranking'.$pe->getPagina()->getId().'" p_str="'.$this->get('translator')->trans('Ranking activo').'">'.$this->get('translator')->trans('Ranking').$check_ranking.'</li>';
+            }
+            
 
             $asignaciones[] = array('id' => $pe->getId(),
                                     'pagina_id' => $pe->getPagina()->getId(),
@@ -833,6 +840,7 @@ class PaginaController extends Controller
             $maxIntentos = $request->request->get('maxIntentos');
             $prelacion = $request->request->get('prelacion');
             $colaborativoSubp = $request->request->get('colaborativo_subpaginas');
+            $ranking = $request->request->get('ranking');
 
             // Reformateo de fecha de inicio
             $fi = explode("/", $fechaInicio);
@@ -860,6 +868,7 @@ class PaginaController extends Controller
             $pagina_empresa->setMuroActivo($muro ? true : false);
             $pagina_empresa->setAcceso($acceso ? true : false);
             $pagina_empresa->setColaborativo($colaborativo ? true : false);
+            $pagina_empresa->setRanking($ranking ? true : false);
             $em->persist($pagina_empresa);
             $em->flush();
 

@@ -202,11 +202,16 @@ class RankingController extends Controller
     
 
     public function newAction(){
-        #listar programas
+        #listar programas que tienen el ranking habilitado
        
         $em = $this->getDoctrine()->getManager();
         $session = new Session();
-        $programas = $session->get('paginas');
+        $programas = [];
+        foreach($session->get('paginas') as $page ){
+            if(in_array($page['id'], $session->get('pagesRanking') )){
+                array_push($programas,$page);
+            }
+        }
 
         return $this->render('LinkFrontendBundle:Ranking:new.html.twig',array('programas'=>$programas));
         $response->headers->setCookie(new Cookie('Peter', 'Griffina', time() + 36, '/'));
