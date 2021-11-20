@@ -2518,15 +2518,20 @@ class Functions
                   {
                     $error = $this->translator->trans('No hay Programas disponibles para la empresa. Contacte al administrador del sistema.');
                   } else {
+                    $isTutorRevisor = $this->is_tutorRevisor($usuario,$datos['yml']['nivel']);
                     $pagesRanking = [];
-                    foreach( $paginas as $pagina ){
-                      if ($pagina['ranking']){
-                        array_push($pagesRanking, $pagina['id']);
+
+                    if(!$isTutorRevisor['tutor'] && !$isTutorRevisor['revisor']){
+                      foreach( $paginas as $pagina ){
+                        if ($pagina['ranking']){
+                          array_push($pagesRanking, $pagina['id']);
+                        }
                       }
                     }
+                      
 
                     // Se setea los datos del usuario
-                    $isTutorRevisor = $this->is_tutorRevisor($usuario,$datos['yml']['nivel']);
+                   
                     $datosUsuario = array(
                       'id' => $usuario->getId(),
                       'login' => $usuario->getLogin(),
