@@ -1,6 +1,12 @@
 {% extends '::admin.html.twig' %}
-
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('front/js/plugins/jquery-upload-file/css/style.css') }}">
+    <link rel="stylesheet" href="{{ asset('front/js/plugins/jquery-upload-file/css/jquery.fileupload.css') }}">
+    <link rel="stylesheet" href="{{ asset('jq/jquery-ui.css') }}">
+{% endblock %}
 {% block body %}
+<input type="hidden" id="url_uploadFiles_liga" name="url_uploadFiles_liga" value="{{path( '_ajaxUploadFileLiga') }}">
 <input type="hidden" id="url_edit" name="url_edit" value="{{ path('_ajaxEditLiga') }}">
 <input type="hidden" id="url_list" name="url_list" value="{{ path('_ligas', { 'app_id': app.session.get('app_id') }) }}">
 <br>
@@ -16,7 +22,7 @@
     <div class="col-sm-12 offset-2">
         <div class="card">
             <div class="card-header"  style=" background: linear-gradient(to right, #d5ff00 0%, #A3C300 100%); ">
-                <h5 class="card-title">{{ 'Listado de medallas' |trans}}</h5>
+                <h5 class="card-title">{{ 'Listado de ligas' |trans}}</h5>
             </div>
             <div class="card-block">
                 <table class="table">
@@ -58,18 +64,47 @@
 </div>
 <div class="modal-body">
     <form id="form" name="form" action="{{ path( '_ajaxUpdateLiga')}}"  method="POST">
+        <input type="hidden" id="fileUpload" value="">
         <input type="hidden" id="liga_id" name="liga_id" value="">
         <div class="form-group">
-            <label for="recipient-name" class="form-control-label">{{ 'Nombre'|trans }}:</label>
+            <label for="nombre" class="form-control-label">{{ 'Nombre'|trans }}:</label>
             <input type="text" class="form-control form_sty_modal" id="nombre" name="nombre" value="">
         </div>
         <div class="form-group">
-            <label for="message-text" class="form-control-label">{{ 'Descripcion'|trans }}:</label>
+            <label for="descripcion" class="form-control-label">{{ 'Descripción'|trans }}:</label>
             <textarea class="form-control"  id="descripcion" name="descripcion" value=""></textarea>
         </div>
         <div class="form-group">
-            <label for="recipient-name" class="form-control-label">{{ 'Puntos'|trans }}:</label>
-            <input type="text" class="form-control form_sty_modal" id="puntos" name="puntos" value="">
+            <label for="recipient-name" class="form-control-label">{{ 'Porcentaje de puntos requeridos'|trans }}:</label>
+            
+        </div>
+        <div class="row">
+            <div class="col-sm-8 col-md-8 col-lg-8" >
+                <div class="form-group">
+                    <div class="can-toggle demo-rebrand-2 small">
+                        <label for="minimo" class="form-control-label">{{ 'Mínimo'|trans }}:</label>
+                         <input type="text" class="form-control form_sty_modal" id="minimo" name="minimo" value="">
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-8 col-md-8 col-lg-8" >
+                <div class="form-group">
+                    <div class="can-toggle demo-rebrand-2 small">
+                        <label for="maximo" class="form-control-label">{{ 'Máximo'|trans }}:</label>
+                         <input type="text" class="form-control form_sty_modal" id="maximo" name="maximo" value="">
+                    </div>
+                </div>
+            </div>
+        </div>
+         <div class="form-group">
+            <label for="recipient-name" class="form-control-label">{{ 'Imagen de la liga'|trans }}:</label>
+            <div class="input-group">
+                <input type="text" class="form-control " name="imagen" id="imagen" value="" readonly="readonly" placeholder="{{ 'Seleccione el archivo'|trans }}">
+                <a href="#" id="href_imagen" class="btn fileinput-button uploadFileHref" type="button" data-etiqueta="imagen">
+                    <span class="fa fa-photo"></span>
+                    <input class="uploadFile" type="file" name="files[]" multiple>
+                </a>
+            </div>
         </div>
     </form>
     <div class="alert alert-success" role="alert" id="alert-success" style="display:none;"> 
@@ -104,6 +139,10 @@
 {% block javascripts %}
     {{ parent() }}
     <script type="text/javascript" src="{{ asset('jq/jquery-validation-1.15.0/dist/jquery.validate.js') }}"></script>
+        <script type="text/javascript" src="{{ asset('jq/jquery-validation-1.15.0/dist/additional-methods.min.js') }}"></script>
+        <script type="text/javascript" src="{{ asset('front/js/plugins/jquery-upload-file/js/vendor/jquery.ui.widget.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('front/js/plugins/jquery-upload-file/js/jquery.iframe-transport.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('front/js/plugins/jquery-upload-file/js/jquery.fileupload.js') }}"></script>
     <script type="text/javascript" src="{{ asset('js/admin/liga.js') }}"></script>
     <script type="text/javascript">
 
@@ -113,25 +152,58 @@
                     required: true,
                     minlength: 3
                 },
-                'puntos': {
+                'minimo': {
                     required: true,
-                    minlength: 2,
+                    minlength: 1,
                     number: true
+                },
+                'maximo': {
+                    required: true,
+                    minlength: 1,
+                    number: true
+                },
+                'imagen': {
+                  required: true,
+                  extension: "jpg|jpeg|bmp|svg|png|gif|tiff"
                 }
             },
             messages: {
                 'nombre': {
                     required: "{{ 'Este campo es requerido.'|trans }}",
-                    minlength: "{{ 'Debe ser mínimo de 3 caracteres.'|trans }}"
+                    minlength: "{{ 'Debe ser mínimo de 3 caracteres'|trans }}."
                 },
-                'puntos': {
+                'minimo': {
                     required: "{{ 'Este campo es requerido.'|trans }}",
-                    minlength: "{{ 'Debe ser mínimo de 2 caracteres.'|trans }}",
-                    number: "- {{ 'El valor de los puntos debe ser un valor numérico.'|trans }}"
+                    minlength: "{{ 'Debe ser mínimo de 1 caracter'|trans }}.",
+                    number: "- {{ 'El porcentaje de puntos debe ser un valor numérico'|trans }}."
+                },
+                'maximo': {
+                    required: "{{ 'Este campo es requerido.'|trans }}",
+                    minlength: "{{ 'Debe ser mínimo de 1 caracter'|trans }}.",
+                    number: "- {{ 'El porcentaje de puntos debe ser un valor numérico'|trans }}."
+                },
+                 'imagen':{
+                    required:  "{{ 'Este campo es requerido.'|trans }}",
+                    extension: "- {{ 'Extensiones aceptadas para imagen'|trans }}: jpg,jpeg,bmp,svg,png,gif,tiff."
                 }
             }
         });
 
+        function failedRequest()
+        {
+            swal(""," {{ 'El archivo seleccionado no se cargo correctamente.'| trans }} ","error");
+            showButtons();
+            return 0;
+        }
+
         
+        function showButtons()
+        {
+            $('#guardar').show();
+            $('#cancelar').show();
+            $('#wait').hide();
+            $('.uploadFileHref').show();
+            return 0;
+        }
     </script>
 {% endblock %}

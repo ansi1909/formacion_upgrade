@@ -55,6 +55,30 @@
             .modalChagePwd {
                 max-width: 30rem !important;
             }
+
+            #achievements-container {
+                display: none;
+                visibility: hidden;
+                transition: visibility 0.2s;
+            }
+
+            #achievements-container.show {
+                visibility: visible;
+                display: flex;
+            }
+            
+            #study_plan {
+                display: none;
+                visibility: hidden;
+                transition: visibility 0.2s;
+            }
+
+            #study_plan.show {
+                visibility: visible;
+                display: block;
+            }
+
+            
         </style>
 {% endblock %}
 
@@ -69,10 +93,17 @@
 {% set fecha_nacimiento = app.session.get('usuario')['fecha_nacimiento'] %}
 {% set fecha_nacimiento_formateada = app.session.get('usuario')['fecha_nacimiento_formateada'] %}
 <input type="hidden" id="url_img" name="url_img" value="{{ path('_ajaxImg') }}">
+<input type="hidden" id="url_medallas" name="url_medallas" value="{{ path('_ajaxMedallasPrograma') }}">
+<input type="hidden" id="usuario_medallas" name="usuario_medallas" value="{{ login }}">
+<input type="hidden" id="pagina_id" name="pagina_id" value="{{ pagina_id }}">
 
-<section class="card-datos col-12 col-sm-10 mx-auto">
-    <div class="row align-items-center justify-content-center">
-        <div class="col-12 col-md-6 d-flex justify-content-center align-items-center">
+<div class="modal ranking-loader justify-content-center align-items-center">
+    <div class="ranking-loader__spinner">
+    </div>
+</div>
+<section class="card-datos col-12 col-sm-10 mx-auto py-2">
+    <div class="row align-items-center justify-content-center px-4">
+        <div class="col-12 col-md-4 d-flex ">
             <div class="pic-img" id="pic-img">
             <div class="float-right mt-4"  id="radar-img" style="display: none;">
                <div class="contenedor">
@@ -92,7 +123,7 @@
             </div>
             <span class="error" id="error"></span>
         </div>
-        <div class="col-12 col-md-6">
+        <div class="col-12 col-md-8">
             <h2 class="name-titulo text-center">{{ nombre }} {{ apellido }}</h2>
             <div class="row justify-content-between border-bottom py-1">
                 <div class="col-5 col-md-6 text-center">
@@ -118,14 +149,6 @@
                     <span class="datos_user" id="label-correo_corporativo">{{ correo_corporativo }}</span>
                 </div>
             </div>
-            <div class="row justify-content-between border-bottom py-1">
-                <div class="col-5 col-md-6 text-center">
-                    <span class="info_datos">{{ 'Fecha de nacimiento'|trans }}</span>
-                </div>
-                <div class="col-7 col-md-6 d-flex justify-content-center align-items-center">
-                    <span class="datos_user" id="label-fn">{{ fecha_nacimiento_formateada }}</span>
-                </div>
-            </div>
         </div>
         <!-- Modal cambiar contraseña-->
         <!--<div class="col-xs-4 col-sm-4 col-md-4 col-4 col-lg-4 col-xl-4 text-center" >
@@ -144,21 +167,200 @@
             <h3 class="tituloExp">EXP</h3>
         </div>-->
     </div>
-    <div class="row align-items-center justify-content-around mt-12v">
-        <div class="col-sm-auto col-md-auto col-auto col-lg-auto col-xl-auto text-center mb-1">
+    <div class="row align-items-center justify-content-between mt-12v">
+        <div class="col-sm-auto col-md-auto col-auto col-lg-auto col-xl-auto text-center mb-1 mx-auto">
             <a href="{{ path('_misProgramas', { 'activo': 1 }) }}"><button type="button" class="btn btn-primary">{{ 'Ver mis certificados'|trans }}</button></a>
         </div>
-        <div class="col-xs-auto col-sm-auto col-md-auto col-auto col-lg-auto col-xl-auto text-center mb-1">
-            <a href="#" data-toggle="modal" data-target="#modaledit"><button type="button" class="btn btn-primary" id="editar">{{ 'Editar perfil'|trans }}</button></a>
+        <div class="col-xs-auto col-sm-auto col-md-auto col-auto col-lg-auto col-xl-auto text-center mb-1 mx-auto">
+            <a href="#" data-toggle="modal" data-target="#modaledit"><button type="button" class="btn btn-primary" id="editar">{{ 'Añadir correo secundario'|trans }}</button></a>
         </div>
         {#<div class="col-xs-auto col-sm-auto col-md-auto col-auto col-lg-auto col-xl-auto text-center">
             <a href="{{ path('_ranking') }}"><button type="button" class="btn btn-primary">{{ 'Ver ranking'|trans }}</button></a>
         </div>#}
-        <div class="col-sm-auto col-md-auto col-auto col-lg-auto col-xl-auto text-center">
+        <div class="col-sm-auto col-md-auto col-auto col-lg-auto col-xl-auto text-center mx-auto">
             <a href="#" data-toggle="modal" data-target="#modalpwd"><button type="button" class="btn btn-primary" id="cambiar">{{ 'Cambiar contraseña'|trans }}</button></a>
         </div>
     </div>
 </section>
+{% if not (app.session.get('usuario')['revisor']) and not(app.session.get('usuario')['tutor'])%}
+        <div class="for-message  container py-5 px-6 my-4 show" id="study_plan">
+            <h4 class="mb-4 text-left">{{ 'Mis logros'|trans }}</h4>
+            <div class="container d-flex flex-column justify-content-center align-items-center ">
+            {# ----------- ESTE ES EL CODIGO VALIDO -------------- #}
+                {% for programa in programas %}
+                <div class="card-hrz card-mod d-flex flex-column flex-md-row">
+                    <img class="card-hrz-img card-program-img mr-xl-3 d-flex justify-content-center align-items-center" src="{{uploads ~ programa.foto}}" alt="">
+                    <div class="wraper d-flex flex-column flex-md-row justify-content-center"> 
+                        <div class="card-hrz-body d-flex align-items-center">
+                            <h5 class="title-grey my-3 font-weight-normal"> {{ programa.nombre }}</h5>
+                            
+                        </div>
+
+                        <div class="card-hrz-right d-flex flex-column justify-content-center mx-3 pb-1 align-item align-items-center">
+                            <div class="percent text-center mt-1">
+                        
+                            </div>
+                            <button href="#" name = "pagina_id" id="pagina_id" class="btn btn-sm btn-continuar mt-0 px-3 btn-xs-cont j-btn-medals mb-3 mb-md-0 pagina_id" data-id="{{programa.id}}"> {{ 'Ver'|trans }} </button>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %} 
+            </div>
+        </div>
+ {% endif %}
+
+
+<!-- ZONA DE LOGROS -->
+
+<div class="container py-5 px-2 mb-4 flex-column align-items-center" id="achievements-container">
+<button href="#" class="btn btn-sm btn-continuar mt-0 px-3 mb-3 btn-xs-cont j-btn-back-to-plan" data-id="2"> Volver al plan de estudios </button>
+    <h4 class="mb-4" id="achievements-container">Mis logros en el curso Comunicación para la supervisión:</h4>
+
+    <!-- ESTE ES EL CONTENEDOR DE LAS MEDALLAS-->
+    <div class="achivements_result_container w-100 d-flex flex-column align-items-center" id='achivements_result_container'>
+    
+    </div>
+
+    {# <div class="card-achievement green-line">
+        <img src="{{asset('front/assets/img/recurso-5.png')}}" alt="" class="card-achievement__badge">
+        <div class="card-achievement__details">
+            <h4 class="card-achievement__title">Súper Smart</h4>
+            <p class="card-achievement__condition">Aprueba todas las evaluaciones al primer intento</p>
+            <div class="card-achievement__progress">
+                <div class="card-achievement__progress__bar">
+                    <div class="card-achievement__progress__bar__fill fill-orange" style="width: 50%;"></div>
+                </div>
+                <div class="card-achievement__progress__number">
+                    5/13
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="card-achievement green-line">
+        <img src="{{asset('front/assets/img/recurso-5.png')}}" alt="" class="card-achievement__badge achieved">
+        <div class="card-achievement__details">
+            <h4 class="card-achievement__title">Súper Smart</h4>
+            <p class="card-achievement__condition">Aprueba todas las evaluaciones al primer intento</p>
+            <div class="card-achievement__progress">
+                <div class="card-achievement__progress__bar">
+                    <div class="card-achievement__progress__bar__fill fill-green" style="width: 100%;"></div>
+                </div>
+                <div class="card-achievement__progress__number">
+                    13/13
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="card-achievement green-line">
+        <img src="{{asset('front/assets/img/recurso-6.png')}}" alt="" class="card-achievement__badge achieved">
+        <div class="card-achievement__details">
+            <h4 class="card-achievement__title">Perfeccionista</h4>
+            <p class="card-achievement__condition">Obtén la nota perfecta 100/100 en todas las evaluaciones</p>
+            <div class="card-achievement__progress">
+                <div class="card-achievement__progress__bar">
+                    <div class="card-achievement__progress__bar__fill fill-green" style="width: 100%;"></div>
+                </div>
+                <div class="card-achievement__progress__number">
+                    13/13
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="card-achievement green-line">
+        <img src="{{asset('front/assets/img/recurso-7.png')}}" alt="" class="card-achievement__badge achieved">
+        <div class="card-achievement__details">
+            <h4 class="card-achievement__title">Imparable</h4>
+            <p class="card-achievement__condition">Aprueba el programa en una misma sesión</p>
+        </div>
+    </div>
+
+    <div class="card-achievement lightblue-line">
+        <img src="{{asset('front/assets/img/recurso-18.png')}}" alt="" class="card-achievement__badge achieved">
+        <div class="card-achievement__details">
+            <h4 class="card-achievement__title">Influencer</h4>
+            <p class="card-achievement__condition">Recibe tres respuestas a tus comentarios en el muro</p>
+            <div class="card-achievement__progress">
+                <div class="card-achievement__progress__bar">
+                    <div class="card-achievement__progress__bar__fill fill-orange" style="width: 100%;"></div>
+                </div>
+                <div class="card-achievement__progress__number">
+                    3/3
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="card-achievement lightblue-line">
+        <img src="{{asset('front/assets/img/recurso-16.png')}}" alt="" class="card-achievement__badge achieved">
+        <div class="card-achievement__details">
+            <h4 class="card-achievement__title">Amigable</h4>
+            <p class="card-achievement__condition">Escribe cinco comentarios de valor en el muro</p>
+            <div class="card-achievement__progress">
+                <div class="card-achievement__progress__bar">
+                    <div class="card-achievement__progress__bar__fill fill-green" style="width: 100%;"></div>
+                </div>
+                <div class="card-achievement__progress__number">
+                    5/5
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="card-achievement yellow-line">
+        <img src="{{asset('front/assets/img/recurso-8.png')}}" alt="" class="card-achievement__badge achieved">
+        <div class="card-achievement__details">
+            <h4 class="card-achievement__title">Primer lugar</h4>
+            <p class="card-achievement__condition">Termina el programa primero que los demás</p>
+        </div>
+    </div>
+
+    <div class="card-achievement blue-line">
+        <img src="{{asset('front/assets/img/recurso-11.png')}}" alt="" class="card-achievement__badge achieved">
+        <div class="card-achievement__details">
+            <h4 class="card-achievement__title">Vencedor</h4>
+            <p class="card-achievement__condition">Obtén todas las medallas disponibles</p>
+            <div class="card-achievement__progress">
+                <div class="card-achievement__progress__bar">
+                    <div class="card-achievement__progress__bar__fill fill-green" style="width: 100%;"></div>
+                </div>
+                <div class="card-achievement__progress__number">
+                    8/8
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="card-achievement blue-line">
+        <img src="{{asset('front/assets/img/recurso-12.png')}}" alt="" class="card-achievement__badge achieved">
+        <div class="card-achievement__details">
+            <h4 class="card-achievement__title">Leyenda</h4>
+            <p class="card-achievement__condition">Mantente entre las tres primeras posiciones del ranking por siete días consecutivos</p>
+            <div class="card-achievement__progress">
+                <div class="card-achievement__progress__bar">
+                    <div class="card-achievement__progress__bar__fill fill-green" style="width: 100%;"></div>
+                </div>
+                <div class="card-achievement__progress__number">
+                    7/7
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="card-achievement blue-line">
+        <img src="{{asset('front/assets/img/recurso-13.png')}}" alt="" class="card-achievement__badge achieved">
+        <div class="card-achievement__details">
+            <h4 class="card-achievement__title">Fotogénico</h4>
+            <p class="card-achievement__condition">Agrega una foto a tu perfil</p>
+        </div>
+    </div> #}
+
+
+</div>
+
+
 
 <!-- Modal Editar perfil-->
 <div class="modal modalEditP py-2" id="modaledit" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -172,7 +374,7 @@
         </div>
         <div class="row align-items-center justify-content-center">
             <div class="col-12">
-                <h4 class="pb-1 title-grey sub-line"> {{ 'Editar perfil'|trans }} </h4>
+                <h4 class="pb-1 title-grey sub-line"> {{ 'Datos personales'|trans }}: </h4>
             </div>
         </div>
         <form id="form" name="form" action="{{ path('_ajaxSavePerfil')}}" method="POST">
@@ -193,10 +395,10 @@
                         <p id="correo_exito" style="display:none; font-size: 1.04rem;text-align: center;   color: #5CAEE6;" class="error__style" >Cambio de correo realizado</p>
 
                     </div>
-                    <div class="form-group text-left">
+                   {# <div class="form-group text-left">
                         <label for="fecha_nacimiento">{{ 'Fecha de nacimiento'|trans }}</label>
                         <input type="date" class="form-control mb-4" id="fecha_nacimiento" name="fecha_nacimiento" value="{{ fecha_nacimiento }}" disabled="disabled" data-date-end-date="-18y">
-                    </div>
+                    </div>#}
                 </div>
             </div>
             <div class="row aling-item-center justify-content-center">

@@ -1,6 +1,6 @@
 _usuariop:
-    path:     /usuario
-    defaults: { _controller: LinkFrontendBundle:Usuario:index }
+    path:     /usuario/{pagina_id}
+    defaults: { _controller: LinkFrontendBundle:Usuario:index, pagina_id: 0  }
 
 _ajaxSavePerfil:
     path:     /ajaxSavePerfil
@@ -51,5 +51,11 @@ _ajaxNotiMuro:
 _ajaxRespuestaComentario:
     path:     /ajaxRespuestaComentario
     defaults: { _controller: LinkFrontendBundle:Default:ajaxRespuestaComentario }
+    requirements:
+        method: POST
+
+_ajaxMedallasPrograma:
+    path:     /ajaxMedallasPrograma
+    defaults: { _controller: LinkFrontendBundle:Usuario:ajaxMedallasPrograma }
     requirements:
         method: POST

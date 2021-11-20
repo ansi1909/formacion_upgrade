@@ -126,4 +126,120 @@ class AdminLigas
     {
         return $this->puntuacion;
     }
+    /**
+     * @var int|null
+     */
+    private $porcetajemin;
+
+    /**
+     * @var int|null
+     */
+    private $porcentajemax;
+
+
+    /**
+     * Set porcetajemin.
+     *
+     * @param int|null $porcetajemin
+     *
+     * @return AdminLigas
+     */
+    public function setPorcetajemin($porcetajemin = null)
+    {
+        $this->porcetajemin = $porcetajemin;
+    
+        return $this;
+    }
+
+    /**
+     * Get porcetajemin.
+     *
+     * @return int|null
+     */
+    public function getPorcetajemin()
+    {
+        return $this->porcetajemin;
+    }
+
+    /**
+     * Set porcentajemax.
+     *
+     * @param int|null $porcentajemax
+     *
+     * @return AdminLigas
+     */
+    public function setPorcentajemax($porcentajemax = null)
+    {
+        $this->porcentajemax = $porcentajemax;
+    
+        return $this;
+    }
+
+    /**
+     * Get porcentajemax.
+     *
+     * @return int|null
+     */
+    public function getPorcentajemax()
+    {
+        return $this->porcentajemax;
+    }
+    /**
+     * @var string|null
+     */
+    private $imagen;
+
+
+    /**
+     * Set imagen.
+     *
+     * @param string|null $imagen
+     *
+     * @return AdminLigas
+     */
+    public function setImagen($imagen = null)
+    {
+        $this->imagen = $imagen;
+    
+        return $this;
+    }
+
+    /**
+     * Get imagen.
+     *
+     * @return string|null
+     */
+    public function getImagen()
+    {
+        return $this->imagen;
+    }
+    /**
+     * @var int|null
+     */
+    private $porcentajemin;
+
+
+    /**
+     * Set porcentajemin.
+     *
+     * @param int|null $porcentajemin
+     *
+     * @return AdminLigas
+     */
+    public function setPorcentajemin($porcentajemin = null)
+    {
+        $this->porcentajemin = $porcentajemin;
+    
+        return $this;
+    }
+
+    /**
+     * Get porcentajemin.
+     *
+     * @return int|null
+     */
+    public function getPorcentajemin()
+    {
+        return $this->porcentajemin;
+    }
 }

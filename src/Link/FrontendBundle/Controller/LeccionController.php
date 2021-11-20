@@ -17,13 +17,12 @@ class LeccionController extends Controller
 {
     public function indexAction($programa_id, $subpagina_id, $puntos, Request $request)
     {
-        
+
         $session = new Session();
         $f = $this->get('funciones');
-        $yml = Yaml::parse(file_get_contents($this->get('kernel')->getRootDir().'/config/parametros.yml'));
-        
-        if (!$session->get('iniFront') || $f->sesionBloqueda($session->get('sesion_id')))
-        {
+        $yml = Yaml::parse(file_get_contents($this->get('kernel')->getRootDir() . '/config/parametros.yml'));
+
+        if (!$session->get('iniFront') || $f->sesionBloqueda($session->get('sesion_id'))) {
             return $this->redirectToRoute('_authExceptionEmpresa', array('tipo' => 'sesion'));
         }
         $f->setRequest($session->get('sesion_id'));
@@ -35,8 +34,8 @@ class LeccionController extends Controller
 
         // También se anexa a la indexación el programa padre
         $programa = $this->getDoctrine()->getRepository('LinkComunBundle:CertiPagina')->find($programa_id);
-        $boton_continuar = ($programa->getCategoria()->getId() != $yml['parameters']['categoria']['competencia'])? 'Continuar':'Terminar';
-        $boton_terminado = ($programa->getCategoria()->getId() == $yml['parameters']['categoria']['competencia'])? 'Terminado':'';
+        $boton_continuar = ($programa->getCategoria()->getId() != $yml['parameters']['categoria']['competencia']) ? 'Continuar' : 'Terminar';
+        $boton_terminado = ($programa->getCategoria()->getId() == $yml['parameters']['categoria']['competencia']) ? 'Terminado' : '';
         $pagina = $session->get('paginas')[$programa_id];
         $pagina['padre'] = 0;
         $pagina['sobrinos'] = 0;
@@ -53,82 +52,65 @@ class LeccionController extends Controller
         // Menú lateral dinámico
         $menu_str = $f->menuLecciones($indexedPages, $session->get('paginas')[$programa_id], $subpagina_id, $this->generateUrl('_lecciones', array('programa_id' => $programa_id)), $session->get('usuario')['id'], $yml['parameters']['estatus_pagina']['completada']);
         //return new Response(var_dump($menu_str));
-        
+
         $wizard = 0; // 1 Indica que llevan los círculos de navegación
         $titulo = '';
         $subtitulo = '';
         $pagina_id = $programa_id;
-       // return new response($subpagina_id.' '.$programa_id);
+        // return new response($subpagina_id.' '.$programa_id);
 
-        if ($subpagina_id == 0 || $subpagina_id == $programa_id)
-        {
-            if (count($indexedPages[$programa_id]['subpaginas']))
-            {   
-                
-                
-                
+        if ($subpagina_id == 0 || $subpagina_id == $programa_id) {
+            if (count($indexedPages[$programa_id]['subpaginas'])) {
+
+
+
                 $i = 0;
-                foreach ($indexedPages[$programa_id]['subpaginas'] as $subpagina_arr)
-                {
+                foreach ($indexedPages[$programa_id]['subpaginas'] as $subpagina_arr) {
                     $i++;
                     $subpagina = $indexedPages[$subpagina_arr['id']];
-                    if ($i == 1)
-                    {
-                        
+                    if ($i == 1) {
+
                         // Solo la primera iteración. Se mostrará el primer módulo por defecto.
-                        if ($subpagina['sobrinos'] > 0)
-                        {
+                        if ($subpagina['sobrinos'] > 0) {
                             $pagina_id = $subpagina['id'];
-                        }
-                        else {
+                        } else {
                             $pagina_id = $programa_id;
                             $wizard = 1;
                         }
                     }
-                    if ($subpagina['tiene_evaluacion'])
-                    {
-                       
+                    if ($subpagina['tiene_evaluacion']) {
+
                         $pagina_id = $subpagina['id'];
                         $wizard = 0;
                         break;
                     }
                 }
-            }
-            else {
-                
+            } else {
+
                 $pagina_id = $programa_id;
             }
-            $titulo = $indexedPages[$programa_id]['categoria'].': '.$indexedPages[$programa_id]['nombre'];
-        }
-        else {
-            
-            if (($indexedPages[$subpagina_id]['hijos'] > 0 || $indexedPages[$subpagina_id]['sobrinos'] > 0 || $indexedPages[$subpagina_id]['tiene_evaluacion']) && $programa->getCategoria()->getId() != $yml['parameters']['categoria']['competencia'])
-            {
+            $titulo = $indexedPages[$programa_id]['categoria'] . ': ' . $indexedPages[$programa_id]['nombre'];
+        } else {
+
+            if (($indexedPages[$subpagina_id]['hijos'] > 0 || $indexedPages[$subpagina_id]['sobrinos'] > 0 || $indexedPages[$subpagina_id]['tiene_evaluacion']) && $programa->getCategoria()->getId() != $yml['parameters']['categoria']['competencia']) {
                 $pagina_id = $indexedPages[$subpagina_id]['id'];
-                if ($indexedPages[$indexedPages[$subpagina_id]['padre']]['padre'])
-                {
-                    $titulo = $this->get('translator')->trans(trim($indexedPages[$indexedPages[$indexedPages[$subpagina_id]['padre']]['padre']]['categoria'])).': '.$indexedPages[$indexedPages[$indexedPages[$subpagina_id]['padre']]['padre']]['nombre'];
-                    $subtitulo = $this->get('translator')->trans(trim($indexedPages[$indexedPages[$subpagina_id]['padre']]['categoria'])).' '.$indexedPages[$indexedPages[$subpagina_id]['padre']]['orden'].': '.$indexedPages[$indexedPages[$subpagina_id]['padre']]['nombre'];
+                if ($indexedPages[$indexedPages[$subpagina_id]['padre']]['padre']) {
+                    $titulo = $this->get('translator')->trans(trim($indexedPages[$indexedPages[$indexedPages[$subpagina_id]['padre']]['padre']]['categoria'])) . ': ' . $indexedPages[$indexedPages[$indexedPages[$subpagina_id]['padre']]['padre']]['nombre'];
+                    $subtitulo = $this->get('translator')->trans(trim($indexedPages[$indexedPages[$subpagina_id]['padre']]['categoria'])) . ' ' . $indexedPages[$indexedPages[$subpagina_id]['padre']]['orden'] . ': ' . $indexedPages[$indexedPages[$subpagina_id]['padre']]['nombre'];
+                } else {
+                    $titulo = $this->get('translator')->trans(trim($indexedPages[$indexedPages[$subpagina_id]['padre']]['categoria'])) . ': ' . $indexedPages[$indexedPages[$subpagina_id]['padre']]['nombre'];
                 }
-                else {
-                    $titulo = $this->get('translator')->trans(trim($indexedPages[$indexedPages[$subpagina_id]['padre']]['categoria'])).': '.$indexedPages[$indexedPages[$subpagina_id]['padre']]['nombre'];
-                }
-            }
-            else {
-                if ($indexedPages[$subpagina_id]['padre'] == $programa_id)
-                {
+            } else {
+                if ($indexedPages[$subpagina_id]['padre'] == $programa_id) {
                     $pagina_id = $programa_id;
-                    $titulo = $this->get('translator')->trans($indexedPages[$pagina_id]['categoria']).': '.$indexedPages[$pagina_id]['nombre'];
-                }
-                else {
+                    $titulo = $this->get('translator')->trans($indexedPages[$pagina_id]['categoria']) . ': ' . $indexedPages[$pagina_id]['nombre'];
+                } else {
                     $pagina_id = $indexedPages[$subpagina_id]['padre'];
-                    if ($indexedPages[$indexedPages[$subpagina_id]['padre']]['padre'])
-                    {
-                        $titulo = $this->get('translator')->trans($indexedPages[$indexedPages[$indexedPages[$subpagina_id]['padre']]['padre']]['categoria']).': '.$indexedPages[$indexedPages[$indexedPages[$subpagina_id]['padre']]['padre']]['nombre'];
-                        $subtitulo = $this->get('translator')->trans($indexedPages[$indexedPages[$subpagina_id]['padre']]['categoria']).' '.$indexedPages[$indexedPages[$subpagina_id]['padre']]['orden'].': '.$indexedPages[$indexedPages[$subpagina_id]['padre']]['nombre'];
-                    }
-                    else {
-                        $titulo = $this->get('translator')->trans($indexedPages[$indexedPages[$subpagina_id]['padre']]['categoria']).': '.$indexedPages[$indexedPages[$subpagina_id]['padre']]['nombre'];
+                    if ($indexedPages[$indexedPages[$subpagina_id]['padre']]['padre']) {
+                        $titulo = $this->get('translator')->trans($indexedPages[$indexedPages[$indexedPages[$subpagina_id]['padre']]['padre']]['categoria']) . ': ' . $indexedPages[$indexedPages[$indexedPages[$subpagina_id]['padre']]['padre']]['nombre'];
+                        $subtitulo = $this->get('translator')->trans($indexedPages[$indexedPages[$subpagina_id]['padre']]['categoria']) . ' ' . $indexedPages[$indexedPages[$subpagina_id]['padre']]['orden'] . ': ' . $indexedPages[$indexedPages[$subpagina_id]['padre']]['nombre'];
+                    } else {
+                        $titulo = $this->get('translator')->trans($indexedPages[$indexedPages[$subpagina_id]['padre']]['categoria']) . ': ' . $indexedPages[$indexedPages[$subpagina_id]['padre']]['nombre'];
                     }
                 }
                 $wizard = 1;
@@ -136,67 +118,66 @@ class LeccionController extends Controller
         }
 
         $lecciones = $f->contenidoLecciones($indexedPages[$pagina_id], $wizard, $session->get('usuario')['id'], $yml, $session->get('empresa')['id']);
-        
-        //print_r($subpagina_id);die();
-        
+
+
+
         $id_pagina_log = $wizard ? $lecciones['subpaginas'][0]['id'] : $lecciones['id'];
         $logs = $f->startLesson($indexedPages, $id_pagina_log, $session->get('usuario')['id'], $yml['parameters']['estatus_pagina']['iniciada']);
-      
-        $totalComentarios = $this->getDoctrine()->getRepository('LinkComunBundle:CertiMuro')->findBy(array('pagina'=>$id_pagina_log,'empresa'=>$session->get('empresa')['id']));
-        $totalComentarios = count($totalComentarios);
-        
-        return $this->render('LinkFrontendBundle:Leccion:index.html.twig', array('programa' => $programa,
-                                                                                 'subpagina_id' => $subpagina_id,
-                                                                                 'lecciones' => $lecciones,
-                                                                                 'titulo' => $titulo,
-                                                                                 'subtitulo' => $subtitulo,
-                                                                                 'wizard' => $wizard,
-                                                                                 'puntos' => $puntos,
-                                                                                 'comentarios'=> $totalComentarios,
-                                                                                 'boton_continuar'=> $boton_continuar,
-                                                                                 'competencia_parametros' => $yml['parameters']['categoria']['competencia'],
-                                                                                 'boton_terminado'=> $boton_terminado
-                                                                                ));
 
+        $totalComentarios = $this->getDoctrine()->getRepository('LinkComunBundle:CertiMuro')->findBy(array('pagina' => $id_pagina_log, 'empresa' => $session->get('empresa')['id']));
+        $totalComentarios = count($totalComentarios);
+
+        return $this->render('LinkFrontendBundle:Leccion:index.html.twig', array(
+            'programa' => $programa,
+            'pagina_actual' => $id_pagina_log,
+            'subpagina_id' => $subpagina_id,
+            'lecciones' => $lecciones,
+            'titulo' => $titulo,
+            'subtitulo' => $subtitulo,
+            'wizard' => $wizard,
+            'puntos' => $puntos,
+            'comentarios' => $totalComentarios,
+            'boton_continuar' => $boton_continuar,
+            'competencia_parametros' => $yml['parameters']['categoria']['competencia'],
+            'boton_terminado' => $boton_terminado
+        ));
     }
 
     public function ajaxIniciarPaginaAction(Request $request)
     {
-        
+
         $session = new Session();
         $em = $this->getDoctrine()->getManager();
         $f = $this->get('funciones');
-        $yml = Yaml::parse(file_get_contents($this->get('kernel')->getRootDir().'/config/parametros.yml'));
+        $yml = Yaml::parse(file_get_contents($this->get('kernel')->getRootDir() . '/config/parametros.yml'));
         $programa_id = $request->request->get('programa_id');
         $pagina_id = $request->request->get('pagina_id');
         $empresa_id = $session->get('empresa')['id'];
-        $comentarios = $this->getDoctrine()->getRepository('LinkComunBundle:CertiMuro')->findBy(array('pagina'=>$pagina_id,'empresa'=>$empresa_id));
+        $comentarios = $this->getDoctrine()->getRepository('LinkComunBundle:CertiMuro')->findBy(array('pagina' => $pagina_id, 'empresa' => $empresa_id));
         $programa = $this->getDoctrine()->getRepository('LinkComunBundle:CertiPagina')->find($programa_id);
 
         $ultima = -1;
-        if ($programa->getCategoria()->getId() == $yml['parameters']['categoria']['competencia']){
+        if ($programa->getCategoria()->getId() == $yml['parameters']['categoria']['competencia']) {
             $recursos = $this->getDoctrine()->getRepository('LinkComunBundle:CertiPagina')->findByPagina($programa_id);
             $ultima = 0;
             $culminados = 0;
-            foreach($recursos as $recurso){
-                $log = $this->getDoctrine()->getRepository('LinkComunBundle:CertiPaginaLog')->findOneBy(['pagina'=>$recurso->getId(),'usuario'=>$session->get('usuario')['id']]);
-                if($log){
-                    if($log->getEstatusPagina()->getId() == $yml['parameters']['estatus_pagina']['completada']){
+            foreach ($recursos as $recurso) {
+                $log = $this->getDoctrine()->getRepository('LinkComunBundle:CertiPaginaLog')->findOneBy(['pagina' => $recurso->getId(), 'usuario' => $session->get('usuario')['id']]);
+                if ($log) {
+                    if ($log->getEstatusPagina()->getId() == $yml['parameters']['estatus_pagina']['completada']) {
                         $culminados += 1;
                     }
                 }
-                
             }
-            if($culminados == count($recursos) - 1){
-                $log = $this->getDoctrine()->getRepository('LinkComunBundle:CertiPaginaLog')->findOneBy(['pagina'=>$pagina_id,'usuario'=>$session->get('usuario')['id']]);
-                if($log){
-                    if($log->getEstatusPagina()->getId() != $yml['parameters']['estatus_pagina']['completada'] ){
+            if ($culminados == count($recursos) - 1) {
+                $log = $this->getDoctrine()->getRepository('LinkComunBundle:CertiPaginaLog')->findOneBy(['pagina' => $pagina_id, 'usuario' => $session->get('usuario')['id']]);
+                if ($log) {
+                    if ($log->getEstatusPagina()->getId() != $yml['parameters']['estatus_pagina']['completada']) {
                         $ultima = 1;
                     }
-                }else{
+                } else {
                     $ultima = 1;
                 }
-                
             }
         }
 
@@ -204,7 +185,7 @@ class LeccionController extends Controller
         $indexedPages = $f->indexPages($session->get('paginas')[$programa_id]);
 
         // También se anexa a la indexación el programa padre
-       
+
         $pagina = $session->get('paginas')[$programa_id];
         $pagina['padre'] = 0;
         $pagina['sobrinos'] = 0;
@@ -218,61 +199,59 @@ class LeccionController extends Controller
 
         $logs = $f->startLesson($indexedPages, $pagina_id, $session->get('usuario')['id'], $yml['parameters']['estatus_pagina']['iniciada']);
 
-        $return = array('logs' => $logs,'comentarios'=>count($comentarios),'ultimo_recurso'=>$ultima);
+        $return = array('logs' => $logs, 'comentarios' => count($comentarios), 'ultimo_recurso' => $ultima);
 
         $return = json_encode($return);
         return new Response($return, 200, array('Content-Type' => 'application/json'));
-
     }
 
     public function ajaxRecursosFaltantesAction(Request $request)
     {
-        
+
         $session = new Session();
         $em = $this->getDoctrine()->getManager();
-        $yml = Yaml::parse(file_get_contents($this->get('kernel')->getRootDir().'/config/parametros.yml'));
+        $yml = Yaml::parse(file_get_contents($this->get('kernel')->getRootDir() . '/config/parametros.yml'));
         $programa_id = $request->request->get('programa_id');
 
         $query = $em->createQuery('SELECT p FROM LinkComunBundle:CertiPagina p
                                     WHERE p.pagina = :programa
                                     AND p.estatusContenido = :activo
                                     ORDER BY p.orden ASC')
-                    ->setParameters(array('programa' => $programa_id, 'activo'=>$yml['parameters']['estatus_contenido']['activo']));
+            ->setParameters(array('programa' => $programa_id, 'activo' => $yml['parameters']['estatus_contenido']['activo']));
         $recursos = $query->getResult();
-        
+
         $consulta = true;
         $recurso_id = 0;
         $i = 0;
-        while ($consulta && $i < count($recursos)){
-            
-            $log = $this->getDoctrine()->getRepository('LinkComunBundle:CertiPaginaLog')->findOneBy(['pagina'=>$recursos[$i]->getId(),'usuario'=>$session->get('usuario')['id']]);
-            if($log){
-                if($log->getEstatusPagina()->getId() != $yml['parameters']['estatus_pagina']['completada']){
+        while ($consulta && $i < count($recursos)) {
+
+            $log = $this->getDoctrine()->getRepository('LinkComunBundle:CertiPaginaLog')->findOneBy(['pagina' => $recursos[$i]->getId(), 'usuario' => $session->get('usuario')['id']]);
+            if ($log) {
+                if ($log->getEstatusPagina()->getId() != $yml['parameters']['estatus_pagina']['completada']) {
                     $consulta = false;
                     $recurso_id = $recursos[$i]->getId();
                 }
-            }else{
+            } else {
                 $consulta = false;
                 $recurso_id = $recursos[$i]->getId();
             }
             $i++;
         }
-        
+
 
         $return = array('recurso_id' => $recurso_id);
 
         $return = json_encode($return);
         return new Response($return, 200, array('Content-Type' => 'application/json'));
-
     }
 
     public function ajaxProcesarPaginaAction(Request $request)
     {
-        
+
         $session = new Session();
         $em = $this->getDoctrine()->getManager();
         $f = $this->get('funciones');
-        $yml = Yaml::parse(file_get_contents($this->get('kernel')->getRootDir().'/config/parametros.yml'));
+        $yml = Yaml::parse(file_get_contents($this->get('kernel')->getRootDir() . '/config/parametros.yml'));
 
         $programa_id = $request->request->get('programa_id');
         $pagina_id = $request->request->get('pagina_id');
@@ -298,17 +277,15 @@ class LeccionController extends Controller
 
         $return = json_encode($return);
         return new Response($return, 200, array('Content-Type' => 'application/json'));
-
     }
 
     public function finLeccionesAction($programa_id, $subpagina_id, $puntos, Request $request)
     {
         $session = new Session();
         $f = $this->get('funciones');
-        $yml = Yaml::parse(file_get_contents($this->get('kernel')->getRootDir().'/config/parametros.yml'));
-        
-        if (!$session->get('iniFront') || $f->sesionBloqueda($session->get('sesion_id')))
-        {
+        $yml = Yaml::parse(file_get_contents($this->get('kernel')->getRootDir() . '/config/parametros.yml'));
+
+        if (!$session->get('iniFront') || $f->sesionBloqueda($session->get('sesion_id'))) {
             return $this->redirectToRoute('_authExceptionEmpresa', array('tipo' => 'sesion'));
         }
         $f->setRequest($session->get('sesion_id'));
@@ -320,7 +297,7 @@ class LeccionController extends Controller
 
         // También se anexa a la indexación el programa padre
         $programa = $this->getDoctrine()->getRepository('LinkComunBundle:CertiPagina')->find($programa_id);
-        
+
         $pagina = $session->get('paginas')[$programa_id];
         $pagina['padre'] = 0;
         $pagina['sobrinos'] = 0;
@@ -336,44 +313,39 @@ class LeccionController extends Controller
 
         // Se completa la lección
         $log_id = $f->finishLesson($indexedPages, $subpagina_id, $session->get('usuario')['id'], $yml);
-        
+
         // Extraer los puntos generados
         $log_id_arr = explode("_", $log_id);
         $puntos += intval($log_id_arr[1]);
 
         // Determinar siguiente lección a ver
         $continue_button = $f->nextLesson($indexedPages, $subpagina_id, $session->get('usuario')['id'], $session->get('empresa')['id'], $yml, $programa_id);
-        
-        
-        if ($continue_button['evaluacion'])
-        {
+
+
+        if ($continue_button['evaluacion']) {
 
             $prueba = $em->getRepository('LinkComunBundle:CertiPrueba')->findOneByPagina($continue_button['evaluacion']);
 
             // Duración en minutos
-            $duracion = intval($prueba->getDuracion()->format('G'))*60;
+            $duracion = intval($prueba->getDuracion()->format('G')) * 60;
             $duracion += intval($prueba->getDuracion()->format('i'));
-
-        }
-        else {
+        } else {
             $duracion = 0;
         }
 
         //verificar si debo mostrar notas y certificado al final de la leccion
-        $log = $this->getDoctrine()->getRepository('LinkComunBundle:CertiPaginaLog')->findOneBy(['pagina'=> $programa_id,'usuario'=>$session->get('usuario')['id']]);
+        $log = $this->getDoctrine()->getRepository('LinkComunBundle:CertiPaginaLog')->findOneBy(['pagina' => $programa_id, 'usuario' => $session->get('usuario')['id']]);
         $certificado = 0;
         $notas = 0;
-        if($log->getEstatusPagina()->getId() == $yml['parameters']['estatus_pagina']['completada'] && $programa->getCategoria()->getId() == $yml['parameters']['categoria']['competencia']){
+        if ($log->getEstatusPagina()->getId() == $yml['parameters']['estatus_pagina']['completada'] && $programa->getCategoria()->getId() == $yml['parameters']['categoria']['competencia']) {
             $fecha_fin = new \DateTime($log->getFechaFin()->format('Y-m-d H:i:s'));
-            $fecha_fin = strtotime ( '+15 second' , strtotime ($fecha_fin->format('Y-m-d H:i:s'))) ; 
+            $fecha_fin = strtotime('+15 second', strtotime($fecha_fin->format('Y-m-d H:i:s')));
             $fecha_actual = strtotime(date('Y-m-d H:i:s'));
-            if ($fecha_actual < $fecha_fin){
+            if ($fecha_actual < $fecha_fin) {
                 $certificado = 1;
                 //comprobar si tiene notas disponibles 
-                $notas = $f->notasDisponibles($log->getPagina()->getId(),$session->get('usuario')['id'],$yml);
+                $notas = $f->notasDisponibles($log->getPagina()->getId(), $session->get('usuario')['id'], $yml);
             }
-
-
         }
 
 
@@ -381,33 +353,250 @@ class LeccionController extends Controller
         {
             $continue_button['pagina_padre_id']
         }*/
-       // print_r($indexedPages[$subpagina_id]);die();
- 
-        return $this->render('LinkFrontendBundle:Leccion:finLecciones.html.twig', array('programa' => $programa,
-                                                                                        'subpagina' => $indexedPages[$subpagina_id],
-                                                                                        'certificado' => $certificado,
-                                                                                        'notas' => $notas,
-                                                                                        'continue_button' => $continue_button,
-                                                                                        'puntos' => $puntos,
-                                                                                        'duracion' => $duracion));
+        // print_r($indexedPages[$subpagina_id]);die();
 
+        return $this->render('LinkFrontendBundle:Leccion:finLecciones.html.twig', array(
+            'programa' => $programa,
+            'subpagina' => $indexedPages[$subpagina_id],
+            'certificado' => $certificado,
+            'notas' => $notas,
+            'continue_button' => $continue_button,
+            'puntos' => $puntos,
+            'duracion' => $duracion
+        ));
     }
 
-    
+
+    public function assignInfluencerMedal($muroPadre,$pagina_padre_id,$yml,$em,$f,$session,$puntos_agregados){
+       // $f = $this->get('funciones');
+        $query = $em->createQuery('SELECT COUNT(cm.id) FROM LinkComunBundle:CertiMuro cm 
+                                    WHERE cm.muro = :muro_id
+                                    AND cm.usuario <> :usuario_id')
+                ->setParameters(array(
+                                        'muro_id' => $muroPadre->getId(),
+                                        'usuario_id' => $muroPadre->getUsuario()->getId()
+
+            ));
+        
+        $totalComments = $query->getSingleScalarResult();
+        $pagina_padre  = $this->getDoctrine()->getRepository('LinkComunBundle:CertiPagina')->find($pagina_padre_id);
+        $paginaEmpresa = $this->getDoctrine()->getRepository('LinkComunBundle:CertiPaginaEmpresa')->findOneBy(
+            array(
+                'empresa' => $muroPadre->getUsuario()->getEmpresa()->getId(),
+                'pagina'  => $pagina_padre->getId()
+            )
+        );
+        $isTutorRevisor = $f->is_tutorRevisor($muroPadre->getUsuario(),$yml['parameters']['nivel']);
+        if ($totalComments >= $yml['parameters']['comentarios_necesarios']['influencer_1'] && $paginaEmpresa->getRanking() && !$isTutorRevisor['tutor'] && !$isTutorRevisor['revisor']) {
+            $pagina_log = $em->getRepository('LinkComunBundle:CertiPaginaLog')->findOneBy(array(
+                'pagina' => $pagina_padre->getId(),
+                'usuario' => $muroPadre->getUsuario()->getId()
+            ));
+
+            if ($totalComments == $yml['parameters']['comentarios_necesarios']['influencer_1']) {
+                $medallaUsuario = $em->getRepository('LinkComunBundle:AdminMedallasUsuario')->findOneBy(array(
+                    'pagina' => $pagina_padre->getId(),
+                    'usuario' => $muroPadre->getUsuario()->getId(),
+                    'medalla' => $yml['parameters']['medallas']['influencer_1']
+                ));
+                if (!$medallaUsuario) {
+                    $medalla = $this->getDoctrine()->getRepository('LinkComunBundle:AdminMedallas')->find($yml['parameters']['medallas']['influencer_1']);
+
+                    $medallaUsuario = new AdminMedallasUsuario();
+                    $medallaUsuario->setUsuario($muroPadre->getUsuario());
+                    $medallaUsuario->setMedalla($medalla);
+                    $medallaUsuario->setPagina($pagina_padre);
+                    $em->persist($medallaUsuario);
+                    $em->flush();
+
+                    $puntos_agregados +=  $yml['parameters']['puntos']['influencer_1'];
+
+                    $tipo_alarma_id = $yml['parameters']['tipo_alarma']['medalla'];
+                    $descripcion = $this->get('translator')->trans('Has obtenido la medalla') . ': ' . $this->get('translator')->trans($medalla->getNombre());
+
+                    $f->newAlarm($tipo_alarma_id, $descripcion, $muroPadre->getUsuario(), $pagina_padre->getId());
+                }
+            } elseif ($totalComments == $yml['parameters']['comentarios_necesarios']['influencer_2']) {
+                $medallaUsuario = $em->getRepository('LinkComunBundle:AdminMedallasUsuario')->findOneBy(array(
+                    'pagina' => $pagina_padre->getId(),
+                    'usuario' => $muroPadre->getUsuario()->getId(),
+                    'medalla' => $yml['parameters']['medallas']['influencer_2']
+                ));
+                if (!$medallaUsuario) {
+                    $medalla = $this->getDoctrine()->getRepository('LinkComunBundle:AdminMedallas')->find($yml['parameters']['medallas']['influencer_2']);
+
+                    $medallaUsuario = new AdminMedallasUsuario();
+                    $medallaUsuario->setUsuario($muroPadre->getUsuario());
+                    $medallaUsuario->setMedalla($medalla);
+                    $medallaUsuario->setPagina($pagina_padre);
+                    $em->persist($medallaUsuario);
+                    $em->flush();
+
+                    $puntos_agregados  += $yml['parameters']['puntos']['influencer_2'];
+
+                    $tipo_alarma_id = $yml['parameters']['tipo_alarma']['medalla'];
+                    $descripcion = $this->get('translator')->trans('Has obtenido la medalla') . ': ' . $this->get('translator')->trans($medalla->getNombre());
+
+                    $f->newAlarm($tipo_alarma_id, $descripcion, $muroPadre->getUsuario(), $pagina_padre->getId());
+                }
+            } elseif ($totalComments == $yml['parameters']['comentarios_necesarios']['influencer_3']) {
+                $medallaUsuario = $em->getRepository('LinkComunBundle:AdminMedallasUsuario')->findOneBy(array(
+                    'pagina' => $pagina_padre->getId(),
+                    'usuario' => $muroPadre->getUsuario()->getId(),
+                    'medalla' => $yml['parameters']['medallas']['influencer_3']
+                ));
+                if (!$medallaUsuario) {
+                    $medalla = $this->getDoctrine()->getRepository('LinkComunBundle:AdminMedallas')->find($yml['parameters']['medallas']['influencer_3']);
+
+                    $medallaUsuario = new AdminMedallasUsuario();
+                    $medallaUsuario->setUsuario($muroPadre->getUsuario());
+                    $medallaUsuario->setMedalla($medalla);
+                    $medallaUsuario->setPagina($pagina_padre);
+                    $em->persist($medallaUsuario);
+                    $em->flush();
+
+                    $puntos_agregados  += $yml['parameters']['puntos']['influencer_3'];
+                    $tipo_alarma_id = $yml['parameters']['tipo_alarma']['medalla'];
+                    $descripcion = $this->get('translator')->trans('Has obtenido la medalla') . ': ' . $this->get('translator')->trans($medalla->getNombre());
+
+                    $f->newAlarm($tipo_alarma_id, $descripcion, $muroPadre->getUsuario(), $pagina_padre->getId());
+                    
+                    //revisar si debe asignarce la medalla vencedor
+                    $f->assignWinnerMedal($pagina_padre,$muroPadre->getUsuario(),$yml);
+                }
+            }
+            $puntos = $pagina_log->getPuntos() + $puntos_agregados;
+            $pagina_log->setPuntos($puntos);
+            $em->persist($pagina_log);
+            $em->flush();
+        }
+        return $puntos_agregados;
+    }
+
+    public function assignFriendlyMedal($usuario,$pagina_padre_id,$yml,$em,$f,$session,$puntos_agregados){
+        $estructura = $f->obtenerEstructura($pagina_padre_id, $yml);
+        $pagina_padre = $this->getDoctrine()->getRepository('LinkComunBundle:CertiPagina')->find($pagina_padre_id);
+        $query = $em->createQuery('SELECT COUNT(cm.id) FROM LinkComunBundle:CertiMuro cm 
+                                    WHERE cm.usuario = :usuario_id
+                                    AND cm.pagina IN (:programa)')
+                ->setParameters(array(
+                    'usuario_id' => $usuario->getId(),
+                    'programa' => $estructura
+                ));
+
+            $comentariosTotal2 = $query->getSingleScalarResult();
+            $paginaEmpresa = $em->getRepository('LinkComunBundle:CertiPaginaEmpresa')->findOneBy(
+                array(
+                    'empresa' => $session->get('empresa')['id'],
+                    'pagina'  => $pagina_padre->getId()
+                )
+            );
+            $isTutorRevisor = $f->is_tutorRevisor($usuario,$yml['parameters']['nivel']);
+            if ($comentariosTotal2 >= $yml['parameters']['comentarios_necesarios']['amigable_1'] && $paginaEmpresa->getRanking() && !$isTutorRevisor['tutor'] && !$isTutorRevisor['revisor'] ) {
+                $pagina_log = $em->getRepository('LinkComunBundle:CertiPaginaLog')->findOneBy(array(
+                    'pagina' => $pagina_padre->getId(),
+                    'usuario' => $session->get('usuario')['id']
+                ));
+
+                if ($comentariosTotal2 == $yml['parameters']['comentarios_necesarios']['amigable_1']) {
+                    $medallaUsuario = $em->getRepository('LinkComunBundle:AdminMedallasUsuario')->findOneBy(array(
+                        'pagina' => $pagina_padre->getId(),
+                        'usuario' => $session->get('usuario')['id'],
+                        'medalla' => $yml['parameters']['medallas']['amigable_1']
+                    ));
+                    if (!$medallaUsuario) {
+                        $medalla = $this->getDoctrine()->getRepository('LinkComunBundle:AdminMedallas')->find($yml['parameters']['medallas']['amigable_1']);
+
+                        $medallaUsuario = new AdminMedallasUsuario();
+                        $medallaUsuario->setUsuario($usuario);
+                        $medallaUsuario->setMedalla($medalla);
+                        $medallaUsuario->setPagina($pagina_padre);
+                        $em->persist($medallaUsuario);
+                        $em->flush();
+
+                        $puntos_agregados +=  $yml['parameters']['puntos']['amigable_1'];
+
+                        $tipo_alarma_id = $yml['parameters']['tipo_alarma']['medalla'];
+                        $descripcion = $this->get('translator')->trans('Has obtenido la medalla') . ': ' . $this->get('translator')->trans($medalla->getNombre());
+
+                        $f->newAlarm($tipo_alarma_id, $descripcion, $usuario, $pagina_padre->getId());
+                    }
+                } elseif ($comentariosTotal2 == $yml['parameters']['comentarios_necesarios']['amigable_2']) {
+                    $medallaUsuario = $em->getRepository('LinkComunBundle:AdminMedallasUsuario')->findOneBy(array(
+                        'pagina'  => $pagina_padre->getId(),
+                        'usuario' => $session->get('usuario')['id'],
+                        'medalla' => $yml['parameters']['medallas']['amigable_2']
+                    ));
+                    if (!$medallaUsuario) {
+                        $medalla = $this->getDoctrine()->getRepository('LinkComunBundle:AdminMedallas')->find($yml['parameters']['medallas']['amigable_2']);
+
+                        $medallaUsuario = new AdminMedallasUsuario();
+                        $medallaUsuario->setUsuario($usuario);
+                        $medallaUsuario->setMedalla($medalla);
+                        $medallaUsuario->setPagina($pagina_padre);
+                        $em->persist($medallaUsuario);
+                        $em->flush();
+
+                        $puntos_agregados += $yml['parameters']['puntos']['amigable_2'];
+
+                        $tipo_alarma_id = $yml['parameters']['tipo_alarma']['medalla'];
+                        $descripcion = $this->get('translator')->trans('Has obtenido la medalla') . ': ' . $this->get('translator')->trans($medalla->getNombre());
+
+                        $f->newAlarm($tipo_alarma_id, $descripcion, $usuario, $pagina_padre->getId());
+                    }
+                } elseif ($comentariosTotal2 == $yml['parameters']['comentarios_necesarios']['amigable_3']) {
+
+                    $medallaUsuario = $em->getRepository('LinkComunBundle:AdminMedallasUsuario')->findOneBy(array(
+                        'pagina' => $pagina_padre->getId(),
+                        'usuario' => $session->get('usuario')['id'],
+                        'medalla' => $yml['parameters']['medallas']['amigable_3']
+                    ));
+                    if (!$medallaUsuario) {
+                        $medalla = $this->getDoctrine()->getRepository('LinkComunBundle:AdminMedallas')->find($yml['parameters']['medallas']['amigable_3']);
+
+                        $medallaUsuario = new AdminMedallasUsuario();
+                        $medallaUsuario->setUsuario($usuario);
+                        $medallaUsuario->setMedalla($medalla);
+                        $medallaUsuario->setPagina($pagina_padre);
+                        $em->persist($medallaUsuario);
+                        $em->flush();
+
+                        $puntos_agregados += $yml['parameters']['puntos']['amigable_3'];
+                       
+
+                        $tipo_alarma_id = $yml['parameters']['tipo_alarma']['medalla'];
+                        $descripcion = $this->get('translator')->trans('Has obtenido la medalla') . ': ' . $this->get('translator')->trans($medalla->getNombre());
+
+                        $f->newAlarm($tipo_alarma_id, $descripcion, $usuario, $pagina_padre->getId());
+
+                         //revisar si debe asignarce la medalla vencedor
+                         $f->assignWinnerMedal($pagina_padre,$usuario,$yml);
+                    }
+
+                   
+                }
+                $puntos = $pagina_log->getPuntos() + $puntos_agregados;
+                $pagina_log->setPuntos($puntos);
+                $em->persist($pagina_log);
+                $em->flush();
+
+    }
+    return $puntos_agregados;
+}
+
 
     public function ajaxEnviarComentarioAction(Request $request)
     {
-          try{  
+        try {
             $session = new Session();
             $em = $this->getDoctrine()->getManager();
             $f = $this->get('funciones');
-            $yml = Yaml::parse(file_get_contents($this->get('kernel')->getRootDir().'/config/parametros.yml'));
+            $yml = Yaml::parse(file_get_contents($this->get('kernel')->getRootDir() . '/config/parametros.yml'));
             $tipoMensaje = 'Publicó';
-            $usuarioPadre = '';
+            $usuario_padre_id = 0;
             $mensajePadre = '';
-            $is_tutor = $session->get('usuario')['tutor']? 1:0;
+            $is_tutor = $session->get('usuario')['tutor'] ? 1 : 0;
             $pagina_id = $request->request->get('pagina_id');
-            //return new response($pagina_id);
             $mensaje = $request->request->get('mensaje');
             $muro_id = $request->request->get('muro_id');
             $prefix = $request->request->get('prefix');
@@ -415,79 +604,77 @@ class LeccionController extends Controller
             $pagina = $this->getDoctrine()->getRepository('LinkComunBundle:CertiPagina')->find($pagina_id);
             $usuario = $this->getDoctrine()->getRepository('LinkComunBundle:AdminUsuario')->find($session->get('usuario')['id']);
             $empresa = $this->getDoctrine()->getRepository('LinkComunBundle:AdminEmpresa')->find($session->get('empresa')['id']);
+            $pagina_padre_id = $f->paginaRaiz($pagina);
 
-            $pagina_log = $em->getRepository('LinkComunBundle:CertiPaginaLog')->findOneBy(array('pagina' => $pagina_id,
-                                                                                                'usuario' => $session->get('usuario')['id']));
-
-            $puntos_agregados = $yml['parameters']['puntos']['escribir_muro'];
+            $puntos_agregados = 0;
 
             $muro = new CertiMuro();
             $muro->setMensaje($mensaje);
             $muro->setPagina($pagina);
             $muro->setUsuario($usuario);
 
-            $background = $this->container->getParameter('folders')['uploads'].'recursos/decorate_certificado.png';
-            $logo = $this->container->getParameter('folders')['uploads'].'recursos/logo_formacion_smart.png';
-            $footer = $this->container->getParameter('folders')['uploads'].'recursos/footer.bg.form.png';
-            $link_plataforma = $this->container->getParameter('link_plataforma').$empresa->getId();
+            $background = $this->container->getParameter('folders')['uploads'] . 'recursos/decorate_certificado.png';
+            $logo = $this->container->getParameter('folders')['uploads'] . 'recursos/logo_formacion_smart.png';
+            $footer = $this->container->getParameter('folders')['uploads'] . 'recursos/footer.bg.form.png';
+            $link_plataforma = $this->container->getParameter('link_plataforma') . $empresa->getId();
             $correo = 0;
 
-            if ($muro_id)
-            {
-                $puntos_recibidos = $yml['parameters']['puntos']['respuesta_muro'];
+            if ($muro_id) {
+                
                 $muro_padre = $this->getDoctrine()->getRepository('LinkComunBundle:CertiMuro')->find($muro_id);
                 $mensajePadre = $muro_padre->getMensaje();
-                $usuarioPadre = $muro_padre->getUsuario()->getNombre().' '.$muro_padre->getUsuario()->getApellido();
+                $usuario_padre_id = $muro_padre->getUsuario()->getId();
                 $muro->setMuro($muro_padre);
-                //return new response($muro_padre->getPagina()->getId());
-                $pagina_log_padre = $em->getRepository('LinkComunBundle:CertiPaginaLog')->findOneBy(array('pagina' => $muro_padre->getPagina()->getId(),
-                                                                                                         'usuario' => $muro_padre->getUsuario()->getId()));
-                
                 $tipoMensaje = 'Respondió';
-                $puntos_padre = $pagina_log->getPuntos() + $puntos_recibidos;
-                $pagina_log_padre->setPuntos($puntos_padre);
-                $em->persist($pagina_log_padre);
-                $em->flush();
+
 
                 // Nueva alarma
-                $descripcion = $usuario->getNombre().' '.$usuario->getApellido().' '.$this->get('translator')->trans('respondió a tu comentario en el muro de').' '.$pagina->getNombre().'.';
+                $descripcion = $usuario->getNombre() . ' ' . $usuario->getApellido() . ' ' . $this->get('translator')->trans('respondió a tu comentario en el muro de') . ' ' . $pagina->getNombre() . '.';
                 $f->newAlarm($yml['parameters']['tipo_alarma']['respuesta_muro'], $descripcion, $muro_padre->getUsuario(), $muro_padre->getId());
 
                 // Envío de correo al tutor virtual solo sí el dueño del comentario inicial es de éste y la respuesta es de otro usuario
                 $query = $em->createQuery('SELECT COUNT(ru.id) FROM LinkComunBundle:AdminRolUsuario ru 
                                             WHERE ru.usuario = :usuario_id 
                                             AND ru.rol = :tutor')
-                            ->setParameters(array('usuario_id' => $muro_padre->getUsuario()->getId(),
-                                                  'tutor' => $yml['parameters']['rol']['tutor']));
+                    ->setParameters(array(
+                        'usuario_id' => $muro_padre->getUsuario()->getId(),
+                        'tutor' => $yml['parameters']['rol']['tutor']
+                    ));
                 $owner_tutor = $query->getSingleScalarResult();
 
                 $correo_tutor = (!$muro_padre->getUsuario()->getCorreoPersonal() || $muro_padre->getUsuario()->getCorreoPersonal() == '') ? (!$muro_padre->getUsuario()->getCorreoCorporativo() || $muro_padre->getUsuario()->getCorreoCorporativo() == '') ? 0 : $muro_padre->getUsuario()->getCorreoCorporativo() : $muro_padre->getUsuario()->getCorreoPersonal();
-                if ($muro_padre->getUsuario()->getId() != $usuario->getId() && $owner_tutor && $correo_tutor)
-                {
+                if ($muro_padre->getUsuario()->getId() != $usuario->getId() && $owner_tutor && $correo_tutor) {
 
                     $categoria = $f->obtenerProgramaCurso($pagina);
-                    $parametros_correo = array('twig' => 'LinkFrontendBundle:Leccion:emailMuro.html.twig',
-                                               'datos' => array('logo'=> $logo,
-                                                                'footer' => $footer,
-                                                                'background' => $background, 
-                                                                'nombre' => $muro_padre->getUsuario()->getNombre().' '.$muro_padre->getUsuario()->getApellido(),
-                                                                'usuario'=> $usuario->getNombre().' '.$usuario->getApellido(),
-                                                                'comentarioPadre' => $muro_padre->getMensaje(),
-                                                                'respuesta' => $mensaje,
-                                                                'link_plataforma' => $link_plataforma,
-                                                                'logo' => $logo,
-                                                                'categoria' => $categoria['categoria'],
-                                                                'pagina' => $categoria['nombre'],
-                                                                'empresa' => $empresa->getNombre()),
-                                               'asunto' => 'Formación Smart: '.$descripcion,
-                                               'remitente' => $this->container->getParameter('mailer_user'),
-                                               'remitente_name' => $this->container->getParameter('mailer_user_name'),
-                                               'mailer'=>'soporte_mailer',
-                                               'destinatario' => $correo_tutor);
+                    $parametros_correo = array(
+                        'twig' => 'LinkFrontendBundle:Leccion:emailMuro.html.twig',
+                        'datos' => array(
+                            'logo' => $logo,
+                            'footer' => $footer,
+                            'background' => $background,
+                            'nombre' => $muro_padre->getUsuario()->getNombre() . ' ' . $muro_padre->getUsuario()->getApellido(),
+                            'usuario' => $usuario->getNombre() . ' ' . $usuario->getApellido(),
+                            'comentarioPadre' => $muro_padre->getMensaje(),
+                            'respuesta' => $mensaje,
+                            'link_plataforma' => $link_plataforma,
+                            'logo' => $logo,
+                            'categoria' => $categoria['categoria'],
+                            'pagina' => $categoria['nombre'],
+                            'empresa' => $empresa->getNombre()
+                        ),
+                        'asunto' => 'Formación Smart: ' . $descripcion,
+                        'remitente' => $this->container->getParameter('mailer_user'),
+                        'remitente_name' => $this->container->getParameter('mailer_user_name'),
+                        'mailer' => 'soporte_mailer',
+                        'destinatario' => $correo_tutor
+                    );
                     $correo = $f->sendEmail($parametros_correo);
+                }
 
-                }             
 
+                ///Evaluar si hay medallas y asignar
+                
+               
             }
 
             $muro->setEmpresa($empresa);
@@ -495,98 +682,28 @@ class LeccionController extends Controller
             $em->persist($muro);
             $em->flush();
 
-            $query = $em->createQuery('SELECT COUNT(cm.id) FROM LinkComunBundle:CertiMuro cm 
-                                    WHERE cm.muro = :muro_id')
-                        ->setParameter('muro_id', $muro_id);
-            $comentariosTotal = $query->getSingleScalarResult();
-
-            $pagina_padre_id = $f->paginaRaiz($pagina);
-            
-            $pagina_padre = $this->getDoctrine()->getRepository('LinkComunBundle:CertiPagina')->find($pagina_padre_id);
-
-            $comentarios = $comentariosTotal / 3;
-
-            if( is_int($comentarios))
-            {
-                if($comentariosTotal == 3)
-                {
-                    $medallaUsuario = $em->getRepository('LinkComunBundle:AdminMedasllaUsuario')->findOneBy(array('pagina' => $pagina_padre->getId(),
-                                                                                                                  'usuario' => $muro_padre->getUsuario()->getId(),
-                                                                                                                  'medalla' => $yml['parameters']['medallas']['influencer_1']));
-                    if(!$medallaUsuario)
-                    {
-                        $medalla = $this->getDoctrine()->getRepository('LinkComunBundle:AdminMedallas')->find($yml['parameters']['medallas']['influencer_1']);
-                        
-                        $medalla = new AdminMedallasUsuario();
-                        $medalla->setUsuario($usuario);
-                        $medalla->setMedalla($medalla->getId());
-                        $medalla->setPagina($pagina_padre);
-                        $em->persist($medalla);
-                        $em->flush();
-
-                        $puntos_agregados = $puntos_agregados + $yml['parameters']['puntos']['influencer_1'];
-                        //return new response(var_dump($puntos_agregados));
-                    }
-                }
-                elseif($comentariosTotal == 6)
-                {
-                    $medallaUsuario = $em->getRepository('LinkComunBundle:AdminMedasllaUsuario')->findOneBy(array('pagina' => $pagina_padre->getId(),
-                                                                                                                  'usuario' => $muro_padre->getUsuario()->getId(),
-                                                                                                                  'medalla' => $yml['parameters']['medallas']['influencer_2']));
-                    if(!$medallaUsuario)
-                    {
-                        $medalla = $this->getDoctrine()->getRepository('LinkComunBundle:AdminMedallas')->find($yml['parameters']['medallas']['influencer_1']);
-                        
-                        $medalla = new AdminMedallasUsuario();
-                        $medalla->setUsuario($usuario);
-                        $medalla->setMedalla($medalla->getId());
-                        $medalla->setPagina($pagina_padre);
-                        $em->persist($medalla);
-                        $em->flush();
-
-                        $puntos_agregados = $puntos_agregados + $yml['parameters']['puntos']['influencer_1'];
-                        //return new response(var_dump($puntos_agregados));
-                    }
-                }
-                elseif($comentariosTotal == 9)
-                {
-                    $medallaUsuario = $em->getRepository('LinkComunBundle:AdminMedasllaUsuario')->findOneBy(array('pagina' => $pagina_padre->getId(),
-                                                                                                                  'usuario' => $muro_padre->getUsuario()->getId(),
-                                                                                                                  'medalla' => $yml['parameters']['medallas']['influencer_3']));
-                    if(!$medallaUsuario)
-                    {
-                        $medalla = $this->getDoctrine()->getRepository('LinkComunBundle:AdminMedallas')->find($yml['parameters']['medallas']['influencer_1']);
-                        
-                        $medalla = new AdminMedallasUsuario();
-                        $medalla->setUsuario($usuario);
-                        $medalla->setMedalla($medalla->getId());
-                        $medalla->setPagina($pagina_padre);
-                        $em->persist($medalla);
-                        $em->flush();
-
-                        $puntos_agregados = $puntos_agregados + $yml['parameters']['puntos']['influencer_1'];
-                        //return new response(var_dump($puntos_agregados));
-                    }
-
-                }
-            //return new response($comentarios.'   '.$pagina_id);
+            $puntos_agregados = $this->assignFriendlyMedal($usuario,$pagina_padre_id,$yml,$em,$f,$session,$puntos_agregados);
+            $puntos_agregados = 0;
+            if($muro_id){
+                $puntos_agregados = $this->assignInfluencerMedal($muro_padre,$pagina_padre_id,$yml,$em,$f,$session,$puntos_agregados);
             }
+           
 
+            //Amigable
+            $programa = '';
+            $ids = 1;
+           
             /////////// Enviar notificacion al tutor o tutores de actividad en el muro ///////////
-            $background = $this->container->getParameter('folders')['uploads'].'recursos/decorate_certificado.png';
-            $logo = $this->container->getParameter('folders')['uploads'].'recursos/logo_formacion_smart.png';
-            $link_plataforma = $this->container->getParameter('link_plataforma').$empresa->getId();
+            $background = $this->container->getParameter('folders')['uploads'] . 'recursos/decorate_certificado.png';
+            $logo = $this->container->getParameter('folders')['uploads'] . 'recursos/logo_formacion_smart.png';
+            $link_plataforma = $this->container->getParameter('link_plataforma') . $empresa->getId();
             $categoria = $f->obtenerProgramaCurso($pagina);
             $tutores = $f->getTutoresEmpresa($empresa->getId(), $yml);
-            $sendMails = $f->sendMailNotificationsMuro($tutores, $yml, $muro, $categoria, $tipoMensaje, $background, $logo, $link_plataforma);
+            $sendMails = $f->sendMailNotificationsMuro($tutores, $yml, $muro, $categoria, $tipoMensaje, $background, $logo, $link_plataforma, $usuario_padre_id);
 
-            $puntos = $pagina_log->getPuntos() + $puntos_agregados;
-            $pagina_log->setPuntos($puntos);
-            $em->persist($pagina_log);
-            $em->flush();
+            
 
-            if ($correo && $muro_id)
-            {
+            if ($correo && $muro_id) {
 
                 // Nuevo registro en la tabla de admin_correo
                 $tipo_correo = $em->getRepository('LinkComunBundle:AdminTipoCorreo')->find($yml['parameters']['tipo_correo']['muro']);
@@ -598,75 +715,71 @@ class LeccionController extends Controller
                 $email->setFecha(new \DateTime('now'));
                 $em->persist($email);
                 $em->flush();
-                    
+
                 //crea la notificacion para el usuario cuando el usuario que publica
-                $descripcion = $f->tipoDescripcion($tipoMensaje, $muro, $muro_padre->getUsuario()->getNombre().' '.$muro_padre->getUsuario()->getApellido());
-                $tipoAlarma = ($tipoMensaje=='Respondió') ? 'respuesta_muro' : 'aporte_muro';
-                $f->newAlarm($yml['parameters']['tipo_alarma'][$tipoAlarma], $descripcion, $muro_padre->getUsuario(), $muro->getId());
+                //$descripcion = $f->tipoDescripcion($tipoMensaje, $muro, $muro_padre->getUsuario()->getNombre().' '.$muro_padre->getUsuario()->getApellido());
+                //$tipoAlarma = ($tipoMensaje=='Respondió') ? 'respuesta_muro' : 'aporte_muro';
+                //$f->newAlarm($yml['parameters']['tipo_alarma'][$tipoAlarma], $descripcion, $muro_padre->getUsuario(), $muro->getId());
 
             }
 
             // HTML para anexar al muro
             $uploads = $this->container->getParameter('folders')['uploads'];
-            $img_user = $session->get('usuario')['foto'] ? $uploads.$session->get('usuario')['foto'] : $f->getWebDirectory().'/front/assets/img/user-default.png';
+            $img_user = $session->get('usuario')['foto'] ? $uploads . $session->get('usuario')['foto'] : $f->getWebDirectory() . '/front/assets/img/user-default.png';
             $html = $muro_id ? '<div class="comment replied">' : '<div class="comment">';
             $html .= '<div class="comm-header d-flex align-items-center mb-2">
-                        <img class="img-fluid avatar-img" src="'.$img_user.'" alt="">
+                        <img class="img-fluid avatar-img" src="' . $img_user . '" alt="">
                         <div class="wrap-info-user flex-column ml-2">
-                            <div class="name text-xs color-dark-grey">'.$this->get('translator')->trans('Yo').'</div>
-                            <div class="date text-xs color-grey">'.$this->get('translator')->trans('Ahora').'</div>
+                            <div class="name text-xs color-dark-grey">' . $this->get('translator')->trans('Yo') . '</div>
+                            <div class="date text-xs color-grey">' . $this->get('translator')->trans('Ahora') . '</div>
                         </div>
                     </div>
                     <div class="comm-body">
-                        <p>'.$mensaje.'</p>
+                        <p>' . $mensaje . '</p>
                     </div>
                     <div class="comm-footer d-flex justify-content-between align-items-center">
-                        <a href="#" class="mr-0 text-sm color-light-grey " data="'.$muro->getId().'">
+                        <a href="#" class="mr-0 text-sm color-light-grey " data="' . $muro->getId() . '">
                         </a>';
-            if (!$muro_id)
-            {
-                $html .= '<a href="#" class="links text-right reply_comment" id="href_reply_'.$muro->getId().'" data="'.$muro->getId().'">'.$this->get('translator')->trans('Responder').'</a>';
+            if (!$muro_id) {
+                $html .= '<a href="#" class="links text-right reply_comment" id="href_reply_' . $muro->getId() . '" data="' . $muro->getId() . '">' . $this->get('translator')->trans('Responder') . '</a>';
             }
             $html .= '</div>';
-            if (!$muro_id)
-            {
-                $html .= '<div id="'.$prefix.'_div-response-'.$muro->getId().'"></div>
-                          <div id="'.$prefix.'_respuestas-'.$muro->getId().'"></div>';
+            if (!$muro_id) {
+                $html .= '<div id="' . $prefix . '_div-response-' . $muro->getId() . '"></div>
+                          <div id="' . $prefix . '_respuestas-' . $muro->getId() . '"></div>';
                 //alarma para participantes al momento de que un tutor haga una entrada en el muro
 
-                if (($is_tutor == 1) and ($yml['parameters']['muro']['alarma_participantes'] !=0 )) {
-                    $descripcion = $f->tipoDescripcion($tipoMensaje, $muro, $muro->getUsuario()->getNombre().' '.$muro->getUsuario()->getApellido());
+                if (($is_tutor == 1) and ($yml['parameters']['muro']['alarma_participantes'] != 0)) {
+                    $descripcion = $f->tipoDescripcion($tipoMensaje, $muro, $muro->getUsuario()->getNombre() . ' ' . $muro->getUsuario()->getApellido());
                     $fecha = new \DateTime('now');
                     $fecha = $fecha->format('Y-m-d H:i:s');
                     $grupo = $f->obtenerProgramaCurso($muro->getPagina());
-                    $alarmaGrupo = $f->alarmasGrupo($yml['parameters']['tipo_alarma']['aporte_muro'],$descripcion,$muro->getId(),$fecha,$grupo['programa_id'],$muro->getUsuario()->getEmpresa()->getId(),$muro->getUsuario()->getId());
-
-
+                    $alarmaGrupo = $f->alarmasGrupo($yml['parameters']['tipo_alarma']['aporte_muro'], $descripcion, $muro->getId(), $fecha, $grupo['programa_id'], $muro->getUsuario()->getEmpresa()->getId(), $muro->getUsuario()->getId());
                 }
             }
             $html .= '</div>';
-            $total_comentarios = $em->getRepository('LinkComunBundle:CertiMuro')->findBy(array('pagina'=>$pagina_id,'empresa'=>$session->get('empresa')['id']));
+            $total_comentarios = $em->getRepository('LinkComunBundle:CertiMuro')->findBy(array('pagina' => $pagina_id, 'empresa' => $session->get('empresa')['id']));
             $total_comentarios = count($total_comentarios);
-            $return = array('html' => $html,
-                            'muro_id' => $muro->getId(),
-                            'puntos_agregados' => $puntos_agregados,
-                            'comentarios'=>$total_comentarios);
+            $return = array(
+                'html' => $html,
+                'muro_id' => $muro->getId(),
+                'puntos_agregados' => $puntos_agregados,
+                'comentarios' => $total_comentarios
+            );
 
             $return = json_encode($return);
             return new Response($return, 200, array('Content-Type' => 'application/json'));
-        }
-        catch(\Exception $ex){
-            $return = json_encode(array('mensaje'=>$ex->getMessage().' - '.$ex->getFile().'  '.$ex->getLine()));
+        } catch (\Exception $ex) {
+            $return = json_encode(array('mensaje' => $ex->getMessage() . ' - ' . $ex->getFile() . '  ' . $ex->getLine()));
             return new Response($return, 200, array('Content-Type' => 'application/json'));
         }
-
     }
 
 
 
     public function ajaxDivResponseAction(Request $request)
     {
-        
+
         $session = new Session();
         $em = $this->getDoctrine()->getManager();
         $f = $this->get('funciones');
@@ -674,20 +787,20 @@ class LeccionController extends Controller
         $prefix = $request->query->get('prefix');
 
         $uploads = $this->container->getParameter('folders')['uploads'];
-        $img_user = $session->get('usuario')['foto'] ? $uploads.$session->get('usuario')['foto'] : $f->getWebDirectory().'/front/assets/img/user-default.png';
-        $html_radar = '<div class="radar-response" style="display:none" id="radar-comment-'.$muro_id.'">
+        $img_user = $session->get('usuario')['foto'] ? $uploads . $session->get('usuario')['foto'] : $f->getWebDirectory() . '/front/assets/img/user-default.png';
+        $html_radar = '<div class="radar-response" style="display:none" id="radar-comment-' . $muro_id . '">
                                 <div class="contenedor" >
                                     <div class="radar"></div>
                                 </div>
                         </div>';
 
-        $html = '<div class="response" id="'.$prefix.'_response-'.$muro_id.'" >
-                    <img class="img-fluid avatar-img" src="'.$img_user.'" alt="">
+        $html = '<div class="response" id="' . $prefix . '_response-' . $muro_id . '" >
+                    <img class="img-fluid avatar-img" src="' . $img_user . '" alt="">
                     <form class="ml-3 w-100" method="POST" >
                         <div class="form-group d-inline-block w-100">
-                            <textarea class="form-control w-100" id="'.$prefix.'_respuesta_'.$muro_id.'" name="'.$prefix.'_respuesta_'.$muro_id.'" rows="5" maxlength="1000" placeholder="'.$this->get('translator')->trans('Escriba su respuesta').'"></textarea>
+                            <textarea class="form-control w-100" id="' . $prefix . '_respuesta_' . $muro_id . '" name="' . $prefix . '_respuesta_' . $muro_id . '" rows="5" maxlength="1000" placeholder="' . $this->get('translator')->trans('Escriba su respuesta') . '"></textarea>
                         </div>
-                        <button type="button" name="button" style="" class="btn btn-sm btn-primary float-right button-reply" data="'.$muro_id.'" id="'.$prefix.'_button-reply-'.$muro_id.'">'.$this->get('translator')->trans('Responder').'</button>
+                        <button type="button" name="button" style="" class="btn btn-sm btn-primary float-right button-reply" data="' . $muro_id . '" id="' . $prefix . '_button-reply-' . $muro_id . '">' . $this->get('translator')->trans('Responder') . '</button>
                     </form>';
         $html .= $html_radar;
         $html .= '</div>';
@@ -696,66 +809,59 @@ class LeccionController extends Controller
 
         $return = json_encode($return);
         return new Response($return, 200, array('Content-Type' => 'application/json'));
-        
     }
 
     public function ajaxRefreshMuroAction(Request $request)
     {
-        
+
         $session = new Session();
         $em = $this->getDoctrine()->getManager();
-        $yml = Yaml::parse(file_get_contents($this->get('kernel')->getRootDir().'/config/parametros.yml'));
+        $yml = Yaml::parse(file_get_contents($this->get('kernel')->getRootDir() . '/config/parametros.yml'));
         $f = $this->get('funciones');
         $pagina_id = $request->query->get('pagina_id');
         $prefix = $request->query->get('prefix');
         $html = '';
 
-        if ($prefix == 'recientes')
-        {
+        if ($prefix == 'recientes') {
             $muros = $f->muroPagina($pagina_id, 'id', 'DESC', 0, 5, $session->get('usuario')['id'], $session->get('empresa')['id'], $yml['parameters']['social']);
-        }
-        else {
+        } else {
             $muros = $f->muroPaginaValorados($pagina_id, 0, 5, $session->get('usuario')['id'], $session->get('empresa')['id'], $yml['parameters']['social']);
         }
 
         $total_comentarios = $muros['total_comentarios'];
         $total_muro = count($muros['muros']);
 
-        foreach ($muros['muros'] as $muro)
-        {
+        foreach ($muros['muros'] as $muro) {
             $html .= $f->drawComment($muro, $prefix);
         }
 
-        if ($total_comentarios > $total_muro)
-        {
-            $html .= '<input type="hidden" id="more_comments_'.$prefix.'-'.$pagina_id.'" name="more_comments_'.$prefix.'-'.$pagina_id.'" value="0">
-                      <a href="#" class="links text-center d-block more_comments" data="'.$pagina_id.'">'.$this->get('translator')->trans('Ver más comentarios').'</a>';
+        if ($total_comentarios > $total_muro) {
+            $html .= '<input type="hidden" id="more_comments_' . $prefix . '-' . $pagina_id . '" name="more_comments_' . $prefix . '-' . $pagina_id . '" value="0">
+                      <a href="#" class="links text-center d-block more_comments" data="' . $pagina_id . '">' . $this->get('translator')->trans('Ver más comentarios') . '</a>';
         }
-        
+
         $return = array('html' => $html);
 
         $return = json_encode($return);
         return new Response($return, 200, array('Content-Type' => 'application/json'));
-        
     }
 
     public function ajaxMasMuroAction(Request $request)
     {
-        
+
         $session = new Session();
         $em = $this->getDoctrine()->getManager();
-        $yml = Yaml::parse(file_get_contents($this->get('kernel')->getRootDir().'/config/parametros.yml'));
+        $yml = Yaml::parse(file_get_contents($this->get('kernel')->getRootDir() . '/config/parametros.yml'));
         $f = $this->get('funciones');
         $pagina_id = $request->query->get('pagina_id');
         $muro_id = $request->query->get('muro_id');
         $prefix = $request->query->get('prefix');
         $offset = $request->query->get('offset');
         $offset += 5;
-        $next_offset = $offset+5;
+        $next_offset = $offset + 5;
         $html = '';
 
-        if ($muro_id)
-        {
+        if ($muro_id) {
 
             // Más respuestas
             $submuros = $f->subMuros($muro_id, $offset, 5, $session->get('usuario')['id'], $yml['parameters']['social']);
@@ -763,52 +869,42 @@ class LeccionController extends Controller
             // Total de respuestas de este comentario
             $query = $em->createQuery('SELECT COUNT(m.id) FROM LinkComunBundle:CertiMuro m 
                                         WHERE m.muro = :muro_id')
-                        ->setParameter('muro_id', $muro_id);
+                ->setParameter('muro_id', $muro_id);
             $total_respuestas = $query->getSingleScalarResult();
 
-            foreach ($submuros as $submuro)
-            {
+            foreach ($submuros as $submuro) {
                 $html .= $f->drawResponses($submuro, $prefix);
             }
 
-            if ($total_respuestas > $next_offset)
-            {
-                $html .= '<input type="hidden" id="'.$prefix.'_more_answers-'.$muro_id.'" name="'.$prefix.'_more_answers-'.$muro_id.'" value="'.$offset.'">
-                          <a href="#" class="btn btn-primary btn-sm  text-center mx-auto more_answers" data="'.$muro_id.'">'.$this->get('translator')->trans('Ver más respuestas').'</a>';
+            if ($total_respuestas > $next_offset) {
+                $html .= '<input type="hidden" id="' . $prefix . '_more_answers-' . $muro_id . '" name="' . $prefix . '_more_answers-' . $muro_id . '" value="' . $offset . '">
+                          <a href="#" class="btn btn-primary btn-sm  text-center mx-auto more_answers" data="' . $muro_id . '">' . $this->get('translator')->trans('Ver más respuestas') . '</a>';
             }
-
-        }
-        else {
+        } else {
 
             // Más comentarios
-            if ($prefix == 'recientes')
-            {
+            if ($prefix == 'recientes') {
                 $muros = $f->muroPagina($pagina_id, 'id', 'DESC', $offset, 5, $session->get('usuario')['id'], $session->get('empresa')['id'], $yml['parameters']['social']);
-            }
-            else {
+            } else {
                 $muros = $f->muroPaginaValorados($pagina_id, $offset, 5, $session->get('usuario')['id'], $session->get('empresa')['id'], $yml['parameters']['social']);
             }
 
             $total_comentarios = $muros['total_comentarios'];
 
-            foreach ($muros['muros'] as $muro)
-            {
+            foreach ($muros['muros'] as $muro) {
                 $html .= $f->drawComment($muro, $prefix);
             }
 
-            if ($total_comentarios > $next_offset)
-            {
-                $html .= '<input type="hidden" id="more_comments_'.$prefix.'-'.$pagina_id.'" name="more_comments_'.$prefix.'-'.$pagina_id.'" value="'.$offset.'">
-                          <a href="#" class="btn btn-primary btn-sm  text-center mx-auto more_comments" data="'.$pagina_id.'">'.$this->get('translator')->trans('Ver más comentarios').'</a>';
+            if ($total_comentarios > $next_offset) {
+                $html .= '<input type="hidden" id="more_comments_' . $prefix . '-' . $pagina_id . '" name="more_comments_' . $prefix . '-' . $pagina_id . '" value="' . $offset . '">
+                          <a href="#" class="btn btn-primary btn-sm  text-center mx-auto more_comments" data="' . $pagina_id . '">' . $this->get('translator')->trans('Ver más comentarios') . '</a>';
             }
-
         }
-        
+
         $return = array('html' => $html);
 
         $return = json_encode($return);
         return new Response($return, 200, array('Content-Type' => 'application/json'));
-        
     }
 
     public function menuAction($programa_id, $subpagina_id, $active)
@@ -816,8 +912,8 @@ class LeccionController extends Controller
 
         $session = new Session();
         $f = $this->get('funciones');
-        $yml = Yaml::parse(file_get_contents($this->get('kernel')->getRootDir().'/config/parametros.yml'));
-        
+        $yml = Yaml::parse(file_get_contents($this->get('kernel')->getRootDir() . '/config/parametros.yml'));
+
         $em = $this->getDoctrine()->getManager();
 
         // Indexado de páginas descomponiendo estructuras de páginas cada uno en su arreglo
@@ -841,12 +937,12 @@ class LeccionController extends Controller
         // Menú lateral dinámico
         $menu_str = $f->menuLecciones($indexedPages, $session->get('paginas')[$programa_id], $subpagina_id, $this->generateUrl('_lecciones', array('programa_id' => $programa_id)), $session->get('usuario')['id'], $yml['parameters']['estatus_pagina']['completada']);
 
-        return $this->render('LinkFrontendBundle:Leccion:menu.html.twig', array('programa' => $programa,
-                                                                                'subpagina_id' => $subpagina_id,
-                                                                                'menu_str' => $menu_str,
-                                                                                'espacio_colaborativo' => $espacio_colaborativo,
-                                                                                'active' => $active));
-
+        return $this->render('LinkFrontendBundle:Leccion:menu.html.twig', array(
+            'programa' => $programa,
+            'subpagina_id' => $subpagina_id,
+            'menu_str' => $menu_str,
+            'espacio_colaborativo' => $espacio_colaborativo,
+            'active' => $active
+        ));
     }
-
 }

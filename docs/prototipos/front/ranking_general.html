@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="es">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta http-equiv="X-UA-Compatible" content="ie=edge">
+        <link href="https://fonts.googleapis.com/css?family=Merriweather:400,700|Open+Sans:300,400,400i,600,600i,700|Roboto:300,400,500,700" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+        <link rel="stylesheet" href="base_styles/css/bootstrap/bootstrap.css">
+        <link rel="stylesheet" href="client_styles/formacion/css/main.css">
+        <title>Ranking</title>
+    </head>
+    <body>
+
+
+        <!-- HEADER -->
+        <header>
+            <nav class="navbar  justify-content-between py-0 fixed-top bg-white">
+                <a class="navbar-brand" href="#">
+                    <img class="img-fluid py-1" src="assets/img/logo_formacion.png" width= "200" alt="logo formación 2.0">
+                </a>
+                <div class="navbar-brand d-flex justify-content-center align-items-center " href="#">
+                    <i class="material-icons mr-3 color-light-grey">mail_outline</i>
+                    <div class=" d-flex flex-column ">
+                        <div class="dropdown show">
+                            <a href="#" class="perfil dropdown-toggle no-decorate" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <img class="img-fluid mx-auto" src="assets/img/avatar_user.png"  width="80%" alt="usuario">
+                            </a>
+                            <div class="perfil-dropdown dropdown-menu" aria-labelledby="dropdownMenuLink">
+                                <a href="#"> Salir </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </nav>
+        </header>
+
+        <div class="container-fluid mt-6">
+            <!-- SIDE MENU  -->
+            <nav>
+                <div id="mainSidenav" class="main-sidenav ">
+                    <a href="javascript:void(0)" class="closebtn" onclick="closeNav()"><i id= "menuArrow" class="arrow mr-2"></i></a>
+                    <a class="d-flex mt-1 mb-3 text-nowrap active" href="#"> <i class="material-icons mr-2">home</i> Dashboard </a>
+                    <a class="d-flex mb-3 text-nowrap" href="#"> <i class="material-icons mr-2">bookmark</i> Mis Programas </a>
+                    <a class="d-flex mb-3 text-nowrap" href="#"> <i class="material-icons mr-2">dashboard</i> Programas </a>
+                    <a class="d-flex mb-3 text-nowrap" href="#"> <i class="material-icons mr-2">book</i>  Biblioteca </a>
+                    <a class="d-flex mb-3 text-nowrap" href="#"> <i class="material-icons mr-2">event</i>  Calendario </a>
+                    <a class="d-flex mb-1 text-nowrap" href="#"> <i class="material-icons mr-2">library_books</i>  Noticias & <br/>novedades </a>
+                    <a class="d-flex mb-3 text-nowrap" href="#"> <i class="material-icons mr-2">help</i>  Faqs </a>
+                </div>
+            </nav>
+            <section id="main">
+                <div class="row align-items-center justify-content-center mt-3">
+                    <div class="col-8 col-md-10 col-lg-8 col-xl-8 col-sm-12 col-xs-12 text-center">
+                        <h3 class="title-rank title-grey font-bold">Ranking curso Comunicaciòn para la supervisión</h3>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-12">
+                        <div class="card-table">
+                            <div class="card_body">
+                                <table class="rank-table" cellpadding="0" cellspacing="0" border="0">
+                                    <thead class="campo_title">
+                                        <tr>
+                                            <th></th>
+                                            <th>Nombre y apellido</th>
+                                            <th>Medallas</th>
+                                            <th>Puntos</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>
+                                                <img class="rank-badge-number" src="./assets/img/badge4.png" alt="" />
+                                            </td>
+                                            
+                                            <td><span>Yuan Osaka</span></td>
+                                            <td>14</td>
+                                            <td>
+                                                840
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td><img class="rank-badge-number" src="./assets/img/badge3.png" alt="" /></td>
+                                            
+                                            <td><span>Donald Malarkey</span></td>
+                                            <td>10</td>
+                                            <td>
+                                                500
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td><img class="rank-badge-number" src="./assets/img/badge2.png" alt="" /></td>
+                                            
+                                            <td><span>Ronald Spears</span></td>
+                                            <td>8</td>
+                                            <td>
+                                                400
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td><img class="rank-badge" src="./assets/img/badge.png" alt="" /></td>
+                                            
+                                            <td><span>Jessica Chestain</span></td>
+                                            <td>7</td>
+                                            <td>
+                                                370
+                                            </td>
+                                        </tr>
+                                        <tr class="me-i">
+                                            <td><img class="rank-badge" src="./assets/img/badge.png" alt="" /></td>
+                                            
+                                            <td><span>Pat Christensen</span></td>
+                                            <td>7</td>
+                                            <td>
+                                                350
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td><img class="rank-badge" src="./assets/img/badge.png" alt="" /></td>
+                                            
+                                            <td><span>Masaki Oki</span></td>
+                                            <td>5</td>
+                                            <td>
+                                                320
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td><img class="rank-badge" src="./assets/img/badge.png" alt="" /></td>
+                                            
+                                            <td><span>Alton Moore</span></td>
+                                            <td>3</td>
+                                            <td>
+                                                300
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td><img class="rank-badge" src="./assets/img/badge.png" alt="" /></td>
+                                            
+                                            <td><span>Rebecca Chambers</span></td>
+                                            <td>0</td>
+                                            <td>
+                                                210
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td><img class="rank-badge" src="./assets/img/badge.png" alt="" /></td>
+                                            
+                                            <td><span>Ada Wong</span></td>
+                                            <td>0</td>
+                                            <td>
+                                                200
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td><img class="rank-badge" src="./assets/img/badge.png" alt="" /></td>
+                                            
+                                            <td><span>Natasha Romanov</span></td>
+                                            <td>0</td>
+                                            <td>
+                                                100
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+
+
+        <!-- JAVASCRIPT -->
+        <script src="js/jquery-3.3.1.min.js" ></script>
+        <script src="js/bootstrap.min.js"></script>
+        <script src="js/custom.js"></script>
+    </body>
+</html>

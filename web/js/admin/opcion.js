@@ -29,6 +29,7 @@ $(document).ready(function() {
 		$('#imagen_enunciado').val("");
 		$('#figure_imagen_enunciado').html('<img src="'+$('#img_default').val()+'" style="background: transparent; width: 150px; height: auto;">');
 		enableSubmit();
+		console.log('Cargando nueva opcion');
 	});
 
 	observe();
@@ -46,6 +47,7 @@ $(document).ready(function() {
                 return false; // revent real submit
 		    }
 		    else {
+				
 		        var pregunta_opcion_id = $('#pregunta_opcion_id').val()
 				$.ajax({
 					type: "POST",
@@ -73,8 +75,9 @@ $(document).ready(function() {
 							});
 						}
 						observe();
-						$( "#cancelar" ).trigger( "click" );
-						clearTimeout( timerId );
+						console.log('Salvando pregunta');
+						enableSubmit();
+						//clearTimeout( timerId );
 					},
 					error: function(){
 						$('#alert-error').html($('#error_msg-save').val());

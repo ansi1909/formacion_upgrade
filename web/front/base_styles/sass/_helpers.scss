@@ -16,6 +16,10 @@
     margin-top: 7rem;   
 }
 
+.max-w-40r {
+    max-width: 40rem;
+}
+
 .mt-12v{
     margin-top: 12vh;
     @include media-breakpoint-down(sm) {

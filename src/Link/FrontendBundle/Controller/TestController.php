@@ -426,7 +426,6 @@ class TestController extends Controller
 
     public function finAction($programa_id, $prueba_log_id, $cantidad_preguntas, $preguntas_str, Request $request)
     {
-
         $session = new Session();
         $f = $this->get('funciones');
         $yml = Yaml::parse(file_get_contents($this->get('kernel')->getRootDir().'/config/parametros.yml'));
@@ -563,6 +562,9 @@ class TestController extends Controller
             {
                 $puntos = $puntos/$intentos;
                 $puntos = round($puntos);
+            }elseif ($intentos == 1){
+                
+                $puntos = $yml['parameters']['puntos']['aprobar_primer_intento'] + $puntos;
             }
         }
         else {
@@ -612,10 +614,10 @@ class TestController extends Controller
             }
             else {
                 $estado = $yml['parameters']['estado_prueba']['aprobado'];
-                if ($intentos == 1)
-                {
-                    $puntos = $yml['parameters']['puntos']['aprobar_primer_intento'];
-                }
+            }
+
+            if ($intentos == 1 && $estado == $yml['parameters']['estado_prueba']['aprobado'] ){
+                $puntos = $yml['parameters']['puntos']['aprobar_primer_intento'];
             }
 
         }
@@ -668,6 +670,7 @@ class TestController extends Controller
     public function resultadosAction($programa_id, $prueba_log_id, $puntos, Request $request)
     {
 
+        $baseUrl = $this->container->getParameter('base_url');
         $session = new Session();
         $f = $this->get('funciones');
         $yml = Yaml::parse(file_get_contents($this->get('kernel')->getRootDir().'/config/parametros.yml'));
@@ -777,9 +780,56 @@ class TestController extends Controller
             }
         }
         
-        
-        //return new Response(var_dump($continue_button));
+        $culmino = (!$try_button and !$continue_button['evaluacion']  and !$continue_button['next_lesson'] ) or ($programa->getCategoria()->getId() == $yml['parameters']['categoria']['competencia'] and $aprobo_competencia)? 1:0;
+        $imgPodio = '';
+        $posicion = '';
+        if($culmino){
+            $query = $em->createQuery("SELECT mu FROM LinkComunBundle:AdminMedallasUsuario mu
+                                        WHERE mu.pagina = :pagina
+                                        AND mu.usuario = :usuario
+                                        AND (mu.medalla = :medalla1 OR mu.medalla = :medalla2 OR mu.medalla = :medalla3)")
+                            ->setParameters(array('pagina'   =>  $programa->getId(),
+                                                  'usuario'  =>  $session->get('usuario')['id'],
+                                                  'medalla1' =>  $yml['parameters']['medallas']['primer_lugar'],
+                                                  'medalla2' =>  $yml['parameters']['medallas']['segundo_lugar'],
+                                                  'medalla3' =>  $yml['parameters']['medallas']['tercer_lugar']
+                                                ));
+                            $podio = $query->getResult();
 
+            if($podio){
+                $images = array( 
+                                    $yml['parameters']['medallas']['primer_lugar'] => $yml['parameters']['medallas']['primer_lugar_img'],
+                                    $yml['parameters']['medallas']['segundo_lugar'] => $yml['parameters']['medallas']['segundo_lugar_img'],
+                                    $yml['parameters']['medallas']['tercer_lugar'] => $yml['parameters']['medallas']['tercer_lugar_img']
+                );
+
+                $text = array (
+                                $yml['parameters']['medallas']['primer_lugar'] => 'primero',
+                                $yml['parameters']['medallas']['segundo_lugar'] => 'segundo',
+                                $yml['parameters']['medallas']['tercer_lugar'] => 'tercero'
+                );
+
+                $medallaId  = $podio[0]->getMedalla()->getId();
+                if(in_array($medallaId,array( $yml['parameters']['medallas']['primer_lugar'], $yml['parameters']['medallas']['segundo_lugar'], $yml['parameters']['medallas']['tercer_lugar']   ))){
+                    $podio      = $podio[0]->getId();
+                    $imgPodio   = $baseUrl."/front/assets/img/".$images[$medallaId];
+                    $posicion   = $text[$medallaId];
+                }else{
+                    $podio = 0;
+                    $imgPodio = '';
+                    $posicion = '';
+                }
+            }else{
+                $podio = 0;
+            }
+
+            //fin culmino el
+        }else{
+            $podio = 0;
+        }
+        
+
+        
         return $this->render('LinkFrontendBundle:Test:resultados.html.twig', array('prueba_log' => $prueba_log,
                                                                                    'preguntas' => $preguntas,
                                                                                    'programa' => $programa,
@@ -787,8 +837,12 @@ class TestController extends Controller
                                                                                    'continue_button' => $continue_button,
                                                                                    'estados' => $yml['parameters']['estado_prueba'],
                                                                                    'puntos' => $puntos,
-                                                                                   'competencia_parametros' => $yml['parameters']['categoria']['competencia'],
-                                                                                   'aprobo_competencia' => $aprobo_competencia ));
+                                                                                   'aprobo_competencia' => $aprobo_competencia,
+                                                                                   'culmino'  => $culmino,
+                                                                                   'podio'    => $podio,
+                                                                                   'imgPodio' => $imgPodio,
+                                                                                   'posicion' => $posicion
+                                                                                ));
 
     }
 

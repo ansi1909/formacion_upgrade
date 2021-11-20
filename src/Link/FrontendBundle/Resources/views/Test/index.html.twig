@@ -129,6 +129,15 @@
                             <p class="enun_eval my-2">
                                 {{ pregunta.enunciado }}
                             </p>
+                            <p class="text-info">
+                               {% if pregunta.tipo_pregunta == tipo_pregunta.asociacion %}
+                                    {{'Une los elementos de ambas columnas según corresponda'|trans}}
+                               {% elseif pregunta.tipo_pregunta == 2 %}
+                                    {{ 'Selecciona las tres opciones correctas'|trans }}
+                               {% elseif pregunta.tipo_pregunta == 1 %}
+                                    {{'Selecciona la opción correcta'|trans}}
+                               {% endif %}
+                           </p>
                         </div>
                     </div>
 

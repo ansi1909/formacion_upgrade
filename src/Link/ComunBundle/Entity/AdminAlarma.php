@@ -225,4 +225,33 @@ class AdminAlarma
     {
         return $this->usuario;
     }
+    /**
+     * @var bool|null
+     */
+    private $visto;
+
+
+    /**
+     * Set visto.
+     *
+     * @param bool|null $visto
+     *
+     * @return AdminAlarma
+     */
+    public function setVisto($visto = null)
+    {
+        $this->visto = $visto;
+    
+        return $this;
+    }
+
+    /**
+     * Get visto.
+     *
+     * @return bool|null
+     */
+    public function getVisto()
+    {
+        return $this->visto;
+    }
 }

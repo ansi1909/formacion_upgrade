@@ -445,4 +445,33 @@ class CertiPaginaEmpresa
     {
         return $this->prelacion;
     }
+    /**
+     * @var bool|null
+     */
+    private $ranking;
+
+
+    /**
+     * Set ranking.
+     *
+     * @param bool|null $ranking
+     *
+     * @return CertiPaginaEmpresa
+     */
+    public function setRanking($ranking = null)
+    {
+        $this->ranking = $ranking;
+    
+        return $this;
+    }
+
+    /**
+     * Get ranking.
+     *
+     * @return bool|null
+     */
+    public function getRanking()
+    {
+        return $this->ranking;
+    }
 }

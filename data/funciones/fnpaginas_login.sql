@@ -18,10 +18,14 @@ DECLARE
     cl integer;
     -- Variable para las prelaciones
     pr integer;
+    --Variable para el ranking
+    rk integer;
     --Variables para las fotos
+    pf varchar(200);
     mf varchar(200);
     maf varchar(200);
     lf varchar (200);
+    puntuacion_padre integer;
     pagina record;
     modulo record;
     materia record;
@@ -53,10 +57,12 @@ BEGIN
               cpe.prueba_activa as tiene_evaluacion,
               cpe.acceso as acceso,
               cpe.muro_activo as muro_activo,
+              cpe.ranking as ranking,
               cpe.prelacion as prelacion,
               cpe.colaborativo as espacio_colaborativo,
               cpe.fecha_inicio as inicio,
-              cpe.fecha_vencimiento as vencimiento
+              cpe.fecha_vencimiento as vencimiento,
+              cp.puntuacion as puntuacion_padre
         FROM certi_nivel_pagina cnp
         INNER JOIN certi_pagina_empresa cpe ON cnp.pagina_empresa_id = cpe.id
         INNER JOIN certi_pagina cp ON cpe.pagina_id = cp.id
@@ -68,13 +74,31 @@ BEGIN
         AND cp.estatus_contenido_id = 2
         ORDER BY cpe.orden  ASC
         LOOP
+            IF pagina.foto IS NULL THEN
+                pf:='';
+            ELSE
+                pf:=pagina.foto;
+            END IF;
+
+            IF pagina.puntuacion_padre IS NULL THEN
+                puntuacion_padre:= 0;
+            ELSE
+                puntuacion_padre:= pagina.puntuacion_padre;
+            END IF;
+
             cp:=cp+1;
             IF pagina.prelacion IS NULL THEN
                 pr:=0;
             ELSE
                 pr:=pagina.prelacion;
             END IF;
-            json_response:= json_response||'"'||pagina.id||'" : {"id":'||pagina.id||','||'"orden":'||pagina.orden||','||'"nombre":"'||pagina.pagina||'",'||'"categoria":"'||pagina.categoria||'",'||'"pronombre":"'||pagina.pronombre||'",'||'"binvenida":"'||pagina.bienvenida||'",'||'"notas":"'||pagina.notas||'",'||'"tarjetas":"'||pagina.tarjetas||'",'||'"foto":"'||pagina.foto||'",'||'"tiene_evaluacion":'||pagina.tiene_evaluacion||','||'"acceso":'||pagina.acceso||','||'"muro_activo":'||pagina.muro_activo||','||'"espacio_colaborativo":'||pagina.espacio_colaborativo||','||'"prelacion":'||pr||','||'"inicio":"'||to_char(pagina.inicio,'DD/MM/YYYY')||'",'||'"vencimiento":"'||to_char(pagina.vencimiento,'DD/MM/YYYY')||'"';
+
+            IF pagina.ranking THEN
+                rk:= 1;
+            ELSE
+                rk:= 0;
+            END IF;
+            json_response:= json_response||'"'||pagina.id||'" : {"id":'||pagina.id||','||'"orden":'||pagina.orden||','||'"nombre":"'||pagina.pagina||'",'||'"categoria":"'||pagina.categoria||'",'||'"pronombre":"'||pagina.pronombre||'",'||'"binvenida":"'||pagina.bienvenida||'",'||'"notas":"'||pagina.notas||'",'||'"tarjetas":"'||pagina.tarjetas||'",'||'"foto":"'||pf||'",'||'"tiene_evaluacion":'||pagina.tiene_evaluacion||','||'"acceso":'||pagina.acceso||','||'"muro_activo":'||pagina.muro_activo||','||'"espacio_colaborativo":'||pagina.espacio_colaborativo||','||'"prelacion":'||pr||','||'"inicio":"'||to_char(pagina.inicio,'DD/MM/YYYY')||'",'||'"puntuacion":'||puntuacion_padre||','||'"vencimiento":"'||to_char(pagina.vencimiento,'DD/MM/YYYY')||'",'||'"ranking":"'||rk||'"';
             ----Obtener subpaginas
             json_response:=json_response||','||'"subpaginas":{';
             ---Contar cuantos modulos tiene la pagina

@@ -351,18 +351,69 @@ class DefaultController extends Controller
         return $this->render('LinkBackendBundle:Default:authException.html.twig');
     }
 
+    protected function cleanRootDirectory($directorio,$removeDir=false)
+    {
+        /*
+            Elimina los archivos dentro del directorio indicado, sin consultar si estan registrados en la 
+            base de datos, cuando el argumento: removeDir es true se procede a borrar la carpeta una vez
+            se encuentre vacía. Se utiliza cuando se elimina un tutorial del sistema y para limpiar 
+            el directorio : recursos/tutoriales/ luego de realizar una insercion. elimina la carpeta thumbnail
+        */
+
+        $existe = file_exists($directorio);
+
+        if($existe)
+        {
+
+            $archivos = scandir($directorio);
+            
+            for ($i=0; $i <count($archivos) ; $i++) 
+            { 
+                if(!is_dir($directorio.'/'.$archivos[$i]) )
+                {
+                  unlink($directorio.'/'.$archivos[$i]);
+                }
+                else
+                {
+                    if ($archivos[$i] == 'thumbnail') {
+                        $thumbnails = scandir($directorio.'/'.$archivos[$i].'/');
+                        for ($j=2; $j<count($thumbnails) ; $j++) { 
+                            unlink($directorio.'/'.$archivos[$i].'/'.$thumbnails[$j]);
+                        }
+                        rmdir($directorio.'/'.$archivos[$i]);
+                    }
+                }
+            }
+
+            if ($removeDir) {
+                rmdir($directorio);
+            }
+
+        }
+
+        return 0;
+
+    }
+
+
     public function ajaxDeleteAction(Request $request)
     {
 
         $em = $this->getDoctrine()->getManager();
         $id = $request->request->get('id');
         $entity = $request->request->get('entity');
+        
+
         if($entity=='AdminNotificacionProgramada'){
           //eliminar hijos dentro de la misma tabla
            $query = $em->createQuery("DELETE  FROM LinkComunBundle:AdminNotificacionProgramada np
                                       WHERE np.grupo = :padre_id")
                     ->setParameter('padre_id',$id);
             $query->getResult();
+        }elseif($entity=='AdminLigas'){
+            //limpiar archivos de la liga a eliminar
+            $directorio = $this->container->getParameter('folders')['dir_uploads'].'/recursos/ligas/'.$id;
+            $this->cleanRootDirectory($directorio,true);
         }
 
         $ok = 1;

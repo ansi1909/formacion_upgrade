@@ -4,6 +4,7 @@ $(document).ready(function() {
 
 	$('.paginate_button').click(function(){
 		afterPaginate();
+		console.log('quia');
 	});
 
 	$('#guardar').click(function(){
@@ -69,16 +70,22 @@ function treeNiveles(empresa_id)
 			}
 		}
 	});
+
+	$('.paginate_button').click(function(){
+		afterPaginate();
+	});
 }
 
 function afterPaginate()
 {
 	$('#tbody-empresas tr').each(function(){
 		var tr = $(this).attr('id');
+		console.log(tr);
 		if (!(typeof tr === 'undefined' || tr === null)){
 			var tr_arr = tr.split('tr-');
 			var empresa_id = tr_arr[1];
 			treeNiveles(empresa_id);
+			
 		}
 	});
 

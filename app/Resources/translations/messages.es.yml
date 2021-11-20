@@ -12,6 +12,8 @@ Activar: Activar
 Activar chat: Activar chat
 Activar evaluación: Activar evaluación
 Activar muro: Activar muro
+Activar ranking: Activar ranking
+Activar espacio colaborativo: Activar espacio colaborativo
 Activar para ordenar la columna de manera ascendente: Activar para ordenar la columna de manera ascendente
 Activar para ordenar la columna de manera descendente: Activar para ordenar la columna de manera descendente
 Activar webinar: Activar webinar
@@ -24,6 +26,9 @@ Activos: Activos
 Actualizando la lista de participantes conectados: Actualizando la lista de participantes conectados
 Actualizando la lista de usuarios conectados: Actualizando la lista de usuarios conectados
 Advertencia: Advertencia
+Amigable NIVEL 1: Amigable NIVEL 1
+Amigable NIVEL 2: Amigable NIVEL 2
+Amigable NIVEL 3: Amigable NIVEL 3
 Administración: Administración
 Administrar ayuda: Manage help
 Administrar páginas: Administrar páginas
@@ -36,6 +41,7 @@ Agregar respuesta: Agregar respuesta
 Agregar sub-página: Agregar sub-página
 Agregar tipo de pregunta: Agregar tipo de pregunta
 Agrupación de páginas: Agrupación de páginas
+Añadir correo secundario: Añadir correo secundario
 Ahora: Ahora
 al: al
 Al: Al
@@ -49,6 +55,7 @@ Aplicación: Aplicación
 Aplicaciones: Aplicaciones
 Aplicaciones a la que tiene acceso: Aplicaciones a la que tiene acceso
 Aplicar periodo a las sub-páginas: Aplicar periodo a las sub-páginas
+Aplicar activación de muro a las sub-páginas: Aplicar activación de muro a las sub-páginas
 Aprobado: Aprobado
 Aprobados: Aprobados
 Aquellos empleados de la empresa: Aquellos empleados de la empresa
@@ -174,6 +181,7 @@ Configurar asignación de sub-páginas: Configurar asignación de sub-páginas
 Configurar evaluación: Configurar evaluación
 Configurar página: Configurar página
 Configuración de permisos: Configuración de permisos
+Configuración de la liga: Configuración de la liga
 Confirmar: Confirmar
 Configuración de la categoría: Configuración de la categoría
 Confirmar contraseña: Confirmar contraseña
@@ -232,6 +240,7 @@ Datos del Tipo de Notificación: Datos del Tipo de Notificación
 Datos del Tipo de Destino: Datos del Tipo de Destino
 Datos del tutorial: Datos del tutorial
 Datos evento: Datos evento
+Datos personales: Datos personales
 Dar acceso: Dar acceso
 de: de
 de la: de la
@@ -257,7 +266,8 @@ Debe seleccionar la página destino: Debe seleccionar la página destino
 Debes seleccionar tanto la empresa como el nivel: Debe seleccionar tanto la empresa como el nivel
 Debe seleccionar una fecha de publicación.: Debe seleccionar una fecha de publicación.
 Debe seleccionar una fecha de vencimiento.: Debe seleccionar una fecha de vencimiento.
-Debe ser mínimo de 3 caracteres.: Debe ser mínimo de 3 caracteres.
+Debe ser mínimo de 3 caracteres: Debe ser mínimo de 3 caracteres
+Debe ser mínimo de 1 caracter: Debe ser mínimo de 1 caracter
 del: del
 Descarga el archivo a través del siguiente enlace: Descarga el archivo a través del siguiente enlace
 Descargar: Descargar
@@ -286,8 +296,10 @@ Dispositivo - Navegador - Sistema Operativo: Dispositivo - Navegador - Sistema O
 Domingo: Domingo
 Duplicar página y sub-páginas: Duplicar página y sub-páginas
 Duplicar página y sub-páginas 1: Duplicar página y sub-páginas 1
-Duplicar evaluación : Duplicar evaluación
+Duplicar evaluación: Duplicar evaluación
+de tus compañeros: de tus compañeros
 el: el
+en completar el curso exitosamente: en completar el curso exitosamente
 Editar: Editar
 Editar asignación: Editar asignación
 Editar comentario: Editar comentario
@@ -355,6 +367,7 @@ El nombre del tutorial debe ser mínimo de 3 caracteres: El nombre del tutorial 
 El nombre del tutorial es requerido: El nombre del tutorial es requerido
 El nombre del usuario debe ser mínimo de 3 caracteres: El nombre del usuario debe ser mínimo de 3 caracteres
 El nombre del usuario es requerido: El nombre del usuario es requerido
+El porcentaje de puntos debe ser un valor numérico: El porcentaje de puntos debe ser un valor numérico
 El país es requerido.: El país es requerido.
 El país no existe en la base de datos: El país no existe en la base de datos
 El participante: El participante
@@ -429,6 +442,7 @@ Error al obtener las subaplicaciones.: Error al obtener las subaplicaciones.
 Error al obtener los thumbnails: Error al obtener los thumbnails
 Error de Excepción: Error de Excepción
 Error en el servidor: Error en el servidor
+Eres el: Eres el
 Error la empresa no existe: Error la empresa no existe
 Errores: Errores
 Errores de validación: Errores de validación
@@ -441,6 +455,7 @@ Escriba su correo: Escriba su correo
 Escriba su mensaje: Escriba su mensaje
 Escriba su respuesta: Escriba su respuesta
 Espacio colaborativo: Espacio colaborativo
+Espacio colaborativo a las subpaginas: Espacio colaborativo a las subpaginas
 Esta evaluación no tiene preguntas configuradas: Esta evaluación no tiene preguntas configuradas
 Esta notificación será enviada por el sistema de forma automática, puede dejar la fecha de hoy: Esta notificación será enviada por el sistema de forma automática, puede dejar la fecha de hoy
 Esta página no tiene evaluación asignada: Esta página no tiene evaluación asignada
@@ -507,6 +522,7 @@ Fecha de Vencimiento: Fecha de Vencimiento
 Fecha inicio requerida: Fecha inicio requerida
 Fecha fin requerida: Fecha fin requerida
 FELICITACIONES: FELICITACIONES
+Felicidades: Felicidades
 Fila: Fila
 filtrado de un total de: filtrado de un total de
 Filtrar comentarios del foro: Filtrar comentarios del foro
@@ -529,12 +545,14 @@ Firma del Supervisor: Firma del Supervisor
 Formato de correo inválido: Formato de correo inválido
 Formato sugerido se especifica en: Formato sugerido se especifica en
 Foto de la página: Foto de la página
+Fotogénico: Fotogénico
 Generar: Generar
 Generar certificados: Generar certificados
 Gráfica: Gráfica
 Gráfica horas de conexión: Gráfica horas de conexión
 Gráfica conexiones por dispositivo: Gráfica conexiones por dispositivo
 Gráfico del promedio de conexiones: Grafico del promedio de conexiones
+Graduado: Graduado
 Grupo seleccionado: Grupo seleccionado
 Grupos: Grupos
 Guardar: Guardar
@@ -554,6 +572,7 @@ Ha sido publicado el evento: Ha sido publicado el evento
 ha subido un archivo en el espacio colaborativo de: ha subido un archivo en el espacio colaborativo de
 Has aprobado con éxito la evaluación: Has aprobado con éxito la evaluación
 Has completado con éxito los contenidos: Has completado con éxito los contenidos
+Has obtenido la medalla: Has obtenido la medalla
 Has ganado: Has ganado
 Hasta: Hasta
 Hemos detectado que estás usando un navegador no recomendado, te invitamos a usar Google Chrome, Mozilla Firefox o Microsoft Edge en sus últimas versiones para garantizar una correcta funcionalidad de la plataforma : Hemos detectado que estás usando un navegador no recomendado, te invitamos a usar Google Chrome, Mozilla Firefox o Microsoft Edge en sus últimas versiones para garantizar una correcta funcionalidad de la plataforma
@@ -573,10 +592,15 @@ Huso horario requerido: Huso horario requerido
 Icono: Icono
 Icono de la empresa: Icono de la empresa
 Imagen: Imagen
+Imagen de la liga: Imagen de la liga
 Imagen lado: Imagen lado
+Imparable: Imparable
 Imprimir certificado: Imprimir certificado
 Imprimir constancia de notas: Imprimir constancia de notas
 Inactivos: Inactivos
+Influencer NIVEL 1: Influencer NIVEL 1
+Influencer NIVEL 2: Influencer NIVEL 2
+Influencer NIVEL 3: Influencer NIVEL 3
 Índice: Índice
 Ingrese su correo: Ingrese su correo
 Ingrese un correo valido: Ingrese un correo valido
@@ -648,6 +672,7 @@ La fecha de vencimiento es requerida.: La fecha de vencimiento es requerida.
 La fecha de vencimiento no puede ser menor que la fecha de inicio.: La fecha de vencimiento no puede ser menor que la fecha de inicio.
 La fecha final debe ser mayor que la fecha inicial: La fecha final debe ser mayor que la fecha inicial
 La foto principal de la página es requerida: La foto principal de la página es requerida
+La medalla ha sido almacenada con éxito: La medalla ha sido almacenada con éxito 
 La imagen es requerida.: La imagen es requerida.
 La imagen lado A es requerida.: La imagen lado A es requerida.
 La notificación ha sido almacenada con éxito: La notificación ha sido almacenada con éxito
@@ -668,6 +693,7 @@ Leidos: Leidos
 Libro: Libro
 Libros: Libros
 Línea: Línea
+Ligas: Ligas 
 Lista de archivos: Lista de archivos
 Listado de: Listado de
 Archivos para el comentario de: Archivos para el comentario de
@@ -680,6 +706,7 @@ Listado de empresas activas: Listado de empresas activas
 Listado de empresas inactivas: Listado de empresas inactivas
 Listado de evaluaciones: Listado de evaluaciones
 Listado de grupos: Listado de grupos
+Listado de ligas: Listado de ligas
 Listado de niveles: Listado de niveles
 Listado de notificaciones: Listado de notificaciones
 Listado de participantes: Listado de participantes
@@ -713,9 +740,13 @@ Más valorados: Más valorados
 Materia: Materia
 Material complementario: Material complementario
 Materias vistas: Materias vistas
+Máximo: Máximo
 Mensaje: Mensaje
 Mensaje del servidor: Mensaje del servidor
+medallas: medals 
 Mi avance: Mi avance
+Mis logros: Mis logros
+Mínimo: Mínimo
 Miércoles: Miércoles
 minutos: minutos
 minutos para completar la evaluación: minutos para completar la evaluación
@@ -744,6 +775,7 @@ Nivel no existente para esta empresa: Nivel no existente para esta empresa
 Niveles: Niveles
 Niveles por empresas: Niveles por empresas
 Niveles por empresa: Niveles por empresa
+Necesitas : Necesitas 
 no existe: no existe
 No existe destino al que se pueda mover la página: No existe destino al que se pueda mover la página
 No existe evaluación para esta página: No existe evaluación para esta página
@@ -854,8 +886,10 @@ Participantes registrados en el programa que se han logueado al menos una vez en
 Participantes seleccionados: Participantes seleccionados
 Participantes registrados en programas: Participantes registrados en programas
 Participantes no iniciados en programas: Participantes no iniciados en programas
+participantes más te acompañan en esta liga: participantes más te acompañan en esta liga
 Pdf: Pdf
 PDF requerido: PDF requerido
+Perfeccionista: Perfeccionista
 Perfil de usuario: Perfil de usuario
 Perfil del participante: Perfil del participante
 Perfil Empresarial: Perfil Empresarial
@@ -864,9 +898,11 @@ Permisos: Permisos
 Permisos de Acceso: Permisos de Acceso
 Permisos de Acceso para el rol: Permisos de Acceso para el rol
 Permisos por Rol: Permisos por Rol
+Periodo: Periodo
 Plan de estudio: Plan de estudio
 Plantilla: Plantilla
 Porcentaje: Porcentaje
+Porcentaje de puntos requeridos: Porcentaje de puntos requeridos 
 Por favor, ingresa tu usuario y contraseña: Por favor, ingresa tu usuario y contraseña
 Por medio de la presente se certifica que el participante arriba indicado ha cursado y aprobado las pruebas correspondientes a: Por medio de la presente se certifica que el participante arriba indicado ha cursado y aprobado las pruebas correspondientes a
 Preferencias de la empresa: Preferencias de la empresa
@@ -882,7 +918,9 @@ Prelación: Prelación
 Prelada por: Prelada por
 Presiona el botón finalizar para completar: Presiona el botón finalizar para completar
 Primera conexión: Primera conexión
+Primer lugar: Primer lugar
 Procesando: Procesando
+primero: primero
 Pronombre: Pronombre
 Procesar: Procesar
 Programa: Programa
@@ -909,16 +947,19 @@ Puede contactar con el Administrador del Sistema para otorgarle permisos de acce
 Puede ingresar de nuevo desde la pantalla de login: Puede ingresar de nuevo desde la pantalla de login
 Puede solicitar crear una evaluación para esta página a través del Administrador de Contenido del equipo de Formación Smart: Puede solicitar crear una evaluación para esta página a través del Administrador de Contenido del equipo de Formación Smart
 Puntaje: Puntaje
+Puntos: Puntos
 Puntaje con que se aprueba: Puntaje con que se aprueba
 Puntaje definitivo del programa: Puntaje definitivo del programa
 Puntaje definitivo del curso: Puntaje definitivo del curso
 Puntaje definitivo de la competencia: Puntaje definitivo de la competencia
+puntos más para ascender de liga: puntos más para ascender de liga
 que aún no han ingresado a la plataforma: que aún no han ingresado a la plataforma
 QR: QR
 Quieres hacer un tour guiado: Quieres hacer un tour guiado
 realizó una publicación en el muro de: realizó una publicación en el muro de
 realizó una publicación en el en el espacio colaborativo de: realizó una publicación en el en el espacio colaborativo de
 formación smart, recomendamos utilizar la ultima versión del: formación smart, recomendamos utilizar la ultima versión del
+Ranking: Ranking
 Recomendación: Recomendación
 Recordarme: Recordarme
 Recordar mi contraseña: Recordar mi contaseña
@@ -926,6 +967,7 @@ Recuperación de contraseña: Recuperación de contraseña
 Recurso: Recurso
 Recursos: Recursos
 Recursos vistos: Recursos vistos 
+Recursos disponibles: Recursos disponibles
 Recursos del programa: Recursos del programa
 Registrar Empresa: Registrar Empresa
 Registrar Usuario: Registrar Usuario
@@ -980,7 +1022,11 @@ Sábado: Sábado
 Salir: Salir
 Salir de la evaluación: Salir de la evaluación
 se calcularán los resultados quedando estas preguntas sin contestar. Si deseas completar sus respuestas presiona: se calcularán los resultados quedando estas preguntas sin contestar. Si deseas completar sus respuestas presiona
+Segundo lugar: Segundo Lugar
 Seleccionado: Seleccionado
+segundo: segundo
+Selecciona las tres opciones correctas: Selecciona las tres opciones correctas 
+Selecciona la opción correcta: Selecciona la opción correcta
 Seleccione el archivo: Seleccione el archivo
 Seleccione el/los usuarios: Seleccione el/los usuarios
 Seleccione el nivel: Seleccione el nivel
@@ -1002,9 +1048,11 @@ Si marca SI, la página tendrá una sección en el que los particiantes podrán 
 Si marca SI, los usuarios de la empresa podrán acceder al contenido de esta página, incluso si ellos han aprobado.: Si marca SI, los usuarios de la empresa podrán acceder al contenido de esta página, incluso si ellos han aprobado.
 Si marca SI, los usuarios de la empresa podrán visualizar el enlace de esta página.: Si marca SI, los usuarios de la empresa podrán visualizar el enlace de esta página.
 Si marca SI, todas las sub-página tendrán la misma fecha de inicio y vencimiento.: Si marca SI, todas las sub-página tendrán la misma fecha de inicio y vencimiento.
+Si marca SI, la página tendrá una sección en el que los participantes podrán escribir en el muro.: Si marca SI, la página tendrá una sección en el que los participantes podrán escribir en el muro.
 Si necesitas ayuda escríbenos a: Si necesitas ayuda escribenos a
 Si no realizaste la solicitud de credenciales, comunícate con el equipo de soporte a traves de: Si no realizaste la solicitud de credenciales, comunícate con el equipo de soporte a traves de
 Si presionas: Si presionas
+Si marca SI, los participates del programa visualizaran el ranking: Si marca SI, los participates del programa visualizaran el ranking
 Si marca SI, los participantes de la empresa podrán visualizar el enlace de esta página.: Si marca SI, los participantes de la empresa podrán visualizar el enlace de esta página.
 Si marca SI, los participantes de la empresa podrán acceder al contenido de esta página, incluso si ellos han aprobado.: Si marca SI, los participantes de la empresa podrán acceder al contenido de esta página, incluso si ellos han aprobado.
 Si un nivel ya está registrado en la base de datos no se tomará en cuenta: Si un nivel ya está registrado en la base de datos no se tomará en cuenta
@@ -1040,6 +1088,7 @@ Subir Archivo de participantes: Subir Archivo de participantes
 Sub-Aplicación de: Sub-Aplicación de
 Sub-Aplicaciones de: Sub-Aplicaciones de
 Sub-páginas: Sub-páginas
+Súper Smart: Súper Smart
 Tarjetas: Tarjetas
 También puede solicitar la carga del certificado para esta página a través del Administrador de Contenido del equipo de Formación Smart: También puede solicitar la carga del certificado para esta página a través del Administrador de Contenido del equipo de Formación Smart
 Teléfono de contacto: Teléfono de Contacto
@@ -1047,6 +1096,8 @@ Tema: Tema
 Terminar: Terminar 
 Terminado: Terminado
 Tema seleccionado: Tema seleccionado
+Tercer lugar: Tercer lugar 
+tercero: tercero 
 Tendrás: Tendrás
 Thumbnails de la plantilla: Thumbnails de la plantilla
 Thumbnails inexistentes: Thumbnails inexistentes
@@ -1076,6 +1127,7 @@ Todos los empleados de la empresa: Todos los empleados de la empresa
 Todos los niveles: Todos los niveles
 Todos los programas: Todos los programas
 TODOS LOS TEMAS: TODOS LOS TEMAS
+Todos los recursos disponibles: Todos los recursos disponibles
 Tomar evaluación: Tomar evaluación
 Total aprobados: Total aprobados
 Total de registros: Total de registros
@@ -1111,6 +1163,7 @@ Usuarios Notificados: Usuarios Notificados
 Usuarios reg.: Usuarios reg.
 Usuarios registrados: Usuarios registrados
 Usuarios con acceso: Usuarios con acceso
+Une los elementos de ambas columnas según corresponda: Une los elementos de ambas columnas según corresponda
 Validar: Validar
 Valor de la pregunta: Valor de la pregunta
 Variables de colores que se aplican a la plantilla: Variables de colores que se aplican a la plantilla
@@ -1118,6 +1171,7 @@ Veces cursadas: Veces cursadas
 Vencido: Vencido
 Vencimiento: Vencimiento
 Vence hoy: Vence hoy
+Vencedor: Vencedor
 Ver: Ver
 Ver historial: Ver historial
 Ver más: Ver más
@@ -1144,6 +1198,7 @@ Volver al inicio del contenido: Volver al inicio del contenido
 Volver al programa: Volver al programa
 Volver al inicio: Volver al inicio
 Volver al listado: Volver al listado
+Volver al ranking: Volver al ranking
 y el: y el
 y finaliza el: y finaliza el
 Yo: Yo
