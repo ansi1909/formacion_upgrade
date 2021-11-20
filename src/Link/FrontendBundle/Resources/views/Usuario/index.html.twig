@@ -182,76 +182,32 @@
         </div>
     </div>
 </section>
-<div class="for-message  container py-5 px-6 my-4 show" id="study_plan">
-    <h4 class="mb-4 text-left">{{ 'Mis logros'|trans }}</h4>
-    <div class="container d-flex flex-column justify-content-center align-items-center ">
-    {# ----------- ESTE ES EL CODIGO VALIDO -------------- #}
-         {% for programa in programas %}
-        <div class="card-hrz card-mod d-flex flex-column flex-md-row">
-            <img class="card-hrz-img card-program-img mr-xl-3 d-flex justify-content-center align-items-center" src="{{uploads ~ programa.foto}}" alt="">
-            <div class="wraper d-flex flex-column flex-md-row justify-content-center"> 
-                <div class="card-hrz-body d-flex align-items-center">
-                    <h5 class="title-grey my-3 font-weight-normal"> {{ programa.nombre }}</h5>
-                    
-                </div>
+{% if not (app.session.get('usuario')['revisor']) and not(app.session.get('usuario')['tutor'])%}
+        <div class="for-message  container py-5 px-6 my-4 show" id="study_plan">
+            <h4 class="mb-4 text-left">{{ 'Mis logros'|trans }}</h4>
+            <div class="container d-flex flex-column justify-content-center align-items-center ">
+            {# ----------- ESTE ES EL CODIGO VALIDO -------------- #}
+                {% for programa in programas %}
+                <div class="card-hrz card-mod d-flex flex-column flex-md-row">
+                    <img class="card-hrz-img card-program-img mr-xl-3 d-flex justify-content-center align-items-center" src="{{uploads ~ programa.foto}}" alt="">
+                    <div class="wraper d-flex flex-column flex-md-row justify-content-center"> 
+                        <div class="card-hrz-body d-flex align-items-center">
+                            <h5 class="title-grey my-3 font-weight-normal"> {{ programa.nombre }}</h5>
+                            
+                        </div>
 
-                <div class="card-hrz-right d-flex flex-column justify-content-center mx-3 pb-1 align-item align-items-center">
-                    <div class="percent text-center mt-1">
-                   
-                    </div>
-                    <button href="#" name = "pagina_id" id="pagina_id" class="btn btn-sm btn-continuar mt-0 px-3 btn-xs-cont j-btn-medals mb-3 mb-md-0 pagina_id" data-id="{{programa.id}}"> {{ 'Ver'|trans }} </button>
-                </div>
-            </div>
-        </div>
-        {% endfor %} 
-        {# ------------------------------------------------- #}
-        {#
-        <div class="card-hrz card-mod d-flex flex-column flex-md-row">
-            <img class="card-hrz-img mr-xl-3 d-flex justify-content-center align-items-center" src="{{ asset('front/assets/img/liderazgo-hrz.png') }}" alt="">
-            <div class="wraper d-flex flex-column flex-md-row justify-content-center"> 
-                <div class="card-hrz-body">
-                    <h5 class="title-grey my-3 font-weight-normal"> Liderazgo </h5>
-                    <span class="text-sm title-grey d-lg-block"> Módulo </span>
-                    <span class="text-sm color-light-grey d-lg-block"> 04. Liderazgo </span>
-                    <div class="progress mt-4 mb-3 mt-md-2">
-                        <div class="progress-bar" role="progressbar" style="width: 25%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
+                        <div class="card-hrz-right d-flex flex-column justify-content-center mx-3 pb-1 align-item align-items-center">
+                            <div class="percent text-center mt-1">
+                        
+                            </div>
+                            <button href="#" name = "pagina_id" id="pagina_id" class="btn btn-sm btn-continuar mt-0 px-3 btn-xs-cont j-btn-medals mb-3 mb-md-0 pagina_id" data-id="{{programa.id}}"> {{ 'Ver'|trans }} </button>
+                        </div>
                     </div>
                 </div>
-
-                <div class="card-hrz-right d-flex flex-column justify-content-top mx-3 pb-1 align-item align-items-center">
-                <div class="percent text-center mt-1">
-                    <h2 class="color-light-grey mb-0 pb-0 porcent-xs"> 20% </h2>
-                    <span class="d-block count mt-0 mb-2 text-xs color-light-grey alertTimeDanger">Finaliza en 08 días</span>
-                </div>
-                <button href="#" class="btn btn-sm btn-continuar mt-0 px-3 mb-3 btn-xs-cont j-btn-medals" data-id="1"> Mis logros </button>
-            </div>
+                {% endfor %} 
             </div>
         </div>
-
-        <div class="card-hrz card-mod d-flex flex-column flex-md-row">
-            <img class="card-hrz-img mr-xl-3 d-flex justify-content-center align-items-center" src="{{ asset('front/assets/img/liderazgo-hrz.png') }}" alt="">
-            <div class="wraper d-flex flex-column flex-md-row justify-content-center"> 
-                <div class="card-hrz-body">
-                    <h5 class="title-grey my-3 font-weight-normal"> Liderazgo </h5>
-                    <span class="text-sm title-grey d-lg-block"> Módulo </span>
-                    <span class="text-sm color-light-grey d-lg-block"> 04. Liderazgo </span>
-                    <div class="progress mt-4 mb-3 mt-md-2">
-                        <div class="progress-bar" role="progressbar" style="width: 25%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
-                    </div>
-                </div>
-
-                <div class="card-hrz-right d-flex flex-column justify-content-top mx-3 pb-1 align-item align-items-center">
-                <div class="percent text-center mt-1">
-                    <h2 class="color-light-grey mb-0 pb-0 porcent-xs"> 20% </h2>
-                    <span class="d-block count mt-0 mb-2 text-xs color-light-grey alertTimeDanger">Finaliza en 08 días</span>
-                </div>
-                <button href="#" class="btn btn-sm btn-continuar mt-0 px-3 mb-3 btn-xs-cont j-btn-medals" data-id="1"> Mis logros </button>
-            </div>
-            </div>
-        </div>
-        #}
-    </div>
-</div>
+ {% endif %}
 
 
 <!-- ZONA DE LOGROS -->
