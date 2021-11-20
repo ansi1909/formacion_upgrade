@@ -368,6 +368,7 @@ class LeccionController extends Controller
 
 
     public function assignInfluencerMedal($muroPadre,$pagina_padre_id,$yml,$em,$f,$session,$puntos_agregados){
+       // $f = $this->get('funciones');
         $query = $em->createQuery('SELECT COUNT(cm.id) FROM LinkComunBundle:CertiMuro cm 
                                     WHERE cm.muro = :muro_id
                                     AND cm.usuario <> :usuario_id')
@@ -385,7 +386,8 @@ class LeccionController extends Controller
                 'pagina'  => $pagina_padre->getId()
             )
         );
-        if ($totalComments >= $yml['parameters']['comentarios_necesarios']['influencer_1'] && $paginaEmpresa->getRanking()) {
+        $isTutorRevisor = $f->is_tutorRevisor($muroPadre->getUsuario(),$yml['parameters']['nivel']);
+        if ($totalComments >= $yml['parameters']['comentarios_necesarios']['influencer_1'] && $paginaEmpresa->getRanking() && !$isTutorRevisor['tutor'] && !$isTutorRevisor['revisor']) {
             $pagina_log = $em->getRepository('LinkComunBundle:CertiPaginaLog')->findOneBy(array(
                 'pagina' => $pagina_padre->getId(),
                 'usuario' => $muroPadre->getUsuario()->getId()
@@ -489,7 +491,8 @@ class LeccionController extends Controller
                     'pagina'  => $pagina_padre->getId()
                 )
             );
-            if ($comentariosTotal2 >= $yml['parameters']['comentarios_necesarios']['amigable_1'] && $paginaEmpresa->getRanking()) {
+            $isTutorRevisor = $f->is_tutorRevisor($usuario,$yml['parameters']['nivel']);
+            if ($comentariosTotal2 >= $yml['parameters']['comentarios_necesarios']['amigable_1'] && $paginaEmpresa->getRanking() && !$isTutorRevisor['tutor'] && !$isTutorRevisor['revisor'] ) {
                 $pagina_log = $em->getRepository('LinkComunBundle:CertiPaginaLog')->findOneBy(array(
                     'pagina' => $pagina_padre->getId(),
                     'usuario' => $session->get('usuario')['id']

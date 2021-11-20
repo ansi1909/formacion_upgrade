@@ -1946,8 +1946,8 @@ class Functions
 
             
           $contador = 0;
-
-          if (count($pruebas_logs) == count($pruebas_total) && $paginaEmpresa->getRanking()) {
+          $isTutorRevisor = $this->is_tutorRevisor($usuario,$yml['parameters']['nivel']);
+          if (count($pruebas_logs) == count($pruebas_total) && $paginaEmpresa->getRanking() && !($isTutorRevisor['tutor']) && !($isTutorRevisor['revisor'])) {
 
             $medallaUsuario = $em->getRepository('LinkComunBundle:AdminMedallasUsuario')->findOneBy(array(
               'pagina' => $raiz,
@@ -1978,7 +1978,7 @@ class Functions
             }
           }
 
-          if ($contador == count($pruebas_total) && $paginaEmpresa->getRanking()) {
+          if ($contador == count($pruebas_total) && $paginaEmpresa->getRanking() && !($isTutorRevisor['tutor']) && !($isTutorRevisor['revisor']) ) {
             $medallaUsuario = $em->getRepository('LinkComunBundle:AdminMedallasUsuario')->findOneBy(array(
               'pagina' => $raiz,
               'usuario' => $usuario_id,
@@ -2033,7 +2033,7 @@ class Functions
 
 
 
-          if (count($cantidad_usuarios_aprobados) == 1 && $paginaEmpresa->getRanking()) {
+          if (count($cantidad_usuarios_aprobados) == 1 && $paginaEmpresa->getRanking()&& !($isTutorRevisor['tutor']) && !($isTutorRevisor['revisor'])) {
             $medallaUsuario = $em->getRepository('LinkComunBundle:AdminMedallasUsuario')->findOneBy(array(
               'pagina' => $raiz,
               'usuario' => $usuario_id,
@@ -2056,7 +2056,7 @@ class Functions
 
               $this->newAlarm($tipo_alarma_id, $descripcion, $usuario, $pagina->getId());
             }
-          } elseif (count($cantidad_usuarios_aprobados) == 2  && $paginaEmpresa->getRanking() ) {
+          } elseif (count($cantidad_usuarios_aprobados) == 2  && $paginaEmpresa->getRanking() && !($isTutorRevisor['tutor']) && !($isTutorRevisor['revisor'])) {
             $medallaUsuario = $em->getRepository('LinkComunBundle:AdminMedallasUsuario')->findOneBy(array(
               'pagina' => $raiz,
               'usuario' => $usuario_id,
@@ -2079,7 +2079,7 @@ class Functions
 
               $this->newAlarm($tipo_alarma_id, $descripcion, $usuario, $pagina->getId());
             }
-          } elseif (count($cantidad_usuarios_aprobados) == 3  && $paginaEmpresa->getRanking() ) {
+          } elseif (count($cantidad_usuarios_aprobados) == 3  && $paginaEmpresa->getRanking() && !($isTutorRevisor['tutor']) && !($isTutorRevisor['revisor'])) {
             $medallaUsuario = $em->getRepository('LinkComunBundle:AdminMedallasUsuario')->findOneBy(array(
               'pagina' => $raiz,
               'usuario' => $usuario_id,
@@ -2102,7 +2102,7 @@ class Functions
 
               $this->newAlarm($tipo_alarma_id, $descripcion, $usuario, $pagina->getId());
             }
-          } elseif (count($cantidad_usuarios_aprobados) > 3  && $paginaEmpresa->getRanking()) {
+          } elseif (count($cantidad_usuarios_aprobados) > 3  && $paginaEmpresa->getRanking() && !($isTutorRevisor['tutor']) && !($isTutorRevisor['revisor'])) {
             $medallaUsuario = $em->getRepository('LinkComunBundle:AdminMedallasUsuario')->findOneBy(array(
               'pagina' => $raiz,
               'usuario' => $usuario_id,
@@ -2132,7 +2132,7 @@ class Functions
             'usuario' => $usuario_id
           ));
 
-          if ($pagina_log->getFechaInicio() > $sesionActiva->getFechaIngreso()  && $paginaEmpresa->getRanking()) {
+          if ($pagina_log->getFechaInicio() > $sesionActiva->getFechaIngreso()  && $paginaEmpresa->getRanking() && !($isTutorRevisor['tutor']) && !($isTutorRevisor['revisor'])) {
             $medallaUsuario = $em->getRepository('LinkComunBundle:AdminMedallasUsuario')->findOneBy(array(
               'pagina' => $raiz,
               'usuario' => $usuario_id,
