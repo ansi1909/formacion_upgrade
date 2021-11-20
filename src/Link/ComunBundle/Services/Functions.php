@@ -2526,6 +2526,7 @@ class Functions
                     }
 
                     // Se setea los datos del usuario
+                    $isTutorRevisor = $this->is_tutorRevisor($usuario,$datos['yml']['nivel']);
                     $datosUsuario = array(
                       'id' => $usuario->getId(),
                       'login' => $usuario->getLogin(),
@@ -2537,7 +2538,8 @@ class Functions
                       'fecha_nacimiento_formateada' => $usuario->getFechaNacimiento() ? $usuario->getFechaNacimiento()->format('d/m/Y') : '',
                       'foto' => $usuario->getFoto(),
                       'participante' => $participante,
-                      'tutor' => $tutor
+                      'tutor' => $isTutorRevisor['tutor'],
+                      'revisor' => $isTutorRevisor['revisor']
                       
                     );
                     // Cierre de sesiones activas
@@ -4244,5 +4246,22 @@ class Functions
       return $aux[0];
     }
     return $_SERVER['REMOTE_ADDR'];
+  }
+
+
+  public function is_tutorRevisor($usuario,$yml){
+    $return = [
+      'tutor'   => false,
+      'revisor' => false
+    ];
+    if(strtolower($usuario->getNivel()->getNombre()) == $yml['tutor']){
+      $return['tutor'] = true;
+    }
+
+    if(strtolower($usuario->getNivel()->getNombre()) == $yml['revisor']){
+      $return['revisor'] = true;
+    }
+
+    return $return;
   }
 }
