@@ -205,13 +205,20 @@ class RankingController extends Controller
         #listar programas que tienen el ranking habilitado
        
         $em = $this->getDoctrine()->getManager();
+        $yml = Yaml::parse(file_get_contents($this->get('kernel')->getRootDir().'/config/parametros.yml'));
+        $f = $this->get('funciones');
         $session = new Session();
         $programas = [];
-        foreach($session->get('paginas') as $page ){
-            if(in_array($page['id'], $session->get('pagesRanking') )){
-                array_push($programas,$page);
+        $usuario =  $em->getRepository('LinkComunBundle:AdminUsuario')->findOneBy(array('id' => $session->get('usuario')['id']));
+        $isTutorRevisor = $f->is_tutorRevisor($usuario,$yml['parameters']['nivel']);
+        if (!$isTutorRevisor['tutor'] && !$isTutorRevisor['revisor']){
+            foreach($session->get('paginas') as $page ){
+                if(in_array($page['id'], $session->get('pagesRanking') )){
+                    array_push($programas,$page);
+                }
             }
         }
+
 
         return $this->render('LinkFrontendBundle:Ranking:new.html.twig',array('programas'=>$programas));
         $response->headers->setCookie(new Cookie('Peter', 'Griffina', time() + 36, '/'));
