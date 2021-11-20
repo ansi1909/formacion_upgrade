@@ -59,7 +59,7 @@
                 </div>
                 <div class="navbar-brand d-flex justify-content-center align-items-center">
                     <div class="d-flex flex-column">
-                        {% if app.session.get('pagesRanking')|length > 0 %}
+                        {% if (app.session.get('pagesRanking')|length > 0) and not (app.session.get('usuario')['revisor']) and not(app.session.get('usuario')['revisor']) %}
                             <a href="{{ path('_rankingNuevo') }}" title="{{ 'Ranking'|trans }}" id="boton_ranking"  style="display:none" data-toggle="tooltip" data-placement="bottom"> <img class="ranking-menu-icon" src="{{ asset('front/assets/img/ranking.png') }}"/> </a>
                         {% endif %}
                     </div>

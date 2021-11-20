@@ -197,6 +197,9 @@ parameters:
         maximo_minutos: 1
         minimo_segundos: 1
         maximo_segundos: 59
+    nivel:
+        revisor: 'revisor'
+        tutor: 'tutor'
         
 
         
