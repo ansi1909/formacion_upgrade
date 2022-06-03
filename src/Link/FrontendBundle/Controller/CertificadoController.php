@@ -18,6 +18,7 @@ class CertificadoController extends Controller
         
 		$session = new Session();
         $f = $this->get('funciones');
+		$yml = Yaml::parse(file_get_contents($this->get('kernel')->getRootDir().'/config/parametros.yml'));
 
         if (!$session->get('iniFront') || $f->sesionBloqueda($session->get('sesion_id')))
         {
@@ -77,15 +78,17 @@ class CertificadoController extends Controller
 					$comodines   = array('%%categoria%%');
 			        $reemplazos  = array($categoria->getPronombre().' '.strtolower($categoria->getNombre()));
 			        $descripcion = str_replace($comodines, $reemplazos, $certificado->getDescripcion());
-
-            		$certificado_pdf = new Html2Pdf('L','A4','es','true','UTF-8',array(0, 15, 0, 0));
+					$timeZoneEmpresa = $pagina_log->getUsuario()->getEmpresa()->getZonaHoraria() ?  $pagina_log->getUsuario()->getEmpresa()->getZonaHoraria()->getNombre():$yml['parameters']['time_zone']['default'];
+					$fechaInicioTransformada =  $f->converDate($pagina_log->getFechaInicio()->format("d-m-Y H:i:s"),$yml['parameters']['time_zone']['default'],$timeZoneEmpresa,true);
+					$fechaFinTransformada  	 =  $f->converDate($pagina_log->getFechaFin()->format("d-m-Y H:i:s"),$yml['parameters']['time_zone']['default'],$timeZoneEmpresa,true);
+					$certificado_pdf = new Html2Pdf('L','A4','es','true','UTF-8',array(0, 15, 0, 0));
 					$pagina_uno = '<page title="Certificado" pageset="new" backimg="'.$file.'" backimgw="90%" backimgx="center">
 									<div style="margin-left:910px; ">'.$ruta.'</div>
 									<div style="font-size:22px; margin-top:90px; text-align:center">'.$certificado->getEncabezado().'</div>
 									<div style="text-align:center; font-size:35px; margin-top:25px; text-transform:uppercase;">'.$session->get('usuario')['nombre'].' '.$session->get('usuario')['apellido'].'</div>
 									<div style="text-align:center; font-size:24px; margin-top:25px; ">'.$descripcion.'</div>
 									<div style="text-align:center; font-size:35px; margin-top:25px; text-transform:uppercase;width: 1000px;height: 100px;margin-left:57px">'.$pagina->getNombre().'</div>
-									<div style="text-align:center; margin-top:40px; font-size:14px;">'.$this->get('translator')->trans('Fecha inicio').':'.$pagina_log->getFechaInicio()->format("d/m/Y").'   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'.$this->get('translator')->trans('Fecha fin').':'.$pagina_log->getFechaFin()->format("d/m/Y").' </div>';
+									<div style="text-align:center; margin-top:40px; font-size:14px;">'.$this->get('translator')->trans('Fecha inicio').':'.$fechaInicioTransformada->fecha.'   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'.$this->get('translator')->trans('Fecha fin').':'.$fechaFinTransformada->fecha.' </div>';
 				    
 					if($categoria->getHoras())
 					{
@@ -143,6 +146,7 @@ class CertificadoController extends Controller
     {
         $session = new Session();
         $f = $this->get('funciones');
+		$yml = Yaml::parse(file_get_contents($this->get('kernel')->getRootDir().'/config/parametros.yml'));
 
         if (!$session->get('iniFront') || $f->sesionBloqueda($session->get('sesion_id')))
         {
@@ -220,9 +224,11 @@ class CertificadoController extends Controller
             $firma =  $uploads['parameters']['folders']['dir_project'].'web/img/firma.png';
 
 			//return new response($file);
-
+			$timeZoneEmpresa = $pagina_log->getUsuario()->getEmpresa()->getZonaHoraria() ?  $pagina_log->getUsuario()->getEmpresa()->getZonaHoraria()->getNombre():$yml['parameters']['time_zone']['default'];
+			$fechaInicioTransformada =  $f->converDate($pagina_log->getFechaInicio()->format("d-m-Y H:i:s"),$yml['parameters']['time_zone']['default'],$timeZoneEmpresa,true);
+			$fechaFinTransformada  	 =  $f->converDate($pagina_log->getFechaFin()->format("d-m-Y H:i:s"),$yml['parameters']['time_zone']['default'],$timeZoneEmpresa,true);
 		    $constancia_pdf = new Html2Pdf('P','A4','es','true','UTF-8',array(15, 10, 15, 5));
-
+			
 			$html = "<!DOCTYPE html>
 				<html lang='es'>
 				    <head>
@@ -310,10 +316,10 @@ class CertificadoController extends Controller
 	                                    <span class='tituloPart'>".$this->get('translator')->trans(trim($categoria->getNombre())).": <span>".$session->get('paginas')[$programa_id]['nombre']."</span></span>
 		                            </div>
 		                            <div class='row'>
-	                                    <span class='tituloPart'>".$this->get('translator')->trans(trim('Inicio'.' '.$categoria->getNotas().' '.strtolower($categoria->getNombre()))).": <span>".$pagina_log->getFechaInicio()->format('d/m/Y')."</span></span>
+	                                    <span class='tituloPart'>".$this->get('translator')->trans(trim('Inicio'.' '.$categoria->getNotas().' '.strtolower($categoria->getNombre()))).": <span>".$fechaInicioTransformada->fecha."</span></span>
 		                            </div>
 		                            <div class='row'>
-	                                    <span class='tituloPart'>".$this->get('translator')->trans(trim('Fin'.' '.$categoria->getNotas().' '.strtolower($categoria->getNombre()))).": <span>".$pagina_log->getFechaFin()->format('d/m/Y')."</span></span>
+	                                    <span class='tituloPart'>".$this->get('translator')->trans(trim('Fin'.' '.$categoria->getNotas().' '.strtolower($categoria->getNombre()))).": <span>".$fechaFinTransformada->fecha."</span></span>
 		                            </div>
 		                        </div>
 			                </div>
