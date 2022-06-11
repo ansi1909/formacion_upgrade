@@ -15,6 +15,7 @@ declare
     reg  record;
     rst  record;                -- Cursor para el SELECT de tmp_participante
     ut INTEGER := 0;
+    rol_participante INTEGER:= 2;
 begin
 
     FOR rst IN 
@@ -42,19 +43,19 @@ begin
          
     END LOOP;
 
-    SELECT COUNT(u.id) FROM Admin_Rol_Usuario ru
-                                       INNER JOIN admin_usuario u on ru.usuario_id = u.id
-                                          INNER join admin_nivel n on u.nivel_id = n.id
-                                        WHERE u.empresa_id = 36
-                                        AND  u.activo = true
-                                        AND ru.rol_id = 2
-                                        AND LOWER(n.nombre) not like 'revisor%'
-                                        AND LOWER(n.nombre) not like 'tutor%';
+    SELECT COUNT(u.id) into ut FROM Admin_Rol_Usuario ru
+        INNER JOIN admin_usuario u on ru.usuario_id = u.id
+        INNER join admin_nivel n on u.nivel_id = n.id
+        WHERE u.empresa_id = pempresa_id
+        AND  u.activo = true
+        AND ru.rol_id = rol_participante
+        AND LOWER(n.nombre) not like 'revisor%'
+        AND LOWER(n.nombre) not like 'tutor%';
 
     activost = activost + ut;
 
     -- Limpiar la tabla tmp_particpante
-    DELETE FROM tmp_participante WHERE empresa_id = pempresa_id AND transaccion = ptransaccion;
+    --DELETE FROM tmp_participante WHERE empresa_id = pempresa_id AND transaccion = ptransaccion;
    
     -- Retorna la cantidad de registros insertados más los actualizados
     str = activost;

@@ -1520,11 +1520,9 @@ class UsuarioController extends Controller
                 $query->execute();
                 $r = $query->fetchAll();
                 
-                if($r[0] > $empresa->getLimiteUsuarios())
+                if($r[0]['resultado'] > $empresa->getLimiteUsuarios())
                 {
-                    //return new response(var_dump($r));
                     $usuarios_totales = $r[0]['resultado'];
-                    //return new response( var_dump($usuarios_totales));
                     $error = $this->get('translator')->trans('Se ha excedido el límite de usuarios con acceso permitido para la empresa').'. '.$usuarios_totales.'/'.$empresa->getlimiteUsuarios();
                     return $this->render('LinkBackendBundle:Usuario:procesarParticipantes.html.twig', array('empresa' => $empresa,
                                                                                                             'return' => null,
