@@ -87,18 +87,18 @@
             {% if prueba_log.estado == estados.reprobado %}
 
                 <section>
-                   {#} <div class="row align-items-center justify-content-center">
+                    <div class="row align-items-center justify-content-center">
                         <div class="col-10 mt-4 text-center">
                             <h2 class="titulo-resul">{{ 'No has alcanzado la aprobación de la evaluación'|trans }}</h2>
                             <span class="calif">{{ 'Tu calificación'|trans }}: <span class="num">{{ prueba_log.nota|round }}/100</span></span>
                         </div>
-                        <div class="col-10 mt-3 text-center">
+                       {# <div class="col-10 mt-3 text-center">
                             <h3 class="color-light-black">{{ 'Si deseas volver a intentarlo haz clic aquí'|trans }}:</h3>
                             <a href="{{ path('_test', { 'pagina_id': prueba_log.prueba.pagina.id, 'programa_id': programa.id }) }}">
                                 <button class="btn btnRepeatEval"><span class="material-icons ic-resul alreves" title="{{ 'Repetir evaluación'|trans }}" data-toggle="tooltip" data-placement="bottom">replay</span></button>
                             </a>
-                        </div>
-                    </div>#}
+                        </div>#}
+                    </div>
                     <div class="row align-items-center justify-content-center">
                         <div class="col-12 text-center">
                             <p class="txt-resul">{{ 'Te invitamos a revisar nuevamente los contenidos antes de repetir la evaluación'|trans }}:</p>
