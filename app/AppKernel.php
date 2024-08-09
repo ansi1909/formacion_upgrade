@@ -51,4 +51,22 @@ class AppKernel extends Kernel
     {
         $loader->load($this->getRootDir().'/config/config_'.$this->getEnvironment().'.yml');
     }
+
+    /*Implementando la interfaz Serializable*/
+
+    public function __serialize(): array
+    {
+        return [
+            'bundles' => $this->bundles,
+            'environment' => $this->environment,
+            'debug' => $this->debug,
+        ];
+    }
+
+    public function __unserialize(array $data): void
+    {
+        $this->bundles = $data['bundles'];
+        $this->environment = $data['environment'];
+        $this->debug = $data['debug'];
+    }   
 }
