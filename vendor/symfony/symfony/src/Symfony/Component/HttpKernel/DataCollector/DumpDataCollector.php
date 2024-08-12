@@ -183,8 +183,16 @@ class DumpDataCollector extends DataCollector implements DataDumperInterface
         }
 
         // Verificar si los datos contienen Closures antes de la serialización para eliminar el error de que el dógido intenten serializar un Closure
-        $filteredData = array_filter($this->data, function ($item) {
+        /*$filteredData = array_filter($this->data, function ($item) {
             return !is_object($item) || !$item instanceof \Closure;
+        });*/
+
+        $filteredData = array_filter($this->data, function ($item) {
+            if (is_object($item)) {
+                // Ignorar objetos que no se pueden serializar, como Closure y otros
+                return !$item instanceof \Closure && method_exists($item, '__serialize');
+            }
+            return true;
         });
 
         $filteredData[] = $this->fileLinkFormat;
