@@ -182,9 +182,18 @@ class DumpDataCollector extends DataCollector implements DataDumperInterface
             return 'a:0:{}';
         }
 
-        $this->data[] = $this->fileLinkFormat;
-        $this->data[] = $this->charset;
-        $ser = serialize($this->data);
+        // Verificar si los datos contienen Closures antes de la serialización para eliminar el error de que el dógido intenten serializar un Closure
+        $filteredData = array_filter($this->data, function ($item) {
+            return !is_object($item) || !$item instanceof \Closure;
+        });
+
+        $filteredData[] = $this->fileLinkFormat;
+        $filteredData[] = $this->charset;
+        $ser = serialize($filteredData);
+
+        //$this->data[] = $this->fileLinkFormat;
+        //$this->data[] = $this->charset;
+        //$ser = serialize($this->data);
         $this->data = [];
         $this->dataCount = 0;
         $this->isCollected = true;
