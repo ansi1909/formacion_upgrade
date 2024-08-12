@@ -16,7 +16,7 @@ namespace Symfony\Component\Config\Resource;
  *
  * @author Nicolas Grekas <p@tchwork.com>
  */
-class ComposerResource implements SelfCheckingResourceInterface, \Serializable
+class ComposerResource implements SelfCheckingResourceInterface
 {
     private $vendors;
 
@@ -51,20 +51,14 @@ class ComposerResource implements SelfCheckingResourceInterface, \Serializable
         return array_values(self::$runtimeVendors) === array_values($this->vendors);
     }
 
-    /**
-     * @internal
-     */
-    public function serialize()
+    public function __serialize(): array
     {
-        return serialize($this->vendors);
+        return ['vendors' => $this->vendors];
     }
 
-    /**
-     * @internal
-     */
-    public function unserialize($serialized)
+    public function __unserialize(array $data): void
     {
-        $this->vendors = unserialize($serialized);
+        $this->vendors = $data['vendors'];
     }
 
     private static function refresh()

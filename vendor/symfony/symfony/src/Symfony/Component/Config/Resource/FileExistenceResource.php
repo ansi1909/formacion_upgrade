@@ -19,7 +19,7 @@ namespace Symfony\Component\Config\Resource;
  *
  * @author Charles-Henri Bruyand <charleshenri.bruyand@gmail.com>
  */
-class FileExistenceResource implements SelfCheckingResourceInterface, \Serializable
+class FileExistenceResource implements SelfCheckingResourceInterface
 {
     private $resource;
 
@@ -61,16 +61,16 @@ class FileExistenceResource implements SelfCheckingResourceInterface, \Serializa
     /**
      * @internal
      */
-    public function serialize()
+    public function __serialize(): array
     {
-        return serialize([$this->resource, $this->exists]);
+        return [$this->resource, $this->exists];
     }
 
     /**
      * @internal
      */
-    public function unserialize($serialized)
+    public function __unserialize(array $data): void
     {
-        list($this->resource, $this->exists) = unserialize($serialized);
+        list($this->resource, $this->exists) = $data;
     }
 }

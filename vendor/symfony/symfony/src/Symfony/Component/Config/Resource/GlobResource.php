@@ -13,6 +13,7 @@ namespace Symfony\Component\Config\Resource;
 
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\Finder\Glob;
+use Traversable;
 
 /**
  * GlobResource represents a set of resources stored on the filesystem.
@@ -21,7 +22,7 @@ use Symfony\Component\Finder\Glob;
  *
  * @author Nicolas Grekas <p@tchwork.com>
  */
-class GlobResource implements \IteratorAggregate, SelfCheckingResourceInterface, \Serializable
+class GlobResource implements \IteratorAggregate, SelfCheckingResourceInterface
 {
     private $prefix;
     private $pattern;
@@ -76,24 +77,24 @@ class GlobResource implements \IteratorAggregate, SelfCheckingResourceInterface,
     /**
      * @internal
      */
-    public function serialize()
+    public function __serialize(): array
     {
         if (null === $this->hash) {
             $this->hash = $this->computeHash();
         }
 
-        return serialize([$this->prefix, $this->pattern, $this->recursive, $this->hash]);
+        return [$this->prefix, $this->pattern, $this->recursive, $this->hash];
     }
 
     /**
      * @internal
      */
-    public function unserialize($serialized)
+    public function __unserialize(array $data): void
     {
-        list($this->prefix, $this->pattern, $this->recursive, $this->hash) = unserialize($serialized);
+        list($this->prefix, $this->pattern, $this->recursive, $this->hash) = $data;
     }
 
-    public function getIterator()
+    public function getIterator(): Traversable
     {
         if (!file_exists($this->prefix) || (!$this->recursive && '' === $this->pattern)) {
             return;

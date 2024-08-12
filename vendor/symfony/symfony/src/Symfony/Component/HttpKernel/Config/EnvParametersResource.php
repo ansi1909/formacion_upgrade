@@ -20,7 +20,7 @@ use Symfony\Component\Config\Resource\SelfCheckingResourceInterface;
  *
  * @deprecated since version 3.4, to be removed in 4.0
  */
-class EnvParametersResource implements SelfCheckingResourceInterface, \Serializable
+class EnvParametersResource implements SelfCheckingResourceInterface
 {
     /**
      * @var string
@@ -68,24 +68,20 @@ class EnvParametersResource implements SelfCheckingResourceInterface, \Serializa
     /**
      * @internal
      */
-    public function serialize()
+    
+    public function __serialize(): array
     {
-        return serialize(['prefix' => $this->prefix, 'variables' => $this->variables]);
+        return ['prefix' => $this->prefix, 'variables' => $this->variables];
     }
 
     /**
      * @internal
      */
-    public function unserialize($serialized)
-    {
-        if (\PHP_VERSION_ID >= 70000) {
-            $unserialized = unserialize($serialized, ['allowed_classes' => false]);
-        } else {
-            $unserialized = unserialize($serialized);
-        }
 
-        $this->prefix = $unserialized['prefix'];
-        $this->variables = $unserialized['variables'];
+    public function __unserialize(array $data): void
+    {
+        $this->prefix = $data['prefix'];
+        $this->variables = $data['variables'];
     }
 
     private function findVariables()

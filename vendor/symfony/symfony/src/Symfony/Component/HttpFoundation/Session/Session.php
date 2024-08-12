@@ -17,6 +17,7 @@ use Symfony\Component\HttpFoundation\Session\Flash\FlashBag;
 use Symfony\Component\HttpFoundation\Session\Flash\FlashBagInterface;
 use Symfony\Component\HttpFoundation\Session\Storage\NativeSessionStorage;
 use Symfony\Component\HttpFoundation\Session\Storage\SessionStorageInterface;
+use Traversable;
 
 /**
  * @author Fabien Potencier <fabien@symfony.com>
@@ -126,7 +127,7 @@ class Session implements SessionInterface, \IteratorAggregate, \Countable
      *
      * @return \ArrayIterator An \ArrayIterator instance
      */
-    public function getIterator()
+    public function getIterator(): Traversable
     {
         return new \ArrayIterator($this->getAttributeBag()->all());
     }
@@ -136,7 +137,7 @@ class Session implements SessionInterface, \IteratorAggregate, \Countable
      *
      * @return int The number of attributes
      */
-    public function count()
+    public function count(): int
     {
         return \count($this->getAttributeBag()->all());
     }

@@ -21,7 +21,7 @@ use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
  *
  * @author Jérémy Romey <jeremy@free-agent.fr>
  */
-class FileLinkFormatter implements \Serializable
+class FileLinkFormatter
 {
     private $fileLinkFormat;
     private $requestStack;
@@ -64,20 +64,20 @@ class FileLinkFormatter implements \Serializable
     /**
      * @internal
      */
-    public function serialize()
+    public function _serialize(): array
     {
-        return serialize($this->getFileLinkFormat());
+        return [$this->getFileLinkFormat()];
     }
 
     /**
      * @internal
      */
-    public function unserialize($serialized)
+    public function _unserialize(array $data): void
     {
         if (\PHP_VERSION_ID >= 70000) {
-            $this->fileLinkFormat = unserialize($serialized, ['allowed_classes' => false]);
+            $this->fileLinkFormat = unserialize($data[0], ['allowed_classes' => false]);
         } else {
-            $this->fileLinkFormat = unserialize($serialized);
+            $this->fileLinkFormat = unserialize($data[0]);
         }
     }
 

@@ -11,6 +11,9 @@
 
 namespace Symfony\Component\DependencyInjection\Argument;
 
+use Symfony\Component\Validator\Mapping\TraversalStrategy;
+use Traversable;
+
 /**
  * @internal
  */
@@ -28,14 +31,14 @@ class RewindableGenerator implements \IteratorAggregate, \Countable
         $this->count = $count;
     }
 
-    public function getIterator()
+    public function getIterator(): Traversable
     {
         $g = $this->generator;
 
         return $g();
     }
 
-    public function count()
+    public function count(): int
     {
         if (\is_callable($count = $this->count)) {
             $this->count = $count();

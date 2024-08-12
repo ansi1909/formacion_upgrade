@@ -18,7 +18,7 @@ namespace Symfony\Component\Config\Resource;
  *
  * @author Fabien Potencier <fabien@symfony.com>
  */
-class FileResource implements SelfCheckingResourceInterface, \Serializable
+class FileResource implements SelfCheckingResourceInterface
 {
     /**
      * @var string|false
@@ -63,19 +63,13 @@ class FileResource implements SelfCheckingResourceInterface, \Serializable
         return false !== ($filemtime = @filemtime($this->resource)) && $filemtime <= $timestamp;
     }
 
-    /**
-     * @internal
-     */
-    public function serialize()
+    public function __serialize(): array
     {
-        return serialize($this->resource);
+        return ['resource' => $this->resource];
     }
 
-    /**
-     * @internal
-     */
-    public function unserialize($serialized)
+    public function __unserialize(array $data): void
     {
-        $this->resource = unserialize($serialized);
+        $this->resource = $data['resource'];
     }
 }
