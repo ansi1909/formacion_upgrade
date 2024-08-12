@@ -176,18 +176,6 @@ class DumpDataCollector extends DataCollector implements DataDumperInterface
         $this->clonesIndex = 0;
     }
 
-    private function serializeClosures($data)
-    {
-        foreach ($data as $key => $value) {
-            if (is_object($value) && $value instanceof \Closure) {
-                $data[$key] = sprintf('Closure: %s', $value->__toString());
-            } elseif (is_array($value)) {
-                $data[$key] = $this->serializeClosures($value);
-            }
-        }
-        return $data;
-    }
-
     public function serialize()
     {
         if ($this->clonesCount !== $this->clonesIndex) {
@@ -199,17 +187,25 @@ class DumpDataCollector extends DataCollector implements DataDumperInterface
             return !is_object($item) || !$item instanceof \Closure;
         });*/
 
-        /*$filteredData = array_filter($this->data, function ($item) {
+        $filteredData = array_filter($this->data, function ($item) {
             if (is_object($item)) {
                 // Ignorar objetos que no se pueden serializar, como Closure y otros
                 return !$item instanceof \Closure && method_exists($item, '__serialize');
             }
             return true;
-        });*/
-        $filteredData = $this->serializeClosures($this->data);
+        });
+        
         $filteredData[] = $this->fileLinkFormat;
         $filteredData[] = $this->charset;
-        $ser = serialize($filteredData);
+
+        try {
+            $ser = serialize($filteredData);
+        } catch (\Exception $e) {
+            // Manejar la excepción, por ejemplo, registrando un mensaje de error
+            error_log('Error serializing data: ' . $e->getMessage());
+            return 'a:0:{}'; // O devolver un valor por defecto en caso de error
+        }
+        //$ser = serialize($filteredData);
 
         //$this->data[] = $this->fileLinkFormat;
         //$this->data[] = $this->charset;
